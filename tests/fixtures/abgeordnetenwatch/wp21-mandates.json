@@ -1,0 +1,493 @@
+[
+ {
+  "id": 68846,
+  "entity_type": "candidacy_mandate",
+  "label": "Catarina dos Santos-Wintz (Bundestag 2025 - 2029)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68846",
+  "id_external_administration": "2516",
+  "id_external_administration_description": "mdbID aus der info-xml-Datei der Bundestagsverwaltung",
+  "type": "mandate",
+  "parliament_period": {
+   "id": 161,
+   "entity_type": "parliament_period",
+   "label": "Bundestag 2025 - 2029",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/parliament-periods/161",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/bundestag"
+  },
+  "politician": {
+   "id": 175836,
+   "entity_type": "politician",
+   "label": "Catarina dos Santos-Wintz",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/politicians/175836",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/profile/catarina-dos-santos-wintz"
+  },
+  "start_date": null,
+  "end_date": null,
+  "info": null,
+  "electoral_data": {
+   "id": 69721,
+   "entity_type": "electoral_data",
+   "label": "Catarina dos Santos-Wintz (Bundestag 2025 - 2029)",
+   "electoral_list": {
+    "id": 727,
+    "entity_type": "electoral_list",
+    "label": "Landesliste Nordrhein-Westfalen (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/electoral-lists/727"
+   },
+   "list_position": 17,
+   "constituency": {
+    "id": 13993,
+    "entity_type": "constituency",
+    "label": "87 - Aachen II (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/constituencies/13993"
+   },
+   "constituency_result": 40.1,
+   "constituency_result_count": null,
+   "mandate_won": "constituency"
+  },
+  "fraction_membership": [
+   {
+    "id": 13272,
+    "entity_type": "fraction_membership",
+    "label": "CDU/CSU",
+    "fraction": {
+     "id": 421,
+     "entity_type": "fraction",
+     "label": "CDU/CSU (Bundestag 2025 - 2029)",
+     "api_url": "https://www.abgeordnetenwatch.de/api/v2/fractions/421"
+    },
+    "valid_from": null,
+    "valid_until": null
+   }
+  ]
+ },
+ {
+  "id": 68734,
+  "entity_type": "candidacy_mandate",
+  "label": "Pascal Meiser (Bundestag 2025 - 2029)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68734",
+  "id_external_administration": "2177",
+  "id_external_administration_description": "mdbID aus der info-xml-Datei der Bundestagsverwaltung",
+  "type": "mandate",
+  "parliament_period": {
+   "id": 161,
+   "entity_type": "parliament_period",
+   "label": "Bundestag 2025 - 2029",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/parliament-periods/161",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/bundestag"
+  },
+  "politician": {
+   "id": 117904,
+   "entity_type": "politician",
+   "label": "Pascal Meiser",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/politicians/117904",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/profile/pascal-meiser"
+  },
+  "start_date": null,
+  "end_date": null,
+  "info": null,
+  "electoral_data": {
+   "id": 69609,
+   "entity_type": "electoral_data",
+   "label": "Pascal Meiser (Bundestag 2025 - 2029)",
+   "electoral_list": {
+    "id": 720,
+    "entity_type": "electoral_list",
+    "label": "Landesliste Berlin (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/electoral-lists/720"
+   },
+   "list_position": 4,
+   "constituency": {
+    "id": 13988,
+    "entity_type": "constituency",
+    "label": "82 - Berlin-Friedrichshain-Kreuzberg – Prenzlauer Berg Ost (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/constituencies/13988"
+   },
+   "constituency_result": 34.7,
+   "constituency_result_count": null,
+   "mandate_won": "constituency"
+  },
+  "fraction_membership": [
+   {
+    "id": 13160,
+    "entity_type": "fraction_membership",
+    "label": "Die Linke",
+    "fraction": {
+     "id": 422,
+     "entity_type": "fraction",
+     "label": "Die Linke (Bundestag 2025 - 2029)",
+     "api_url": "https://www.abgeordnetenwatch.de/api/v2/fractions/422"
+    },
+    "valid_from": null,
+    "valid_until": null
+   }
+  ]
+ },
+ {
+  "id": 68687,
+  "entity_type": "candidacy_mandate",
+  "label": "Anna Leonore Labitzke Rathert (Bundestag 2025 - 2029)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68687",
+  "id_external_administration": "2761",
+  "id_external_administration_description": "mdbID aus der info-xml-Datei der Bundestagsverwaltung",
+  "type": "mandate",
+  "parliament_period": {
+   "id": 161,
+   "entity_type": "parliament_period",
+   "label": "Bundestag 2025 - 2029",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/parliament-periods/161",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/bundestag"
+  },
+  "politician": {
+   "id": 183522,
+   "entity_type": "politician",
+   "label": "Anna Leonore Labitzke Rathert",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/politicians/183522",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/profile/anna-leonore-labitzke-rathert"
+  },
+  "start_date": null,
+  "end_date": null,
+  "info": null,
+  "electoral_data": {
+   "id": 69562,
+   "entity_type": "electoral_data",
+   "label": "Anna Leonore Labitzke Rathert (Bundestag 2025 - 2029)",
+   "electoral_list": {
+    "id": 727,
+    "entity_type": "electoral_list",
+    "label": "Landesliste Nordrhein-Westfalen (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/electoral-lists/727"
+   },
+   "list_position": 11,
+   "constituency": {
+    "id": 14026,
+    "entity_type": "constituency",
+    "label": "120 - Recklinghausen I (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/constituencies/14026"
+   },
+   "constituency_result": null,
+   "constituency_result_count": null,
+   "mandate_won": "list"
+  },
+  "fraction_membership": [
+   {
+    "id": 13113,
+    "entity_type": "fraction_membership",
+    "label": "AfD",
+    "fraction": {
+     "id": 419,
+     "entity_type": "fraction",
+     "label": "AfD (Bundestag 2025 - 2029)",
+     "api_url": "https://www.abgeordnetenwatch.de/api/v2/fractions/419"
+    },
+    "valid_from": null,
+    "valid_until": null
+   }
+  ]
+ },
+ {
+  "id": 68680,
+  "entity_type": "candidacy_mandate",
+  "label": "Cansın Köktürk (Bundestag 2025 - 2029)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68680",
+  "id_external_administration": "2716",
+  "id_external_administration_description": "mdbID aus der info-xml-Datei der Bundestagsverwaltung",
+  "type": "mandate",
+  "parliament_period": {
+   "id": 161,
+   "entity_type": "parliament_period",
+   "label": "Bundestag 2025 - 2029",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/parliament-periods/161",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/bundestag"
+  },
+  "politician": {
+   "id": 184033,
+   "entity_type": "politician",
+   "label": "Cansın Köktürk",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/politicians/184033",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/profile/cansin-koektuerk"
+  },
+  "start_date": null,
+  "end_date": null,
+  "info": null,
+  "electoral_data": {
+   "id": 69555,
+   "entity_type": "electoral_data",
+   "label": "Cansın Köktürk (Bundestag 2025 - 2029)",
+   "electoral_list": {
+    "id": 727,
+    "entity_type": "electoral_list",
+    "label": "Landesliste Nordrhein-Westfalen (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/electoral-lists/727"
+   },
+   "list_position": 2,
+   "constituency": {
+    "id": 14045,
+    "entity_type": "constituency",
+    "label": "139 - Bochum I (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/constituencies/14045"
+   },
+   "constituency_result": null,
+   "constituency_result_count": null,
+   "mandate_won": "list"
+  },
+  "fraction_membership": [
+   {
+    "id": 13106,
+    "entity_type": "fraction_membership",
+    "label": "Die Linke",
+    "fraction": {
+     "id": 422,
+     "entity_type": "fraction",
+     "label": "Die Linke (Bundestag 2025 - 2029)",
+     "api_url": "https://www.abgeordnetenwatch.de/api/v2/fractions/422"
+    },
+    "valid_from": null,
+    "valid_until": null
+   }
+  ]
+ },
+ {
+  "id": 68414,
+  "entity_type": "candidacy_mandate",
+  "label": "Desiree Becker (Bundestag 2025 - 2029)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68414",
+  "id_external_administration": "2624",
+  "id_external_administration_description": "mdbID aus der info-xml-Datei der Bundestagsverwaltung",
+  "type": "mandate",
+  "parliament_period": {
+   "id": 161,
+   "entity_type": "parliament_period",
+   "label": "Bundestag 2025 - 2029",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/parliament-periods/161",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/bundestag"
+  },
+  "politician": {
+   "id": 180058,
+   "entity_type": "politician",
+   "label": "Desiree Becker",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/politicians/180058",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/profile/desiree-becker"
+  },
+  "start_date": null,
+  "end_date": null,
+  "info": null,
+  "electoral_data": {
+   "id": 69289,
+   "entity_type": "electoral_data",
+   "label": "Desiree Becker (Bundestag 2025 - 2029)",
+   "electoral_list": {
+    "id": 724,
+    "entity_type": "electoral_list",
+    "label": "Landesliste Hessen (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/electoral-lists/724"
+   },
+   "list_position": 4,
+   "constituency": {
+    "id": 14078,
+    "entity_type": "constituency",
+    "label": "172 - Gießen (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/constituencies/14078"
+   },
+   "constituency_result": null,
+   "constituency_result_count": null,
+   "mandate_won": "list"
+  },
+  "fraction_membership": [
+   {
+    "id": 12840,
+    "entity_type": "fraction_membership",
+    "label": "Die Linke",
+    "fraction": {
+     "id": 422,
+     "entity_type": "fraction",
+     "label": "Die Linke (Bundestag 2025 - 2029)",
+     "api_url": "https://www.abgeordnetenwatch.de/api/v2/fractions/422"
+    },
+    "valid_from": null,
+    "valid_until": null
+   }
+  ]
+ },
+ {
+  "id": 68413,
+  "entity_type": "candidacy_mandate",
+  "label": "Carsten Becker (Bundestag 2025 - 2029)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68413",
+  "id_external_administration": "2623",
+  "id_external_administration_description": "mdbID aus der info-xml-Datei der Bundestagsverwaltung",
+  "type": "mandate",
+  "parliament_period": {
+   "id": 161,
+   "entity_type": "parliament_period",
+   "label": "Bundestag 2025 - 2029",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/parliament-periods/161",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/bundestag"
+  },
+  "politician": {
+   "id": 177567,
+   "entity_type": "politician",
+   "label": "Carsten Becker",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/politicians/177567",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/profile/carsten-becker"
+  },
+  "start_date": null,
+  "end_date": null,
+  "info": null,
+  "electoral_data": {
+   "id": 69288,
+   "entity_type": "electoral_data",
+   "label": "Carsten Becker (Bundestag 2025 - 2029)",
+   "electoral_list": {
+    "id": 729,
+    "entity_type": "electoral_list",
+    "label": "Landesliste Saarland (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/electoral-lists/729"
+   },
+   "list_position": 1,
+   "constituency": {
+    "id": 14203,
+    "entity_type": "constituency",
+    "label": "297 - Saarlouis (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/constituencies/14203"
+   },
+   "constituency_result": null,
+   "constituency_result_count": null,
+   "mandate_won": "list"
+  },
+  "fraction_membership": [
+   {
+    "id": 12839,
+    "entity_type": "fraction_membership",
+    "label": "AfD",
+    "fraction": {
+     "id": 419,
+     "entity_type": "fraction",
+     "label": "AfD (Bundestag 2025 - 2029)",
+     "api_url": "https://www.abgeordnetenwatch.de/api/v2/fractions/419"
+    },
+    "valid_from": null,
+    "valid_until": null
+   }
+  ]
+ },
+ {
+  "id": 68407,
+  "entity_type": "candidacy_mandate",
+  "label": "Bärbel Bas (Bundestag 2025 - 2029)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68407",
+  "id_external_administration": "1607",
+  "id_external_administration_description": "mdbID aus der info-xml-Datei der Bundestagsverwaltung",
+  "type": "mandate",
+  "parliament_period": {
+   "id": 161,
+   "entity_type": "parliament_period",
+   "label": "Bundestag 2025 - 2029",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/parliament-periods/161",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/bundestag"
+  },
+  "politician": {
+   "id": 79455,
+   "entity_type": "politician",
+   "label": "Bärbel Bas",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/politicians/79455",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/profile/baerbel-bas"
+  },
+  "start_date": null,
+  "end_date": null,
+  "info": null,
+  "electoral_data": {
+   "id": 69282,
+   "entity_type": "electoral_data",
+   "label": "Bärbel Bas (Bundestag 2025 - 2029)",
+   "electoral_list": {
+    "id": 727,
+    "entity_type": "electoral_list",
+    "label": "Landesliste Nordrhein-Westfalen (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/electoral-lists/727"
+   },
+   "list_position": 2,
+   "constituency": {
+    "id": 14020,
+    "entity_type": "constituency",
+    "label": "114 - Duisburg I (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/constituencies/14020"
+   },
+   "constituency_result": 39,
+   "constituency_result_count": null,
+   "mandate_won": "constituency"
+  },
+  "fraction_membership": [
+   {
+    "id": 12833,
+    "entity_type": "fraction_membership",
+    "label": "SPD",
+    "fraction": {
+     "id": 425,
+     "entity_type": "fraction",
+     "label": "SPD (Bundestag 2025 - 2029)",
+     "api_url": "https://www.abgeordnetenwatch.de/api/v2/fractions/425"
+    },
+    "valid_from": null,
+    "valid_until": null
+   }
+  ]
+ },
+ {
+  "id": 68396,
+  "entity_type": "candidacy_mandate",
+  "label": "Peter Aumer (Bundestag 2025 - 2029)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68396",
+  "id_external_administration": "1653",
+  "id_external_administration_description": "mdbID aus der info-xml-Datei der Bundestagsverwaltung",
+  "type": "mandate",
+  "parliament_period": {
+   "id": 161,
+   "entity_type": "parliament_period",
+   "label": "Bundestag 2025 - 2029",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/parliament-periods/161",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/bundestag"
+  },
+  "politician": {
+   "id": 120442,
+   "entity_type": "politician",
+   "label": "Peter Aumer",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/politicians/120442",
+   "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/profile/peter-aumer"
+  },
+  "start_date": null,
+  "end_date": null,
+  "info": null,
+  "electoral_data": {
+   "id": 69271,
+   "entity_type": "electoral_data",
+   "label": "Peter Aumer (Bundestag 2025 - 2029)",
+   "electoral_list": null,
+   "list_position": null,
+   "constituency": {
+    "id": 14138,
+    "entity_type": "constituency",
+    "label": "232 - Regensburg (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/constituencies/14138"
+   },
+   "constituency_result": 38.3,
+   "constituency_result_count": null,
+   "mandate_won": "constituency"
+  },
+  "fraction_membership": [
+   {
+    "id": 12822,
+    "entity_type": "fraction_membership",
+    "label": "CDU/CSU",
+    "fraction": {
+     "id": 421,
+     "entity_type": "fraction",
+     "label": "CDU/CSU (Bundestag 2025 - 2029)",
+     "api_url": "https://www.abgeordnetenwatch.de/api/v2/fractions/421"
+    },
+    "valid_from": null,
+    "valid_until": null
+   }
+  ]
+ }
+]

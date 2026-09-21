@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dbtplenarprotokoll
+  SYSTEM "dbtplenarprotokoll.dtd">
+<dbtplenarprotokoll vertrieb="Bundesanzeiger Verlag GmbH, Postfach 1 0 05 34, 50445 Köln, Telefon (02 21) 97 66 83 40, Fax (02 21) 97 66 83 44, www.bundesanzeiger-verlag.de" herstellung="H. Heenemann GmbH  Co. KG, Buch- und Offsetdruckerei, Bessemerstraße 83–91, 12103 Berlin, www.heenemann-druck.de" sitzung-ort="Berlin" herausgeber="Deutscher Bundestag" issn="0722-7980" wahlperiode="21" sitzung-nr="94" sitzung-datum="11.09.2026" sitzung-start-uhrzeit="09:00" sitzung-ende-uhrzeit="14:08" sitzung-naechste-datum="23.09.2026" start-seitennr="11607">
+    <!-- EXCERPT for tests: Plenarprotokoll 21/94 (Deutscher Bundestag), reduced to two agenda items and three speeches. Source: https://dserver.bundestag.de/btp/21/21094.xml -->
+<vorspann><kopfdaten>
+            <plenarprotokoll-nummer>Plenarprotokoll <wahlperiode>21</wahlperiode>/<sitzungsnr>94</sitzungsnr></plenarprotokoll-nummer>
+            <herausgeber>Deutscher Bundestag</herausgeber>
+            <berichtart>Stenografischer Bericht</berichtart>
+            <sitzungstitel><sitzungsnr>94</sitzungsnr>. Sitzung</sitzungstitel>
+            <veranstaltungsdaten><ort>Berlin</ort>, <datum date="11.09.2026">Freitag, den 11. September 2026</datum></veranstaltungsdaten>
+        </kopfdaten>
+        </vorspann>
+<sitzungsverlauf>
+<sitzungsbeginn sitzung-start-uhrzeit="09:00">
+            <name>Vizepräsidentin Andrea Lindholz:</name>
+            <p klasse="J_1">Guten Morgen, liebe Kolleginnen und Kollegen! Die Sitzung ist hiermit eröffnet.</p>
+            <p klasse="J">Liebe Kolleginnen und Kollegen, heute vor 25 Jahren fanden hier im Plenarsaal ebenfalls Haushaltsberatungen statt. Und gerade heute, am 11. September 2026, jährt sich der schreckliche Terroranschlag zum 25. Mal. Viele von uns können sich noch daran erinnern: Fast 3 000 Menschen verloren ihr Leben, Tausende wurden verletzt, und die Welt war entsetzt. Hier im Plenarsaal wurden die Haushaltsberatungen kurz nach Bekanntwerden der Ereignisse zunächst unterbrochen und schließlich vertagt. Die Haushaltsberatungen wurden erst zwei Wochen später fortgesetzt. Die damalige Sprach- und Hilflosigkeit angesichts dieser unvorstellbaren Tat hallt daher bis heute besonders nach, und wir erinnern uns auch heute ganz besonders an diesen 11. September. </p>
+            <p klasse="J">Bevor wir jetzt in die Tagesordnung einsteigen, darf ich vom weniger schönen Ereignis zu einem sehr schönen Ereignis überleiten und der Kollegin Karoline Otte von der Fraktion Bündnis 90/Die Grünen im Namen des gesamten Hauses ganz herzlich zu ihrem heutigen – man darf es sagen – 30. Geburtstag gratulieren. Herzlichen Glückwunsch! </p>
+            <kommentar>(Beifall)</kommentar>
+        </sitzungsbeginn>
+        
+<tagesordnungspunkt top-id="Tagesordnungspunkt 3">
+            <p klasse="J">Wir setzen jetzt unsere Haushaltsberatungen – Tagesordnungspunkt 3 – fort: </p>
+            <p klasse="T_NaS">		a)	Erste Beratung des von der Bundesregierung eingebrachten Entwurfs eines Gesetzes über die Feststellung des Bundeshaushaltsplans für das Haushaltsjahr 2027 (Haushaltsgesetz 2027 – HG 2027) </p>
+            <p klasse="T_Drs">			Drucksachen <a href="https://dserver.bundestag.de/btd/21/073/2107300.pdf">21/7300</a>, <a href="https://dserver.bundestag.de/btd/21/076/2107650.pdf">21/7650</a></p>
+            <p klasse="T_Ueberweisung">			Überweisungsvorschlag: Haushaltsausschuss</p>
+            <p klasse="T_NaS">		b)	Beratung der Unterrichtung durch die Bundesregierung </p>
+            <p klasse="T_fett">			Finanzplan des Bundes 2026 bis 2030</p>
+            <p klasse="T_Drs">			Drucksache <a href="https://dserver.bundestag.de/btd/21/073/2107301.pdf">21/7301</a></p>
+            <p klasse="T_Ueberweisung">			Überweisungsvorschlag: Haushaltsausschuss</p>
+            <p klasse="J">Für die heutige Aussprache haben wir eine Redezeit von insgesamt viereinhalb Stunden vereinbart.</p>
+        </tagesordnungspunkt>
+        
+<tagesordnungspunkt top-id="Einzelplan 11">
+            <p klasse="J">Wir kommen als Erstes zum Geschäftsbereich des Bundesministeriums für Arbeit und Soziales, Einzelplan 11. </p>
+            <p klasse="J">Ich darf als erste Rednerin in dieser Debatte für die Bundesregierung Bärbel Bas, Bundesministerin für Arbeit und Soziales, ans Mikrofon bitten.</p>
+            <kommentar>(Beifall bei der SPD und der CDU/CSU)</kommentar>
+            <rede id="ID219400100">
+                <p klasse="redner"><a id="r1" /><redner id="11004006"><name><vorname>Bärbel</vorname><nachname>Bas</nachname><rolle><rolle_lang>Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Bundesministerin BMAS</rolle_kurz></rolle></name></redner>Bärbel Bas, Bundesministerin für Arbeit und Soziales:</p>
+                <p klasse="J_1">Sehr geehrte Frau Präsidentin! Meine Damen und Herren! Liebe Kolleginnen und Kollegen! In den vergangenen Wochen waren wir alle viel unterwegs, und wir erleben aktuell ein sehr emotionales Land. Ich erlebe in Gesprächen einerseits viele Sorgen und Frust, weil Existenzen bedroht sind oder auch der Arbeitsplatzverlust droht und der Alltag vieler Menschen teurer geworden ist. Andererseits erlebe ich aber auch Zuversicht, Mut auf etwas Neues und vor allen Dingen auch Branchen, die wachsen, weil diese Bundesregierung 500 Milliarden Euro in dieses Land investiert.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Vor allem erlebe ich Entschlossenheit, unsere Zukunft selbst zu gestalten und sie uns nicht von ausländischen Technologiekonzernen oder autokratischen Mächten diktieren zu lassen. Unsere Aufgabe ist es, die Sorgen ernst zu nehmen und die Hoffnung und den Mut durch gute politische Rahmenbedingungen und Reformen zu stärken.</p>
+                <p klasse="J">Liebe Kolleginnen und Kollegen, mir ist wichtig: Unsere Reformen sind kein Selbstzweck. Es geht nicht darum, nur den Mangel zu verwalten. Ganz im Gegenteil: Es geht darum, dass wir dieses Land wieder besser machen. Dazu gehören gute Löhne, faire Arbeitsbedingungen, der Ausbau der Tarifbindung und sichere Renten.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Liebe Kolleginnen und Kollegen, bis zum Ende des Jahrzehnts wird es keinen Job mehr geben, der nicht mit KI in Berührung ist. Darin stecken enorme Chancen als Industrienation. Unser Ziel ist klar: KI soll menschliche Arbeit nicht verdrängen, sondern mit ihr zusammenwirken und sie produktiver machen. KI muss in den Dienst der Menschen und der Demokratie gestellt werden. Wir in Deutschland und in Europa können hier Vorreiter sein, eigene KI-Produkte zu entwickeln und die Technologieführerschaft auch wieder zurückzugewinnen.</p>
+                <p klasse="J">Gleichzeitig brauchen wir konkrete Antworten für die Beschäftigten in den Industriebranchen, die gerade extrem unter Druck stehen. Ein Beispiel ist ganz aktuell der Automobilbau, auch bei VW. Jetzt ist es wichtig, dass diese hochmodernen Standorte und die Beschäftigten dort eine Perspektive bekommen. Das müssen wir industriepolitisch flankieren.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="O">Es kann nicht sein, dass die deutschen Automobilbauer im Wettbewerb durch hochsubventionierte Autos aus dem Ausland benachteiligt werden. Dagegen müssen wir uns wehren, auch mit Handelsschutzmaßnahmen.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Dort, wo ein Umbau unvermeidbar ist, brauchen die Beschäftigten Unterstützung. Mit den sogenannten Arbeitsmarktdrehscheiben wollen wir dafür sorgen, dass Übergänge von einem Job in den nächsten möglichst sinnvoll und nahtlos funktionieren, damit Arbeitslosigkeit vermieden wird.</p>
+                <p klasse="J">Und, liebe Kolleginnen und Kollegen, wir müssen langfristig nach vorne schauen. Besonders junge Menschen brauchen jetzt Unterstützung beim Einstieg in den Arbeitsmarkt.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="O">Das Ausbildungsjahr hat gerade erst begonnen. Die gute Nachricht ist: Das Handwerk bleibt weiter der verlässliche Ausbilder, und die Zahl der Ausbildungsplätze ist gerade in diesem Bereich gestiegen.</p>
+                <kommentar>(Pascal Meiser [Die Linke]: Insgesamt sieht es aber schlecht aus!)</kommentar>
+                <p klasse="O">Dafür können wir nur dankbar sein. Diese Branche müssen wir weiter unterstützen.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Zur Realität gehört aber auch: Jeder Fünfte im Alter von 20 bis 34 Jahren steht heute ohne Berufsabschluss da. Das darf uns keine Ruhe lassen, genauso wenig wie das Ergebnis der aktuellen PISA-Studie. Deswegen entwickeln wir als Koalition das Programm „Die 2. Chance“ weiter, und wir überarbeiten das Bildungs- und Teilhabepaket und bauen es aus. Dazu brauchen wir mehr denn je starke Jugendberufsagenturen und eine handlungsfähige Bundesagentur für Arbeit, die wir mit einem überjährigen Darlehen unterstützen.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Auch bei den Jobcentern halten wir unser Engagement hoch und stellen gegenüber der alten Planung auch im kommenden Jahr 1 Milliarde Euro zusätzlich für die Arbeitsmarktintegration zur Verfügung.</p>
+                <p klasse="J">Liebe Kolleginnen und Kollegen, darüber hinaus bleibt das Thema Fachkräftesicherung ganz zentral. Deshalb sind Ausbildung, Qualifizierung und Weiterbildung wichtige Schwerpunkte für die weitere Arbeit. Auch der Ausbau der Barrierefreiheit ist mir wichtig, um gut qualifizierten Menschen mit Behinderung endlich einen besseren Zugang zu einem inklusiven Arbeitsmarkt zu ermöglichen.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Gleichzeitig kümmern wir uns um das Thema Fachkräfteeinwanderung und forcieren 2027 die digitale Work-and-Stay-Agentur. Für den Aufbau sind insgesamt 775 Millionen Euro eingeplant. Das hilft uns im internationalen Wettbewerb um die klugen Köpfe, und deshalb müssen wir an dieser Stelle schneller, digitaler und besser werden.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Liebe Kolleginnen und Kollegen, deshalb ist es auch wichtig, dass wir den Sozialstaat für die kommenden Jahrzehnte fitmachen und vorbereiten. Und ja, der Schwerpunkt ist dabei die Zukunft der Rente. Wenn wir unser Versprechen einhalten wollen, dass auch in Zukunft die Renten sicher sein sollen und vor allen Dingen die jungen Menschen nicht überbelastet werden, dann braucht es eine Reform. Deshalb müssen wir daran festhalten, eine Rentenreform in dieser Legislatur umzusetzen. Alles andere kommt uns teuer zu stehen, führt zu Rentenkürzungen und zu massiv steigenden Beiträgen.</p>
+                <kommentar>(Beifall bei der SPD und der CDU/CSU)</kommentar>
+                <p klasse="J">Die Alterssicherungskommission hat dafür einen sehr guten Vorschlag auf den Tisch gelegt und uns vor allen Dingen auch Perspektiven mitgegeben für die Zielbeschreibung, eine Erwerbstätigenversicherung aufzubauen, die Erwerbsminderungsrente zu verbessern und auch eine neue Berufsunfähigkeitsrente für die einzuführen, die aus gesundheitlichen Gründen nicht so lange arbeiten können.</p>
+                <p klasse="J">Und ja, wir müssen auch darüber reden, wie wir mit besonders langen Arbeitsbiografien umgehen. Das Thema „Rente nach 45 Versicherungsjahren“ ist im Gespräch. Ich will den Menschen, die gerade Angst haben, dass diese übermorgen abgeschafft wird und dass Verträge, die sie gerade erst abgeschlossen haben, schon nicht mehr gelten, sagen: Es wird einen Vertrauensschutz geben. Darauf können sich alle verlassen.</p>
+                <p klasse="J">Wir werden uns auch darüber miteinander unterhalten müssen, wie wir in einer Umbruchphase bei vielen Unternehmen, die Arbeitsplätze abbauen müssen, mit den Forderungen der Unternehmen und der Beschäftigten umgehen. Es geht darum, ihnen in den nächsten Jahren die Sicherheit zu geben, dass wir in Unternehmen, die unter Druck stehen, einen sozialverträglichen Abbau der Arbeitsplätze hinbekommen.</p>
+                <kommentar>(Beifall bei der SPD)</kommentar>
+                <p klasse="O">Dazu brauchen wir die richtigen Instrumente. Ich glaube, darüber sind wir uns auch nicht uneins und werden hier miteinander in die Diskussion kommen.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Alles in allem geht es darum, den Sozialstaat, der oft zu kompliziert ist, für die Bürgerinnen und Bürger schneller zu machen, besser zu machen und klüger zu machen, wie ich immer sage, vor allen Dingen aber auch einfacher, mit weniger Bürokratie. Das ist unser Ziel.</p>
+                <kommentar>(Abg. Cansin Köktürk [Die Linke] meldet sich zu einer Zwischenfrage)</kommentar>
+                <name>Vizepräsidentin Andrea Lindholz:</name>
+                <p klasse="J_1">Frau Kollegin?</p>
+                <p klasse="redner"><redner id="11004006"><name><vorname>Bärbel</vorname><nachname>Bas</nachname><rolle><rolle_lang>Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Bundesministerin BMAS</rolle_kurz></rolle></name></redner>Bärbel Bas, Bundesministerin für Arbeit und Soziales:</p>
+                <p klasse="J_1">Nein. – Deshalb schließe ich mit den Worten: Wir haben die Wahl zwischen Misstrauen oder Zuversicht. Ich glaube, wir sollten uns für die Zuversicht entscheiden und mutig die Reformen angehen.</p>
+                <p klasse="J">Herzlichen Dank.</p>
+                <kommentar>(Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <name>Vizepräsidentin Andrea Lindholz:</name>
+                <p klasse="J_1">So, dann startet der Morgen gleich noch mit einer Zwischenintervention der Kollegin.</p>
+            </rede>
+            <rede id="ID219400200">
+                <p klasse="redner"><a id="r2" /><redner id="11005505"><name><vorname>Cansin</vorname><nachname>Köktürk</nachname><fraktion>Die Linke</fraktion></name></redner>Cansin Köktürk (Die Linke):</p>
+                <p klasse="J_1">Sie können ruhig meinen Namen sagen.</p>
+                <p klasse="J">Frau Bas, wie Sie wissen, komme ich aus der sozialen Arbeit, und deshalb bin ich es gewohnt, nach Lösungen zu suchen und auch danach zu handeln. Deswegen gebe ich mir auch dieses Parlament.</p>
+                <p klasse="J">Sie haben jetzt eine Reihe von Dingen aufgezählt, aber mir ist noch nicht ganz klar geworden, welches Problem Sie konkret lösen wollen. Um ehrlich zu sein: Ich bin jetzt seit einem Jahr hier im Bundestag, und ich bin wirklich fassungslos darüber, wie dreist Sie diese Sozialpolitik den Menschen draußen verkaufen, wie Sie sich hier als die Zivilisierten geben und versuchen, die Menschen da draußen zu belehren. Die Bürger/-innen haben ein Recht auf Transparenz und vor allem auf soziale Sicherheit.</p>
+                <p klasse="J">Deswegen frage ich Sie: Welches Problem lösen Sie konkret, und wie soll dieses Geld konkret die soziale Sicherheit gewährleisten? Vielleicht haben Sie in den letzten Tagen zufällig mitbekommen, was es für dieses Land bedeuten kann, wenn die Menschen sich nicht sozial sicher fühlen. Deswegen frage ich Sie jetzt, nach einem Jahr, für das nächste Jahr: Was ändert sich? Was ändert sich konkret im Leben der Menschen? Die Menschen leben von der Hand in den Mund. Ich habe von Ihnen keine Antworten auf diese Frage erhalten.</p>
+                <kommentar>(Beifall bei der Linken)</kommentar>
+            </rede>
+            <rede id="ID219401000">
+                <p klasse="redner"><a id="r10" /><redner id="11004004"><name><vorname>Peter</vorname><nachname>Aumer</nachname><fraktion>CDU/CSU</fraktion></name></redner>Peter Aumer (CDU/CSU):</p>
+                <p klasse="J_1">Sehr geehrte Frau Präsidentin! Frau Bundesministerin! Liebe Kolleginnen und Kollegen! Der Einzelplan 11 – wir haben es heute des Öfteren schon gehört – umfasst im kommenden Jahr 201,5 Milliarden Euro. Damit bleibt der Haushalt für Arbeit und Soziales der größte Einzelplan des Bundeshaushalts.</p>
+                <p klasse="J">Entscheidend für mich ist aber der Blick nach vorne. Die Finanzprognose bis 2030 gibt uns mit auf den Weg, dass 30 Milliarden Euro mehr in diesen Haushalt fließen müssen, damit wir die Dinge, die wir beschlossen haben, auch finanzieren können. Und das, meine sehr geehrten Damen und Herren, ist aus unserer Sicht nicht der richtige Weg. Und es widerspricht genau dem, was die Linken sagen, diesem Mantra, das sie vor sich her tragen: Mehr Geld bedeute automatisch mehr soziale Sicherheit. – Diese Gleichung funktioniert nicht.</p>
+                <kommentar>(Beifall bei der CDU/CSU – Zuruf der Abg. Tamara Mazzi [Die Linke])</kommentar>
+                <p klasse="O">Das merken Sie ja an Ihren eigenen Reden, meine sehr geehrten Damen und Herren.</p>
+                <p klasse="J">Vielleicht noch kurz ein Satz zu links und rechts.</p>
+                <kommentar>(Zuruf der Abg. Tamara Mazzi [Die Linke])</kommentar>
+                <p klasse="O">– Egal in welcher Reihenfolge; bei manchen Dingen gleichen Sie sich relativ stark.</p>
+                <kommentar>(Cansin Köktürk [Die Linke]: Was erzählen Sie für einen Unsinn! Glauben Sie echt selber nicht! – Zuruf der Abg. Tamara Mazzi [Die Linke] – Gegenruf des Abg. Kai Whittaker [CDU/CSU])</kommentar>
+                <p klasse="J">Ich habe viele Reden in dieser Woche mitverfolgt. Wenn man Freiheit und Sicherheit gegen soziale Sicherheit ausspielt, meine sehr geehrten Damen und Herren, dann zeigen Sie damit, dass Sie in einem anderen Land als ich leben.</p>
+                <kommentar>(Beifall bei der CDU/CSU sowie bei Abgeordneten der SPD)</kommentar>
+                <p klasse="O">Die Bürgerinnen und Bürger meines Wahlkreises wollen vor allem Sicherheit, wollen Freiheit und natürlich auch soziale Sicherheit. Und unser Auftrag ist, alles gemeinsam zu sehen.</p>
+                <kommentar>(Beifall bei Abgeordneten der CDU/CSU] – Ulrike Schielke-Ziesing [AfD]: Deswegen wählen sie uns jetzt!)</kommentar>
+                <p klasse="O">– Deswegen wählen sie Sie vielleicht. Aber Frau Schielke-Ziesing, Sie sollten auch mal sagen, was Sie eigentlich wollen.</p>
+                <kommentar>(Zurufe von der AfD)</kommentar>
+                <p klasse="O">Ihre Rede war ja sehr spannend, aber von Ihnen kam kein einziger Vorschlag, wie Sie den Sozialstaat reformieren wollen.</p>
+                <kommentar>(Beifall bei der CDU/CSU und der SPD)</kommentar>
+                <p klasse="O">Das, meine sehr geehrten Damen und Herren, ist unser Auftrag. Deswegen haben uns die Bürger bei der letzten Bundestagswahl ihr Vertrauen geschenkt, und wir werden dieses Vertrauen auch rechtfertigen. Das heißt aber auch, dass wir Maßnahmen einleiten müssen, und wir sind dabei.</p>
+                <p klasse="J">Dieser Bundeshaushalt sagt für uns vor allem eins: Wir brauchen Reformen, um die soziale Sicherheit unseres Landes langfristig stabilisieren zu können. – Wir haben uns auf den Weg gemacht: Wir haben eine Sozialstaatskommission auf den Weg gebracht. Wir haben eine Rentenkommission auf den Weg gebracht. Wir setzen es um.</p>
+                <kommentar>(Ulrike Schielke-Ziesing [AfD]: Sie können es jetzt doch nicht umsetzen! – Zuruf der Abg. Tamara Mazzi [Die Linke])</kommentar>
+                <p klasse="O">– Sie schimpfen dagegen. Sie halten uns Dinge vor. Machen Sie bessere Vorschläge, dann können wir gern darüber diskutieren. Wir sind offen für das Beste.</p>
+                <kommentar>(Dr. Alice Weidel [AfD]: Haben wir doch gemacht! Regelmäßig!)</kommentar>
+                <p klasse="O">– Na ja, Frau Weidel, Ihre Vorschläge am Mittwoch</p>
+                <kommentar>(Tino Chrupalla [AfD]: War doch gut! Welche hatte der Kanzler gehabt?)</kommentar>
+                <p klasse="O">haben wirklich keine Antwort auf die Frage geliefert: Wie wollen wir unseren Sozialstaat reformieren?</p>
+                <kommentar>(Beifall bei der CDU/CSU)</kommentar>
+                <p klasse="O">Ich habe keinen Vorschlag gehört, außer den, dass wir die Menschen wieder nach Hause schicken müssen. Meine sehr geehrten Damen und Herren, das ist nicht der richtige Ansatz, zumindest müsste gelten, dass man den Menschen, die Hilfe in unserem Land brauchen, auch Hilfe gewährt.</p>
+                <p klasse="J">Und wenn man mal ganz genau schaut: Wir können beispielsweise unseren Arbeitsmarkt nicht mit mehr Geld retten. Der Aufwuchs bei der Bundesagentur für Arbeit – 5,2 Milliarden Euro mehr Darlehen – bedeutet vor allem eines: Wir müssen unseren Arbeitsmarkt in Ordnung bringen. – Das können wir mit Geld nicht lösen.</p>
+                <kommentar>(Beifall bei der CDU/CSU)</kommentar>
+                <p klasse="O">Deswegen müssen wir schauen, wie man den Arbeitsmarkt nach vorne bringt.</p>
+                <p klasse="J">Gerade im Sozialbereich, Frau Ministerin, müssen wir schauen, wie wir besser vermitteln und aktivieren können, wie wir Menschen stärker in Arbeit bringen können, wie Qualifizierung stärker dorthin führen kann, dass die Menschen auch wieder arbeiten können.</p>
+                <kommentar>(Zuruf von der Linken)</kommentar>
+                <p klasse="O">Das ist ein ganz wesentlicher Punkt. Für uns ist es nicht wichtig, wie viele Menschen im Jobcenter betreut werden, sondern wie viele Menschen vom Jobcenter tatsächlich in Arbeit gebracht werden, meine sehr geehrten Damen und Herren.</p>
+                <kommentar>(Beifall bei der CDU/CSU sowie des Abg. Dr. Matthias Miersch [SPD])</kommentar>
+                <p klasse="J">Wir haben einen klaren Grundsatz in der Sozialpolitik; das ist auch der Kern der sozialen Marktwirtschaft: Wer Unterstützung braucht, bekommt Unterstützung. Wer arbeiten kann, bei dem muss der Weg in Arbeit auch im Mittelpunkt stehen.</p>
+                <kommentar>(Beifall bei der CDU/CSU sowie des Abg. Dr. Matthias Miersch [SPD])</kommentar>
+                <p klasse="O">Dafür, meine sehr geehrten Damen und Herren, liebe Kolleginnen und Kollegen, brauchen wir gute Vermittlung, passende Qualifizierung und klare Mitwirkungspflichten. Man kann das Fördern und Fordern auch verächtlich sehen; aber das ist der Kern unseres Zusammenhalts, unseres Miteinanders. Deswegen, meine sehr geehrten Damen und Herren, helfen Sie mit!</p>
+                <p klasse="J">Ein ganz wesentlicher Punkt im Bericht der Sozialstaatskommission ist beispielsweise, dass wir uns mit den Transferentzugsraten auseinandersetzen. Und ich glaube, Sie müssen mir recht geben: Es kann nicht sein, dass Menschen, die mehr arbeiten, –</p>
+                <name>Vizepräsidentin Andrea Lindholz:</name>
+                <p klasse="J_1">Herr Kollege.</p>
+                <p klasse="redner"><redner id="11004004"><name><vorname>Peter</vorname><nachname>Aumer</nachname><fraktion>CDU/CSU</fraktion></name></redner>Peter Aumer (CDU/CSU):</p>
+                <p klasse="J_1">– am Ende weniger Leistungen bekommen. Deswegen wollen wir bei den Anreizen sehr stark nachschärfen.</p>
+                <kommentar>(Beifall bei der CDU/CSU sowie der Abg. Dagmar Schmidt [Wetzlar] [SPD])</kommentar>
+                <name>Vizepräsidentin Andrea Lindholz:</name>
+                <p klasse="J_1">Herr Kollege, es gibt eine Zwischenfrage aus der Fraktion Die Linke.</p>
+                <p klasse="redner"><redner id="11004004"><name><vorname>Peter</vorname><nachname>Aumer</nachname><fraktion>CDU/CSU</fraktion></name></redner>Peter Aumer (CDU/CSU):</p>
+                <p klasse="J_1">Herr Meiser, wir sind uns ja schon bekannt von Zwischenfragen.</p>
+                <name>Vizepräsidentin Andrea Lindholz:</name>
+                <p klasse="J_1">Also schon im Austausch. – Herr Meiser, bitte.</p>
+                <p klasse="redner"><redner id="11004819"><name><vorname>Pascal</vorname><nachname>Meiser</nachname><fraktion>Die Linke</fraktion></name></redner>Pascal Meiser (Die Linke):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Vielen Dank, Herr Aumer, dass Sie die Zwischenfrage zulassen. – Sie haben ja uns als Linke direkt angesprochen und in den Raum gestellt, dass wir Freiheit und Sicherheit gegeneinander ausspielen würden. Ich glaube, nichts liegt uns ferner. Aus unserer Sicht basiert Freiheit auf Sicherheit, aber auch auf sozialer Sicherheit.</p>
+                <kommentar>(Johannes Winkel [CDU/CSU]: Dann verurteilen Sie doch mal den Angriffskrieg! – Gegenruf der Abg. Ulrike Schielke-Ziesing [AfD]: Welchen denn jetzt? – Zuruf des Abg. Tino Chrupalla [AfD])</kommentar>
+                <p klasse="J">Deswegen würde ich Sie an dieser Stelle fragen: Wie soll den Leuten, die hart arbeiten und jetzt künftig mit sachgrundlosen Befristungen konfrontiert werden, den Leuten, die 45 Jahre gearbeitet haben und künftig eben nicht als langjährig Versicherte vorzeitig in Rente gehen können, denjenigen, die nach Ihren Vorstellungen – die Ihre Regierung diskutiert – künftig, wenn sie ein Pflegefall werden, noch höhere Eigenanteile zahlen sollen, das Gefühl vermittelt werden, dass sie nicht nur in Freiheit, sondern auch in Sicherheit leben?</p>
+                <p klasse="J">Mein Eindruck von der Stimmung in dieser Gesellschaft ist, dass die Leute das Gefühl haben: Sie nehmen ihnen die Sicherheit, gerade den Leuten, die das ganze Leben hart arbeiten. – Warum reagieren Sie darauf nicht? Warum sagen Sie nicht: „Da muss endlich ein Kurswechsel her; wir schaffen wirklich soziale Sicherheit für diejenigen, die hart arbeiten“? Es wäre mein Wunsch, dass Sie das tun – für dieses Land. Freiheit in Sicherheit. Warum tun Sie das nicht und sagen stattdessen auch jetzt nach den Wahlen: „Weiter so in den Abgrund!“? Ich verstehe es nicht.</p>
+                <kommentar>(Beifall bei der Linken – Johannes Winkel [CDU/CSU]: Ein dünner Vortrag!)</kommentar>
+                <p klasse="redner"><redner id="11004004"><name><vorname>Peter</vorname><nachname>Aumer</nachname><fraktion>CDU/CSU</fraktion></name></redner>Peter Aumer (CDU/CSU):</p>
+                <p klasse="J_1">Herr Meiser, vielen herzlichen Dank. – Ich habe erstens nicht irgendetwas infrage gestellt oder behauptet, sondern ich habe einfach zitiert, was Ihre Kolleginnen und Kollegen vorher gesagt haben. Es ist tatsächlich das Auseinanderdriften von Freiheit, Sicherheit und sozialer Sicherheit, das Sie hier in den Raum stellen.</p>
+                <kommentar>(Lachen bei Abgeordneten der AfD – Zuruf von der Linken)</kommentar>
+                <p klasse="O">Wir versuchen beides. Wir müssen schauen, dass die Menschen in unserem Land in Sicherheit und Freiheit leben können.</p>
+                <kommentar>(Cansin Köktürk [Die Linke]: Wie? Was tun Sie konkret? Tamara Mazzi [Die Linke]: Was ist mit sozialer Sicherheit? – Gegenruf des Abg. Marc Biadacz [CDU/CSU]: Hören Sie doch mal zu!)</kommentar>
+                <p klasse="O">– „Wie?“ Der Haushalt ist das beste Zeichen dafür.</p>
+                <name>Vizepräsidentin Andrea Lindholz:</name>
+                <p klasse="J_1">Stopp! Halt, halt! Wir haben einen Fragesteller jetzt.</p>
+                <p klasse="redner"><redner id="11004004"><name><vorname>Peter</vorname><nachname>Aumer</nachname><fraktion>CDU/CSU</fraktion></name></redner>Peter Aumer (CDU/CSU):</p>
+                <p klasse="J_1">Der Haushalt ist das beste Zeichen dafür. Sicherheit bedeutet äußere Sicherheit, innere Sicherheit. Wir investieren in innere und äußere Sicherheit,</p>
+                <kommentar>(Dr. Alice Weidel [AfD]: Das Präsidium hilft den eigenen Kollegen wieder, wie es üblich ist!)</kommentar>
+                <p klasse="O">meine sehr geehrten Damen und Herren, und wir investieren in soziale Sicherheit. Soziale Sicherheit heißt bei unserem Sozialstaat – hätten Sie halt aufgepasst! –, dass wir vor allem für die Menschen Arbeitsplätze schaffen,</p>
+                <kommentar>(Beifall bei der CDU/CSU – Zurufe von der Linken)</kommentar>
+                <p klasse="O">dass die Menschen, die arbeiten können, arbeiten, und dass die, die nicht arbeiten können, sich auf unseren Sozialstaat verlassen können. Herr Meiser, das ist das Grundprinzip unserer sozialen Marktwirtschaft; das hat unser Land großgemacht. Da können Sie vielleicht mal mithelfen, statt zu versuchen, alles nur mit Geld zu lösen; denn das funktioniert nicht, vor allem nicht mit mehr Schulden.</p>
+                <kommentar>(Beifall bei der CDU/CSU sowie des Abg. Dr. Matthias Miersch [SPD])</kommentar>
+                <p klasse="J">Ich möchte zum Schluss neben dem sozialpolitischen Part auch ganz kurz auf das Thema Arbeit kommen. Meine sehr geehrten Damen und Herren, der Arbeitsmarkt braucht die nächsten Wochen und Monate ganz wesentlich unser Augenmerk. Wir müssen schauen, wie wir tatsächlich mehr Menschen in Arbeit halten können. Wir müssen an das Arbeitsrecht ran. Wir müssen uns auch endlich mit den Themen „Flexibilisierung der Arbeitszeit“ und „Arbeitsrecht“ auseinandersetzen. Wir müssen endlich eine Lösung für die Selbstständigen in unserem Land finden, damit sie Rechtssicherheit beim Thema Statusfeststellung bekommen. Und wir müssen unnötige Bürokratie abbauen; das ist ein ganz wesentlicher Punkt, auf den wir in unserer Arbeitsmarkt- und Sozialpolitik den Schwerpunkt setzen müssen.</p>
+                <p klasse="J">Ich habe ein Zitat von Ludwig Erhard gefunden; das ist für die Linken jetzt sicherlich ein ganz schwieriger Part.</p>
+                <kommentar>(Heiterkeit bei Abgeordneten der CDU/CSU – Zuruf der Abg. Dagmar Schmidt [Wetzlar] [SPD])</kommentar>
+                <p klasse="O">Ludwig Erhard hat einmal gesagt: „Je freier die Wirtschaft, umso sozialer ist sie auch.“ Meine sehr geehrten Damen und Herren, dieser Gedanke ist ein ganz wesentlicher für unsere Handlungsweise in den nächsten Monaten. Wir brauchen eine Marktwirtschaft, die sich in der Welt konkurrenzfähig präsentieren kann. Wir brauchen deswegen eine Arbeitsmarktpolitik, bei der die Menschen merken, dass ihre Sicherheit für uns im Fokus steht. Deswegen müssen wir Strukturen verändern, deswegen müssen wir Fehlanreize abbauen und auch Bürokratie.</p>
+                <p klasse="J">Meine sehr geehrten Damen und Herren, für unsere Arbeitsmarkt- und Sozialpolitik gilt: Sicherheit geben, wo sie gebraucht wird. Eigenverantwortung stärken, wo sie möglich ist. Und Arbeit ermöglichen, wo sie heute noch zu oft erschwert wird.</p>
+                <p klasse="J">Vielen herzlichen Dank.</p>
+                <kommentar>(Beifall bei der CDU/CSU sowie bei Abgeordneten der SPD)</kommentar>
+                <name>Vizepräsidentin Andrea Lindholz:</name>
+                <p klasse="J_1">Der nächste Redner in dieser Debatte ist für die Fraktion Bündnis 90/Die Grünen Dr. Armin Grau.</p>
+                <kommentar>(Beifall beim BÜNDNIS 90/DIE GRÜNEN)</kommentar>
+            </rede>
+            <name>Vizepräsidentin Andrea Lindholz:</name>
+            <p klasse="J_1">Bevor ich jetzt den nächsten Redner aufrufe, ein Hinweis an die Fraktionen, die sich im Ältestenrat befinden. Nach dieser Rede stelle ich mir die Frage, ob die Diskussionen, die wir gestern geführt haben, wirklich zu irgendetwas führen. Dann können wir sie uns nämlich im Ältestenrat sparen, wenn das hinterher hier im Plenum überhaupt gar keine Rolle mehr spielt.</p>
+            <kommentar>(Beifall bei der CDU/CSU)</kommentar>
+            <p klasse="J">Für die Unionsfraktion ist jetzt die nächste Rednerin in dieser Debatte Sandra Carstensen.</p>
+            <kommentar>(Beifall bei der CDU/CSU und der SPD)</kommentar>
+            <name>Vizepräsidentin Andrea Lindholz:</name>
+            <p klasse="J_1">Weitere Wortmeldungen zu diesem Einzelplan liegen nicht vor.</p>
+        </tagesordnungspunkt>
+        
+<sitzungsende sitzung-ende-uhrzeit="14:08" />
+    
+</sitzungsverlauf>
+</dbtplenarprotokoll>

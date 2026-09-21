@@ -1,0 +1,1537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE DOCUMENT SYSTEM "MDB_STAMMDATEN.DTD">
+<!--Erstellt am: 29.04.2026 10:02:26--><DOCUMENT>
+  <VERSION>1777449783</VERSION>
+  <!-- EXCERPT for tests: MDB_STAMMDATEN.XML (Deutscher Bundestag), reduced to 11 records. Source: https://www.bundestag.de/resource/blob/472878/MdB-Stammdaten.zip -->
+<MDB>
+    <ID>11000125</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Becker</NACHNAME>
+        <VORNAME>Curt</VORNAME>
+        <ORTSZUSATZ>(Mönchengladbach)</ORTSZUSATZ>
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL>Dr.</ANREDE_TITEL>
+        <AKAD_TITEL>Dr.</AKAD_TITEL>
+        <HISTORIE_VON>15.10.1957</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>07.08.1905</GEBURTSDATUM>
+      <GEBURTSORT>Mönchengladbach</GEBURTSORT>
+      <GEBURTSLAND />
+      <STERBEDATUM>27.02.1987</STERBEDATUM>
+      <GESCHLECHT>männlich</GESCHLECHT>
+      <FAMILIENSTAND>verheiratet, 3 Kinder</FAMILIENSTAND>
+      <RELIGION>katholisch</RELIGION>
+      <BERUF>Fabrikant</BERUF>
+      <PARTEI_KURZ>CDU</PARTEI_KURZ>
+      <VITA_KURZ />
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>7</WP>
+        <MDBWP_VON>13.12.1972</MDBWP_VON>
+        <MDBWP_BIS>13.12.1976</MDBWP_BIS>
+        <WKR_NUMMER>79</WKR_NUMMER>
+        <WKR_NAME />
+        <WKR_LAND>NRW</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>13.12.1972</MDBINS_VON>
+            <MDBINS_BIS>13.12.1976</MDBINS_BIS>
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>3</WP>
+        <MDBWP_VON>15.10.1957</MDBWP_VON>
+        <MDBWP_BIS>15.10.1961</MDBWP_BIS>
+        <WKR_NUMMER />
+        <WKR_NAME />
+        <WKR_LAND />
+        <LISTE>NRW</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON />
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>4</WP>
+        <MDBWP_VON>11.06.1964</MDBWP_VON>
+        <MDBWP_BIS>17.10.1965</MDBWP_BIS>
+        <WKR_NUMMER />
+        <WKR_NAME />
+        <WKR_LAND />
+        <LISTE>NRW</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON />
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>6</WP>
+        <MDBWP_VON>20.10.1969</MDBWP_VON>
+        <MDBWP_BIS>22.09.1972</MDBWP_BIS>
+        <WKR_NUMMER>79</WKR_NUMMER>
+        <WKR_NAME />
+        <WKR_LAND>NRW</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON />
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11003589</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Mayer</NACHNAME>
+        <VORNAME>Stephan</VORNAME>
+        <ORTSZUSATZ>(Altötting)</ORTSZUSATZ>
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>17.10.2002</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>15.12.1973</GEBURTSDATUM>
+      <GEBURTSORT>Burghausen</GEBURTSORT>
+      <GEBURTSLAND>Deutschland</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>männlich</GESCHLECHT>
+      <FAMILIENSTAND />
+      <RELIGION>römisch-katholisch</RELIGION>
+      <BERUF>Rechtsanwalt</BERUF>
+      <PARTEI_KURZ>CSU</PARTEI_KURZ>
+      <VITA_KURZ>1993 Abitur am König-Karlmann-Gymnasium Altötting. 1993 bis 1997 Studium der Rechtswissenschaften an der Ludwig-Maximilians-Universität München, 1997 erstes juristisches Staatsexamen, 2000 zweites juristisches Staatsexamen. Seit September 2000 Rechtsanwalt. 1994 bis 2003 Kreisvorsitzender der Jungen Union, seit 1996 Stadtrat in Neuötting und Kreisrat im Landkreis Altötting, 1997 bis 2019 stellvertretender Vorsitzender des CSU Kreisverbandes Altötting, seit 1997 Mitglied des CSU-Bezirksvorstandes Oberbayern, seit 2002 stellvertretender Fraktionsvorsitzender der CSU-Kreistagsfraktion Altötting; 1998 bis 2002 Jugendreferent der Stadt Neuötting, seit 2019 Vorsitzender des CSU-Kreisverbandes Altötting. Seit 2006 stellvertretender Landesvorsitzender der Union der Vertriebenen (UdV), seit 2008 Präsidiumsmitglied des Bundes der Vertriebenen (BdV) sowie seit 2016 in der Funktion als Vizepräsident tätig. 2007 bis 2010 Vorsitzender der THW Landesvereinigung Bayern e.V., 2010 bis 2018 Präsident der THW-Bundesvereinigung e.V., seit 2010 Vorstandsvorsitzender der Stiftung Technisches Hilfswerk. Mitglied des Deutschen Bundestages seit 2002. März 2018 bis Ende der 19. Wahlperiode in Position als Parlamentarischer Staatssekretär beim Bundesminister des Innern, für Bau und Heimat tätig.</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>15</WP>
+        <MDBWP_VON>17.10.2002</MDBWP_VON>
+        <MDBWP_BIS>18.10.2005</MDBWP_BIS>
+        <WKR_NUMMER>215</WKR_NUMMER>
+        <WKR_NAME>Altötting</WKR_NAME>
+        <WKR_LAND>BAY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>17.10.2002</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>16</WP>
+        <MDBWP_VON>18.10.2005</MDBWP_VON>
+        <MDBWP_BIS>27.10.2009</MDBWP_BIS>
+        <WKR_NUMMER>214</WKR_NUMMER>
+        <WKR_NAME>Altötting</WKR_NAME>
+        <WKR_LAND>BAY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>18.10.2005</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>17</WP>
+        <MDBWP_VON>27.10.2009</MDBWP_VON>
+        <MDBWP_BIS>22.10.2013</MDBWP_BIS>
+        <WKR_NUMMER>213</WKR_NUMMER>
+        <WKR_NAME>Altötting</WKR_NAME>
+        <WKR_LAND>BAY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>27.10.2009</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>18</WP>
+        <MDBWP_VON>22.10.2013</MDBWP_VON>
+        <MDBWP_BIS>24.10.2017</MDBWP_BIS>
+        <WKR_NUMMER>213</WKR_NUMMER>
+        <WKR_NAME>Altötting</WKR_NAME>
+        <WKR_LAND>BY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>22.10.2013</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>19</WP>
+        <MDBWP_VON>24.10.2017</MDBWP_VON>
+        <MDBWP_BIS>26.10.2021</MDBWP_BIS>
+        <WKR_NUMMER>212</WKR_NUMMER>
+        <WKR_NAME>Altötting</WKR_NAME>
+        <WKR_LAND>BY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>24.10.2017</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>20</WP>
+        <MDBWP_VON>26.10.2021</MDBWP_VON>
+        <MDBWP_BIS>25.03.2025</MDBWP_BIS>
+        <WKR_NUMMER>212</WKR_NUMMER>
+        <WKR_NAME>Altötting</WKR_NAME>
+        <WKR_LAND>BY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>26.10.2021</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>211</WKR_NUMMER>
+        <WKR_NAME>Altötting</WKR_NAME>
+        <WKR_LAND>BY</WKR_LAND>
+        <LISTE>BY</LISTE>
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Innenausschuss</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Sport und Ehrenamt</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Auswärtiger Ausschuss</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Wirtschaft und Energie</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Deutsche Delegation in der Parlamentarischen Versammlung der Union für den Mittelmeerraum</INS_LANG>
+            <MDBINS_VON>23.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>23.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder des Gemeinsamen parlamentarischen Kontrollausschusses von Europol</INS_LANG>
+            <MDBINS_VON>26.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>26.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder des Kuratoriums der Stiftung "Deutsches Historisches Museum"</INS_LANG>
+            <MDBINS_VON>08.07.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>06.11.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder des Kuratoriums der Stiftung "Deutsches Historisches Museum"</INS_LANG>
+            <MDBINS_VON>08.07.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>08.07.2025</FKTINS_VON>
+            <FKTINS_BIS>06.11.2025</FKTINS_BIS>
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Parlamentariergruppen</INSART_LANG>
+            <INS_LANG>Parlamentariergruppe Slowakei-Tschechien-Ungarn</INS_LANG>
+            <MDBINS_VON>06.08.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Vorsitzender</FKT_LANG>
+            <FKTINS_VON>06.08.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder im Beirat der Stiftung Datenschutz</INS_LANG>
+            <MDBINS_VON>15.09.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>15.09.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder des Stiftungsrates der "Stiftung Flucht, Vertreibung, Versöhnung"</INS_LANG>
+            <MDBINS_VON>18.09.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>18.09.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder im Akademiebeirat der Kulturakademie Tarabya in Istanbul</INS_LANG>
+            <MDBINS_VON>07.10.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>07.10.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Unterausschuss</INSART_LANG>
+            <INS_LANG>UA Auswärtige Kultur- und Bildungspolitik</INS_LANG>
+            <MDBINS_VON>14.10.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>14.10.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Haushaltsausschuss</INS_LANG>
+            <MDBINS_VON>23.02.2026</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>23.02.2026</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11004004</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Aumer</NACHNAME>
+        <VORNAME>Peter</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>27.10.2009</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>17.04.1976</GEBURTSDATUM>
+      <GEBURTSORT>Regensburg</GEBURTSORT>
+      <GEBURTSLAND>Deutschland</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>männlich</GESCHLECHT>
+      <FAMILIENSTAND />
+      <RELIGION>römisch-katholisch</RELIGION>
+      <BERUF />
+      <PARTEI_KURZ>CSU</PARTEI_KURZ>
+      <VITA_KURZ>Ausbildung zum Steuerfachgehilfen, Fachoberschule Regensburg; Studium der Betriebswirtschaftslehre, Fachhochschule Regensburg; berufsbegleitendes Masterstudium, Hochschule Weihenstephan mit den Abschlüssen Diplom-Betriebswirt (FH) und MBA. Berufliche Tätigkeit in der Steuerberatung und Wirtschaftsprüfung sowie bei einem Energieversorgungsunternehmen. Mitglied und ehrenamtliches Engagement in zahlreichen Vereinen in Stadt und Landkreis Regensburg. 1996 Eintritt in die CSU und Junge Union. 1998 bis 2009 Ortsvorsitzender Junge Union Regenstauf. 2000 bis 2011 Ortsvorsitzender CSU Ramspau. Seit 2011 CSU-Kreisvorsitzender Regensburg-Land. Seit 2009 Mitglied im CSU Bezirksvorstand Oberpfalz. 2002 bis 2014 und ab 2020 Marktgemeinderat in Regenstauf. 2008 bis 2010 3. Bürgermeister und Jugendbeauftragter Markt Regenstauf. Seit 2002 Kreisrat des Landkreises Regensburg, von 2013 bis 2017 als CSU-Fraktionsvorsitzender. Mitglied des Bundestages 2009 bis 2013 und seit 2017.</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>17</WP>
+        <MDBWP_VON>27.10.2009</MDBWP_VON>
+        <MDBWP_BIS>22.10.2013</MDBWP_BIS>
+        <WKR_NUMMER>233</WKR_NUMMER>
+        <WKR_NAME>Regensburg</WKR_NAME>
+        <WKR_LAND>BAY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>27.10.2009</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>19</WP>
+        <MDBWP_VON>24.10.2017</MDBWP_VON>
+        <MDBWP_BIS>26.10.2021</MDBWP_BIS>
+        <WKR_NUMMER>233</WKR_NUMMER>
+        <WKR_NAME>Regensburg</WKR_NAME>
+        <WKR_LAND>BY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>24.10.2017</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>20</WP>
+        <MDBWP_VON>26.10.2021</MDBWP_VON>
+        <MDBWP_BIS>25.03.2025</MDBWP_BIS>
+        <WKR_NUMMER>233</WKR_NUMMER>
+        <WKR_NAME>Regensburg</WKR_NAME>
+        <WKR_LAND>BY</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>26.10.2021</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>232</WKR_NUMMER>
+        <WKR_NAME>Regensburg</WKR_NAME>
+        <WKR_LAND>BY</WKR_LAND>
+        <LISTE>BY</LISTE>
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Arbeit und Soziales</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Haushaltsausschuss</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Deutscher Bundestag</INSART_LANG>
+            <INS_LANG>Kommission des ÄR für die Angelegenheiten von Mitarbeiterinnen und Mitarbeitern der Abgeordneten</INS_LANG>
+            <MDBINS_VON>03.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>03.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Unterausschuss</INSART_LANG>
+            <INS_LANG>Rechnungsprüfungsausschuss</INS_LANG>
+            <MDBINS_VON>06.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>06.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Unterausschuss</INSART_LANG>
+            <INS_LANG>Rechnungsprüfungsausschuss</INS_LANG>
+            <MDBINS_VON>06.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Obmann</FKT_LANG>
+            <FKTINS_VON>06.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Unterausschuss</INSART_LANG>
+            <INS_LANG>UA zu Fragen der Europäischen Union</INS_LANG>
+            <MDBINS_VON>11.07.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>11.07.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Gesundheit</INS_LANG>
+            <MDBINS_VON>11.11.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>11.11.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11004006</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Bas</NACHNAME>
+        <VORNAME>Bärbel</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>27.10.2009</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>03.05.1968</GEBURTSDATUM>
+      <GEBURTSORT>Walsum (jetzt Duisburg)</GEBURTSORT>
+      <GEBURTSLAND>Deutschland</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>weiblich</GESCHLECHT>
+      <FAMILIENSTAND>verwitwet</FAMILIENSTAND>
+      <RELIGION />
+      <BERUF>Personalmanagement-Ökonomin (VWA)</BERUF>
+      <PARTEI_KURZ>SPD</PARTEI_KURZ>
+      <VITA_KURZ>1984 Hauptschulabschluss mit Fachoberschulreife; 1985 bis 1987 Ausbildung zur Bürogehilfin bei der DVG Duisburg; 1987 bis 2001 Sachbearbeiterin bei der Duisburger Verkehrsgesellschaft (DVG) und später bei der Betriebskrankenkasse DVG; 1994 bis 1997 Ausbildung zur Sozialversicherungsfachangestellten; 2000 bis 2002 berufsbegleitende Fortbildung zur Krankenkassenbetriebswirtin; 2003 Erwerb der Ausbildereignung; 2002 bis 2006 stellvertretender Vorstand der Betriebskrankenkasse EVS; 2005 bis 2007 Abendstudium zur Personalmanagement-Ökonomin (VWA); 2007 bis 2009 Leiterin der Abteilung Personalservice bei der Betriebskrankenkasse BKK futur. 1986 bis 1988 Jugend- und Auszubildendenvertreterin bei der DVG; 1988 bis 1998 Mitglied des Betriebsrates und Arbeitnehmervertreterin im Aufsichtsrat der DVG. Seit Oktober 1988 Mitglied der SPD; 1997 bis 2018 Mitglied im Unterbezirksvorstand der Duisburger SPD; dessen stellvertretende Vorsitzende von 2006 bis 2018; 2004 bis 2018 Mitglied im Regionalvorstand der SPD-Niederrhein; 2009 bis 2018 Mitglied im Sprecherkreis der RuhrSPD; 2010 bis 2021 Vorsitzende des Landesparteirates der NRWSPD. 1994 bis 2002 Mitglied im Rat der Stadt Duisburg. Mitglied des Bundestages seit 2009; Mitglied des Gesundheitsausschusses von 2009 bis 2013 und 2016 bis 2019; 2013 bis 2019 Parlamentarische Geschäftsführerin der SPD-Bundestagsfraktion; 2019 bis 2021 stellvertretende Fraktionsvorsitzende; seit 2013 Mitglied des geschäftsführenden Fraktionsvorstandes der SPD-Bundestagsfraktion; 2011 bis 2019 Mitglied im Vorstand der NRW Landesgruppe der SPD-Bundestagsfraktion; 2014 bis 2022 Schatzmeisterin der Parlamentarischen Linke der SPD-Bundestagsfraktion. 2021 bis 2025 Präsidentin des Deutschen Bundestages. Aktuelle Mitgliedschaften: ver.di, SJD - Die Falken Duisburg, AWO Duisburg, Frauen helfen Frauen e. V., DRK-Kreisverband Duisburg e. V., Bürgerverein Neudorf, MSV Duisburg, AIDS-Hilfe Duisburg/Kreis Wesel e. V., zebrakids e. V., KG Rote Funken Duisburg e. V., Obdachlosenhilfe Duisburg e. V., Mitglied Präsidium im Förderverein Universität Duisburg-Essen e. V., Deutsche Welthungerhilfe e. V., Friedrich-Ebert-Stiftung e. V., Johannes-Rau-Gesellschaft e. V., Ehrenmitglied im Verein Hope's Angel Foundation e. V., Mitglied Kuratorium im SETASIGN4 e. V., Bundestags-Makkabäer e. V., seit Juli 2015 Mitglied im Aufsichtsrat der Hüttenwerke Krupp Mannesmann GmbH (Arbeitnehmerseite), Mitglied im Kuratorium für den Gustav-Heinemann-Bürgerpreis der SPD, Verein zur Förderung der Parlamentarischen Linken in der SPD-Bundestagsfraktion e. V. Ehemalige Mitgliedschaften: Von Oktober 2013 bis November 2021 Mitglied im Stiftungsrat der Stiftung "Humanitäre Hilfe für durch Blutprodukte HIV-infizierte Personen", von Januar bis November 2021 Mitglied im Senat der Fraunhofer Gesellschaft, von Oktober 2021 bis März 2025 Vorsitzende des Kuratoriums der "Stiftung Denkmal für die ermordeten Juden Europas". Auszeichnungen: Trägerin des Großen Verdienstordens der Bundesrepublik Deutschland in der Stufe des Großkreuzes.</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>17</WP>
+        <MDBWP_VON>27.10.2009</MDBWP_VON>
+        <MDBWP_BIS>22.10.2013</MDBWP_BIS>
+        <WKR_NUMMER>116</WKR_NUMMER>
+        <WKR_NAME>Duisburg I</WKR_NAME>
+        <WKR_LAND>NRW</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Sozialdemokratischen Partei Deutschlands</INS_LANG>
+            <MDBINS_VON>27.10.2009</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>18</WP>
+        <MDBWP_VON>22.10.2013</MDBWP_VON>
+        <MDBWP_BIS>24.10.2017</MDBWP_BIS>
+        <WKR_NUMMER>115</WKR_NUMMER>
+        <WKR_NAME>Duisburg I</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Sozialdemokratischen Partei Deutschlands</INS_LANG>
+            <MDBINS_VON>22.10.2013</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Parlamentarische Geschäftsführerin</FKT_LANG>
+            <FKTINS_VON>19.12.2013</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>19</WP>
+        <MDBWP_VON>24.10.2017</MDBWP_VON>
+        <MDBWP_BIS>26.10.2021</MDBWP_BIS>
+        <WKR_NUMMER>115</WKR_NUMMER>
+        <WKR_NAME>Duisburg I</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Sozialdemokratischen Partei Deutschlands</INS_LANG>
+            <MDBINS_VON>24.10.2017</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretende Vorsitzende</FKT_LANG>
+            <FKTINS_VON>24.09.2019</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Sozialdemokratischen Partei Deutschlands</INS_LANG>
+            <MDBINS_VON>24.10.2017</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Parlamentarische Geschäftsführerin</FKT_LANG>
+            <FKTINS_VON>05.12.2017</FKTINS_VON>
+            <FKTINS_BIS>24.09.2019</FKTINS_BIS>
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>20</WP>
+        <MDBWP_VON>26.10.2021</MDBWP_VON>
+        <MDBWP_BIS>25.03.2025</MDBWP_BIS>
+        <WKR_NUMMER>115</WKR_NUMMER>
+        <WKR_NAME>Duisburg I</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE />
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Sozialdemokratischen Partei Deutschlands</INS_LANG>
+            <MDBINS_VON>26.10.2021</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>114</WKR_NUMMER>
+        <WKR_NAME>Duisburg I</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE>NW</LISTE>
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Sozialdemokratischen Partei Deutschlands</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ministerium</INSART_LANG>
+            <INS_LANG>Bundesministerium für Arbeit und Soziales</INS_LANG>
+            <MDBINS_VON>06.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Bundesministerin</FKT_LANG>
+            <FKTINS_VON>06.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11004819</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Meiser</NACHNAME>
+        <VORNAME>Pascal</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>24.10.2017</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>07.03.1975</GEBURTSDATUM>
+      <GEBURTSORT>Saarbrücken</GEBURTSORT>
+      <GEBURTSLAND>Deutschland</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>männlich</GESCHLECHT>
+      <FAMILIENSTAND />
+      <RELIGION />
+      <BERUF>Dipl.-Politikwissenschaftler</BERUF>
+      <PARTEI_KURZ>DIE LINKE.</PARTEI_KURZ>
+      <VITA_KURZ>1981 bis 1985 Grundschule Körprich; 1985 bis 1994 Johannes-Kepler Gymnasium Lebach, Abschluss: Abitur; 1994 bis 1995 Zivildienst, Caritas-Kinderhort in der Landesaufnahmestelle für Vertriebene und Flüchtlinge Lebach; 1995 bis 2005 Studium der Politikwissenschaft, Publizistik und Psychologie an der Johannes-Gutenberg-Universität Mainz, der University of Leeds und der Freien Universität Berlin, Abschluss: Diplom-Politikwissenschaftler. 2005 bis 2006 Ausbildung zum Gewerkschaftssekretär, IG Metall; 2006 bis 2007 Wissenschaftlicher Mitarbeiter, Deutscher Bundestag; 2007 bis 2010 Mitarbeiter für den Parteiaufbau West, Bundesgeschäftsstelle Die Linke; 2010 bis 2017 Leiter des Bereichs Kampagnen und Parteientwicklung, Bundesgeschäftsstelle Die Linke; 2024 bis 2025 Beauftragter für die Beziehungen zu Verbänden und Nichtregierungsorganisationen, Bundesgeschäftsstelle Die Linke. Die Linke; Berliner Mieterverein; ver.di; IG Metall; Volkssolidarität; Förderverein PRO ASYL; Vereinigung der Verfolgten des Naziregimes - Bund der Antifaschistinnen und Antifaschisten; Förderkreis demokratischer Volks- und Hochschulbildung; Helle Panke – Rosa-Luxemburg Stiftung Berlin; FSV Hansa 07; Verein für die Geschichte Friedrichshain-Kreuzberg ; Nachbarschaftshaus für interkulturelle Begegnung – ORA 34; Verein der Bundestagsfraktion Die Linke; Deutsche Parlamentarische Gesellschaft. 2017 bis 2024 Mitglied des Deutschen Bundestages; seit 2025 erneut Mitglied des Deutschen Bundestages.</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>19</WP>
+        <MDBWP_VON>24.10.2017</MDBWP_VON>
+        <MDBWP_BIS>26.10.2021</MDBWP_BIS>
+        <WKR_NUMMER>83</WKR_NUMMER>
+        <WKR_NAME>Berlin-Friedrichshain-Kreuzberg – Prenzlauer Berg Ost</WKR_NAME>
+        <WKR_LAND>BE</WKR_LAND>
+        <LISTE>BE</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion DIE LINKE.</INS_LANG>
+            <MDBINS_VON>24.10.2017</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>20</WP>
+        <MDBWP_VON>26.10.2021</MDBWP_VON>
+        <MDBWP_BIS>04.03.2024</MDBWP_BIS>
+        <WKR_NUMMER>83</WKR_NUMMER>
+        <WKR_NAME>Berlin-Friedrichshain-Kreuzberg - Prenzlauer Berg Ost</WKR_NAME>
+        <WKR_LAND>BE</WKR_LAND>
+        <LISTE>BE</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion DIE LINKE.</INS_LANG>
+            <MDBINS_VON>26.10.2021</MDBINS_VON>
+            <MDBINS_BIS>05.12.2023</MDBINS_BIS>
+            <FKT_LANG>Parlamentarischer Geschäftsführer</FKT_LANG>
+            <FKTINS_VON>08.11.2023</FKTINS_VON>
+            <FKTINS_BIS>05.12.2023</FKTINS_BIS>
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktionslos</INS_LANG>
+            <MDBINS_VON>06.12.2023</MDBINS_VON>
+            <MDBINS_BIS>02.02.2024</MDBINS_BIS>
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Gruppe Die Linke</INS_LANG>
+            <MDBINS_VON>02.02.2024</MDBINS_VON>
+            <MDBINS_BIS>04.03.2024</MDBINS_BIS>
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>82</WKR_NUMMER>
+        <WKR_NAME>Berlin-Friedrichshain-Kreuzberg – Prenzlauer Berg Ost</WKR_NAME>
+        <WKR_LAND>BE</WKR_LAND>
+        <LISTE>BE</LISTE>
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion Die Linke</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Parlamentarischer Geschäftsführer</FKT_LANG>
+            <FKTINS_VON>13.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Arbeit und Soziales</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Wohnen, Stadtentwicklung, Bauwesen und Kommunen</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11005032</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Breilmann</NACHNAME>
+        <VORNAME>Michael</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>26.10.2021</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>10.10.1983</GEBURTSDATUM>
+      <GEBURTSORT>Herne</GEBURTSORT>
+      <GEBURTSLAND />
+      <STERBEDATUM />
+      <GESCHLECHT>männlich</GESCHLECHT>
+      <FAMILIENSTAND>verheiratet</FAMILIENSTAND>
+      <RELIGION>katholisch</RELIGION>
+      <BERUF>Volljurist</BERUF>
+      <PARTEI_KURZ>CDU</PARTEI_KURZ>
+      <VITA_KURZ />
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>20</WP>
+        <MDBWP_VON>26.10.2021</MDBWP_VON>
+        <MDBWP_BIS>25.03.2025</MDBWP_BIS>
+        <WKR_NUMMER>121</WKR_NUMMER>
+        <WKR_NAME>Recklinghausen I</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE>NW</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>26.10.2021</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11005198</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Santos Firnhaber</NACHNAME>
+        <VORNAME>Catarina</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX>dos</PRAEFIX>
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>26.10.2021</HISTORIE_VON>
+        <HISTORIE_BIS>02.09.2022</HISTORIE_BIS>
+      </NAME>
+      <NAME>
+        <NACHNAME>Santos-Wintz</NACHNAME>
+        <VORNAME>Catarina</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX>dos</PRAEFIX>
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>03.09.2022</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>08.07.1994</GEBURTSDATUM>
+      <GEBURTSORT>Lissabon</GEBURTSORT>
+      <GEBURTSLAND>Portugal</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>weiblich</GESCHLECHT>
+      <FAMILIENSTAND>verheiratet</FAMILIENSTAND>
+      <RELIGION>katholisch</RELIGION>
+      <BERUF>Rechtsanwältin</BERUF>
+      <PARTEI_KURZ>CDU</PARTEI_KURZ>
+      <VITA_KURZ>2012 Abitur an der Bischöflichen Liebfrauenschule in Eschweiler. 2012 bis 2017 Studium der Rechtswissenschaften an der Universität zu Köln mit Schwerpunkt Steuerrecht. 2018 bis Februar 2020 Rechtsreferendariat mit Stationen in Aachen, Köln und Lissabon. Bis 2023 Rechtsanwältin in einer Kanzlei mit dem Schwerpunkt Unternehmensnachfolge / Stiftungen. Seit 2021 Mitglied des Deutschen Bundestages; seit Mai 2025 Parlamentarische Geschäftsführerin der CDU/CSU-Bundestagsfraktion; stellv. Mitglied im Digitalausschuss, im Auswärtigen Ausschuss, im Ausschuss für die Angelegenheiten der Europäischen Union und im Rechtsausschuss; Mitglied der Deutsch-Französischen Parlamentarischen Versammlung. Stellvertretende Fraktionsvorsitzende der CDU-Fraktion im Städteregionstag der Städteregion Aachen. Seit 2014 Mitglied der Christlich Demokratischen Union (CDU); Mitglied im Landesvorstand der CDU NRW, Mitgliederbeauftragte der CDU Aachen Land. Seit 2022 Counsel der Diáspora Portuguesa.</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>20</WP>
+        <MDBWP_VON>26.10.2021</MDBWP_VON>
+        <MDBWP_BIS>25.03.2025</MDBWP_BIS>
+        <WKR_NUMMER>88</WKR_NUMMER>
+        <WKR_NAME>Aachen II</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE>NW</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>26.10.2021</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>87</WKR_NUMMER>
+        <WKR_NAME>Aachen II</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE>NW</LISTE>
+        <MANDATSART>Direktwahl</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion der Christlich Demokratischen Union/Christlich - Sozialen Union</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Parlamentarische Geschäftsführerin</FKT_LANG>
+            <FKTINS_VON>05.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Deutscher Bundestag</INSART_LANG>
+            <INS_LANG>Ältestenrat</INS_LANG>
+            <MDBINS_VON>15.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für die Angelegenheiten der Europäischen Union</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder des Wahlausschusses für die vom Deutschen Bundestag zu berufenden Richter des Bundesverfassungsgerichts</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Auswärtiger Ausschuss</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Recht und Verbraucherschutz</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Digitales und Staatsmodernisierung</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Deutsch-Französische Parlamentarische Versammlung</INS_LANG>
+            <MDBINS_VON>23.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>23.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Deutscher Bundestag</INSART_LANG>
+            <INS_LANG>Kommission des ÄR für innere Angelegenheiten des Bundestages – Innere Kommission</INS_LANG>
+            <MDBINS_VON>03.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>03.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Deutscher Bundestag</INSART_LANG>
+            <INS_LANG>Kommission des ÄR für die Angelegenheiten von Mitarbeiterinnen und Mitarbeitern der Abgeordneten</INS_LANG>
+            <MDBINS_VON>03.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>03.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Deutscher Bundestag</INSART_LANG>
+            <INS_LANG>Kommission des ÄR für Bau- und Raumangelegenheiten</INS_LANG>
+            <MDBINS_VON>03.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>03.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Deutscher Bundestag</INSART_LANG>
+            <INS_LANG>Kommission des ÄR für Informationstechnologien und Digitalisierung</INS_LANG>
+            <MDBINS_VON>03.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>03.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Deutsche Delegation in der Parlamentarischen Versammlung der NATO</INS_LANG>
+            <MDBINS_VON>24.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>24.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder des Gemeinsamen Ausschusses nach Artikel 53 a des Grundgesetzes</INS_LANG>
+            <MDBINS_VON>26.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>26.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder des Ausschusses nach Artikel 77 Abs. 2 des Grundgesetzes (Vermittlungsausschuss)</INS_LANG>
+            <MDBINS_VON>26.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>26.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Parlamentariergruppen</INSART_LANG>
+            <INS_LANG>Deutsch-Portugiesische Parlamentariergruppe</INS_LANG>
+            <MDBINS_VON>06.08.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Vorsitzende</FKT_LANG>
+            <FKTINS_VON>06.08.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11005411</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Becker</NACHNAME>
+        <VORNAME>Desiree</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>25.03.2025</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>27.01.1994</GEBURTSDATUM>
+      <GEBURTSORT>St. Wendel</GEBURTSORT>
+      <GEBURTSLAND>Deutschland</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>weiblich</GESCHLECHT>
+      <FAMILIENSTAND>ledig</FAMILIENSTAND>
+      <RELIGION />
+      <BERUF>Gewerkschaftssekretärin</BERUF>
+      <PARTEI_KURZ>DIE LINKE.</PARTEI_KURZ>
+      <VITA_KURZ>Berufliche Laufbahn: seit 2023 Verdi Jugend Hessen Jugendbildungsreferentin, Gewerkschaftssekretärin im Bereich Jugend Mittelhessen; 2021 bis 2023 DGB Jugendbildungsreferentin; 2021 1. Staatsprüfung Mathematik und Politik und Wirtschaft Lehramt für Gymnasien an der Justus-Liebig-Universität (JLU). Politische Laufbahn: Seit 2024 Mitglied Sprecher*innenrat LAG Betrieb und Gewerkschaft Hessen; seit 2024 Landesvorsitzende Die Linke Hessen; seit 2022 Mitglied Parteirat; seit 2021 Kreistagsabgeordnete Gießen und stellv. Fraktionsvorsitzende; 2021 bis 2025 Kreisvorsitzende Gießen; 2020 bis 2025 Kreisvorstandsmitglied Gießen. Sonstige: Seit 2022 ehrenamtliche Richterin am Arbeitsgericht Gießen; 2019 bis 2023 GEW und junge GEW; Beisitzer Vorstand Kreisverband GEW, Kassenwartin Regionalverband Hochschule und Forschung GEW Mittelhessen, Studentische Hilfskraft GEW Studis Hessen; 2018 bis 2021 Die Linke.SDS Gießen ; Studierendenparlament, AStA JLU, Mitglied des Senats JLU; 2018 bis 2020 NGO sea-eye; Werftzeit und Organisation auf Malta. Mitgliedschaften: Die Linke; BAG Betrieb und Gewerkschaft, LAG Betrieb und Gewerkschaft Hessen; DGB Gewerkschaften: Verdi,GEW, IGBCE; Gelbe Hand; Förderverein BiZ Naumburg; Förderverein BiZ Gladenbach; sea-eye; VVN-BdA; Pro Asyl; Rote Hilfe.</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>172</WKR_NUMMER>
+        <WKR_NAME>Gießen</WKR_NAME>
+        <WKR_LAND>HE</WKR_LAND>
+        <LISTE>HE</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion Die Linke</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretende Vorsitzende</FKT_LANG>
+            <FKTINS_VON>24.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Deutsch-Französische Parlamentarische Versammlung</INS_LANG>
+            <MDBINS_VON>15.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>15.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Verteidigungsausschuss</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Forschung, Technologie, Raumfahrt und Technikfolgenabschätzung</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Arbeit und Soziales</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Mitglieder des Gemeinsamen Ausschusses nach Artikel 53 a des Grundgesetzes</INS_LANG>
+            <MDBINS_VON>26.06.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>26.06.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Unterausschuss</INSART_LANG>
+            <INS_LANG>UA Rüstungs- und Proliferationskontrolle, Nichtverbreitung und internationale Abrüstung</INS_LANG>
+            <MDBINS_VON>10.09.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>10.09.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11005412</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Becker</NACHNAME>
+        <VORNAME>Carsten</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>25.03.2025</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>20.01.1990</GEBURTSDATUM>
+      <GEBURTSORT>Saarlouis</GEBURTSORT>
+      <GEBURTSLAND>Deutschland</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>männlich</GESCHLECHT>
+      <FAMILIENSTAND>ledig</FAMILIENSTAND>
+      <RELIGION>konfessionslos</RELIGION>
+      <BERUF>Facharbeiter</BERUF>
+      <PARTEI_KURZ>AfD</PARTEI_KURZ>
+      <VITA_KURZ>Seit April 2022 Mitglied des saarländischen Landtages, Parlamentarischer Geschäftsführer der AfD-Landtagsfraktion sowie Mitglied im Präsidium des Landtages als Dritter Schriftführer mit den Tätigkeitsschwerpunkten Berichterstatter in den Ausschüssen Haushalt und Finanzen, im Unterausschuss zur Prüfung der Haushaltsrechnung, im Ausschuss für Eingaben/Petitionen sowie Mitglied im Ausschuss für Wirtschaft, Innovation, Digitales, Energie und Grubensicherheit. Januar 2021 bis Dezember 2022 Hexagon Metrology Vision GmbH mit den Tätigkeitsschwerpunkten: Assembly Technician (Januar 2021 bis April 2022: Inbetriebnahme und Qualitätskontrolle der Koordinatenmessmaschinen); Mai 2022 bis Dezember 2022 Ruhen des Arbeitsverhältnisses aufgrund der Ausübung des Landtagsmandats. September 2019 bis Dezember 2020 AfD-Fraktion im Regionalverband Saarbrücken als Referent; Mai bis August 2019 Sabbatical; Januar 2010 bis April 2019 Ford Werke Saarlouis mit Tätigkeitsschwerpunkten Qualitätskontrolle, Nacharbeit (Januar 2010 bis August 2011), Linienführer, Instandhaltung sowie Prozesskontrolle (September 2011 bis April 2019). September 2006 bis Januar 2010 Ausbildung zum Elektroniker für Betriebstechnik (Facharbeiterbrief) bei Ford Werke Saarlouis; September 2000 bis Juni 2006 Erweiterte Realschule Schwalbach (Schulabschluss: Mittlere Reife). Mitgliedschaft in kommunalen Vertretungskörperschaften: seit Juli 2014 Mitglied des Stadtrates Saarlouis, seit 2019 Fraktionsvorsitzender; seit Juli 2019 Fraktionsvorsitzender im Kreistag Saarlouis. Mitgliedschaften und Funktionen in Parteien: seit 2013 Mitglied der AfD; 2013 bis 2015 stellvertretender Kreisvorsitzender AfD Saarlouis; seit 2015 Kreisvorsitzender der AfD Saarlouis; 2015 bis 2016 Beisitzer im Landesvorstand AfD Saarland; 2016 bis 2020 Landesschatzmeister AfD Saarland; seit 2022 Landesvorsitzender AfD Saarland.</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>297</WKR_NUMMER>
+        <WKR_NAME>Saarlouis</WKR_NAME>
+        <WKR_LAND>SL</WKR_LAND>
+        <LISTE>SL</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion Alternative für Deutschland</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Sonstiges Gremium</INSART_LANG>
+            <INS_LANG>Deutsch-Französische Parlamentarische Versammlung</INS_LANG>
+            <MDBINS_VON>05.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>05.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Verkehrsausschuss</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Arbeit und Soziales</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11005505</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Köktürk</NACHNAME>
+        <VORNAME>Cansin</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL />
+        <AKAD_TITEL />
+        <HISTORIE_VON>25.03.2025</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>13.06.1993</GEBURTSDATUM>
+      <GEBURTSORT>Hattingen</GEBURTSORT>
+      <GEBURTSLAND>Deutschland</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>weiblich</GESCHLECHT>
+      <FAMILIENSTAND>ledig</FAMILIENSTAND>
+      <RELIGION />
+      <BERUF>Sozialarbeiterin</BERUF>
+      <PARTEI_KURZ>DIE LINKE.</PARTEI_KURZ>
+      <VITA_KURZ>Studium „Soziale Arbeit“ an der Universität Duisburg Essen . Mitgliedschaften: Sea Watch e.V., Medizinische Flüchtlingshilfe Bochum e.V..</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>139</WKR_NUMMER>
+        <WKR_NAME>Bochum I</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE>NW</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion Die Linke</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Bildung, Familie, Senioren, Frauen und Jugend</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Arbeit und Soziales</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Arbeit und Soziales</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Obfrau</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Unterausschuss</INSART_LANG>
+            <INS_LANG>Kinderkommission</INS_LANG>
+            <MDBINS_VON>10.07.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>10.07.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  <MDB>
+    <ID>11005515</ID>
+    <NAMEN>
+      <NAME>
+        <NACHNAME>Rathert</NACHNAME>
+        <VORNAME>Anna</VORNAME>
+        <ORTSZUSATZ />
+        <ADEL />
+        <PRAEFIX />
+        <ANREDE_TITEL>Dr.</ANREDE_TITEL>
+        <AKAD_TITEL>Dr.</AKAD_TITEL>
+        <HISTORIE_VON>25.03.2025</HISTORIE_VON>
+        <HISTORIE_BIS />
+      </NAME>
+    </NAMEN>
+    <BIOGRAFISCHE_ANGABEN>
+      <GEBURTSDATUM>29.04.1977</GEBURTSDATUM>
+      <GEBURTSORT>Münster</GEBURTSORT>
+      <GEBURTSLAND>Deutschland</GEBURTSLAND>
+      <STERBEDATUM />
+      <GESCHLECHT>weiblich</GESCHLECHT>
+      <FAMILIENSTAND>verheiratet, 3 Kinder</FAMILIENSTAND>
+      <RELIGION>evangelisch-lutherisch</RELIGION>
+      <BERUF>Rechtsanwältin</BERUF>
+      <PARTEI_KURZ>AfD</PARTEI_KURZ>
+      <VITA_KURZ>1987 bis 1996 Hittorf-Gymnasium, Recklinghausen; 1993 bis 1994 The Lakeside School , Seattle, U.S.A.; 1996 bis 1997 studium generale an der Université de Rouen , Frankreich; 1997 bis 2003 Rechtswissenschaften, Universität Münster; 1999 bis 2000 Erasmus-Auslandssemester Università Federico II, Neapel, Italien mit Prüfungen imVölker- und Europarecht; 2003 1. Juristisches Staatsexamen OLG Düsseldorf; 2006 bis 2008 Referendariat in Münster mit Stationen an der Deutschen Botschaft in Paris und dem Bundespräsidialamt in Berlin; 2009 2. Juristisches Staatsexamen OLG Düsseldorf;2010 Promotion. Seit 2009 Rechtsanwältin; 2014 bis 2015 Akkreditierte Parlamentarische Assistentin im Europäischen Parlament; 2022 bis 2025 Rechtsanwältin in der Rechtsabteilung der AfD-Bundestagsfraktion. Politischer Werdegang April 2013 Eintritt in die AfD; 2020 bis 2022 Landesschiedsrichterin am Landesschiedsgericht der AfD NRW, zuletzt als Vizepräsidentin; 2022 bis 2023 Beisitzerin im Vorstand des AfD-Kreisverbands Recklinghausen; seit 2023 Stellvertretende Sprecherin des AfD-Kreisverbands Recklinghausen; seit 2022 Sprecherin des AfD-Stadtverbands Recklinghausen. Kindererziehungszeiten von 2013 bis 2014, 2015 bis 2018 und 2019 bis 2022.</VITA_KURZ>
+      <VEROEFFENTLICHUNGSPFLICHTIGES />
+    </BIOGRAFISCHE_ANGABEN>
+    <WAHLPERIODEN>
+      <WAHLPERIODE>
+        <WP>21</WP>
+        <MDBWP_VON>25.03.2025</MDBWP_VON>
+        <MDBWP_BIS />
+        <WKR_NUMMER>120</WKR_NUMMER>
+        <WKR_NAME>Recklinghausen I</WKR_NAME>
+        <WKR_LAND>NW</WKR_LAND>
+        <LISTE>NW</LISTE>
+        <MANDATSART>Landesliste</MANDATSART>
+        <INSTITUTIONEN>
+          <INSTITUTION>
+            <INSART_LANG>Fraktion/Gruppe</INSART_LANG>
+            <INS_LANG>Fraktion Alternative für Deutschland</INS_LANG>
+            <MDBINS_VON>25.03.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG />
+            <FKTINS_VON />
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Bildung, Familie, Senioren, Frauen und Jugend</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS>16.09.2025</FKTINS_BIS>
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Ausschuss für Bildung, Familie, Senioren, Frauen und Jugend</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>16.09.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Ausschuss</INSART_LANG>
+            <INS_LANG>Auswärtiger Ausschuss</INS_LANG>
+            <MDBINS_VON>21.05.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>21.05.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Unterausschuss</INSART_LANG>
+            <INS_LANG>Kinderkommission</INS_LANG>
+            <MDBINS_VON>11.07.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretendes Mitglied</FKT_LANG>
+            <FKTINS_VON>11.07.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Parlamentariergruppen</INSART_LANG>
+            <INS_LANG>Deutsch-Portugiesische Parlamentariergruppe</INS_LANG>
+            <MDBINS_VON>08.09.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Stellvertretender Vorsitzender</FKT_LANG>
+            <FKTINS_VON>08.09.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+          <INSTITUTION>
+            <INSART_LANG>Unterausschuss</INSART_LANG>
+            <INS_LANG>UA Auswärtige Kultur- und Bildungspolitik</INS_LANG>
+            <MDBINS_VON>16.09.2025</MDBINS_VON>
+            <MDBINS_BIS />
+            <FKT_LANG>Ordentliches Mitglied</FKT_LANG>
+            <FKTINS_VON>16.09.2025</FKTINS_VON>
+            <FKTINS_BIS />
+          </INSTITUTION>
+        </INSTITUTIONEN>
+      </WAHLPERIODE>
+    </WAHLPERIODEN>
+  </MDB>
+  </DOCUMENT>

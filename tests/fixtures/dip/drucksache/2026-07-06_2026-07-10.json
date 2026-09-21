@@ -1,0 +1,87 @@
+[
+ {
+  "id": "300001",
+  "typ": "Dokument",
+  "dokumentart": "Drucksache",
+  "drucksachetyp": "Beschlussempfehlung und Bericht",
+  "dokumentnummer": "21/6565",
+  "wahlperiode": 21,
+  "herausgeber": "BT",
+  "datum": "2026-07-08",
+  "aktualisiert": "2026-07-09T08:00:00+02:00",
+  "titel": "Beschlussempfehlung und Bericht des Ausschusses für Wirtschaft und Energie zu dem Gesetzentwurf der Bundesregierung – Drucksache 21/6278 – Entwurf eines Gebäudemodernisierungsgesetzes",
+  "autoren_anzeige": [],
+  "autoren_anzahl": 0,
+  "fundstelle": {
+   "id": "1",
+   "dokumentart": "Drucksache",
+   "pdf_url": "https://dserver.bundestag.de/btd/21/656/2106565.pdf",
+   "dokumentnummer": "21/6565",
+   "datum": "2026-07-08",
+   "herausgeber": "BT"
+  },
+  "urheber": [
+   {
+    "einbringer": false,
+    "bezeichnung": "Ausschuss für Wirtschaft und Energie",
+    "titel": "Ausschuss für Wirtschaft und Energie"
+   }
+  ],
+  "vorgangsbezug": [
+   {
+    "id": "400001",
+    "titel": "Gebäudemodernisierungsgesetz",
+    "vorgangstyp": "Gesetzgebung"
+   }
+  ],
+  "vorgangsbezug_anzahl": 1
+ },
+ {
+  "id": "300003",
+  "typ": "Dokument",
+  "dokumentart": "Drucksache",
+  "drucksachetyp": "Entschließungsantrag",
+  "dokumentnummer": "21/7022",
+  "wahlperiode": 21,
+  "herausgeber": "BT",
+  "datum": "2026-07-08",
+  "aktualisiert": "2026-07-09T08:00:00+02:00",
+  "titel": "Entschließungsantrag der Abgeordneten Pascal Meiser, Cansin Köktürk und der Fraktion Die Linke zu der dritten Beratung des Gesetzentwurfs der Bundesregierung – Drucksachen 21/6130, 21/6559 – GKV-Beitragssatzstabilisierungsgesetz",
+  "autoren_anzeige": [
+   {
+    "id": "5001",
+    "title": "Pascal Meiser, MdB, Die Linke",
+    "autor_titel": "Pascal Meiser"
+   },
+   {
+    "id": "5002",
+    "title": "Cansin Köktürk, MdB, Die Linke",
+    "autor_titel": "Cansin Köktürk"
+   }
+  ],
+  "autoren_anzahl": 2,
+  "fundstelle": {
+   "id": "1",
+   "dokumentart": "Drucksache",
+   "pdf_url": "https://dserver.bundestag.de/btd/21/702/2107022.pdf",
+   "dokumentnummer": "21/7022",
+   "datum": "2026-07-08",
+   "herausgeber": "BT"
+  },
+  "urheber": [
+   {
+    "einbringer": true,
+    "bezeichnung": "Fraktion Die Linke",
+    "titel": "Fraktion Die Linke"
+   }
+  ],
+  "vorgangsbezug": [
+   {
+    "id": "400002",
+    "titel": "Entschließungsantrag zum GKV-Beitragssatzstabilisierungsgesetz",
+    "vorgangstyp": "Entschließungsantrag BT"
+   }
+  ],
+  "vorgangsbezug_anzahl": 1
+ }
+]

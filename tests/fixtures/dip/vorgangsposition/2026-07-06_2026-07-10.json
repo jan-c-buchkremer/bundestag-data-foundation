@@ -1,0 +1,62 @@
+[
+ {
+  "id": "500001",
+  "vorgangsposition": "2. Beratung und Schlussabstimmung",
+  "zuordnung": "BT",
+  "gang": true,
+  "fortsetzung": false,
+  "nachtrag": false,
+  "vorgangstyp": "Gesetzgebung",
+  "typ": "Vorgangsposition",
+  "titel": "Gebäudemodernisierungsgesetz",
+  "dokumentart": "Plenarprotokoll",
+  "vorgang_id": "400001",
+  "datum": "2026-07-10",
+  "aktualisiert": "2026-07-11T08:00:00+02:00",
+  "fundstelle": {
+   "id": "600090",
+   "dokumentart": "Plenarprotokoll",
+   "pdf_url": "https://dserver.bundestag.de/btp/21/21090.pdf",
+   "xml_url": "https://dserver.bundestag.de/btp/21/21090.xml",
+   "dokumentnummer": "21/90",
+   "datum": "2026-07-10",
+   "herausgeber": "BT",
+   "seite": "10952C",
+   "anfangsseite": 10940,
+   "endseite": 10960,
+   "top": 28,
+   "top_zusatz": "a"
+  },
+  "beschlussfassung": [
+   {
+    "beschlusstenor": "Annahme der Vorlage",
+    "seite": "10952C",
+    "abstimmungsart": "Namentliche Abstimmung",
+    "dokumentnummer": "21/6278"
+   }
+  ]
+ },
+ {
+  "id": "500002",
+  "vorgangsposition": "Ausschussbericht",
+  "zuordnung": "BT",
+  "gang": false,
+  "fortsetzung": false,
+  "nachtrag": false,
+  "vorgangstyp": "Gesetzgebung",
+  "typ": "Vorgangsposition",
+  "titel": "Gebäudemodernisierungsgesetz",
+  "dokumentart": "Drucksache",
+  "vorgang_id": "400001",
+  "datum": "2026-07-08",
+  "aktualisiert": "2026-07-09T08:00:00+02:00",
+  "fundstelle": {
+   "id": "1",
+   "dokumentart": "Drucksache",
+   "pdf_url": "https://dserver.bundestag.de/btd/21/656/2106565.pdf",
+   "dokumentnummer": "21/6565",
+   "datum": "2026-07-08",
+   "herausgeber": "BT"
+  }
+ }
+]

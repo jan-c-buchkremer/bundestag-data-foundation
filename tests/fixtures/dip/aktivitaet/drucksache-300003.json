@@ -1,0 +1,56 @@
+[
+ {
+  "id": "900001",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "datum": "2026-07-08",
+  "aktualisiert": "2026-07-09T08:00:00+02:00",
+  "titel": "Pascal Meiser, MdB, Die Linke",
+  "person_id": "5001",
+  "fundstelle": {
+   "id": "1",
+   "dokumentart": "Drucksache",
+   "pdf_url": "https://dserver.bundestag.de/btd/21/702/2107022.pdf",
+   "dokumentnummer": "21/7022",
+   "datum": "2026-07-08",
+   "herausgeber": "BT"
+  },
+  "vorgangsbezug": [
+   {
+    "id": "400002",
+    "titel": "Entschließungsantrag zum GKV-Beitragssatzstabilisierungsgesetz",
+    "vorgangstyp": "Entschließungsantrag BT"
+   }
+  ],
+  "vorgangsbezug_anzahl": 1
+ },
+ {
+  "id": "900002",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "datum": "2026-07-08",
+  "aktualisiert": "2026-07-09T08:00:00+02:00",
+  "titel": "Cansin Köktürk, MdB, Die Linke",
+  "person_id": "5002",
+  "fundstelle": {
+   "id": "1",
+   "dokumentart": "Drucksache",
+   "pdf_url": "https://dserver.bundestag.de/btd/21/702/2107022.pdf",
+   "dokumentnummer": "21/7022",
+   "datum": "2026-07-08",
+   "herausgeber": "BT"
+  },
+  "vorgangsbezug": [
+   {
+    "id": "400002",
+    "titel": "Entschließungsantrag zum GKV-Beitragssatzstabilisierungsgesetz",
+    "vorgangstyp": "Entschließungsantrag BT"
+   }
+  ],
+  "vorgangsbezug_anzahl": 1
+ }
+]

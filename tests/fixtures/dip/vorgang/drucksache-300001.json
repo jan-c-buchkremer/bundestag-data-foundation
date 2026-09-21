@@ -1,0 +1,19 @@
+[
+ {
+  "id": "400001",
+  "typ": "Vorgang",
+  "beratungsstand": "Verabschiedet",
+  "vorgangstyp": "Gesetzgebung",
+  "wahlperiode": 21,
+  "initiative": [
+   "Bundesregierung"
+  ],
+  "datum": "2026-07-10",
+  "aktualisiert": "2026-07-11T08:00:00+02:00",
+  "titel": "Gebäudemodernisierungsgesetz",
+  "sachgebiet": [
+   "Energie",
+   "Bauen und Wohnen"
+  ]
+ }
+]

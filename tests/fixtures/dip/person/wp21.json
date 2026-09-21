@@ -1,0 +1,85 @@
+[
+ {
+  "id": "5001",
+  "nachname": "Meiser",
+  "vorname": "Pascal",
+  "typ": "Person",
+  "wahlperiode": [
+   19,
+   20,
+   21
+  ],
+  "aktualisiert": "2026-07-01T00:00:00+02:00",
+  "titel": "Pascal Meiser, MdB, Die Linke",
+  "funktion": "MdB",
+  "fraktion": "Die Linke"
+ },
+ {
+  "id": "5002",
+  "nachname": "Köktürk",
+  "vorname": "Cansin",
+  "typ": "Person",
+  "wahlperiode": [
+   21
+  ],
+  "aktualisiert": "2026-07-01T00:00:00+02:00",
+  "titel": "Cansin Köktürk, MdB, Die Linke",
+  "funktion": "MdB",
+  "fraktion": "Die Linke"
+ },
+ {
+  "id": "5003",
+  "nachname": "Becker",
+  "vorname": "Carsten",
+  "typ": "Person",
+  "wahlperiode": [
+   21
+  ],
+  "aktualisiert": "2026-07-01T00:00:00+02:00",
+  "titel": "Carsten Becker, MdB, AfD",
+  "funktion": "MdB",
+  "fraktion": "AfD"
+ },
+ {
+  "id": "5004",
+  "nachname": "Becker",
+  "vorname": "Desiree",
+  "typ": "Person",
+  "wahlperiode": [
+   21
+  ],
+  "aktualisiert": "2026-07-01T00:00:00+02:00",
+  "titel": "Desiree Becker, MdB, Die Linke",
+  "funktion": "MdB",
+  "fraktion": "Die Linke"
+ },
+ {
+  "id": "5005",
+  "nachname": "Bas",
+  "vorname": "Bärbel",
+  "typ": "Person",
+  "wahlperiode": [
+   17,
+   18,
+   19,
+   20,
+   21
+  ],
+  "aktualisiert": "2026-07-01T00:00:00+02:00",
+  "titel": "Bärbel Bas, Bundesmin., Bundesministerium für Arbeit und Soziales",
+  "funktion": "Bundesmin.",
+  "fraktion": "SPD"
+ },
+ {
+  "id": "5006",
+  "nachname": "Schmidt",
+  "vorname": "Otto",
+  "typ": "Person",
+  "wahlperiode": [
+   21
+  ],
+  "aktualisiert": "2026-07-01T00:00:00+02:00",
+  "titel": "Otto Schmidt, Staatssekretär",
+  "funktion": "Staatssekretär"
+ }
+]
