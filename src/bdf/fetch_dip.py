@@ -8,6 +8,7 @@ Files written (all JSON, each with a .meta.json sidecar):
   person/wp<wp>.json                     all DIP persons with documents in the Wahlperiode
 """
 
+import time
 from datetime import date
 from pathlib import Path
 
@@ -15,6 +16,9 @@ import httpx
 
 from bdf import raw
 from bdf.config import DIP_BASE_URL, dip_api_key, raw_dir
+
+# ~14 requests/s got the IP blocked by DIP's bot protection (Enodia); 2/s has not
+DIP_REQUEST_INTERVAL = 0.5
 
 
 def dip_dir() -> Path:
@@ -37,7 +41,16 @@ def list_all(http: httpx.Client, endpoint: str, params: dict) -> list[dict]:
         query = {**params, "format": "json"}
         if cursor:
             query["cursor"] = cursor
-        data = raw.get(http, url, params=query, headers={"Authorization": f"ApiKey {key}"}).json()
+        time.sleep(DIP_REQUEST_INTERVAL)
+        response = raw.get(http, url, params=query, headers={"Authorization": f"ApiKey {key}"})
+        if response.url.path.startswith("/.enodia/"):
+            # a request burst gets a JavaScript proof-of-work challenge instead of JSON, and
+            # the IP stays blocked for ~15 minutes; the only remedy is to wait
+            raise SystemExit(
+                f"DIP blocked this IP after too many requests (Enodia challenge). "
+                f"Wait a while and rerun; the fetch resumes from {raw_dir()}. URL: {response.url}"
+            )
+        data = response.json()
         documents += data.get("documents", [])
         new_cursor = data.get("cursor")
         if not new_cursor or new_cursor == cursor or not data.get("documents"):
@@ -60,8 +73,8 @@ def fetch_range(http: httpx.Client, wp: int, start: date, end: date, *, force: b
     }
     drucksachen = _fetch_list(http, "drucksache", date_params, dip_dir() / "drucksache" / f"{span}.json", force=force)
     print(f"  drucksachen: {len(drucksachen)}")
-    # one aktivitaet + one vorgang call per Drucksache, sequential: a sitting week is a few
-    # hundred calls; DIP asks for at most 25 in flight, and we have no key to tune this against yet
+    # one aktivitaet + one vorgang call per Drucksache, sequential and paced: a sitting week
+    # is a few hundred calls, i.e. a few minutes
     for i, d in enumerate(drucksachen, start=1):
         by_id = {"f.drucksache": d["id"]}
         _fetch_list(http, "aktivitaet", by_id, dip_dir() / "aktivitaet" / f"drucksache-{d['id']}.json", force=force)

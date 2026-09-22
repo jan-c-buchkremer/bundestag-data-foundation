@@ -77,8 +77,10 @@ Details and quotes in `docs/licences.md`. Code is MIT.
 - The Stammdaten file is published irregularly; members who joined after its date (two as
   of September 2026) have no mandate row and are stored with `is_mdb = 0` from their first
   speech until the next Stammdaten file arrives. `ingest` lists names it cannot match.
-- The DIP fetcher is written against the OpenAPI spec and tested on synthetic fixtures only,
-  because no API key was available yet. Expect small fixes on first real run.
+- `search.dip.bundestag.de` sits behind bot protection (Enodia) that blocks the IP for
+  ~15 minutes after a request burst; `fetch dip` therefore paces itself to 2 requests/s
+  (a sitting week takes ~3 minutes) and, if blocked, stops with a message. Rerunning
+  resumes from `data/raw`.
 - abgeordnetenwatch's `ext_id_bundestagsverwaltung` is wrong for ~9 % of WP21 members and is
   therefore never trusted on its own.
 - One `<rede>` with a question from another member becomes several speech rows
