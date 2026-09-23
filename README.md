@@ -30,6 +30,27 @@ The DIP API needs a key: `export DIP_API_KEY=…` (Windows: `$env:DIP_API_KEY = 
 Ask for a personal one with `docs/dip-api-key-request.md`. All other sources need nothing.
 `BDF_DATA_DIR` moves the data directory (default `./data`).
 
+## Unattended updates
+
+```sh
+uv run bdf update          # fetch everything new since the last run from all sources, then ingest
+```
+
+Each source picks its own window from what is already in `data/raw/`: protocols from the next sitting
+number (probing until three in a row are not published), votes and DIP from the latest date on disk minus
+14 days (late publications), Stammdaten and abgeordnetenwatch in full. The first run backfills the whole
+Wahlperiode. Without `DIP_API_KEY` DIP is skipped; if DIP blocks the IP, the rest is still ingested and the
+command exits 1.
+
+## Container
+
+CI tests every push; pushes to `main` and `deploy` also publish `ghcr.io/jan-c-buchkremer/bundestag-data-foundation`
+(tags: branch name, short sha). The data directory is `/data`, the entrypoint is `bdf`:
+
+```sh
+docker run --rm -v "$PWD/data:/data" -e DIP_API_KEY ghcr.io/jan-c-buchkremer/bundestag-data-foundation:main update
+```
+
 ## Acceptance test: one sitting week end to end
 
 Sitting week 6–10 July 2026 (sittings 21/88–90, ten roll-call votes):
