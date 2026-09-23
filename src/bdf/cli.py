@@ -5,7 +5,7 @@ import json
 import sys
 from datetime import date
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, ingest, queries, raw
+from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, ingest, queries, raw, update
 from bdf.config import db_path
 
 
@@ -40,6 +40,9 @@ def build_parser() -> argparse.ArgumentParser:
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")
 
     sub.add_parser("ingest", help="parse everything under data/raw into the SQLite store")
+
+    u = sub.add_parser("update", help="fetch everything new since the last run from all sources, then ingest")
+    u.add_argument("--wp", type=int, default=21, choices=sorted(update.WP_START))
 
     q = sub.add_parser("query", help="canned queries; every row carries its source pointer")
     qs = q.add_subparsers(dest="query", required=True)
@@ -124,6 +127,8 @@ def main(argv: list[str] | None = None) -> None:
         cmd_fetch(args)
     elif args.command == "ingest":
         ingest.ingest_all(db.connect(db_path()))
+    elif args.command == "update":
+        sys.exit(update.run(args.wp))
     elif args.command == "query":
         cmd_query(args)
 
