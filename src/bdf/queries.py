@@ -10,6 +10,7 @@ from bdf.names import VOTE_VALUES, normalize_name
 AUTHORSHIP_ACTIVITIES = (
     "Antrag",
     "Kleine Anfrage",
+    "Große Anfrage",
     "Entschließungsantrag",
     "Änderungsantrag",
     "Gesetzentwurf",

@@ -85,7 +85,7 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 
 **drucksache** `*id (DIP), number, wahlperiode, type (drucksachetyp), title, date, pdf_url, publisher (herausgeber), originators (JSON of urheber titles), author_count (DIP `autoren_anzahl`; the number of distinct persons in the fetched activities where the two disagree), source_url, source_document_id, retrieved_at`
 
-**drucksache_author** `*id, drucksache_id →drucksache, dip_person_id, person_id →person (NULL until resolved), name (DIP titel), activity_type (aktivitaetsart: Antrag, Kleine Anfrage, Entschließungsantrag, Änderungsantrag, Gesetzentwurf, Frage count as authorship; Berichterstattung and Antwort do not), source_url, source_document_id, retrieved_at`
+**drucksache_author** `*id, drucksache_id →drucksache, dip_person_id, person_id →person (NULL until resolved), name (DIP titel), activity_type (aktivitaetsart: Antrag, Kleine Anfrage, Große Anfrage, Entschließungsantrag, Änderungsantrag, Gesetzentwurf, Frage count as authorship; Berichterstattung and Antwort do not), source_url, source_document_id, retrieved_at`
 — from `/aktivitaet?f.drucksache=<id>`; DIP's `autoren_anzeige` alone is truncated to 4.
 
 **vorgang** `*id (DIP), wahlperiode, type (vorgangstyp), title, status (beratungsstand), subjects (JSON sachgebiet), initiators (JSON initiative), source_url, source_document_id, retrieved_at`
