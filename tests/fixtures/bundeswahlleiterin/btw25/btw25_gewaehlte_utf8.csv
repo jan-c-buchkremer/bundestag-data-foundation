@@ -1,0 +1,19 @@
+﻿(c) Die Bundeswahlleiterin, Wiesbaden 2025;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Datenlizenz Deutschland – Namensnennung – Version 2.0 (https://www.govdata.de/dl-de/by-2-0);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Gewählte Bewerberinnen und Bewerber;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Status:;Endgültig;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Stand:;12.03.2025;09:05;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Format: CSV. Trennzeichen: Semikolon. Zeichensatz: UTF-8 mit BOM;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Wahlart;Wahltag;Titel;Namenszusatz;Nachname;Vornamen;Künstlername;Geschlecht;Geburtjahr;PLZ;Wohnort;Staat;WohnortLandAbk;Geburtsort;Beruf;Berufsschluessel;Kennzeichen;Gebietsart;Gebietsnummer;Gebietsname;GebietLandAbk;Gruppenname;GruppennameLang;Prozent;Listenplatz;VerknKennzeichen;VerknGebietsart;VerknGebietsnummer;VerknGebietsname;VerknGebietLandAbk;VerknGruppenname;VerknListenplatz;VorpGewaehlt
+BT;23.02.2025;;;Aumer;Peter;;m;1976;93128;Regenstauf;;;Regensburg;MdB, Dipl.-Betriebswirt (FH);71;Kreiswahlvorschlag;Wahlkreis;232;Regensburg;BY;CSU;Christlich-Soziale Union in Bayern e.V.;38,263032;;;;;;;;;X
+BT;23.02.2025;;;Bas;Bärbel;;w;1968;47051;Duisburg;;;Duisburg;Mitglied des Deutschen Bundestages;71;Kreiswahlvorschlag;Wahlkreis;114;Duisburg I;NW;SPD;Sozialdemokratische Partei Deutschlands;39,020282;;Landesliste;Land;5;Nordrhein-Westfalen;NW;SPD;2;X
+BT;23.02.2025;;;Becker;Carsten Roland;;m;1990;66740;Saarlouis;;;Saarlouis;Facharbeiter;62;Landesliste;Land;10;Saarland;SL;AfD;Alternative für Deutschland;;1;Kreiswahlvorschlag;Wahlkreis;297;Saarlouis;SL;AfD;;
+BT;23.02.2025;;;Becker;Desiree;;w;1994;35390;Gießen;;;St. Wendel;Gewerkschaftssekretärin;71;Landesliste;Land;6;Hessen;HE;Die Linke;Die Linke;;4;Kreiswahlvorschlag;Wahlkreis;172;Gießen;HE;Die Linke;;
+BT;23.02.2025;;;Köktürk;Cansin;;w;1993;44789;Bochum;;;Hattingen;Sozialarbeiterin;83;Landesliste;Land;5;Nordrhein-Westfalen;NW;Die Linke;Die Linke;;2;Kreiswahlvorschlag;Wahlkreis;139;Bochum I;NW;Die Linke;;
+BT;23.02.2025;;;Mayer;Andreas;;m;1995;87787;Wolfertschwenden;;;Memmingen;Luft- und Raumfahrttechnikingenieur;25;Landesliste;Land;9;Bayern;BY;AfD;Alternative für Deutschland;;12;Kreiswahlvorschlag;Wahlkreis;253;Donau-Ries;BY;AfD;;
+BT;23.02.2025;;;Mayer;Stephan;;m;1973;84524;Neuötting;;;Burghausen;MdB, Rechtsanwalt;71;Kreiswahlvorschlag;Wahlkreis;211;Altötting;BY;CSU;Christlich-Soziale Union in Bayern e.V.;43,925909;;;;;;;;;X
+BT;23.02.2025;Dr.;;Mayer;Zoe;;w;1995;76133;Karlsruhe;;;Karlsruhe;Wirtschaftsingenieurin;27;Kreiswahlvorschlag;Wahlkreis;271;Karlsruhe-Stadt;BW;GRÜNE;BÜNDNIS 90/DIE GRÜNEN;30,643254;;Landesliste;Land;8;Baden-Württemberg;BW;GRÜNE;7;X
+BT;23.02.2025;;;Meiser;Pascal;;m;1975;10249;Berlin;;;Saarbrücken;Dipl.-Politikwissenschaftler;91;Kreiswahlvorschlag;Wahlkreis;82;Berlin-Friedrichshain-Kreuzberg – Prenzlauer Berg Ost;BE;Die Linke;Die Linke;34,653211;;Landesliste;Land;11;Berlin;BE;Die Linke;4;

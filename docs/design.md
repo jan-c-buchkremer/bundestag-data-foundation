@@ -29,6 +29,9 @@ data/
     abgeordnetenwatch/
       wp21-mandates.json
       wp21-politicians.json
+    bundeswahlleiterin/
+      btw25/btw25_gewaehlte_utf8.zip         # + extracted btw25_gewaehlte_utf8.csv: the elected
+      btw25/kerg2.csv                        # results per Wahlkreis, party and vote
   bundestag.sqlite
 ```
 
@@ -102,6 +105,18 @@ Fraction majority per vote is a query, not a column:
 No separate `fraction` table: fraction is a normalised string (`CDU/CSU`, `SPD`, `AfD`,
 `BÜNDNIS 90/DIE GRÜNEN`, `Die Linke`, `fraktionslos`) with one normalisation function
 shared by the XML, XLSX and Stammdaten parsers. A table would add a join and nothing else.
+
+### Election (Bundeswahlleiterin)
+
+**constituency** `*id ("btw25/114"), election, number, name, state, seat_party (party whose candidate got the seat; NULL when the winner had no Zweitstimmendeckung), electorate, voters, source_url, source_document_id, retrieved_at`
+
+**constituency_result** `*id ("btw25/114/<group order>/<vote>"), election, constituency_number, group_kind (party | individual), party, vote (1 Erststimme | 2 Zweitstimme), votes, percent, source_url, source_document_id, retrieved_at`
+
+**election_candidacy** `*id ("btw25/<row>"), election, person_id →person (NULL if unmatched), last_name, first_names, birth_year, party, elected_via (constituency | list), constituency_number (won there, or stood there), first_vote_percent (constituency winners), list_state, list_position, occupation, source_url, source_document_id, retrieved_at`
+
+Only the candidates elected on election day are in the source file; Nachrücker have no row.
+A list member's own first-vote share is the party's `vote = 1` row in `constituency_result`
+for their `constituency_number`.
 
 ## Entity linking
 

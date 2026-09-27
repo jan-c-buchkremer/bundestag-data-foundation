@@ -10,6 +10,7 @@ run the full ingest on it.
 | `bundestag/votes/20260710_7-xls.xlsx` | Roll-call vote 21/90/7 (Gebäudemodernisierungsgesetz), **unchanged** | https://www.bundestag.de/resource/blob/1194636/20260710_7-xls.xlsx, Deutscher Bundestag |
 | `bundestag/votes/index.json` | the list row for that vote | bundestag.de vote list |
 | `abgeordnetenwatch/wp21-*.json` | 8 real politician / mandate records | abgeordnetenwatch.de API v2, CC0 1.0 |
+| `bundeswahlleiterin/btw25/*.csv` | **Excerpts**: 9 rows of the elected candidates (the fixture MdBs, plus two namesakes who are not in the fixture Stammdaten) and all rows of Wahlkreise 14, 114 and 297 from `kerg2.csv`; preamble and header unchanged | https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/opendata.html, © Die Bundeswahlleiterin, Wiesbaden 2025, Datenlizenz Deutschland – Namensnennung 2.0 |
 | `dip/**` | **Synthetic** responses written to the DIP OpenAPI 3.0.1 spec (v1.5): 2 Drucksachen, 2 author activities, 2 Vorgänge, 2 Vorgangspositionen, 6 persons. Replace with recorded responses once a DIP key is available. | — |
 
 Every raw file has a `.meta.json` sidecar with `url` and `retrieved_at`, as `bdf fetch` writes it.

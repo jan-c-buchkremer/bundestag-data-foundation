@@ -163,6 +163,47 @@ CREATE TABLE IF NOT EXISTS individual_vote (
     vote TEXT NOT NULL                  -- yes | no | abstain | invalid | absent
 );
 
+CREATE TABLE IF NOT EXISTS constituency (
+    id TEXT PRIMARY KEY,                -- "<election>/<number>", e.g. "btw25/114"
+    election TEXT NOT NULL,             -- "btw25"
+    number INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    state TEXT NOT NULL,                -- Land abbreviation, as mandate.state
+    seat_party TEXT,                    -- party whose candidate got the seat; NULL: no Zweitstimmendeckung
+    electorate INTEGER,
+    voters INTEGER,
+    {PROVENANCE}
+);
+
+CREATE TABLE IF NOT EXISTS constituency_result (
+    id TEXT PRIMARY KEY,                -- "<election>/<number>/<group order>/<vote>"
+    election TEXT NOT NULL,
+    constituency_number INTEGER NOT NULL,
+    group_kind TEXT NOT NULL,           -- party | individual (Einzelbewerber)
+    party TEXT NOT NULL,                -- Gruppenname, e.g. "SPD", "CSU", "GRÜNE"
+    vote INTEGER NOT NULL,              -- 1 = Erststimme, 2 = Zweitstimme
+    votes INTEGER NOT NULL,
+    percent REAL,
+    {PROVENANCE}
+);
+
+CREATE TABLE IF NOT EXISTS election_candidacy (
+    id TEXT PRIMARY KEY,                -- "<election>/<row in the Gewählte file>"
+    election TEXT NOT NULL,
+    person_id TEXT REFERENCES person(id),
+    last_name TEXT NOT NULL,
+    first_names TEXT NOT NULL,
+    birth_year INTEGER,
+    party TEXT NOT NULL,
+    elected_via TEXT NOT NULL,          -- constituency | list
+    constituency_number INTEGER,        -- won there, or stood there (list members)
+    first_vote_percent REAL,            -- constituency winners only; others: constituency_result
+    list_state TEXT,
+    list_position INTEGER,
+    occupation TEXT,
+    {PROVENANCE}
+);
+
 CREATE INDEX IF NOT EXISTS speech_person ON speech(person_id);
 CREATE INDEX IF NOT EXISTS speech_sitting ON speech(sitting_id);
 CREATE INDEX IF NOT EXISTS paragraph_speech ON speech_paragraph(speech_id);
@@ -172,6 +213,7 @@ CREATE INDEX IF NOT EXISTS author_person ON drucksache_author(person_id);
 CREATE INDEX IF NOT EXISTS author_dip_person ON drucksache_author(dip_person_id);
 CREATE INDEX IF NOT EXISTS drucksache_date ON drucksache(date);
 CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
+CREATE INDEX IF NOT EXISTS candidacy_person ON election_candidacy(person_id);
 """
 
 

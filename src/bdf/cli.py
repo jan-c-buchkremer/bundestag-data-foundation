@@ -5,7 +5,7 @@ import json
 import sys
 from datetime import date
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, ingest, queries, raw, update
+from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, ingest, queries, raw, update
 from bdf.config import db_path
 
 
@@ -36,7 +36,9 @@ def build_parser() -> argparse.ArgumentParser:
     _add_range(fd)
     fa = fs.add_parser("aw", help="abgeordnetenwatch mandates and politicians of a Wahlperiode")
     fa.add_argument("--wp", type=int, default=21, choices=sorted(fetch_aw.PERIOD_BY_WAHLPERIODE))
-    for sp in (fp, fv, fd, fa):
+    fw = fs.add_parser("wahl", help="Bundeswahlleiterin: elected candidates and results per Wahlkreis")
+    fw.add_argument("--election", default="btw25", choices=sorted(fetch_wahl.ELECTIONS))
+    for sp in (fp, fv, fd, fa, fw):
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")
 
     sub.add_parser("ingest", help="parse everything under data/raw into the SQLite store")
@@ -74,6 +76,9 @@ def cmd_fetch(args: argparse.Namespace) -> None:
             fetch_dip.fetch_range(http, args.wp, args.start, args.end, force=args.force)
         elif args.source == "aw":
             fetch_aw.fetch_wahlperiode(http, args.wp, force=args.force)
+        elif args.source == "wahl":
+            for path in fetch_wahl.fetch_election(http, args.election, force=args.force):
+                print(path)
 
 
 def cmd_query(args: argparse.Namespace) -> None:

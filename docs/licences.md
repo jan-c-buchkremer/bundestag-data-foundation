@@ -13,6 +13,7 @@ terms checked.
 | bundestag.de — Namentliche Abstimmungen XLSX/PDF | roll-call votes, individual votes | as above | "Deutscher Bundestag" | as above | permissive with attribution |
 | DIP API | Drucksachen, Vorgänge, authorship, persons | DIP Nutzungsbedingungen (27 Feb 2023, PDF in this folder) | "Deutscher Bundestag/Bundesrat – DIP" + BT-Drs./BT-PlPr. number; commercial use must note that the data is free at dip.bundestag.de | yes, explicitly | permissive with attribution |
 | abgeordnetenwatch.de API v2 | cross-IDs, mandates, (optionally) polls/votes | **CC0 1.0** | none (courtesy attribution recommended) | yes | public domain |
+| Bundeswahlleiterin — Open Data BTW 2025 | elected candidates, results per Wahlkreis | **Datenlizenz Deutschland – Namensnennung 2.0** | "© Die Bundeswahlleiterin, Wiesbaden 2025" | yes | permissive with attribution |
 
 Nothing in the store depends on a share-alike or non-commercial source. Data from
 Open Discourse (CC0), GermaParl (CC BY-SA), Machtblick (AGPL code) is **not** used;
@@ -77,6 +78,14 @@ API page (https://www.abgeordnetenwatch.de/api) and every API response
 (`meta.abgeordnetenwatch_api.licence`): **CC0 1.0 Universal**. No key, 30 requests per
 minute per IP, bulk downloads requested outside 06:00–22:00. Attribution is not required;
 we keep `source_url` anyway.
+
+## Bundeswahlleiterin
+
+Open data page https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/opendata.html;
+the licence is named in the first two lines of every CSV: "(c) Die Bundeswahlleiterin, Wiesbaden 2025",
+"Datenlizenz Deutschland – Namensnennung – Version 2.0" (https://www.govdata.de/dl-de/by-2-0). Use,
+change and redistribution are allowed, commercially too, with the attribution and a link to the licence;
+changes must be marked. Our `source_document_id` names the file and its "Stand" date.
 
 ## What this repository publishes
 
