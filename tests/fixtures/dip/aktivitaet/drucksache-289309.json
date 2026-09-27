@@ -1,0 +1,695 @@
+[
+ {
+  "id": "1789499",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "7287",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Christian Görke, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789498",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "7948",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Cem Ince, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789497",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8094",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Zada Salihovic, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789496",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8048",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Cansin Köktürk, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789495",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8001",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Agnes Conrad, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789494",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "7955",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Desiree Becker, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789493",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8191",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Lisa Schubert, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789492",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "437",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Dr. Dietmar Bartsch, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789491",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "7919",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Ines Schwerdtner, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789490",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8014",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Isabelle Vandre, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789489",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "2095",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Jörg Cezanne, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789488",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "2001",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Pascal Meiser, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789487",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8018",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Sarah Vollath, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789486",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8019",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Sascha Wagner, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789485",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8068",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Tamara Mazzi, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789484",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "7882",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Mirze Edis, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789483",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "7979",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Janina Böttger, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789482",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "7462",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Janine Wissler, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789481",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8074",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Sahra Mirow, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789480",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "1969",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Doris Achelwilm, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789479",
+  "aktivitaetsart": "Entschließungsantrag",
+  "typ": "Aktivität",
+  "person_id": "8032",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Antrag auf Entschließung",
+    "vorgangstyp": "Entschließungsantrag BT",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "337023"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "titel": "Anne Zerr, MdB, DIE LINKE",
+  "datum": "2026-07-08"
+ }
+]

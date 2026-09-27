@@ -1,0 +1,450 @@
+[
+ {
+  "id": "335070",
+  "beratungsstand": "Abgelehnt",
+  "vorgangstyp": "Antrag",
+  "sachgebiet": [
+   "Energie",
+   "Raumordnung, Bau- und Wohnungswesen"
+  ],
+  "typ": "Vorgang",
+  "wahlperiode": 21,
+  "initiative": [
+   "Fraktion DIE LINKE"
+  ],
+  "aktualisiert": "2026-09-08T09:28:23+02:00",
+  "deskriptor": [
+   {
+    "fundstelle": false,
+    "name": "Bausanierung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "CO2-Bepreisung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Erneuerbare Energie",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gasheizung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gesetzgebung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Heizkosten",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Mieter",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Mieterschutz",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Mietrecht",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Umlage",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Vermieter",
+    "typ": "Freier Deskriptor"
+   },
+   {
+    "fundstelle": false,
+    "name": "Wärmepumpe",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Ölheizung",
+    "typ": "Sachbegriffe"
+   }
+  ],
+  "titel": "Heizkostendeckel sofort einführen und Gasausstieg ermöglichen",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "334923",
+  "abstract": "Einführung technologieoffener, flexibler und praxistauglicher Regelungen für die Modernisierung der Wärmeversorgung von Gebäuden mit dem Ziel des überwiegend CO2-freien Betriebs neuer Heizungen: Entfall der Vorgabe eines pauschalen Anteils von mind. 65 Prozent erneuerbarer Energien für alle Neu- und Bestandsbauten, verbindliche Beimischung eines aufwachsenden Anteils CO2-neutraler Brennstoffe bei neu einzubauenden Gas- und Ölheizungen ab 2029 (&quot;Bio-Treppe&quot;), hälftige Aufteilung bestimmter Betriebskosten fossiler Heizungen zwischen Vermieter und Mieter, Einführung einer Grüngas-/Grünheizöl-Quote für Inverkehrbringer von Erdgas und Heizöl ab 2028, Evaluierung der Regelungen im Jahr 2030 bez. ihres Beitrags zur Erreichung der Klimaschutzziele; Umsetzung der EU-Gebäuderichtlinie mit neuen bzw. aktualisierten Vorgaben betr. Renovierungsanforderungen für bestehende Nichtwohngebäude, Einführung von Nullemissionsgebäuden, Bereitstellung von Ladeinfrastruktur, Nutzung von Solarenergie bei Neubauten, Ausstellung von Energieausweisen, Ermittlung der Lebenszyklus-Treibhausgasemissionen von Gebäuden, Inspektionspflichten für Klimaanlagen, Anforderungen an Gebäudeautomation, Berechnung der Gesamtenergieeffizienz; redaktionelle Änderungen, Folgeänderungen;<br />\r\nKonstitutive Neufassung Gebäudeenergiegesetz unter dem Titel Gesetz zur Einsparung von Energie und zur Modernisierung der Wärmeversorgung in Gebäuden (<strong>Gebäudemodernisierungsgesetz</strong> &ndash; GModG) als Art. 1 der Vorlage, Einfügung und Änderung versch. §§ Kohlendioxidkostenaufteilungsgesetz sowie Änderung des Langtitels in Gesetz zur Aufteilung der Kohlendioxidkosten und zur Aufteilung der Betriebskosten bei Einbau einer mit Gas, Heizöl oder Flüssiggas beschickten Heizungsanlage, Einfügung § 559f und Änderung §§ 555b und 559e Bürgerliches Gesetzbuch sowie versch. §§ Gebäude-Elektromobilitätsinfrastruktur-Gesetz, Folgeänderungen in 7 Gesetzen und 4 Rechtsverordnungen, Aufhebung Gebäudeenergiegesetz alte Fassung; Verordnungsermächtigung<br />\r\n<br />\r\nBezug: Richtlinie (EU) 2024/1275 vom 24. April 2024 über die Gesamtenergieeffizienz von Gebäuden (Abl. L 2024/1275, 08.05.2024, S. 1)<br />\r\nVereinbarung im Koalitionsvertrag zur Abschaffung des Heizungsgesetzes<br />\r\n<br />\r\n<strong>Beschlussempfehlung des Ausschusses:</strong> Änderungen; Annahme einer Entschließung",
+  "beratungsstand": "Verkündet",
+  "vorgangstyp": "Gesetzgebung",
+  "gesta": "E035",
+  "sachgebiet": [
+   "Energie",
+   "Raumordnung, Bau- und Wohnungswesen"
+  ],
+  "typ": "Vorgang",
+  "wahlperiode": 21,
+  "zustimmungsbeduerftigkeit": [
+   "Nein, laut Gesetzentwurf (Drs 292/26 (bes.eilbed.))",
+   "Nein, laut Verkündung (BGBl I)"
+  ],
+  "initiative": [
+   "Bundesregierung"
+  ],
+  "aktualisiert": "2026-07-29T13:32:40+02:00",
+  "vorgang_verlinkung": [
+   {
+    "verweisung": "Entschließungsantrag der Fraktion der AfD",
+    "titel": "Entschließungsantrag zum Gesetz zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich",
+    "id": "337065",
+    "wahlperiode": 21
+   },
+   {
+    "verweisung": "Verfahren vor dem Bundesverfassungsgericht",
+    "titel": "Beschlussempfehlung und Bericht des Ausschusses für Recht und Verbraucherschutz (6. Ausschuss) zu dem Streitverfahren vor dem Bundesverfassungsgericht 2 BvE 3/26",
+    "id": "337003",
+    "wahlperiode": 21
+   }
+  ],
+  "verkuendung": [
+   {
+    "jahrgang": "2026",
+    "heftnummer": "226",
+    "ausfertigungsdatum": "2026-07-23",
+    "verkuendungsdatum": "2026-07-28",
+    "einleitungstext": "Gesetz",
+    "pdf_url": "https://www.recht.bund.de/eli/bund/BGBl_1/2026/226",
+    "verkuendungsblatt_bezeichnung": "Bundesgesetzblatt Teil I",
+    "verkuendungsblatt_kuerzel": "BGBl I",
+    "fundstelle": "BGBl I 2026, 226"
+   }
+  ],
+  "inkrafttreten": [
+   {
+    "datum": "2026-07-29"
+   },
+   {
+    "datum": "2027-01-01",
+    "erlaeuterung": "Artikel 2 und 7"
+   },
+   {
+    "datum": "2028-01-01",
+    "erlaeuterung": "Artikel 3"
+   },
+   {
+    "datum": "2030-01-01",
+    "erlaeuterung": "Artikel 4"
+   }
+  ],
+  "deskriptor": [
+   {
+    "fundstelle": false,
+    "name": "BSI-Gesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Baugesetzbuch",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Bausanierung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Bürgerliches Gesetzbuch",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Energieausweis",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Energieverbrauchskennzeichnungsgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Energiewirtschaftsgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Erdgas",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Erneuerbare Energie",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Fernwärme- oder Fernkälte-Verbrauchserfassungs- und -Abrechnungsverordnung",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gas",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gas-Wärme-Kälte-Herkunftsnachweisregister-Verordnung",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gebäude",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Gebäude-Elektromobilitätsinfrastruktur-Gesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": true,
+    "name": "Gebäudeenergieeffizienz",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Gebäudeenergiegesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": true,
+    "name": "Gesetz zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gesetzesfolgenabschätzung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Heizung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Heizöl",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Hochbaustatistikgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Innerstaatliche Umsetzung von EU-Recht",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Kehr- und Überprüfungsordnung",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Klimaneutralität",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Klimaschutz",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Kohlendioxidkostenaufteilungsgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Ladeinfrastruktur",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Luftverunreinigung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Mieter",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Mietnebenkosten",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Neubau",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Richtlinie der EU",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Schornsteinfeger-Handwerksgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Sonnenenergie",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Technische Überwachung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Treibhausgas",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Vermieter",
+    "typ": "Freier Deskriptor"
+   },
+   {
+    "fundstelle": false,
+    "name": "Verordnung über die Prüfung zum anerkannten Abschluß Geprüfter Konstrukteur/Geprüfte Konstrukteurin",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Wärmeplanungsgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": true,
+    "name": "Wärmeversorgung",
+    "typ": "Sachbegriffe"
+   }
+  ],
+  "titel": "Gesetz zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "330686",
+  "beratungsstand": "Abgelehnt",
+  "vorgangstyp": "Antrag",
+  "sachgebiet": [
+   "Energie",
+   "Raumordnung, Bau- und Wohnungswesen",
+   "Umwelt"
+  ],
+  "typ": "Vorgang",
+  "wahlperiode": 21,
+  "initiative": [
+   "Fraktion DIE LINKE"
+  ],
+  "aktualisiert": "2026-09-08T09:28:23+02:00",
+  "deskriptor": [
+   {
+    "fundstelle": false,
+    "name": "Beratung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Beratungsstelle",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "CO2-Bepreisung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Energieeinsparung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gebäudeenergieeffizienz",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gebäudeenergiegesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gesetzgebung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Heizkosten",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Heizung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Kommunale Gebietskörperschaft",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Niedrigeinkommen",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Programm der Bundesregierung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Richtlinie der EU",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Wärmepumpe",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Wärmeversorgung",
+    "typ": "Sachbegriffe"
+   }
+  ],
+  "titel": "Für das Recht auf Heizen - Bezahlbar und erneuerbar",
+  "datum": "2026-07-10"
+ }
+]

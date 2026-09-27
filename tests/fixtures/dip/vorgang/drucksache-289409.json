@@ -1,0 +1,118 @@
+[
+ {
+  "id": "337877",
+  "beratungsstand": "Beantwortet",
+  "vorgangstyp": "Schriftliche Frage",
+  "typ": "Vorgang",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
+  "deskriptor": [
+   {
+    "fundstelle": false,
+    "name": "Baufinanzierung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Baukosten",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Bodenpreis",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Wohnkosten",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Wohnungsbau",
+    "typ": "Sachbegriffe"
+   }
+  ],
+  "titel": "Entwicklung der Kostenanteile am Wohnungsneubau seit 2021",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "337875",
+  "beratungsstand": "Beantwortet",
+  "vorgangstyp": "Schriftliche Frage",
+  "typ": "Vorgang",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
+  "deskriptor": [
+   {
+    "fundstelle": false,
+    "name": "Bundesmittel",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Sondervermögen Infrastruktur und Klimaneutralität",
+    "typ": "Institutionen"
+   },
+   {
+    "fundstelle": true,
+    "name": "Soziale Wohnraumförderung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Wohnungsbau",
+    "typ": "Sachbegriffe"
+   }
+  ],
+  "titel": "Nutzung von Mitteln aus dem Sondervermögen Infrastruktur und Klimaschutz für den Bereich Sozialer Wohnungsbau",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "337874",
+  "beratungsstand": "Beantwortet",
+  "vorgangstyp": "Schriftliche Frage",
+  "typ": "Vorgang",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
+  "deskriptor": [
+   {
+    "fundstelle": false,
+    "name": "Baufinanzierung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Baukosten",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Baustoff",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Miete",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Preis",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Vergütung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Wohnungsbau",
+    "typ": "Sachbegriffe"
+   }
+  ],
+  "titel": "Preisentwicklungen für Bauland, Baumaterialien, Löhne und Mieten im Bereich Wohnungsbau seit 2010",
+  "datum": "2026-07-10"
+ }
+]

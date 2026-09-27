@@ -4,6 +4,19 @@ import sqlite3
 
 from bdf.names import VOTE_VALUES, normalize_name
 
+# DIP activity types that make a person an author of a Drucksache. The others DIP returns per Drucksache are
+# roles of their own: Berichterstattung (committee rapporteur on a Beschlussempfehlung) and Antwort
+# (government answer, sometimes filed under the asking MdB).
+AUTHORSHIP_ACTIVITIES = (
+    "Antrag",
+    "Kleine Anfrage",
+    "Große Anfrage",
+    "Entschließungsantrag",
+    "Änderungsantrag",
+    "Gesetzentwurf",
+    "Frage",
+)
+
 
 def resolve_person(conn: sqlite3.Connection, who: str) -> sqlite3.Row:
     """Accept an MdB id ('11004006') or a name ('Bärbel Bas', 'Bas')."""
@@ -88,16 +101,18 @@ def votes(conn: sqlite3.Connection, person_id: str, start: str, end: str) -> lis
 
 
 def drucksachen(conn: sqlite3.Connection, person_id: str, start: str, end: str) -> list[dict]:
+    """Drucksachen the person (co-)authored; rapporteur and answer activities do not count."""
     rows = conn.execute(
-        """
+        f"""
         SELECT d.number, d.date, d.type, d.title, d.pdf_url, d.originators, d.author_count,
                a.activity_type, a.source_url, a.source_document_id, a.retrieved_at
         FROM drucksache_author a
         JOIN drucksache d ON d.id = a.drucksache_id
         WHERE a.person_id = ? AND d.date BETWEEN ? AND ?
+          AND a.activity_type IN ({",".join("?" * len(AUTHORSHIP_ACTIVITIES))})
         ORDER BY d.date, d.number
         """,
-        (person_id, start, end),
+        (person_id, start, end, *AUTHORSHIP_ACTIVITIES),
     ).fetchall()
     return [dict(r) for r in rows]
 

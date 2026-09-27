@@ -210,6 +210,7 @@ def _ingest_dip_persons(conn: sqlite3.Connection) -> None:
 
 def _ingest_drucksachen(conn: sqlite3.Connection) -> None:
     counts = {"drucksache": 0, "drucksache_author": 0, "vorgang_drucksache": 0}
+    count_mismatches: list[str] = []
     for path in raw.data_files(dip_dir() / "drucksache", "*.json"):
         list_meta = raw.read_meta(path)
         rows: dict[str, list[dict]] = defaultdict(list)
@@ -230,7 +231,13 @@ def _ingest_drucksachen(conn: sqlite3.Connection) -> None:
                     **list_meta.provenance(doc_id, url=f"{DIP_BASE_URL}/drucksache/{d['id']}"),
                 }
             )
-            rows["drucksache_author"] += _author_rows(d["id"], doc_id)
+            authors = _author_rows(d["id"], doc_id)
+            # autoren_anzahl is 0 on Schriftliche Fragen that list over a hundred askers; where the
+            # activities were fetched, the number of distinct persons in them wins
+            if authors is not None and len(authors) != (d.get("autoren_anzahl") or 0):
+                count_mismatches.append(f"{d['dokumentnummer']} ({d.get('autoren_anzahl')} → {len(authors)})")
+                rows["drucksache"][-1]["author_count"] = len(authors)
+            rows["drucksache_author"] += authors or []
             vorgaenge, links = _vorgang_rows(d["id"])
             rows["vorgang"] += vorgaenge
             rows["vorgang_drucksache"] += links
@@ -248,12 +255,18 @@ def _ingest_drucksachen(conn: sqlite3.Connection) -> None:
         f"dip: {counts['drucksache']} drucksachen, {counts['drucksache_author']} author activities, "
         f"{counts['vorgang_drucksache']} vorgang links"
     )
+    if count_mismatches:
+        print(
+            f"dip: {len(count_mismatches)} drucksachen where autoren_anzahl disagrees with the activities "
+            f"(activities used, first 10): " + ", ".join(count_mismatches[:10])
+        )
 
 
-def _author_rows(drucksache_id: str, doc_id: str) -> list[dict]:
+def _author_rows(drucksache_id: str, doc_id: str) -> list[dict] | None:
+    """None if the activities of this Drucksache were not fetched (yet)."""
     path = dip_dir() / "aktivitaet" / f"drucksache-{drucksache_id}.json"
     if not path.exists():
-        return []
+        return None
     meta = raw.read_meta(path)
     rows = {
         a["person_id"]: {
