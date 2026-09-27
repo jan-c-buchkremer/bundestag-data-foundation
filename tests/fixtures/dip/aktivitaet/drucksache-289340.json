@@ -1,0 +1,92 @@
+[
+ {
+  "id": "1789524",
+  "aktivitaetsart": "Berichterstattung",
+  "typ": "Aktivität",
+  "person_id": "7908",
+  "vorgangsbezug_anzahl": 3,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T11:00:56+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Gesetzgebung",
+    "titel": "Gesetz zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich",
+    "id": "334923"
+   },
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Antrag",
+    "titel": "Für das Recht auf Heizen - Bezahlbar und erneuerbar",
+    "id": "330686"
+   },
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Antrag",
+    "titel": "Heizkostendeckel sofort einführen und Gasausstieg ermöglichen",
+    "id": "335070"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107009.pdf",
+   "id": "289340",
+   "dokumentnummer": "21/7009",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Ausschuss für Wirtschaft und Energie"
+   ]
+  },
+  "titel": "Dr. Alaa Alhamwi, MdB, BÜNDNIS 90/DIE GRÜNEN",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "1789523",
+  "aktivitaetsart": "Berichterstattung",
+  "typ": "Aktivität",
+  "person_id": "7374",
+  "vorgangsbezug_anzahl": 3,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-09T11:00:56+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Gesetzgebung",
+    "titel": "Gesetz zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich",
+    "id": "334923"
+   },
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Antrag",
+    "titel": "Für das Recht auf Heizen - Bezahlbar und erneuerbar",
+    "id": "330686"
+   },
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Antrag",
+    "titel": "Heizkostendeckel sofort einführen und Gasausstieg ermöglichen",
+    "id": "335070"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107009.pdf",
+   "id": "289340",
+   "dokumentnummer": "21/7009",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Ausschuss für Wirtschaft und Energie"
+   ]
+  },
+  "titel": "Lars Rohwer, MdB, CDU/CSU",
+  "datum": "2026-07-08"
+ }
+]

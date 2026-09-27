@@ -79,7 +79,7 @@ fraction, role, date and agenda item — the input for the topic landscape.
 
 The same pipeline is exercised offline by `uv run pytest` on the fixtures in `tests/fixtures/`
 (a real protocol excerpt, a real vote XLSX, a Stammdaten excerpt, abgeordnetenwatch records,
-and — until a DIP key is available — synthetic DIP responses written to the OpenAPI spec).
+and recorded DIP responses for four Drucksachen of that week).
 
 ## Data sources and licences
 

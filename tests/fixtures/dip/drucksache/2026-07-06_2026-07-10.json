@@ -1,87 +1,232 @@
 [
  {
-  "id": "300001",
-  "typ": "Dokument",
-  "dokumentart": "Drucksache",
+  "id": "289641",
   "drucksachetyp": "Beschlussempfehlung und Bericht",
-  "dokumentnummer": "21/6565",
+  "dokumentart": "Drucksache",
+  "autoren_anzahl": 5,
+  "typ": "Dokument",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentnummer": "21/7107",
   "wahlperiode": 21,
   "herausgeber": "BT",
-  "datum": "2026-07-08",
-  "aktualisiert": "2026-07-09T08:00:00+02:00",
-  "titel": "Beschlussempfehlung und Bericht des Ausschusses für Wirtschaft und Energie zu dem Gesetzentwurf der Bundesregierung – Drucksache 21/6278 – Entwurf eines Gebäudemodernisierungsgesetzes",
-  "autoren_anzeige": [],
-  "autoren_anzahl": 0,
-  "fundstelle": {
-   "id": "1",
-   "dokumentart": "Drucksache",
-   "pdf_url": "https://dserver.bundestag.de/btd/21/656/2106565.pdf",
-   "dokumentnummer": "21/6565",
-   "datum": "2026-07-08",
-   "herausgeber": "BT"
-  },
+  "pdf_hash": "77e42744febf99c654074fb255bfc0fa",
+  "aktualisiert": "2026-07-14T11:49:35+02:00",
+  "vorgangsbezug": [
+   {
+    "id": "335836",
+    "titel": "Rechnung des Bundesrechnungshofes für das Haushaltsjahr 2025\r\n- Einzelplan 20 -",
+    "vorgangstyp": "Entlastung des Bundesrechnungshofes"
+   }
+  ],
   "urheber": [
    {
     "einbringer": false,
-    "bezeichnung": "Ausschuss für Wirtschaft und Energie",
-    "titel": "Ausschuss für Wirtschaft und Energie"
+    "bezeichnung": "HaushA",
+    "titel": "Haushaltsausschuss"
    }
   ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/071/2107107.pdf",
+   "id": "289641",
+   "dokumentnummer": "21/7107",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-13",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Haushaltsausschuss"
+   ]
+  },
+  "autoren_anzeige": [
+   {
+    "id": "1006",
+    "titel": "Peter Aumer, MdB, CDU/CSU",
+    "autor_titel": "Peter Aumer, Berichterstattung"
+   },
+   {
+    "id": "7267",
+    "titel": "Leon Eckert, MdB, BÜNDNIS 90/DIE GRÜNEN",
+    "autor_titel": "Leon Eckert, Berichterstattung"
+   },
+   {
+    "id": "2113",
+    "titel": "Uwe Schmidt, MdB, SPD",
+    "autor_titel": "Uwe Schmidt, Berichterstattung"
+   },
+   {
+    "id": "7912",
+    "titel": "Georg Schroeter, MdB, AfD",
+    "autor_titel": "Georg Schroeter, Berichterstattung"
+   }
+  ],
+  "titel": "zu dem Antrag des Präsidenten des Bundesrechnungshofes\r\n- Drucksache 21/6170 -\r\nRechnung des Bundesrechnungshofes für das Haushaltsjahr 2025\r\n- Einzelplan 20 -",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "289409",
+  "drucksachetyp": "Schriftliche Fragen",
+  "dokumentart": "Drucksache",
+  "autoren_anzahl": 0,
+  "typ": "Dokument",
+  "vorgangsbezug_anzahl": 230,
+  "dokumentnummer": "21/7052",
+  "wahlperiode": 21,
+  "herausgeber": "BT",
+  "pdf_hash": "7bfe711207555f41b3891972ec6ec5a8",
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
   "vorgangsbezug": [
    {
-    "id": "400001",
-    "titel": "Gebäudemodernisierungsgesetz",
+    "id": "337779",
+    "titel": "Absprachen des ehemaligen Bundesministers Jens Spahn mit Lieferanten im Open-House-Verfahren zur Maskenbeschaffung",
+    "vorgangstyp": "Schriftliche Frage"
+   },
+   {
+    "id": "337687",
+    "titel": "Absehbare Verzögerungen bei der Generalsanierung der Bahnstrecke Nürnberg-Regensburg",
+    "vorgangstyp": "Schriftliche Frage"
+   },
+   {
+    "id": "337698",
+    "titel": "Aktualisierung der Klimawirkungs- und Risikoanalyse 2021",
+    "vorgangstyp": "Schriftliche Frage"
+   },
+   {
+    "id": "337352",
+    "titel": "Absicherung des Wissenschaftssystems gegen Blockaden oder wissenschaftsfeindliche Einflussnahmen",
+    "vorgangstyp": "Schriftliche Frage"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107052.pdf",
+   "id": "289409",
+   "dokumentnummer": "21/7052",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-16",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Schriftliche Fragen",
+   "herausgeber": "BT",
+   "urheber": []
+  },
+  "titel": "Schriftliche Fragen mit den in der Woche vom 6. Juli 2026 eingegangenen Antworten der Bundesregierung",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "289340",
+  "drucksachetyp": "Beschlussempfehlung und Bericht",
+  "dokumentart": "Drucksache",
+  "autoren_anzahl": 2,
+  "typ": "Dokument",
+  "vorgangsbezug_anzahl": 3,
+  "dokumentnummer": "21/7009",
+  "wahlperiode": 21,
+  "herausgeber": "BT",
+  "pdf_hash": "9ae5d38c5b0ecdc08481ec874f2a0a4f",
+  "aktualisiert": "2026-07-09T11:00:56+02:00",
+  "vorgangsbezug": [
+   {
+    "id": "335070",
+    "titel": "Heizkostendeckel sofort einführen und Gasausstieg ermöglichen",
+    "vorgangstyp": "Antrag"
+   },
+   {
+    "id": "330686",
+    "titel": "Für das Recht auf Heizen - Bezahlbar und erneuerbar",
+    "vorgangstyp": "Antrag"
+   },
+   {
+    "id": "334923",
+    "titel": "Gesetz zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich",
     "vorgangstyp": "Gesetzgebung"
    }
   ],
-  "vorgangsbezug_anzahl": 1
- },
- {
-  "id": "300003",
-  "typ": "Dokument",
-  "dokumentart": "Drucksache",
-  "drucksachetyp": "Entschließungsantrag",
-  "dokumentnummer": "21/7022",
-  "wahlperiode": 21,
-  "herausgeber": "BT",
-  "datum": "2026-07-08",
-  "aktualisiert": "2026-07-09T08:00:00+02:00",
-  "titel": "Entschließungsantrag der Abgeordneten Pascal Meiser, Cansin Köktürk und der Fraktion Die Linke zu der dritten Beratung des Gesetzentwurfs der Bundesregierung – Drucksachen 21/6130, 21/6559 – GKV-Beitragssatzstabilisierungsgesetz",
-  "autoren_anzeige": [
-   {
-    "id": "5001",
-    "title": "Pascal Meiser, MdB, Die Linke",
-    "autor_titel": "Pascal Meiser"
-   },
-   {
-    "id": "5002",
-    "title": "Cansin Köktürk, MdB, Die Linke",
-    "autor_titel": "Cansin Köktürk"
-   }
-  ],
-  "autoren_anzahl": 2,
-  "fundstelle": {
-   "id": "1",
-   "dokumentart": "Drucksache",
-   "pdf_url": "https://dserver.bundestag.de/btd/21/702/2107022.pdf",
-   "dokumentnummer": "21/7022",
-   "datum": "2026-07-08",
-   "herausgeber": "BT"
-  },
   "urheber": [
    {
-    "einbringer": true,
-    "bezeichnung": "Fraktion Die Linke",
-    "titel": "Fraktion Die Linke"
+    "einbringer": false,
+    "bezeichnung": "AfWE",
+    "titel": "Ausschuss für Wirtschaft und Energie"
    }
   ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107009.pdf",
+   "id": "289340",
+   "dokumentnummer": "21/7009",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Ausschuss für Wirtschaft und Energie"
+   ]
+  },
+  "autoren_anzeige": [
+   {
+    "id": "7908",
+    "titel": "Dr. Alaa Alhamwi, MdB, BÜNDNIS 90/DIE GRÜNEN",
+    "autor_titel": "Dr. Alaa Alhamwi, Berichterstattung"
+   },
+   {
+    "id": "7374",
+    "titel": "Lars Rohwer, MdB, CDU/CSU",
+    "autor_titel": "Lars Rohwer, Berichterstattung"
+   }
+  ],
+  "titel": "a) zu dem Gesetzentwurf der Bundesregierung\r\n- Drucksachen 21/6278, 21/6565 -\r\nEntwurf eines Gesetzes zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich\r\n\r\nb) zu dem Antrag der Abgeordneten Violetta Bock, Jörg Cezanne, Luigi Pantisano, weiterer Abgeordneter und der Fraktion Die Linke\r\n- Drucksache 21/3910 -\r\nFür das Recht auf Heizen - Bezahlbar und erneuerbar\r\n\r\nc) zu dem Antrag der Abgeordneten Violetta Bock, Luigi Pantisano, Marcel Bauer, weiterer Abgeordneter und der Fraktion Die Linke\r\n- Drucksache 21/6019 -\r\nHeizkostendeckel sofort einführen und Gasausstieg ermöglichen",
+  "datum": "2026-07-08"
+ },
+ {
+  "id": "289309",
+  "drucksachetyp": "Entschließungsantrag",
+  "dokumentart": "Drucksache",
+  "autoren_anzahl": 21,
+  "typ": "Dokument",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentnummer": "21/6977",
+  "wahlperiode": 21,
+  "herausgeber": "BT",
+  "pdf_hash": "e670ae2c51e0230d57d885438f6d61a0",
+  "aktualisiert": "2026-07-09T10:06:41+02:00",
   "vorgangsbezug": [
    {
-    "id": "400002",
-    "titel": "Entschließungsantrag zum GKV-Beitragssatzstabilisierungsgesetz",
+    "id": "337023",
+    "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
     "vorgangstyp": "Entschließungsantrag BT"
    }
   ],
-  "vorgangsbezug_anzahl": 1
+  "urheber": [
+   {
+    "einbringer": false,
+    "bezeichnung": "LINKE",
+    "titel": "Fraktion DIE LINKE"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/069/2106977.pdf",
+   "id": "289309",
+   "dokumentnummer": "21/6977",
+   "datum": "2026-07-08",
+   "verteildatum": "2026-07-08",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Entschließungsantrag",
+   "herausgeber": "BT",
+   "urheber": [
+    "Fraktion DIE LINKE"
+   ]
+  },
+  "autoren_anzeige": [
+   {
+    "id": "8019",
+    "titel": "Sascha Wagner, MdB, DIE LINKE",
+    "autor_titel": "Sascha Wagner"
+   },
+   {
+    "id": "8074",
+    "titel": "Sahra Mirow, MdB, DIE LINKE",
+    "autor_titel": "Sahra Mirow"
+   }
+  ],
+  "titel": "zu der dritten Beratung des Gesetzentwurfs der Bundesregierung\r\n- Drucksachen 21/6560, 21/6885 -\r\nEntwurf eines Gesetzes zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+  "datum": "2026-07-08"
  }
 ]

@@ -1,6 +1,50 @@
 [
  {
-  "id": "5001",
+  "id": "8048",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "DIE LINKE"
+  ],
+  "nachname": "Köktürk",
+  "vorname": "Cansin",
+  "typ": "Person",
+  "wahlperiode": [
+   21
+  ],
+  "aktualisiert": "2025-03-11T09:25:56+01:00",
+  "titel": "Cansin Köktürk, MdB, DIE LINKE",
+  "datum": "2026-09-25",
+  "basisdatum": "2025-04-17"
+ },
+ {
+  "id": "7955",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "DIE LINKE"
+  ],
+  "nachname": "Becker",
+  "vorname": "Desiree",
+  "typ": "Person",
+  "wahlperiode": [
+   21
+  ],
+  "aktualisiert": "2025-03-07T11:54:45+01:00",
+  "titel": "Desiree Becker, MdB, DIE LINKE",
+  "datum": "2026-09-25",
+  "basisdatum": "2025-04-17"
+ },
+ {
+  "id": "2001",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "DIE LINKE"
+  ],
   "nachname": "Meiser",
   "vorname": "Pascal",
   "typ": "Person",
@@ -9,52 +53,176 @@
    20,
    21
   ],
-  "aktualisiert": "2026-07-01T00:00:00+02:00",
-  "titel": "Pascal Meiser, MdB, Die Linke",
-  "funktion": "MdB",
-  "fraktion": "Die Linke"
+  "aktualisiert": "2025-03-11T10:52:04+01:00",
+  "person_roles": [
+   {
+    "fraktion": "fraktionslos",
+    "nachname": "Meiser",
+    "vorname": "Pascal",
+    "wahlperiode_nummer": [
+     20
+    ]
+   },
+   {
+    "fraktion": "Die Linke (Gruppe)",
+    "nachname": "Meiser",
+    "vorname": "Pascal",
+    "wahlperiode_nummer": [
+     20
+    ]
+   }
+  ],
+  "titel": "Pascal Meiser, MdB, DIE LINKE",
+  "datum": "2026-09-25",
+  "basisdatum": "2017-11-13"
  },
  {
-  "id": "5002",
-  "nachname": "Köktürk",
-  "vorname": "Cansin",
+  "id": "8067",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "AfD"
+  ],
+  "nachname": "Mayer",
+  "vorname": "Andreas",
   "typ": "Person",
   "wahlperiode": [
    21
   ],
-  "aktualisiert": "2026-07-01T00:00:00+02:00",
-  "titel": "Cansin Köktürk, MdB, Die Linke",
-  "funktion": "MdB",
-  "fraktion": "Die Linke"
+  "aktualisiert": "2025-03-11T10:45:17+01:00",
+  "titel": "Andreas Mayer, MdB, AfD",
+  "datum": "2026-09-24",
+  "basisdatum": "2025-04-28"
  },
  {
-  "id": "5003",
+  "id": "8058",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "AfD"
+  ],
+  "nachname": "Rathert",
+  "vorname": "Anna",
+  "typ": "Person",
+  "wahlperiode": [
+   21
+  ],
+  "aktualisiert": "2026-06-17T16:51:22+02:00",
+  "titel": "Dr. Anna Rathert, MdB, AfD",
+  "datum": "2026-09-24",
+  "basisdatum": "2025-05-09"
+ },
+ {
+  "id": "7608",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "CDU/CSU"
+  ],
+  "nachname": "Santos-Wintz",
+  "vorname": "Catarina",
+  "namenszusatz": "dos",
+  "typ": "Person",
+  "wahlperiode": [
+   20,
+   21
+  ],
+  "aktualisiert": "2025-03-11T16:53:03+01:00",
+  "person_roles": [
+   {
+    "fraktion": "CDU/CSU",
+    "nachname": "Santos Firnhaber",
+    "vorname": "Catarina",
+    "namenszusatz": "dos",
+    "wahlperiode_nummer": [
+     20
+    ]
+   }
+  ],
+  "titel": "Catarina dos Santos-Wintz, MdB, CDU/CSU",
+  "datum": "2026-09-23",
+  "basisdatum": "2022-01-21"
+ },
+ {
+  "id": "7334",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "BÜNDNIS 90/DIE GRÜNEN"
+  ],
+  "nachname": "Mayer",
+  "vorname": "Zoe",
+  "typ": "Person",
+  "wahlperiode": [
+   20,
+   21
+  ],
+  "aktualisiert": "2025-03-11T10:43:28+01:00",
+  "person_roles": [
+   {
+    "fraktion": "BÜNDNIS 90/DIE GRÜNEN",
+    "nachname": "Mayer",
+    "vorname": "Zoe",
+    "wahlperiode_nummer": [
+     20
+    ]
+   }
+  ],
+  "titel": "Dr. Zoe Mayer, MdB, BÜNDNIS 90/DIE GRÜNEN",
+  "datum": "2026-09-23",
+  "basisdatum": "2022-01-14"
+ },
+ {
+  "id": "7252",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "CDU/CSU"
+  ],
+  "nachname": "Breilmann",
+  "vorname": "Michael",
+  "typ": "Person",
+  "wahlperiode": [
+   20,
+   21
+  ],
+  "aktualisiert": "2026-06-03T14:21:59+02:00",
+  "titel": "Michael Breilmann, MdB, CDU/CSU",
+  "datum": "2026-09-23",
+  "basisdatum": "2022-02-16"
+ },
+ {
+  "id": "7954",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "AfD"
+  ],
   "nachname": "Becker",
   "vorname": "Carsten",
   "typ": "Person",
   "wahlperiode": [
    21
   ],
-  "aktualisiert": "2026-07-01T00:00:00+02:00",
+  "aktualisiert": "2025-03-07T11:50:03+01:00",
   "titel": "Carsten Becker, MdB, AfD",
-  "funktion": "MdB",
-  "fraktion": "AfD"
+  "datum": "2026-09-22",
+  "basisdatum": "2025-05-20"
  },
  {
-  "id": "5004",
-  "nachname": "Becker",
-  "vorname": "Desiree",
-  "typ": "Person",
-  "wahlperiode": [
-   21
+  "id": "8127",
+  "funktion": [
+   "Bundesmin."
   ],
-  "aktualisiert": "2026-07-01T00:00:00+02:00",
-  "titel": "Desiree Becker, MdB, Die Linke",
-  "funktion": "MdB",
-  "fraktion": "Die Linke"
- },
- {
-  "id": "5005",
+  "ressort": [
+   "Bundesministerium für Arbeit und Soziales"
+  ],
   "nachname": "Bas",
   "vorname": "Bärbel",
   "typ": "Person",
@@ -65,21 +233,133 @@
    20,
    21
   ],
-  "aktualisiert": "2026-07-01T00:00:00+02:00",
+  "aktualisiert": "2025-05-09T10:56:22+02:00",
+  "person_roles": [
+   {
+    "fraktion": "SPD",
+    "nachname": "Bas",
+    "vorname": "Bärbel",
+    "wahlperiode_nummer": [
+     17,
+     18,
+     19,
+     20,
+     21
+    ]
+   },
+   {
+    "nachname": "Bas",
+    "vorname": "Bärbel",
+    "wahlperiode_nummer": [
+     20
+    ]
+   }
+  ],
   "titel": "Bärbel Bas, Bundesmin., Bundesministerium für Arbeit und Soziales",
-  "funktion": "Bundesmin.",
-  "fraktion": "SPD"
+  "datum": "2026-09-11",
+  "basisdatum": "2009-12-15"
  },
  {
-  "id": "5006",
-  "nachname": "Schmidt",
-  "vorname": "Otto",
+  "id": "1006",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "CDU/CSU"
+  ],
+  "nachname": "Aumer",
+  "vorname": "Peter",
   "typ": "Person",
   "wahlperiode": [
+   17,
+   19,
+   20,
    21
   ],
-  "aktualisiert": "2026-07-01T00:00:00+02:00",
-  "titel": "Otto Schmidt, Staatssekretär",
-  "funktion": "Staatssekretär"
+  "aktualisiert": "2025-03-07T10:44:44+01:00",
+  "titel": "Peter Aumer, MdB, CDU/CSU",
+  "datum": "2026-09-11",
+  "basisdatum": "2010-01-28"
+ },
+ {
+  "id": "374",
+  "funktion": [
+   "MdB"
+  ],
+  "fraktion": [
+   "CDU/CSU"
+  ],
+  "nachname": "Mayer",
+  "vorname": "Stephan",
+  "wahlkreiszusatz": "Altötting",
+  "typ": "Person",
+  "wahlperiode": [
+   15,
+   16,
+   17,
+   18,
+   19,
+   20,
+   21
+  ],
+  "aktualisiert": "2025-03-11T10:45:55+01:00",
+  "person_roles": [
+   {
+    "ressort_titel": "Bundesministerium des Innern, für Bau und Heimat",
+    "nachname": "Mayer",
+    "vorname": "Stephan",
+    "wahlperiode_nummer": [
+     19
+    ]
+   }
+  ],
+  "titel": "Stephan Mayer (Altötting), MdB, CDU/CSU",
+  "datum": "2026-07-10",
+  "basisdatum": "2002-11-05"
+ },
+ {
+  "id": "8152",
+  "funktion": [
+   "Parl. Staatssekr."
+  ],
+  "ressort": [
+   "Bundesministerium für Bildung, Familie, Senioren, Frauen und Jugend"
+  ],
+  "nachname": "Brand",
+  "vorname": "Michael",
+  "typ": "Person",
+  "wahlperiode": [
+   16,
+   17,
+   18,
+   19,
+   20,
+   21
+  ],
+  "aktualisiert": "2025-05-09T12:36:25+02:00",
+  "person_roles": [
+   {
+    "fraktion": "CDU/CSU",
+    "nachname": "Brand",
+    "vorname": "Michael",
+    "wahlkreiszusatz": "Fulda",
+    "wahlperiode_nummer": [
+     16,
+     17,
+     18,
+     19,
+     20,
+     21
+    ]
+   },
+   {
+    "fraktion": "CDU/CSU",
+    "nachname": "Brand",
+    "vorname": "Michael"
+   }
+  ],
+  "titel": "Michael Brand, Parl. Staatssekr., Bundesministerium für Bildung, Familie, Senioren, Frauen und Jugend",
+  "datum": "2026-09-24",
+  "basisdatum": "2005-12-14"
  }
 ]

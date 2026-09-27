@@ -1,0 +1,84 @@
+[
+ {
+  "id": "337023",
+  "beratungsstand": "Abgelehnt",
+  "vorgangstyp": "Entschließungsantrag BT",
+  "sachgebiet": [
+   "Öffentliche Finanzen, Steuern und Abgaben"
+  ],
+  "typ": "Vorgang",
+  "wahlperiode": 21,
+  "initiative": [
+   "Fraktion DIE LINKE"
+  ],
+  "aktualisiert": "2026-07-30T16:40:19+02:00",
+  "vorgang_verlinkung": [
+   {
+    "verweisung": "Gesetz",
+    "titel": "Gesetz zur Entlastung der Länder und ihrer Kommunen (Länder- und Kommunalentlastungsgesetz - LKEG)",
+    "id": "334561",
+    "wahlperiode": 21,
+    "gesta": "D041"
+   }
+  ],
+  "deskriptor": [
+   {
+    "fundstelle": false,
+    "name": "Altschulden",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Altschuldenhilfe-Gesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Anspruchs- und Anwartschaftsüberführungsgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Finanzverfassung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Gemeindefinanzen",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Gesetzgebung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Grundgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": false,
+    "name": "Kommunalverschuldung",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": false,
+    "name": "Landesschulden",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Länder- und Kommunalentlastungsgesetz",
+    "typ": "Rechtsmaterialien"
+   },
+   {
+    "fundstelle": true,
+    "name": "Länderfinanzen",
+    "typ": "Sachbegriffe"
+   }
+  ],
+  "titel": "Entschließungsantrag zum Gesetz zur Entlastung der Länder und ihrer Kommunen \r\n(Länder- und Kommunalentlastungsgesetz - LKEG)",
+  "datum": "2026-07-09"
+ }
+]
