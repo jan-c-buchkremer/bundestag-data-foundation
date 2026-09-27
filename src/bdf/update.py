@@ -9,7 +9,7 @@ from pathlib import Path
 
 import httpx
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, ingest, raw
+from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, ingest, raw
 from bdf.config import db_path, dip_api_key
 
 # constituent sitting of each Wahlperiode: the earliest date any source is asked for
@@ -71,6 +71,10 @@ def run(wp: int = 21, today: date | None = None) -> int:
         print(f"votes {start}..{end}")
         for row in fetch_bundestag.fetch_votes(http, start, end):
             print(f"  {row['date']} #{row['number']} {row['title']}")
+
+        election = fetch_wahl.ELECTION_OF_WAHLPERIODE[wp]
+        print(f"wahl {election}")
+        fetch_wahl.fetch_election(http, election)  # published once; downloaded only if missing
 
         print(f"abgeordnetenwatch WP {wp}")
         fetch_aw.fetch_wahlperiode(http, wp, force=True)
