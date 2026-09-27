@@ -1,0 +1,167 @@
+[
+ {
+  "id": "1791096",
+  "aktivitaetsart": "Berichterstattung",
+  "typ": "Aktivität",
+  "person_id": "8019",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-14T11:49:35+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Entlastung des Bundesrechnungshofes",
+    "titel": "Rechnung des Bundesrechnungshofes für das Haushaltsjahr 2025\r\n- Einzelplan 20 -",
+    "id": "335836"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/071/2107107.pdf",
+   "id": "289641",
+   "dokumentnummer": "21/7107",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-13",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Haushaltsausschuss"
+   ]
+  },
+  "titel": "Sascha Wagner, MdB, DIE LINKE",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "1791095",
+  "aktivitaetsart": "Berichterstattung",
+  "typ": "Aktivität",
+  "person_id": "2113",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-14T11:49:35+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Entlastung des Bundesrechnungshofes",
+    "titel": "Rechnung des Bundesrechnungshofes für das Haushaltsjahr 2025\r\n- Einzelplan 20 -",
+    "id": "335836"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/071/2107107.pdf",
+   "id": "289641",
+   "dokumentnummer": "21/7107",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-13",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Haushaltsausschuss"
+   ]
+  },
+  "titel": "Uwe Schmidt, MdB, SPD",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "1791094",
+  "aktivitaetsart": "Berichterstattung",
+  "typ": "Aktivität",
+  "person_id": "7912",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-14T11:49:35+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Entlastung des Bundesrechnungshofes",
+    "titel": "Rechnung des Bundesrechnungshofes für das Haushaltsjahr 2025\r\n- Einzelplan 20 -",
+    "id": "335836"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/071/2107107.pdf",
+   "id": "289641",
+   "dokumentnummer": "21/7107",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-13",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Haushaltsausschuss"
+   ]
+  },
+  "titel": "Georg Schroeter, MdB, AfD",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "1791093",
+  "aktivitaetsart": "Berichterstattung",
+  "typ": "Aktivität",
+  "person_id": "1006",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-14T11:49:35+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Entlastung des Bundesrechnungshofes",
+    "titel": "Rechnung des Bundesrechnungshofes für das Haushaltsjahr 2025\r\n- Einzelplan 20 -",
+    "id": "335836"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/071/2107107.pdf",
+   "id": "289641",
+   "dokumentnummer": "21/7107",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-13",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Haushaltsausschuss"
+   ]
+  },
+  "titel": "Peter Aumer, MdB, CDU/CSU",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "1791092",
+  "aktivitaetsart": "Berichterstattung",
+  "typ": "Aktivität",
+  "person_id": "7267",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-07-14T11:49:35+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Beschlussempfehlung und Bericht",
+    "vorgangstyp": "Entlastung des Bundesrechnungshofes",
+    "titel": "Rechnung des Bundesrechnungshofes für das Haushaltsjahr 2025\r\n- Einzelplan 20 -",
+    "id": "335836"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/071/2107107.pdf",
+   "id": "289641",
+   "dokumentnummer": "21/7107",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-13",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Beschlussempfehlung und Bericht",
+   "herausgeber": "BT",
+   "urheber": [
+    "Haushaltsausschuss"
+   ]
+  },
+  "titel": "Leon Eckert, MdB, BÜNDNIS 90/DIE GRÜNEN",
+  "datum": "2026-07-10"
+ }
+]

@@ -1,0 +1,162 @@
+[
+ {
+  "id": "1793798",
+  "aktivitaetsart": "Frage",
+  "typ": "Aktivität",
+  "person_id": "7944",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Schriftliche Frage/Schriftliche Antwort",
+    "vorgangstyp": "Schriftliche Frage",
+    "titel": "Wirksamkeit des Hitzeschutzplans für Gesundheit und darüber hinausgehende Maßnahmen",
+    "id": "337712"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107052.pdf",
+   "id": "289409",
+   "dokumentnummer": "21/7052",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-16",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Schriftliche Fragen",
+   "herausgeber": "BT",
+   "urheber": [],
+   "frage_nummer": "211, 212"
+  },
+  "titel": "Adam Balten, MdB, AfD",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "1793302",
+  "aktivitaetsart": "Frage",
+  "typ": "Aktivität",
+  "person_id": "8110",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Schriftliche Frage/Schriftliche Antwort",
+    "vorgangstyp": "Schriftliche Frage",
+    "titel": "Zeitplan für die Sanierung der Schleusenkammern in Brunsbüttel",
+    "id": "337625"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107052.pdf",
+   "id": "289409",
+   "dokumentnummer": "21/7052",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-16",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Schriftliche Fragen",
+   "herausgeber": "BT",
+   "urheber": [],
+   "frage_nummer": "189"
+  },
+  "titel": "Alexis L. Giersch, MdB, AfD",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "1792310",
+  "aktivitaetsart": "Frage",
+  "typ": "Aktivität",
+  "person_id": "8048",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Schriftliche Frage/Schriftliche Antwort",
+    "vorgangstyp": "Schriftliche Frage",
+    "titel": "Ausgestaltung und praktische Umsetzung der Mietprüf- und Mietsenkungspflichten in der Karenzzeit im Gesetzentwurf zur neuen Grundsicherung",
+    "id": "337461"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107052.pdf",
+   "id": "289409",
+   "dokumentnummer": "21/7052",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-16",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Schriftliche Fragen",
+   "herausgeber": "BT",
+   "urheber": [],
+   "frage_nummer": "148, 149, 150"
+  },
+  "titel": "Cansin Köktürk, MdB, DIE LINKE",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "1792306",
+  "aktivitaetsart": "Frage",
+  "typ": "Aktivität",
+  "person_id": "8048",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Schriftliche Frage/Schriftliche Antwort",
+    "vorgangstyp": "Schriftliche Frage",
+    "titel": "SGB-II-Beziehende mit vermittlungsrelevanten gesundheitlichen Einschränkungen in den letzten fünf Jahren",
+    "id": "337459"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107052.pdf",
+   "id": "289409",
+   "dokumentnummer": "21/7052",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-16",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Schriftliche Fragen",
+   "herausgeber": "BT",
+   "urheber": [],
+   "frage_nummer": "147"
+  },
+  "titel": "Cansin Köktürk, MdB, DIE LINKE",
+  "datum": "2026-07-10"
+ },
+ {
+  "id": "1791830",
+  "aktivitaetsart": "Frage",
+  "typ": "Aktivität",
+  "person_id": "7944",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Drucksache",
+  "wahlperiode": 21,
+  "aktualisiert": "2026-08-14T08:36:56+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Schriftliche Frage/Schriftliche Antwort",
+    "vorgangstyp": "Schriftliche Frage",
+    "titel": "Evaluationen der Fachveranstaltungen sowie Grundlage der Finanzierung des Robotics Institute Germany",
+    "id": "337353"
+   }
+  ],
+  "fundstelle": {
+   "pdf_url": "https://dserver.bundestag.de/btd/21/070/2107052.pdf",
+   "id": "289409",
+   "dokumentnummer": "21/7052",
+   "datum": "2026-07-10",
+   "verteildatum": "2026-07-16",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Schriftliche Fragen",
+   "herausgeber": "BT",
+   "urheber": [],
+   "frage_nummer": "113, 114"
+  },
+  "titel": "Adam Balten, MdB, AfD",
+  "datum": "2026-07-10"
+ }
+]

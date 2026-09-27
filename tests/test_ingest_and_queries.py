@@ -27,7 +27,7 @@ def test_counts(store):
     }
     assert counts["sitting"] == 1 and counts["agenda_item"] == 2 and counts["speech"] == 5
     assert counts["roll_call_vote"] == 1 and counts["individual_vote"] == 630
-    assert counts["drucksache"] == 2 and counts["drucksache_author"] == 2 and counts["vorgang"] == 2
+    assert counts["drucksache"] == 4 and counts["drucksache_author"] == 31 and counts["vorgang"] == 8
     assert counts["person"] == 11  # all fixture MdBs are Stammdaten records; no unknown speakers here
 
 
@@ -51,8 +51,8 @@ def test_every_fact_row_has_provenance(store):
     assert store.execute("SELECT source_document_id FROM speech LIMIT 1").fetchone()[0] == "BT-PlPr. 21/94"
     assert store.execute("SELECT source_document_id FROM roll_call_vote").fetchone()[0] == "NA 21/90/7"
     assert (
-        store.execute("SELECT source_document_id FROM drucksache WHERE number='21/7022'").fetchone()[0]
-        == "BT-Drs. 21/7022"
+        store.execute("SELECT source_document_id FROM drucksache WHERE number='21/6977'").fetchone()[0]
+        == "BT-Drs. 21/6977"
     )
 
 
@@ -80,10 +80,11 @@ def test_votes_with_own_vote_and_fraction_line(store):
     assert v["vote_id"] == "21/90/7" and v["own_vote"] == "no"
     assert v["fraction_line"]["fraction"] == "Die Linke" and v["fraction_line"]["majority"] == "no"
     assert v["result"] == {"yes": 323, "no": 271, "abstain": 0, "invalid": 0, "absent": 36}
-    # linked through DIP's Vorgangsposition with abstimmungsart "Namentliche Abstimmung"
+    # linked through DIP's Vorgangsposition with abstimmungsart "Namentliche Abstimmung";
+    # for a bill DIP names the Gesetzentwurf and the Beschlussempfehlung
     assert (v["drucksache_number"], v["vorgang_id"], v["link_method"]) == (
-        "21/6278",
-        "400001",
+        "21/6278, 21/7009",
+        "334923",
         "dip_beschluss",
     )
     assert v["source_url"].endswith("20260710_7-xls.xlsx")
@@ -111,11 +112,35 @@ def test_vote_rows_are_matched_to_persons(store):
 
 def test_drucksachen_coauthored(store):
     rows = queries.drucksachen(store, "11004819", *WEEK)
-    assert [r["number"] for r in rows] == ["21/7022"]
+    assert [r["number"] for r in rows] == ["21/6977"]
     assert rows[0]["type"] == "Entschließungsantrag" and rows[0]["activity_type"] == "Entschließungsantrag"
-    assert rows[0]["source_document_id"] == "BT-Drs. 21/7022"
-    assert json.loads(rows[0]["originators"]) == ["Fraktion Die Linke"]
+    assert rows[0]["source_document_id"] == "BT-Drs. 21/6977"
+    assert json.loads(rows[0]["originators"]) == ["Fraktion DIE LINKE"]
+    assert rows[0]["author_count"] == 21
+    # a written question counts as authorship
+    assert [(r["number"], r["activity_type"]) for r in queries.drucksachen(store, "11005505", *WEEK)] == [
+        ("21/6977", "Entschließungsantrag"),
+        ("21/7052", "Frage"),
+    ]
+
+
+def test_rapporteur_is_not_an_author(store):
+    # Peter Aumer is Berichterstatter on the Beschlussempfehlung 21/7107: stored, but not authorship
+    assert (
+        store.execute(
+            "SELECT activity_type FROM drucksache_author a JOIN drucksache d ON d.id = a.drucksache_id "
+            "WHERE a.person_id = '11004004' AND d.number = '21/7107'"
+        ).fetchone()[0]
+        == "Berichterstattung"
+    )
     assert queries.drucksachen(store, "11004004", *WEEK) == []
+
+
+def test_author_count_falls_back_to_activities(store):
+    # DIP reports autoren_anzahl 0 for Schriftliche Fragen; the fixture keeps 3 of its askers
+    counts = dict(store.execute("SELECT number, author_count FROM drucksache").fetchall())
+    assert counts["21/7052"] == 3
+    assert counts["21/6977"] == 21  # agrees with DIP, kept
 
 
 def test_corpus_export(store):
@@ -133,7 +158,7 @@ def test_corpus_export(store):
 
 def test_cross_ids(store):
     p = dict(store.execute("SELECT * FROM person WHERE id = '11004819'").fetchone())
-    assert p["dip_person_id"] == "5001"
+    assert p["dip_person_id"] == "2001"
     assert p["aw_politician_id"] is not None
     assert p["wikidata_qid"].startswith("Q")
     # abgeordnetenwatch's wrong ext ids (both Beckers -> 11000125) do not win over the name match

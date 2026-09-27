@@ -1,0 +1,30 @@
+[
+ {
+  "id": "335836",
+  "abstract": "Erläuterungen und Rechnungslegung zu den Kapiteln Zentral veranschlagte Verwaltungseinnahmen und -ausgaben sowie Bundesrechnungshof",
+  "vorgangstyp": "Entlastung des Bundesrechnungshofes",
+  "sachgebiet": [
+   "Öffentliche Finanzen, Steuern und Abgaben"
+  ],
+  "typ": "Vorgang",
+  "wahlperiode": 21,
+  "initiative": [
+   "Präsident des Bundesrechnungshofes"
+  ],
+  "aktualisiert": "2026-07-14T11:45:49+02:00",
+  "deskriptor": [
+   {
+    "fundstelle": false,
+    "name": "Bundeshaushalt 2024",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "fundstelle": true,
+    "name": "Bundesrechnungshof",
+    "typ": "Institutionen"
+   }
+  ],
+  "titel": "Rechnung des Bundesrechnungshofes für das Haushaltsjahr 2025\r\n- Einzelplan 20 -",
+  "datum": "2026-07-10"
+ }
+]
