@@ -24,7 +24,7 @@ data/
     dip/
       drucksache/2026-07-06_2026-07-10.json  # list responses, one file per fetched range
       aktivitaet/drucksache-<id>.json        # authors of one Drucksache
-      vorgangsposition/2026-07-06_2026-07-10.json
+      vorgangsposition/2026-07-06_2026-07-10.json  # all BT Vorgangspositionen dated in the range
       vorgang/drucksache-<id>.json           # all Vorgänge linked to one Drucksache
       person/wp21.json
     abgeordnetenwatch/
@@ -102,6 +102,9 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 **vorgang** `*id (DIP), wahlperiode, type (vorgangstyp), title, status (beratungsstand), subjects (JSON sachgebiet), initiators (JSON initiative), source_url, source_document_id, retrieved_at`
 
 **vorgang_drucksache** `vorgang_id →vorgang, drucksache_id →drucksache` (composite PK)
+
+**vorgang_position** `*id (DIP), vorgang_id (DIP; not every Vorgang is in vorgang), date, position (vorgangsposition: "Gesetzentwurf", "1. Beratung", "Antwort", …), chamber (zuordnung), document_kind (Drucksache | Plenarprotokoll), document_number, document_type (drucksachetyp), pdf_url, pages ("1234-1236", protocols), originators (JSON urheber titles), ressort (JSON [{titel, federfuehrend}] or NULL), decisions (JSON beschlussfassung as in DIP, or NULL), source_url, source_document_id ("DIP Vorgangsposition <id>"), retrieved_at`
+— one row per step of a Vorgang, from the same date-range lists as the vote linking (deduplicated by id, latest copy wins). Only BT positions are fetched so far (`f.zuordnung=BT`), so Bundesrat steps (Durchgänge) are missing.
 
 **roll_call_vote** `*id, sitting_id →sitting, number (Abstimmnr), date, title (from the bundestag.de list), drucksache_number (NULL until linked), vorgang_id →vorgang (NULL until linked), link_method (dip_beschluss | title_regex | manual | NULL), yes, no, abstain, invalid, absent (totals computed from individual_vote), xlsx_url, pdf_url, source_url, source_document_id, retrieved_at, agenda_item_id →agenda_item (see Chair text and decisions)`
 

@@ -170,6 +170,23 @@ CREATE TABLE IF NOT EXISTS vorgang_drucksache (
     PRIMARY KEY (vorgang_id, drucksache_id)
 );
 
+CREATE TABLE IF NOT EXISTS vorgang_position (
+    id TEXT PRIMARY KEY,                -- DIP id of the Vorgangsposition (one step of a Vorgang)
+    vorgang_id TEXT NOT NULL,           -- DIP id of the Vorgang; not every Vorgang is in table vorgang
+    date TEXT NOT NULL,                 -- datum
+    position TEXT NOT NULL,             -- vorgangsposition, e.g. "Gesetzentwurf", "1. Beratung", "Antwort"
+    chamber TEXT,                       -- zuordnung: BT | BR | BV | …
+    document_kind TEXT,                 -- fundstelle.dokumentart: Drucksache | Plenarprotokoll
+    document_number TEXT,               -- fundstelle.dokumentnummer: "21/304" (Drucksache), "21/13" (protocol)
+    document_type TEXT,                 -- fundstelle.drucksachetyp
+    pdf_url TEXT,                       -- fundstelle.pdf_url
+    pages TEXT,                         -- "1234-1236" (fundstelle.anfangsseite-endseite), protocols only
+    originators TEXT NOT NULL,          -- JSON array of urheber titles
+    ressort TEXT,                       -- JSON array of objects {{titel, federfuehrend}}, NULL if none
+    decisions TEXT,                     -- JSON array of beschlussfassung objects as in DIP, NULL if none
+    {PROVENANCE}
+);
+
 CREATE TABLE IF NOT EXISTS roll_call_vote (
     id TEXT PRIMARY KEY,                -- "21/90/7"
     sitting_id TEXT REFERENCES sitting(id),
@@ -306,6 +323,8 @@ CREATE INDEX IF NOT EXISTS author_person ON drucksache_author(person_id);
 CREATE INDEX IF NOT EXISTS author_dip_person ON drucksache_author(dip_person_id);
 CREATE INDEX IF NOT EXISTS drucksache_date ON drucksache(date);
 CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
+CREATE INDEX IF NOT EXISTS vorgang_position_vorgang ON vorgang_position(vorgang_id);
+CREATE INDEX IF NOT EXISTS vorgang_position_date ON vorgang_position(date);
 CREATE INDEX IF NOT EXISTS candidacy_person ON election_candidacy(person_id);
 {GOVERNMENT_ROLE_INDEX};
 """

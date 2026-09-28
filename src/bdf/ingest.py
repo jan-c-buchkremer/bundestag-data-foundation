@@ -272,6 +272,7 @@ def ingest_dip(conn: sqlite3.Connection) -> None:
         return
     _ingest_dip_persons(conn)
     _ingest_drucksachen(conn)
+    _ingest_vorgang_positions(conn)
     _link_votes_to_dip(conn)
 
 
@@ -394,6 +395,45 @@ def _vorgang_rows(drucksache_id: str) -> tuple[list[dict], list[dict]]:
     ]
     links = [{"vorgang_id": v["id"], "drucksache_id": drucksache_id} for v in vorgaenge]
     return rows, links
+
+
+def _ingest_vorgang_positions(conn: sqlite3.Connection) -> None:
+    """Every step of a Vorgang from the date-range lists: Drucksache, Beratung, Durchgang, Verkündung, …"""
+    rows = [_vorgang_position_row(p, meta) for p, meta in _latest_list_records(dip_dir() / "vorgangsposition")]
+    with conn:
+        upsert(conn, "vorgang_position", rows)
+    print(f"dip: {len(rows)} vorgangspositionen")
+
+
+def _vorgang_position_row(p: dict, meta: raw.RawMeta) -> dict:
+    f = p.get("fundstelle") or {}
+    pages = None
+    if f.get("anfangsseite"):
+        pages = str(f["anfangsseite"])
+        if f.get("endseite") and f["endseite"] != f["anfangsseite"]:
+            pages += f"-{f['endseite']}"
+    return {
+        "id": p["id"],
+        "vorgang_id": p["vorgang_id"],
+        "date": p["datum"],
+        "position": p["vorgangsposition"],
+        "chamber": p.get("zuordnung"),
+        "document_kind": f.get("dokumentart") or p.get("dokumentart"),
+        "document_number": f.get("dokumentnummer"),
+        "document_type": f.get("drucksachetyp"),
+        "pdf_url": f.get("pdf_url"),
+        "pages": pages,
+        "originators": json.dumps([u.get("titel") for u in p.get("urheber", [])], ensure_ascii=False),
+        "ressort": _json_or_none(
+            [{"titel": r.get("titel"), "federfuehrend": bool(r.get("federfuehrend"))} for r in p.get("ressort") or []]
+        ),
+        "decisions": _json_or_none(p.get("beschlussfassung") or []),
+        **meta.provenance(f"DIP Vorgangsposition {p['id']}", url=f"{DIP_BASE_URL}/vorgangsposition/{p['id']}"),
+    }
+
+
+def _json_or_none(items: list) -> str | None:
+    return json.dumps(items, ensure_ascii=False) if items else None
 
 
 def _link_votes_to_dip(conn: sqlite3.Connection) -> None:

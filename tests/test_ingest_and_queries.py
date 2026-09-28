@@ -43,6 +43,7 @@ def test_every_fact_row_has_provenance(store):
         "drucksache",
         "drucksache_author",
         "vorgang",
+        "vorgang_position",
         "roll_call_vote",
     ):
         bad = store.execute(
@@ -212,8 +213,48 @@ def test_overlapping_dip_ranges_count_each_record_once(data_dir):
     # the vote's one DIP decision is not doubled, so it still pairs with the one vote of the day
     assert conn.execute("SELECT link_method FROM roll_call_vote WHERE id = '21/90/7'").fetchone()[0] == "dip_beschluss"
     assert conn.execute("SELECT count(*) FROM drucksache").fetchone()[0] == 4
+    assert conn.execute("SELECT count(*) FROM vorgang_position").fetchone()[0] == 2
     first = json.loads((dip / "drucksache" / "2026-07-06_2026-07-10.json").read_text(encoding="utf-8"))[0]
     assert conn.execute("SELECT title FROM drucksache WHERE id = ?", (first["id"],)).fetchone()[0] == "later title"
+
+
+def test_vorgang_positions(store):
+    rows = {r["id"]: dict(r) for r in store.execute("SELECT * FROM vorgang_position")}
+    assert len(rows) == 2
+    third = rows["696837"]
+    assert (third["vorgang_id"], third["position"], third["chamber"], third["document_kind"]) == (
+        "334923",
+        "3. Beratung",
+        "BT",
+        "Plenarprotokoll",
+    )
+    assert third["pages"] == "11179" and third["ressort"] is None and third["originators"] == "[]"
+    assert json.loads(third["decisions"])[0]["abstimmungsart"] == "Namentliche Abstimmung"
+    question = rows["696051"]
+    assert (question["document_number"], question["document_type"]) == ("21/6862", "Kleine Anfrage")
+    assert json.loads(question["originators"]) == ["Fraktion der AfD"] and question["decisions"] is None
+    assert question["source_document_id"] == "DIP Vorgangsposition 696051"
+    assert question["source_url"] == "https://search.dip.bundestag.de/api/v1/vorgangsposition/696051"
+
+
+def test_vorgang_position_ressort_and_page_range():
+    from bdf import ingest, raw
+
+    record = {
+        "id": "1",
+        "vorgang_id": "2",
+        "datum": "2026-07-09",
+        "vorgangsposition": "1. Beratung",
+        "zuordnung": "BT",
+        "fundstelle": {"dokumentart": "Plenarprotokoll", "dokumentnummer": "21/13", "anfangsseite": 12, "endseite": 15},
+        "ressort": [{"federfuehrend": True, "titel": "Bundesministerium der Finanzen"}, {"titel": "Auswärtiges Amt"}],
+    }
+    row = ingest._vorgang_position_row(record, raw.RawMeta(url="u", retrieved_at="2026-09-27T00:00:00+00:00"))
+    assert row["pages"] == "12-15"
+    assert json.loads(row["ressort"]) == [
+        {"titel": "Bundesministerium der Finanzen", "federfuehrend": True},
+        {"titel": "Auswärtiges Amt", "federfuehrend": False},
+    ]
 
 
 def test_aw_profile_statistics(store):
