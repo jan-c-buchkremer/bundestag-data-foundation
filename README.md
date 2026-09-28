@@ -112,6 +112,10 @@ and recorded DIP responses for four Drucksachen of that week).
 
 Details and quotes in `docs/licences.md`. Code is MIT.
 
+`bdf export <dir>` writes the store as open data: one gzipped CSV per table, a Frictionless `datapackage.json`
+(types, descriptions, keys, sources and licences per table) and a README with the required attributions
+(`docs/design.md`, "Open-data export").
+
 ## Known limits
 
 - The government roster merges Wikidata, the Stammdaten and the roles printed in the protocols; `source_kind`

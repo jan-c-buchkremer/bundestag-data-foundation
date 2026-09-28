@@ -255,6 +255,20 @@ bdf query stale-roles [--days 90]                   # protocol-only roles not pr
 bdf query photos     [--missing]                    # portraits with credit, or sitting members without one
 bdf query decisions  --sitting 21/90                # decisions announced by the chair, fraction positions / roll-call totals
 bdf query corpus     --from … --to …                # JSONL: one clean speech per line with speaker id, fraction, date, source
+bdf export data/export                              # open data: one CSV.gz per table, datapackage.json, README.md
 ```
 
 Every query prints the source pointer on each row.
+
+## Open-data export
+
+`bdf export <dir>` writes every table as `<table>.csv.gz` (UTF-8, header row, rows ordered by primary key, NULL as
+an empty field, gzip without a timestamp so unchanged data gives identical files), a Frictionless
+`datapackage.json` and a German `README.md` with the attribution each source requires. The data package lists per
+table the fields with type (`string` / `integer` / `number` from the SQLite type) and the description from the
+`-- …` comment in `db.SCHEMA` (parsed at export time, so the schema stays the only place to document a column),
+the primary key, the single-column foreign keys, and the sources and licences (`export.TABLE_SOURCES`); at the top
+the created timestamp and `latest_sitting_date`. Provenance columns are exported; `person_photo.local_path` (a path
+on the build machine) is not, and no images are. The export is built in a hidden sibling directory and renamed into
+place, so a failed run keeps the previous export. On the dev store (95 sittings) it is ~37 MB, two thirds of it
+`speech_paragraph` and `speech`, and takes ~10 s; `frictionless validate datapackage.json` passes.
