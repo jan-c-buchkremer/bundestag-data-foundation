@@ -163,6 +163,15 @@ CREATE TABLE IF NOT EXISTS individual_vote (
     vote TEXT NOT NULL                  -- yes | no | abstain | invalid | absent
 );
 
+CREATE TABLE IF NOT EXISTS aw_profile (
+    aw_politician_id INTEGER PRIMARY KEY,
+    person_id TEXT REFERENCES person(id),
+    url TEXT NOT NULL,                  -- the public profile page
+    questions INTEGER,                  -- citizen questions on the profile, all periods (statistic_questions)
+    questions_answered INTEGER,
+    {PROVENANCE}
+);
+
 CREATE TABLE IF NOT EXISTS constituency (
     id TEXT PRIMARY KEY,                -- "<election>/<number>", e.g. "btw25/114"
     election TEXT NOT NULL,             -- "btw25"

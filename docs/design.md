@@ -106,6 +106,10 @@ No separate `fraction` table: fraction is a normalised string (`CDU/CSU`, `SPD`,
 `BÜNDNIS 90/DIE GRÜNEN`, `Die Linke`, `fraktionslos`) with one normalisation function
 shared by the XML, XLSX and Stammdaten parsers. A table would add a join and nothing else.
 
+### abgeordnetenwatch.de
+
+**aw_profile** `*aw_politician_id, person_id →person (NULL if unmatched), url (public profile), questions, questions_answered (citizen questions on the profile, lifetime totals), source_url, source_document_id, retrieved_at`
+
 ### Election (Bundeswahlleiterin)
 
 **constituency** `*id ("btw25/114"), election, number, name, state, seat_party (party whose candidate got the seat; NULL when the winner had no Zweitstimmendeckung), electorate, voters, source_url, source_document_id, retrieved_at`

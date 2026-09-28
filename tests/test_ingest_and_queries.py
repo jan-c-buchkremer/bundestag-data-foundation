@@ -213,3 +213,12 @@ def test_overlapping_dip_ranges_count_each_record_once(data_dir):
     assert conn.execute("SELECT count(*) FROM drucksache").fetchone()[0] == 4
     first = json.loads((dip / "drucksache" / "2026-07-06_2026-07-10.json").read_text(encoding="utf-8"))[0]
     assert conn.execute("SELECT title FROM drucksache WHERE id = ?", (first["id"],)).fetchone()[0] == "later title"
+
+
+def test_aw_profile_statistics(store):
+    bas = store.execute("SELECT * FROM aw_profile WHERE person_id = '11004006'").fetchone()
+    assert (bas["questions"], bas["questions_answered"]) == (689, 611)
+    assert bas["url"] == "https://www.abgeordnetenwatch.de/profile/baerbel-bas"
+    assert bas["source_document_id"] == f"aw politician {bas['aw_politician_id']}"
+    assert bas["source_url"].startswith("https://www.abgeordnetenwatch.de/api/v2/politicians/")
+    assert store.execute("SELECT count(*) FROM aw_profile").fetchone()[0] == 8
