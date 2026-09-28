@@ -2,8 +2,8 @@
 
 import sqlite3
 
+from bdf.government import KINDS, held_on
 from bdf.names import VOTE_VALUES, normalize_name
-from bdf.parse_wikidata import KINDS
 
 # DIP activity types that make a person an author of a Drucksache. The others DIP returns per Drucksache are
 # roles of their own: Berichterstattung (committee rapporteur on a Beschlussempfehlung) and Antwort
@@ -138,19 +138,23 @@ def corpus(conn: sqlite3.Connection, start: str, end: str) -> list[dict]:
 
 
 def government(conn: sqlite3.Connection, on: str | None = None) -> list[dict]:
-    """Government roles from Wikidata, by kind and start; ``on`` keeps the roles held on that day."""
-    rows = conn.execute(
-        """
-        SELECT g.id, g.person_id, g.wikidata_qid, g.name, g.office, g.department, g.kind, g.from_date, g.to_date,
-               p.is_mdb, g.source_url, g.source_document_id, g.retrieved_at
-        FROM government_role g
-        LEFT JOIN person p ON p.id = g.person_id
-        WHERE ? IS NULL OR (g.from_date <= ? AND (g.to_date IS NULL OR g.to_date >= ?))
-        ORDER BY g.from_date, g.office
-        """,
-        (on, on, on),
-    ).fetchall()
-    return sorted((dict(r) for r in rows), key=lambda r: KINDS.index(r["kind"]))
+    """Government roles (Wikidata, Stammdaten, protocols), by kind and start; ``on`` keeps the roles held that day
+    (a protocol row counts as held after its last evidence until contradicted, see government.held_on)."""
+    rows = [
+        dict(r)
+        for r in conn.execute(
+            """
+            SELECT g.id, g.person_id, g.wikidata_qid, g.name, g.office, g.department, g.kind, g.from_date, g.to_date,
+                   g.source_kind, p.is_mdb, g.source_url, g.source_document_id, g.retrieved_at
+            FROM government_role g
+            LEFT JOIN person p ON p.id = g.person_id
+            ORDER BY g.from_date, g.office, g.name
+            """
+        )
+    ]
+    if on is not None:
+        rows = held_on(rows, on)
+    return sorted(rows, key=lambda r: KINDS.index(r["kind"]))
 
 
 def photos(conn: sqlite3.Connection) -> list[dict]:

@@ -158,12 +158,33 @@ for their `constituency_number`.
 caption of the card's image ("© Sanae Abdi/SPD-Fraktion"). Government members without a card (non-MdB ministers):
 the Wikidata P18 image from Commons, credit "<author>, <licence>", `source_url` the Commons file page.
 
-**government_role** `*id (Wikidata statement id), person_id →person, wikidata_qid, name, office (position label), department, kind (kanzler | minister | staatsminister | parl_sts | beamteter_sts), from_date, to_date, source_url, source_document_id, retrieved_at`
-— one row per "position held" (P39) statement starting on or after 2025-05-06, replaced wholesale on ingest.
-`kind` comes from the position's class: Bundeskanzler; subclasses of Bundesminister and the Chef des
-Bundeskanzleramtes → minister; Staatsminister (Bund) and the BKM → staatsminister; subclasses of Parlamentarischer
-Staatssekretär and beamteter Staatssekretär. `department` is the statement's "of" qualifier or the position's
-"directs" (P2389).
+**government_role** `*id, person_id →person, wikidata_qid, name, office, department, kind (kanzler | minister | staatsminister | parl_sts | beamteter_sts), from_date, to_date, source_url, source_document_id, retrieved_at, source_kind (wikidata | stammdaten | protocol)`
+— the federal government since 2025-05-06, replaced wholesale on ingest, merged (`bdf/government.py`) from three
+sources:
+- **wikidata**: one "position held" (P39) statement starting on or after 2025-05-06. `kind` comes from the
+  position's class: Bundeskanzler; subclasses of Bundesminister and the Chef des Bundeskanzleramtes → minister;
+  Staatsminister (Bund) and the BKM → staatsminister; subclasses of Parlamentarischer Staatssekretär and beamteter
+  Staatssekretär. `department` is the statement's "of" qualifier or the position's "directs" (P2389).
+- **stammdaten**: a membership of kind other since 2025-05-06 whose function (`role`) is Bundeskanzler(in),
+  Bundesminister(in), Staatsminister(in) or Parlamentarische(r) Staatssekretär(in); the institution is the
+  department. Exact dates, MdBs only.
+- **protocol**: the role printed for a speaker (`speech.speaker_role`, else `person.role` of a non-MdB), parsed into
+  kind and department ("Parl. Staatssekretärin bei der Bundesministerin für …", "Bundesminister des Auswärtigen" →
+  Auswärtiges Amt, "Staatsminister beim Bundeskanzler" / "für Kultur und Medien" → Bundeskanzleramt; Land offices
+  and Beauftragte are not government roles). `from_date`/`to_date` are the first and last sitting that prints the
+  role for the person: **evidence, not appointment dates** (consumers: "belegt ab … (Plenarprotokoll)").
+  Provenance is the protocol of the first sitting.
+
+One row per person + kind + department (departments compared on a key that ignores "für"/"und", so the
+Stammdaten's "Justiz und Verbraucherschutz" meets "Justiz und für Verbraucherschutz"). The row takes dates and
+provenance from the best source present, wikidata > stammdaten > protocol, and names it in `source_kind`; `office`
+is Wikidata's label, else a generic one ("Parlamentarischer Staatssekretär beim Bundesminister der Finanzen");
+`department` is Wikidata's name, else the one read from the protocol, else the Stammdaten institution. `id` is the
+Wikidata statement id when Wikidata is the source, else `<source_kind>:<person_id>:<kind>:<department key>`.
+An open Kanzler or Bundesminister role from Wikidata or the Stammdaten is closed the day before the protocols first
+show another person in that office (`ingest` prints each such inference). `queries.government(on=…)` treats a
+protocol row as held after its last evidence until contradicted by a later role of the person or a later holder of
+the same single-holder office.
 
 ## Entity linking
 
@@ -188,7 +209,7 @@ Staatssekretär and beamteter Staatssekretär. `department` is the statement's "
 6. **Biography card → person**: printed name ("Aken, Jan van", "Schneider (Erfurt), Carsten", titles stripped)
    with the shared name index; if that is ambiguous, a unique WP member with the same surname, first given name
    and fraction. A card whose fraction differs from the store's is reported.
-7. **Government role → person**: `person.wikidata_qid` (from abgeordnetenwatch), then the full name with an equal
+7. **Government role → person**: Stammdaten and protocol roles carry the person id; Wikidata roles: `person.wikidata_qid` (from abgeordnetenwatch), then the full name with an equal
    or unknown birth date (non-MdB speakers from the protocols have none), then the shared name index with the
    birth year. A match by name writes the QID onto the person. The rest get a person row with `id` = QID and
    `is_mdb = 0`; such a row is deleted again once the person is matched.

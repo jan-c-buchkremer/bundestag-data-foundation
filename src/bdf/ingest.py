@@ -11,6 +11,7 @@ from pathlib import Path
 
 from bdf import (
     fetch_wikidata,
+    government,
     parse_biografien,
     parse_comments,
     parse_decisions,
@@ -623,23 +624,55 @@ def _match_elected(index: PersonIndex, members: list[sqlite3.Row], c: dict) -> s
     return same[0] if len(same) == 1 else None
 
 
-# --- Wikidata: government roster ----------------------------------------------------------
+# --- Government roster: Wikidata + Stammdaten + protocols ---------------------------------
 
-# government speakers as the protocols print their role; used to check the roster for completeness
+# role texts that look like a federal government office; what government.parse_role leaves of them is reported
 _GOVERNMENT_ROLE_RE = re.compile(
-    r"^(Bundeskanzler|Bundesminister|Parl\. Staatssekretär"
-    r"|Staatsminister(in)? (beim|bei der) |Staatssekretär(in)? (im|in der|beim|bei der) )"
+    r"^(Bundeskanzler|Bundesminister|Parl\. Staatssekretär|Parlamentarische"
+    r"|Staatsminister(in)? (beim|bei der|für) |Staatssekretär(in)? (im|in der|beim|bei der) )"
 )
+_COMMISSIONER_RE = re.compile(r"^Beauftragte[r]? der Bundesregierung")
 
 
 def ingest_government(conn: sqlite3.Connection) -> None:
-    """Wikidata roles -> government_role, replaced wholesale. Holders are matched to persons by Wikidata QID, then by
-    name + birth date (non-MdB speakers from the protocols have no birth date and match on the name alone); the
-    rest get a person row with id = QID and is_mdb = 0."""
+    """government_role, replaced wholesale: Wikidata roles, Stammdaten government memberships and the government
+    roles printed in the protocols, merged by bdf.government (one row per person + kind + department, dates from
+    the best source, open single-holder roles closed by a later holder in the protocols)."""
+    evidence, matched, new_persons = _wikidata_evidence(conn)
+    stammdaten = _stammdaten_evidence(conn)
+    protocol, unparsed = _protocol_evidence(conn)
+    rows, inferences = government.merge(evidence + stammdaten + protocol)
+    with conn:
+        conn.execute("DELETE FROM government_role")
+        upsert(conn, "person", list(new_persons.values()))
+        upsert(conn, "government_role", rows)
+        conn.executemany(
+            "UPDATE person SET wikidata_qid = ? WHERE id = ? AND wikidata_qid IS NULL",
+            [(qid, pid) for qid, (pid, how) in matched.items() if how == "name"],
+        )
+        # person rows made for a roster member who has since been matched (or dropped from the roster)
+        orphans = "SELECT id FROM person WHERE id LIKE 'Q%' AND id NOT IN (SELECT person_id FROM government_role)"
+        conn.execute(f"DELETE FROM person_photo WHERE person_id IN ({orphans})")
+        conn.execute(f"DELETE FROM person WHERE id IN ({orphans})")
+    hows = [how for _, how in matched.values()]
+    print(
+        f"government: evidence from wikidata {len(evidence)}, stammdaten {len(stammdaten)}, protocol {len(protocol)}; "
+        f"Wikidata holders: {len(matched)} persons, {hows.count('qid')} matched by QID, {hows.count('name')} by "
+        f"name, {hows.count('new')} new"
+    )
+    _report_government(conn, rows, inferences, unparsed)
+
+
+def _wikidata_evidence(
+    conn: sqlite3.Connection,
+) -> tuple[list[government.Evidence], dict[str, tuple[str | None, str]], dict[str, dict]]:
+    """Wikidata roles as evidence. Holders are matched to persons by Wikidata QID, then by name + birth date
+    (non-MdB speakers from the protocols have no birth date and match on the name alone); the rest get a person
+    row with id = QID and is_mdb = 0. Returns the evidence, {qid: (person_id, how)} and the new person rows."""
     path = fetch_wikidata.government_path()
     if not path.exists():
-        print("government: nothing fetched")
-        return
+        print("government: Wikidata roster not fetched")
+        return [], {}, {}
     meta = raw.read_meta(path)
     roles = parse_wikidata.parse_roles(raw.read_json(path))
     persons = conn.execute(
@@ -674,61 +707,120 @@ def ingest_government(conn: sqlite3.Connection) -> None:
                 "party": r.party, "is_mdb": 0, "role": r.office, "wikidata_qid": r.qid,
                 **meta.provenance(f"Wikidata {r.qid}", url=f"https://www.wikidata.org/wiki/{r.qid}"),
             }  # fmt: skip
-    rows = [
-        {
-            "id": r.id, "person_id": matched[r.qid][0] or r.qid, "wikidata_qid": r.qid, "name": r.name,
-            "office": r.office, "department": r.department, "kind": r.kind, "from_date": r.from_date,
-            "to_date": r.to_date,
-            **meta.provenance(f"Wikidata {r.id}", url=f"https://www.wikidata.org/wiki/{r.qid}#P39"),
-        }
-        for r in roles
-    ]  # fmt: skip
-    with conn:
-        conn.execute("DELETE FROM government_role")
-        upsert(conn, "person", list(new_persons.values()))
-        upsert(conn, "government_role", rows)
-        conn.executemany(
-            "UPDATE person SET wikidata_qid = ? WHERE id = ? AND wikidata_qid IS NULL",
-            [(qid, pid) for qid, (pid, how) in matched.items() if how == "name"],
-        )
-        # person rows made for a roster member who has since been matched (or dropped from the roster)
-        orphans = "SELECT id FROM person WHERE id LIKE 'Q%' AND id NOT IN (SELECT person_id FROM government_role)"
-        conn.execute(f"DELETE FROM person_photo WHERE person_id IN ({orphans})")
-        conn.execute(f"DELETE FROM person WHERE id IN ({orphans})")
-    kinds = {k: sum(r.kind == k for r in roles) for k in parse_wikidata.KINDS}
-    hows = [how for _, how in matched.values()]
-    print(
-        f"government: {len(roles)} roles ({', '.join(f'{k} {n}' for k, n in kinds.items())}) held by {len(matched)} "
-        f"persons: {hows.count('qid')} matched by QID, {hows.count('name')} by name, {hows.count('new')} new"
-    )
-    _check_government(conn, roles)
+    evidence = []
+    for r in roles:
+        parsed = government.parse_role(r.office)
+        evidence.append(
+            government.Evidence(
+                source_kind="wikidata", person_id=matched[r.qid][0] or r.qid, name=r.name, kind=r.kind,
+                department=r.department or (parsed.department if parsed else None), from_date=r.from_date,
+                to_date=r.to_date, wikidata_qid=r.qid, office=r.office, id=r.id,
+                provenance=meta.provenance(f"Wikidata {r.id}", url=f"https://www.wikidata.org/wiki/{r.qid}#P39"),
+            )
+        )  # fmt: skip
+    return evidence, matched, new_persons
+
+
+def _stammdaten_evidence(conn: sqlite3.Connection) -> list[government.Evidence]:
+    """Memberships of kind other whose function is a government office: FKT_LANG "Parlamentarischer
+    Staatssekretär" at INS_LANG "Bundesministerium der Finanzen", from the start of the current government."""
+    evidence = []
+    for m in conn.execute(
+        "SELECT m.person_id, m.role, m.name, m.from_date, m.to_date, m.source_url, m.source_document_id, "
+        "m.retrieved_at, p.first_name, p.last_name, p.wikidata_qid FROM membership m "
+        "JOIN person p ON p.id = m.person_id WHERE m.kind = 'other' AND m.from_date >= ? ORDER BY m.id",
+        (fetch_wikidata.GOVERNMENT_START,),
+    ):
+        parsed = government.parse_role(m["role"] or "")
+        if parsed is None or (parsed.department is not None and parsed.kind != "kanzler"):
+            continue  # not an office, or a function that names a department itself (none in the Stammdaten)
+        evidence.append(
+            government.Evidence(
+                source_kind="stammdaten", person_id=m["person_id"], name=f"{m['first_name']} {m['last_name']}",
+                kind=parsed.kind, department=parsed.department or m["name"], from_date=m["from_date"],
+                to_date=m["to_date"], wikidata_qid=m["wikidata_qid"],
+                provenance={k: m[k] for k in ("source_url", "source_document_id", "retrieved_at")},
+            )
+        )  # fmt: skip
+    return evidence
+
+
+def _protocol_evidence(conn: sqlite3.Connection) -> tuple[list[government.Evidence], dict[str, int]]:
+    """One piece of evidence per person + office printed as a speaker's role (speech.speaker_role, else the non-MdB
+    person's role) since the start of the current government: first and last sitting date, provenance of the
+    first. Also returns the government-looking role texts that could not be parsed, with their speech counts."""
+    found: dict[tuple, government.Evidence] = {}
+    unparsed: dict[str, int] = defaultdict(int)
+    for s in conn.execute(
+        "SELECT s.person_id, COALESCE(s.speaker_role, CASE WHEN p.is_mdb = 0 THEN p.role END) AS role, st.date, "
+        "s.source_url, s.source_document_id, s.retrieved_at, p.first_name, p.last_name, p.wikidata_qid "
+        "FROM speech s JOIN sitting st ON st.id = s.sitting_id JOIN person p ON p.id = s.person_id "
+        "WHERE st.date >= ? ORDER BY st.date, s.sitting_id, s.position",
+        (fetch_wikidata.GOVERNMENT_START,),
+    ):
+        role = s["role"]
+        parsed = government.parse_role(role) if role else None
+        if parsed is None or parsed.department is None:
+            if role and _GOVERNMENT_ROLE_RE.match(role):
+                unparsed[role] += 1
+            continue
+        e = government.Evidence(
+            source_kind="protocol", person_id=s["person_id"], name=f"{s['first_name']} {s['last_name']}",
+            kind=parsed.kind, department=parsed.department, from_date=s["date"], to_date=s["date"],
+            wikidata_qid=s["wikidata_qid"],
+            provenance={k: s[k] for k in ("source_url", "source_document_id", "retrieved_at")},
+        )  # fmt: skip
+        if e.key in found:
+            found[e.key].to_date = s["date"]
+        else:
+            found[e.key] = e
+    return list(found.values()), dict(unparsed)
 
 
 def _current_wahlperiode(conn: sqlite3.Connection) -> int:
     return conn.execute("SELECT COALESCE(MAX(wahlperiode), 21) FROM mandate").fetchone()[0]
 
 
-def _check_government(conn: sqlite3.Connection, roles: list[parse_wikidata.Role]) -> None:
-    """Report the current cabinet, and government speakers in the protocols who have no role in the roster."""
-    current = [r for r in roles if r.kind in ("kanzler", "minister") and r.to_date is None]
-    print(f"government: current cabinet in Wikidata: {len(current)} (Kanzler and Bundesminister)")
-    for r in current:
-        print(f"    {r.office}: {r.name}")
-    in_roster = {r["person_id"] for r in conn.execute("SELECT person_id FROM government_role")}
-    missing = {}
+def _report_government(
+    conn: sqlite3.Connection, rows: list[dict], inferences: list[government.Inference], unparsed: dict[str, int]
+) -> None:
+    """Counts per kind and source, the inferences, the cabinet at the latest sitting, and the government speakers
+    in the protocols who still have no role in the roster."""
+    counts = {k: {s: 0 for s in government.SOURCES} for k in government.KINDS}
+    for r in rows:
+        counts[r["kind"]][r["source_kind"]] += 1
+    print(f"government: {len(rows)} roles")
+    for kind, by_source in counts.items():
+        print(f"    {kind:<15} {sum(by_source.values()):>3}  " + ", ".join(f"{s} {n}" for s, n in by_source.items()))
+    for i in inferences:
+        print(f"government: inferred end: {i}")
+    latest = conn.execute("SELECT MAX(date) FROM sitting").fetchone()[0]
+    if latest:
+        cabinet = [r for r in government.held_on(rows, latest) if r["kind"] in government.SINGLE_HOLDER]
+        print(f"government: cabinet at the latest sitting ({latest}): {len(cabinet)} (Kanzler and Bundesminister)")
+        for r in cabinet:
+            print(f"    {r['office']}: {r['name']} ({r['source_kind']})")
+    for role, n in sorted(unparsed.items()):
+        print(f"government: role text not parsed ({n} speeches): {role}")
+    in_roster = {r["person_id"] for r in rows}
+    missing, commissioners = {}, {}
     for s in conn.execute(
-        "SELECT s.person_id, s.speaker_name, s.speaker_role, MAX(st.date) AS last FROM speech s "
+        "SELECT s.person_id, s.speaker_role, MAX(st.date) AS last FROM speech s "
         "JOIN sitting st ON st.id = s.sitting_id WHERE st.date >= ? AND s.speaker_role IS NOT NULL "
         "GROUP BY s.person_id, s.speaker_role ORDER BY s.speaker_role",
         (fetch_wikidata.GOVERNMENT_START,),
     ):
-        if _GOVERNMENT_ROLE_RE.match(s["speaker_role"]) and s["person_id"] not in in_roster:
+        if s["person_id"] in in_roster:
+            continue
+        if _GOVERNMENT_ROLE_RE.match(s["speaker_role"]):
             missing[(s["person_id"], s["speaker_role"])] = s["last"]
-    if missing:
-        print(f"government: {len(missing)} government speakers in the protocols have no role in the roster:")
-        for (pid, role), last in missing.items():
+        elif _COMMISSIONER_RE.match(s["speaker_role"]):
+            commissioners[(s["person_id"], s["speaker_role"])] = s["last"]
+    print(f"government: {len(missing)} government speakers in the protocols have no role in the roster")
+    for label, found in (("", missing), (" (Beauftragte, not government members; not in the roster)", commissioners)):
+        for (pid, role), last in found.items():
             name = conn.execute("SELECT first_name, last_name FROM person WHERE id = ?", (pid,)).fetchone()
-            print(f"    {name['first_name']} {name['last_name']} ({pid}): {role}, last {last}")
+            print(f"    {name['first_name']} {name['last_name']} ({pid}): {role}, last {last}{label}")
 
 
 # --- bundestag.de biographies + Commons: portraits ----------------------------------------

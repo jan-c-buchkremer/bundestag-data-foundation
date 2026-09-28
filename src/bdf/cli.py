@@ -61,7 +61,7 @@ def build_parser() -> argparse.ArgumentParser:
             qp.add_argument("--person", required=True, help="MdB id or name")
         _add_range(qp)
         qp.add_argument("--json", action="store_true", help="JSON lines instead of text")
-    qg = qs.add_parser("government", help="government roles (Wikidata) with the matched person")
+    qg = qs.add_parser("government", help="government roles (Wikidata, Stammdaten, protocols) with person and source")
     qg.add_argument("--date", type=_date, help="only roles held on this day (default: all since 2025-05-06)")
     qph = qs.add_parser("photos", help="portraits with credit; persons of the Wahlperiode without one")
     qph.add_argument("--missing", action="store_true", help="list sitting members without a portrait instead")
@@ -150,9 +150,12 @@ def _format(kind: str, r: dict) -> str:
             f"  as: {r['activity_type']}; {r['author_count']} authors\n{src}\n"
         )
     if kind == "government":
-        until = r["to_date"] or "today"
         who = f"{r['name']} ({r['person_id']}{', MdB' if r['is_mdb'] else ''})"
-        return f"{r['from_date']}..{until} [{r['kind']}] {r['office']}: {who}\n{src}"
+        if r["source_kind"] == "protocol":
+            when = f"belegt {r['from_date']}..{r['to_date']} (Plenarprotokoll)"
+        else:
+            when = f"{r['from_date']}..{r['to_date'] or 'today'} ({r['source_kind']})"
+        return f"{when} [{r['kind']}] {r['office']}: {who}\n{src}"
     if kind == "photos":
         if "local_path" not in r:  # --missing
             return f"{r['person_id']} {r['first_name']} {r['last_name']} [{r['fraction'] or '?'}]"
