@@ -186,6 +186,20 @@ show another person in that office (`ingest` prints each such inference). `queri
 protocol row as held after its last evidence until contradicted by a later role of the person or a later holder of
 the same single-holder office.
 
+**Reading `to_date` by `source_kind`.** For `wikidata` and `stammdaten`, `to_date` is the end of office (NULL:
+still in office; possibly an end inferred from the protocols, see above). For `source_kind = 'protocol'` it means
+**"last seen in a protocol"**: the date of the last sitting that prints the role, *not* the end of office, and it is never NULL.
+Consumers must not show it as "bis …"; show it as "zuletzt belegt …" and treat the role as current unless another
+row contradicts it (`government.held_on`). `bdf query government` prints protocol rows as "belegt <from>..<to>
+(Plenarprotokoll)".
+
+**Stale protocol roles.** A protocol-only role that is still counted as held at the newest sitting but whose
+`to_date` lies more than 90 days (`government.STALE_AFTER_DAYS`) before that sitting is *stale*: probably ended,
+but no source says so. It stays current (no automatic end date); `bdf query stale-roles [--days N]` lists these rows
+with `days_since_seen` and `newest_sitting`, and `bdf update` prints them as a warning after ingest. The warning
+does not change the exit code. The fix is upstream: once Wikidata or the Stammdaten carry the role, it is no longer
+protocol-only; a successor in a Kanzler/Bundesminister office takes it out of the held roles too.
+
 ## Entity linking
 
 1. **Speech → person**: `redner/@id` directly. Unknown ids (non-MdB speakers) create a
@@ -237,6 +251,7 @@ bdf query speeches   --person 11004006 --from … --to …
 bdf query votes      --person 11004006 --from … --to …
 bdf query drucksachen --person 11004006 --from … --to …
 bdf query government [--date 2026-09-28]           # roles, optionally those held on a day
+bdf query stale-roles [--days 90]                   # protocol-only roles not printed for >90 days before the newest sitting
 bdf query photos     [--missing]                    # portraits with credit, or sitting members without one
 bdf query decisions  --sitting 21/90                # decisions announced by the chair, fraction positions / roll-call totals
 bdf query corpus     --from … --to …                # JSONL: one clean speech per line with speaker id, fraction, date, source

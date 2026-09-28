@@ -4,13 +4,14 @@ Each source derives its own window from what is already under data/raw, so the c
 dates and a missed week is caught up on the next run. The first run backfills the whole Wahlperiode.
 """
 
+import sqlite3
 from collections.abc import Callable
 from datetime import date, timedelta
 from pathlib import Path
 
 import httpx
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, ingest, raw
+from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, ingest, queries, raw
 from bdf.config import db_path, dip_api_key
 
 # constituent sitting of each Wahlperiode: the earliest date any source is asked for
@@ -54,6 +55,21 @@ def dip_window(wp: int, today: date) -> tuple[date, date]:
 def _window(wp: int, last: date | None, today: date) -> tuple[date, date]:
     start = WP_START[wp] if last is None else max(WP_START[wp], last - LOOKBACK)
     return start, today
+
+
+def warn_stale_roles(conn: sqlite3.Connection) -> list[dict]:
+    """Print a warning per protocol-only government role that no protocol has printed for STALE_AFTER_DAYS before
+    the newest sitting. Only a warning: the role stays current and the exit code is unaffected."""
+    stale = queries.stale_roles(conn)
+    if stale:
+        print(
+            f"update: warning: {len(stale)} protocol-only government roles not seen in a protocol for more than "
+            f"{queries.STALE_AFTER_DAYS} days (kept as current; check with `bdf query stale-roles`):"
+        )
+        for r in stale:
+            seen = f"last seen {r['to_date']}, {r['days_since_seen']} days"
+            print(f"    {r['name']} ({r['person_id']}), {r['office']}: {seen}")
+    return stale
 
 
 def run(wp: int = 21, today: date | None = None) -> int:
@@ -123,7 +139,9 @@ def run(wp: int = 21, today: date | None = None) -> int:
         else:
             print("dip: skipped, DIP_API_KEY is not set")
 
-    ingest.ingest_all(db.connect(db_path()))
+    conn = db.connect(db_path())
+    ingest.ingest_all(conn)
+    warn_stale_roles(conn)
     if failed:
         print(f"update: ingested, but these sources failed: {', '.join(failed)}")
     return 1 if failed else 0

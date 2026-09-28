@@ -2,7 +2,7 @@
 
 import sqlite3
 
-from bdf import db, government, ingest, queries
+from bdf import cli, db, government, ingest, queries
 from bdf.government import Evidence, ParsedRole, parse_role
 
 PROV = {"source_url": "u", "source_document_id": "d", "retrieved_at": "t"}
@@ -180,3 +180,50 @@ def test_old_government_role_table_is_migrated(data_dir):
     assert (row["id"], row["wikidata_qid"], row["source_kind"]) == ("Q1-x", "Q1", "wikidata")
     assert conn.execute("SELECT 1 FROM sqlite_master WHERE name = 'government_role_person'").fetchone()
     db.connect(data_dir / "bundestag.sqlite")  # a second connect changes nothing
+
+
+def test_stale_lists_protocol_roles_still_held_but_not_seen_for_90_days():
+    rows, _ = government.merge(
+        [
+            _e("protocol", "A", "A", "staatsminister", "Bundeskanzleramt", "2025-05-14", "2026-05-07"),  # stale
+            _e("protocol", "B", "B", "parl_sts", "Bundesministerium der Finanzen", "2025-06-01", "2026-06-25"),
+            _e("protocol", "C", "C", "minister", "Bundesministerium für Verkehr", "2025-05-06", "2025-12-01"),
+            _e("protocol", "D", "D", "minister", "Bundesministerium für Verkehr", "2026-09-08", "2026-09-08"),
+            _e("stammdaten", "E", "E", "parl_sts", "Bundesministerium der Justiz", "2025-05-06", None),
+        ]
+    )
+    stale = government.stale(rows, "2026-09-23")
+    # B: exactly 90 days is not yet stale; C: succeeded by D, no longer held; E: not protocol-only
+    assert [(r["name"], r["days_since_seen"], r["newest_sitting"]) for r in stale] == [("A", 139, "2026-09-23")]
+    assert [r["name"] for r in government.stale(rows, "2026-09-23", days=80)] == ["A", "B"]
+    # nothing is closed: the stale role is still held
+    assert "A" in {r["name"] for r in government.held_on(rows, "2026-09-23")}
+
+
+def _add_protocol_role(store, to_date: str) -> None:
+    with store:
+        store.execute(
+            "INSERT INTO government_role (id, person_id, wikidata_qid, name, office, department, kind, from_date, "
+            "to_date, source_kind, source_url, source_document_id, retrieved_at) VALUES "
+            "('protocol:11004819:staatsminister:bundeskanzleramt', '11004819', NULL, 'Meiser', "
+            "'Staatsminister beim Bundeskanzler', 'Bundeskanzleramt', 'staatsminister', '2025-05-14', ?, 'protocol', "
+            "'https://dserver.bundestag.de/btp/21/21003.xml', 'BT-PlPr. 21/3', 't')",
+            (to_date,),
+        )
+
+
+def test_query_stale_roles(store, capsys):
+    newest = store.execute("SELECT MAX(date) FROM sitting").fetchone()[0]
+    assert queries.stale_roles(store) == []
+    _add_protocol_role(store, "2025-06-01")
+    [row] = queries.stale_roles(store)
+    assert (row["name"], row["source_kind"], row["to_date"], row["newest_sitting"]) == (
+        "Meiser", "protocol", "2025-06-01", newest,
+    )  # fmt: skip
+    assert row["source_document_id"] == "BT-PlPr. 21/3"
+
+    cli.main(["query", "stale-roles"])
+    out = capsys.readouterr().out
+    assert out.startswith("last seen 2025-06-01 (") and "Meiser (11004819)" in out and "BT-PlPr. 21/3" in out
+    cli.main(["query", "stale-roles", "--json", "--days", "100000"])
+    assert capsys.readouterr().out == ""

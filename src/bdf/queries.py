@@ -2,7 +2,7 @@
 
 import sqlite3
 
-from bdf.government import KINDS, held_on
+from bdf.government import KINDS, STALE_AFTER_DAYS, held_on, stale
 from bdf.names import VOTE_VALUES, normalize_name
 
 # DIP activity types that make a person an author of a Drucksache. The others DIP returns per Drucksache are
@@ -155,6 +155,15 @@ def government(conn: sqlite3.Connection, on: str | None = None) -> list[dict]:
     if on is not None:
         rows = held_on(rows, on)
     return sorted(rows, key=lambda r: KINDS.index(r["kind"]))
+
+
+def stale_roles(conn: sqlite3.Connection, days: int = STALE_AFTER_DAYS) -> list[dict]:
+    """Protocol-only government roles still treated as current although no protocol has printed them for more than
+    ``days`` before the newest sitting (government.stale); oldest evidence first. Empty without sittings."""
+    newest = conn.execute("SELECT MAX(date) FROM sitting").fetchone()[0]
+    if newest is None:
+        return []
+    return sorted(stale(government(conn), newest, days), key=lambda r: (r["to_date"], r["name"]))
 
 
 def photos(conn: sqlite3.Connection) -> list[dict]:

@@ -83,6 +83,7 @@ uv run bdf fetch photos          # bundestag.de biography list (all pages) + por
 uv run bdf fetch government      # Wikidata roster + Commons portraits → data/raw/wikidata
 uv run bdf ingest
 uv run bdf query government --date 2026-09-28   # roles held that day, with person id and source (wikidata | stammdaten | protocol)
+uv run bdf query stale-roles                    # protocol-only roles not printed in a protocol for >90 days (kept current)
 uv run bdf query photos --missing               # sitting members without a portrait
 ```
 

@@ -21,6 +21,8 @@ from bdf.parse_wikidata import KINDS
 
 SOURCES = ("wikidata", "stammdaten", "protocol")
 SINGLE_HOLDER = ("kanzler", "minister")
+# a protocol-only role not printed for this many days before the newest sitting is reported as stale
+STALE_AFTER_DAYS = 90
 CHANCELLERY = "Bundeskanzleramt"
 FOREIGN_OFFICE = "Auswärtiges Amt"
 
@@ -242,4 +244,20 @@ def held_on(rows: list[dict], on: str) -> list[dict]:
         for r in rows
         if r["from_date"] <= on
         and (r["to_date"] is None or r["to_date"] >= on or (r["source_kind"] == "protocol" and not contradicted(r)))
+    ]
+
+
+def stale(rows: list[dict], newest_sitting: str, days: int = STALE_AFTER_DAYS) -> list[dict]:
+    """Protocol-only roles still counted as held at ``newest_sitting`` (see ``held_on``) whose last evidence, the
+    ``to_date``, lies more than ``days`` before it. They stay current; the list says which ones to check by hand.
+    Each row gains ``days_since_seen`` and ``newest_sitting``."""
+    cutoff = (date.fromisoformat(newest_sitting) - timedelta(days=days)).isoformat()
+    return [
+        {
+            **r,
+            "days_since_seen": (date.fromisoformat(newest_sitting) - date.fromisoformat(r["to_date"])).days,
+            "newest_sitting": newest_sitting,
+        }
+        for r in held_on(rows, newest_sitting)
+        if r["source_kind"] == "protocol" and r["to_date"] < cutoff
     ]
