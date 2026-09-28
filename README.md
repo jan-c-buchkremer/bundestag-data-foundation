@@ -102,6 +102,8 @@ Details and quotes in `docs/licences.md`. Code is MIT.
   ~15 minutes after a request burst; `fetch dip` therefore paces itself to 2 requests/s
   (a sitting week takes ~3 minutes) and, if blocked, stops with a message. Rerunning
   resumes from `data/raw`.
+- Per-Drucksache DIP files (authors, Vorgänge) are fetched once and not refreshed, so a Vorgang's
+  `beratungsstand` stays as it was at the first fetch. `fetch dip --force` over a range refreshes them.
 - abgeordnetenwatch's `ext_id_bundestagsverwaltung` is wrong for ~9 % of WP21 members and is
   therefore never trusted on its own.
 - One `<rede>` with a question from another member becomes several speech rows
