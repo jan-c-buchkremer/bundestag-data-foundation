@@ -13,6 +13,7 @@ from bdf import (
     fetch_wikidata,
     parse_biografien,
     parse_comments,
+    parse_decisions,
     parse_protocol,
     parse_stammdaten,
     parse_votes,
@@ -43,6 +44,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_protocols(conn)
     ingest_votes(conn)
     ingest_dip(conn)
+    ingest_decisions(conn)
     ingest_abgeordnetenwatch(conn)
     ingest_wahl(conn)
     ingest_government(conn)
@@ -105,6 +107,16 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                 ],
             )
             upsert(conn, "agenda_item", [{**item, "sitting_id": sid, **prov} for item in protocol.agenda_items])
+            conn.execute(
+                "DELETE FROM agenda_item_paragraph WHERE agenda_item_id IN "
+                "(SELECT id FROM agenda_item WHERE sitting_id = ?)",
+                (sid,),
+            )
+            upsert(
+                conn,
+                "agenda_item_paragraph",
+                [{k: v for k, v in p.items() if k != "after_speeches"} | prov for p in protocol.agenda_paragraphs],
+            )
             upsert(conn, "person", list(new_persons.values()))
             # a re-ingested protocol replaces its speeches wholesale
             for child in ("interjection", "speech_paragraph"):
@@ -420,6 +432,85 @@ def _link_votes_to_dip(conn: sqlite3.Connection) -> None:
         )
     total = sum(len(v) for v in votes_by_date.values())
     print(f"dip: {len(updates)}/{total} roll-call votes linked to a Drucksache")
+
+
+# --- decisions -----------------------------------------------------------------------------
+
+
+def ingest_decisions(conn: sqlite3.Connection) -> None:
+    """Decisions announced by the chair (bdf/parse_decisions.py), linked to roll_call_vote, and
+    roll_call_vote.agenda_item_id. Runs after votes and DIP: linking uses the votes' counts and Drucksachen.
+
+    Re-parses the protocols: the decision stream needs the document order of agenda item paragraphs
+    and speech paragraphs, which the store does not keep."""
+    votes: dict[str, list[dict]] = defaultdict(list)
+    for v in conn.execute("SELECT id, sitting_id, number, yes, no, drucksache_number FROM roll_call_vote"):
+        votes[v["sitting_id"]].append(dict(v))
+    rows: dict[str, list[dict]] = defaultdict(list)
+    sittings: list[str] = []
+    pending: list = []
+    previous = None
+    counts = defaultdict(int)
+    for path in raw.data_files(protocols_dir(), "*/*.xml"):
+        protocol = parse_protocol.parse(path)
+        sid = protocol.sitting_id
+        consecutive = previous == (protocol.wahlperiode, protocol.number - 1)
+        decisions = parse_decisions.extract(protocol, pending=pending if consecutive else [])
+        parse_decisions.link(decisions, votes.get(sid, []))
+        final = {v["id"]: (v["yes"], v["no"]) for v in votes.get(sid, [])}
+        pending = [
+            (d, final.get(d.roll_call_vote_id)) for d in decisions if d.kind == "namentlich" and d.counts is None
+        ]
+        previous = (protocol.wahlperiode, protocol.number)
+        prov = raw.read_meta(path).provenance(protocol.document_id)
+        sittings.append(sid)
+        for d in decisions:
+            counts[d.kind] += 1
+            rows["decision"].append(
+                {
+                    "id": d.id, "sitting_id": sid, "agenda_item_id": d.agenda_item_id, "n": d.n,
+                    "position": d.position, "kind": d.kind, "subject": d.subject,
+                    "drucksache_number": d.drucksache_number, "result": d.result,
+                    "roll_call_vote_id": d.roll_call_vote_id, "text": d.text, **prov,
+                }
+            )  # fmt: skip
+            rows["decision_fraction"] += [
+                {"decision_id": d.id, "fraction": f, "position": pos} for f, pos in d.fractions.items()
+            ]
+    # a roll-call result read out in the next sitting updates a decision of the previous one after
+    # it was built; rows are written only once every protocol has been read
+    with conn:
+        for sid in sittings:
+            conn.execute(
+                "DELETE FROM decision_fraction WHERE decision_id IN (SELECT id FROM decision WHERE sitting_id = ?)",
+                (sid,),
+            )
+            conn.execute("DELETE FROM decision WHERE sitting_id = ?", (sid,))
+        upsert(conn, "decision", rows["decision"])
+        upsert(conn, "decision_fraction", rows["decision_fraction"])
+        _link_votes_to_agenda(conn)
+    linked = sum(1 for r in rows["decision"] if r["roll_call_vote_id"])
+    print(
+        f"decisions: {counts['handzeichen']} by show of hands, {counts['namentlich']} roll-call "
+        f"({linked} linked to a roll_call_vote)"
+    )
+
+
+def _link_votes_to_agenda(conn: sqlite3.Connection) -> None:
+    """roll_call_vote.agenda_item_id: the agenda item of the same sitting listing one of the vote's
+    Drucksachen, else the agenda item of the vote's decision row."""
+    items = defaultdict(list)
+    for a in conn.execute("SELECT id, sitting_id, drucksache_numbers FROM agenda_item ORDER BY sitting_id, position"):
+        items[a["sitting_id"]].append((a["id"], set(json.loads(a["drucksache_numbers"]))))
+    from_decision = dict(
+        conn.execute("SELECT roll_call_vote_id, agenda_item_id FROM decision WHERE roll_call_vote_id IS NOT NULL")
+    )
+    updates = []
+    for v in conn.execute("SELECT id, sitting_id, drucksache_number FROM roll_call_vote"):
+        numbers = set(DRUCKSACHE_RE.findall(v["drucksache_number"] or ""))
+        item = next((a for a, ns in items.get(v["sitting_id"], []) if numbers & ns), None)
+        updates.append((item or from_decision.get(v["id"]), v["id"]))
+    conn.executemany("UPDATE roll_call_vote SET agenda_item_id = ? WHERE id = ?", updates)
 
 
 # --- abgeordnetenwatch --------------------------------------------------------------------

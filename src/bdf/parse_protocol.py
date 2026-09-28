@@ -8,6 +8,13 @@ Speech splitting rules (see docs/decisions.md):
 - presidency remarks inside a ``<rede>`` (``<name>Vizepräsident …:</name>`` and the paragraphs
   that follow until the speaker resumes) are kept as paragraphs of kind ``chair``;
 - ``<kommentar>`` is kind ``comment``; ``T_*`` classes are ``procedural``; all else is ``text``.
+
+Text directly under ``<tagesordnungspunkt>``, outside any ``<rede>``, is where the presidency calls
+items, puts questions to the vote and announces results. It is kept as agenda item paragraphs
+(``Protocol.agenda_paragraphs``) with the same kinds: ``chair`` until another speaker's
+``<p klasse="redner">`` (Fragestunde in early WP21 protocols), whose line becomes kind ``speaker``
+and whose words ``text``, until the next presidency ``<name>``. The printed name lists of roll-call
+votes (``AL_Namen``, ``AL_Partei``, ``AL_Ja-Nein-Enth``) are left out: the XLSX has them per member.
 """
 
 import json
@@ -18,6 +25,7 @@ from pathlib import Path
 from bdf.names import DRUCKSACHE_RE, clean_text, iso_date, normalize_fraction
 
 _TITLE_CLASSES_SKIPPED = {"T_Drs", "T_Ueberweisung"}
+_VOTE_LIST_CLASSES = {"AL_Namen", "AL_Partei", "AL_Ja-Nein-Enth"}
 
 
 @dataclass
@@ -54,6 +62,9 @@ class Protocol:
     end_time: str | None
     agenda_items: list[dict]
     speeches: list[Speech]
+    # text directly under <tagesordnungspunkt>: dicts with id, agenda_item_id, position, kind, text and
+    # after_speeches (how many speeches of the sitting precede it, to interleave with speech paragraphs)
+    agenda_paragraphs: list[dict] = field(default_factory=list)
 
     @property
     def sitting_id(self) -> str:
@@ -156,6 +167,46 @@ def _agenda_item(top: ET.Element, sitting_id: str, position: int) -> dict:
     }
 
 
+def _agenda_paragraphs(top: ET.Element, agenda_item_id: str, speeches_before: int) -> list[dict]:
+    """Paragraphs of one <tagesordnungspunkt> outside its <rede> elements, in document order."""
+    rows: list[dict] = []
+    chair_mode = True  # the presidency holds the floor between speeches
+    for el in top:
+        if el.tag == "rede":
+            speeches_before += sum(1 for _ in _rede_speakers(el))
+            continue
+        klasse = el.get("klasse") or ""
+        if klasse in _VOTE_LIST_CLASSES:
+            continue
+        if el.tag == "p" and klasse == "redner" and el.find("redner") is not None:
+            kind, text, chair_mode = "speaker", clean_text(el.find("redner").tail).rstrip(":").strip(), False
+        elif el.tag == "name":
+            kind, text, chair_mode = "chair", clean_text("".join(el.itertext())), True
+        elif el.tag in ("p", "kommentar", "zitat"):
+            kind = "procedural" if klasse.startswith("T_") else _paragraph_kind(el, chair_mode)
+            text = clean_text("".join(el.itertext()))
+        else:
+            continue
+        if text:
+            n = len(rows) + 1
+            rows.append(
+                {"id": f"{agenda_item_id}/{n}", "agenda_item_id": agenda_item_id, "position": n, "kind": kind,
+                 "text": text, "after_speeches": speeches_before}
+            )  # fmt: skip
+    return rows
+
+
+def _rede_speakers(rede: ET.Element):
+    """The speeches a <rede> splits into, as _split_rede counts them (one per change of speaker)."""
+    last = None
+    for el in rede:
+        if el.tag == "p" and el.get("klasse") == "redner" and el.find("redner") is not None:
+            sid = el.find("redner").get("id").split()[0]
+            if sid != last:
+                last = sid
+                yield sid
+
+
 def parse(path: Path) -> Protocol:
     root = ET.parse(path).getroot()
     wp, nr = int(root.get("wahlperiode")), int(root.get("sitzung-nr"))
@@ -163,12 +214,14 @@ def parse(path: Path) -> Protocol:
     verlauf = root.find("sitzungsverlauf")
     agenda_items: list[dict] = []
     speeches: list[Speech] = []
+    agenda_paragraphs: list[dict] = []
     for el in verlauf:
         if el.tag == "rede":
             speeches += _split_rede(el, len(speeches) + 1, None)
         elif el.tag == "tagesordnungspunkt":
             item = _agenda_item(el, sitting_id, len(agenda_items) + 1)
             agenda_items.append(item)
+            agenda_paragraphs += _agenda_paragraphs(el, item["id"], len(speeches))
             for rede in el.findall("rede"):
                 speeches += _split_rede(rede, len(speeches) + 1, item["id"])
     return Protocol(
@@ -179,4 +232,5 @@ def parse(path: Path) -> Protocol:
         end_time=root.get("sitzung-ende-uhrzeit") or None,
         agenda_items=agenda_items,
         speeches=speeches,
+        agenda_paragraphs=agenda_paragraphs,
     )

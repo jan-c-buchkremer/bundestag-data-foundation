@@ -103,7 +103,7 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 
 **vorgang_drucksache** `vorgang_id →vorgang, drucksache_id →drucksache` (composite PK)
 
-**roll_call_vote** `*id, sitting_id →sitting, number (Abstimmnr), date, title (from the bundestag.de list), drucksache_number (NULL until linked), vorgang_id →vorgang (NULL until linked), link_method (dip_beschluss | title_regex | manual | NULL), yes, no, abstain, invalid, absent (totals computed from individual_vote), xlsx_url, pdf_url, source_url, source_document_id, retrieved_at`
+**roll_call_vote** `*id, sitting_id →sitting, number (Abstimmnr), date, title (from the bundestag.de list), drucksache_number (NULL until linked), vorgang_id →vorgang (NULL until linked), link_method (dip_beschluss | title_regex | manual | NULL), yes, no, abstain, invalid, absent (totals computed from individual_vote), xlsx_url, pdf_url, source_url, source_document_id, retrieved_at, agenda_item_id →agenda_item (see Chair text and decisions)`
 
 **individual_vote** `*id, vote_id →roll_call_vote, person_id →person (NULL if unmatched), last_name, first_name, fraction, vote (yes | no | abstain | invalid | absent)`
 
@@ -113,6 +113,19 @@ Fraction majority per vote is a query, not a column:
 No separate `fraction` table: fraction is a normalised string (`CDU/CSU`, `SPD`, `AfD`,
 `BÜNDNIS 90/DIE GRÜNEN`, `Die Linke`, `fraktionslos`) with one normalisation function
 shared by the XML, XLSX and Stammdaten parsers. A table would add a join and nothing else.
+
+### Chair text and decisions
+
+**agenda_item_paragraph** `*id ("<agenda_item_id>/<position>"), agenda_item_id →agenda_item, position, kind (chair | comment | procedural | speaker | text), text, source_url, source_document_id, retrieved_at`
+— the text directly under `<tagesordnungspunkt>` outside any `<rede>`: the presidency calling items, putting questions to the vote and reading out results. `procedural` = the `T_*` agenda lines; `speaker`/`text` = a speaker line and words printed outside a `rede` (Fragestunden of early WP21). The roll-call name lists (`AL_Namen`…) are not kept.
+
+**decision** `*id, sitting_id →sitting, agenda_item_id →agenda_item, n, position, kind (namentlich | handzeichen), subject, drucksache_number, result (angenommen | abgelehnt | NULL), roll_call_vote_id →roll_call_vote, text, source_url, source_document_id, retrieved_at`
+— one row per decision on substance announced by the chair (`bdf/parse_decisions.py`). Roll-call rows take the id of their `roll_call_vote` (`21/90/7`; `21/90/n<k>` without one), show-of-hands rows `<sitting>/h<n>`. `n` counts per kind within the sitting, `position` orders all decisions of the sitting. `text` is the chair's words the row was read from. Procedure (Überweisung, Tagesordnung, Aufsetzung …) and elections are not decisions.
+
+**decision_fraction** `decision_id →decision, fraction, position (yes | no | abstain)` (composite PK)
+— fraction positions of show-of-hands decisions as the chair states them; inherits provenance from `decision`. For roll-call votes use `individual_vote`.
+
+`roll_call_vote.agenda_item_id` links a vote to the agenda item of the same sitting listing one of its Drucksachen, else to its decision's agenda item.
 
 ### Interjections
 
@@ -204,6 +217,7 @@ bdf query votes      --person 11004006 --from … --to …
 bdf query drucksachen --person 11004006 --from … --to …
 bdf query government [--date 2026-09-28]           # roles, optionally those held on a day
 bdf query photos     [--missing]                    # portraits with credit, or sitting members without one
+bdf query decisions  --sitting 21/90                # decisions announced by the chair, fraction positions / roll-call totals
 bdf query corpus     --from … --to …                # JSONL: one clean speech per line with speaker id, fraction, date, source
 ```
 

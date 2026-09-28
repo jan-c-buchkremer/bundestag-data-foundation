@@ -179,3 +179,50 @@ def photos_missing(conn: sqlite3.Connection) -> list[dict]:
         """
     ).fetchall()
     return [dict(r) for r in rows]
+
+
+def decisions(conn: sqlite3.Connection, sitting_id: str) -> list[dict]:
+    """Every decision announced in a sitting, in order, with fraction positions (show of hands) or the
+    roll-call totals, the agenda item, and the protocol as source."""
+    out = []
+    for d in conn.execute(
+        """
+        SELECT d.*, a.top_id, a.title AS agenda_title, st.date, st.pdf_url,
+               v.yes, v.no, v.abstain, v.source_url AS vote_source_url
+        FROM decision d
+        JOIN sitting st ON st.id = d.sitting_id
+        LEFT JOIN agenda_item a ON a.id = d.agenda_item_id
+        LEFT JOIN roll_call_vote v ON v.id = d.roll_call_vote_id
+        WHERE d.sitting_id = ?
+        ORDER BY d.position
+        """,
+        (sitting_id,),
+    ):
+        fractions = {
+            r["fraction"]: r["position"]
+            for r in conn.execute(
+                "SELECT fraction, position FROM decision_fraction WHERE decision_id = ? ORDER BY fraction", (d["id"],)
+            )
+        }
+        out.append(
+            {
+                "decision_id": d["id"],
+                "date": d["date"],
+                "kind": d["kind"],
+                "n": d["n"],
+                "top_id": d["top_id"],
+                "agenda_title": d["agenda_title"],
+                "subject": d["subject"],
+                "drucksache_number": d["drucksache_number"],
+                "result": d["result"],
+                "fractions": fractions,
+                "roll_call_vote_id": d["roll_call_vote_id"],
+                "roll_call": {k: d[k] for k in ("yes", "no", "abstain")} if d["roll_call_vote_id"] else None,
+                "text": d["text"],
+                "source_url": d["source_url"],
+                "source_document_id": d["source_document_id"],
+                "pdf_url": d["pdf_url"],
+                "retrieved_at": d["retrieved_at"],
+            }
+        )
+    return out
