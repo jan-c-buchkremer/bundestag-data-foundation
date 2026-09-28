@@ -4,9 +4,11 @@ import argparse
 import json
 import sys
 from datetime import date
+from pathlib import Path
 
 from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, ingest, queries, raw, update
 from bdf.config import db_path
+from bdf.export import write_export
 
 
 def _date(s: str) -> date:
@@ -44,6 +46,9 @@ def build_parser() -> argparse.ArgumentParser:
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")
 
     sub.add_parser("ingest", help="parse everything under data/raw into the SQLite store")
+
+    e = sub.add_parser("export", help="open-data export: one CSV.gz per table, datapackage.json, README.md")
+    e.add_argument("dir", type=Path, help="target directory (replaced as a whole when the export succeeds)")
 
     u = sub.add_parser("update", help="fetch everything new since the last run from all sources, then ingest")
     u.add_argument("--wp", type=int, default=21, choices=sorted(update.WP_START))
@@ -138,6 +143,14 @@ def cmd_query(args: argparse.Namespace) -> None:
         print(_format(args.query, r))
 
 
+def cmd_export(args: argparse.Namespace) -> None:
+    files = write_export(db.connect(db_path()), args.dir)
+    for f in files:
+        rows = f"{f['rows']:>10,} rows" if f["rows"] is not None else " " * 15
+        print(f"{f['name']:<32}{rows}  {f['bytes'] / 1e6:8.2f} MB")
+    print(f"{'total':<32}{'':15}  {sum(f['bytes'] for f in files) / 1e6:8.2f} MB in {args.dir}")
+
+
 def _format(kind: str, r: dict) -> str:
     src = f"    ↳ {r['source_document_id']} — {r['source_url']}"
     if kind == "speeches":
@@ -200,6 +213,8 @@ def main(argv: list[str] | None = None) -> None:
         sys.exit(update.run(args.wp))
     elif args.command == "query":
         cmd_query(args)
+    elif args.command == "export":
+        cmd_export(args)
 
 
 if __name__ == "__main__":
