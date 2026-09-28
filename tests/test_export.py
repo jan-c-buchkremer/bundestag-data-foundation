@@ -20,6 +20,8 @@ def test_column_comments_parse_the_schema() -> None:
     # continuation lines are joined
     assert comments[("interjection", "kind")].endswith("| zustimmung | unruhe | other")
     assert comments[("government_role", "source_kind")].startswith("wikidata | stammdaten | protocol")
+    # SCHEMA is an f-string: literal braces must survive as text
+    assert comments[("vorgang_position", "ressort")].startswith("JSON array of objects {titel, federfuehrend}")
 
 
 def test_export_writes_every_table_with_a_datapackage(store: sqlite3.Connection, tmp_path: Path) -> None:

@@ -182,7 +182,7 @@ CREATE TABLE IF NOT EXISTS vorgang_position (
     pdf_url TEXT,                       -- fundstelle.pdf_url
     pages TEXT,                         -- "1234-1236" (fundstelle.anfangsseite-endseite), protocols only
     originators TEXT NOT NULL,          -- JSON array of urheber titles
-    ressort TEXT,                       -- JSON array of {"titel", "federfuehrend"}, NULL if none
+    ressort TEXT,                       -- JSON array of objects {{titel, federfuehrend}}, NULL if none
     decisions TEXT,                     -- JSON array of beschlussfassung objects as in DIP, NULL if none
     {PROVENANCE}
 );
