@@ -82,7 +82,7 @@ Portraits and the government roster (current state, no date range):
 uv run bdf fetch photos          # bundestag.de biography list (all pages) + portraits → data/raw/bundestag/{biografien,fotos}
 uv run bdf fetch government      # Wikidata roster + Commons portraits → data/raw/wikidata
 uv run bdf ingest
-uv run bdf query government --date 2026-09-28   # roles held that day, with person id and source
+uv run bdf query government --date 2026-09-28   # roles held that day, with person id and source (wikidata | stammdaten | protocol)
 uv run bdf query photos --missing               # sitting members without a portrait
 ```
 
@@ -106,17 +106,19 @@ and recorded DIP responses for four Drucksachen of that week).
 | DIP API | Drucksachen, authorship, Vorgänge, vote ↔ Drucksache link | free, incl. commercial; attribution "Deutscher Bundestag/Bundesrat – DIP" |
 | abgeordnetenwatch.de API v2 | cross-ids (validated by name + birth year), Wikidata QIDs | CC0 1.0 |
 | bundestag.de — MdB biographies (card list behind /abgeordnete) | portrait per MdB with photographer credit | Bundestag terms; photos: third-party rights, credit shown |
-| Wikidata (SPARQL) | government roster since 2025-05-06: offices, dates, departments | CC0 1.0 |
+| Wikidata (SPARQL) | government roster since 2025-05-06: offices, dates, departments (with Stammdaten and protocol roles) | CC0 1.0 |
 | Wikimedia Commons | portraits of government members without a bundestag.de card | per file (mostly CC BY-SA), author + licence stored |
 
 Details and quotes in `docs/licences.md`. Code is MIT.
 
 ## Known limits
 
-- The government roster is only as complete as Wikidata: in September 2026 it has the Kanzler, the Bundesminister
-  (without the September reshuffle: Linnemann, Bilger) and one beamteter Staatssekretär, but no Parlamentarische
-  Staatssekretäre and no Staatsminister for this government. `ingest` lists every government speaker in the
-  protocols who has no role in the roster.
+- The government roster merges Wikidata, the Stammdaten and the roles printed in the protocols; `source_kind`
+  says which one a row's dates come from. Protocol rows (e.g. ministers of the September 2026 reshuffle that neither
+  Wikidata nor the Stammdaten have yet) carry evidence dates: the first and last sitting the role is printed, not
+  the appointment; show them as "belegt ab … (Plenarprotokoll)". An open minister role is closed the day before the
+  protocols first show a successor (an inference, printed by `ingest`). Non-MdB Staatsminister and Parlamentarische
+  Staatssekretäre who never speak are missing.
 - The Stammdaten file is published irregularly; members who joined after its date (two as
   of September 2026) have no mandate row and are stored with `is_mdb = 0` from their first
   speech until the next Stammdaten file arrives. `ingest` lists names it cannot match.
