@@ -54,10 +54,20 @@ def get(
     headers: dict | None = None,
     retries: int = 4,
 ) -> httpx.Response:
-    """GET with a simple backoff on 429/5xx. Raises on the final failure."""
+    """GET with a simple backoff on 429/5xx and on network errors (dropped connections, timeouts).
+
+    Raises on the final failure.
+    """
     for attempt in range(retries):
-        response = http.get(url, params=params, headers=headers)
-        if response.status_code == 429 or response.status_code >= 500:
+        last = attempt == retries - 1
+        try:
+            response = http.get(url, params=params, headers=headers)
+        except httpx.TransportError:
+            if last:
+                raise
+            time.sleep(2 ** (attempt + 1))
+            continue
+        if (response.status_code == 429 or response.status_code >= 500) and not last:
             time.sleep(2 ** (attempt + 1))
             continue
         break

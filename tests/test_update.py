@@ -2,9 +2,10 @@
 
 from datetime import date
 
+import httpx
 import pytest
 
-from bdf import fetch_aw, fetch_bundestag, fetch_dip, update
+from bdf import fetch_aw, fetch_bundestag, fetch_dip, raw, update
 
 TODAY = date(2026, 9, 23)
 
@@ -64,3 +65,45 @@ def test_run_reports_dip_block_but_still_ingests(data_dir, offline, monkeypatch)
     monkeypatch.setattr(fetch_dip, "fetch_range", blocked)
     assert update.run(21, TODAY) == 1
     assert (data_dir / "bundestag.sqlite").exists()
+
+
+def test_run_skips_an_unreachable_source_and_still_fetches_the_rest(data_dir, offline, monkeypatch):
+    monkeypatch.setenv("DIP_API_KEY", "test")
+
+    def disconnected(*a, **k):
+        raise httpx.RemoteProtocolError("Server disconnected without sending a response.")
+
+    monkeypatch.setattr(fetch_aw, "fetch_wahlperiode", disconnected)
+    monkeypatch.setattr(fetch_dip, "fetch_range", lambda *a, **k: offline.append("dip"))
+    assert update.run(21, TODAY) == 1
+    assert offline[-1] == "dip"  # the source after the failed one still ran
+    assert (data_dir / "bundestag.sqlite").exists()
+
+
+def _client(responses):
+    """An httpx client that answers from ``responses`` in order; an exception instance is raised instead."""
+    queue = list(responses)
+
+    def handler(request):
+        r = queue.pop(0)
+        if isinstance(r, Exception):
+            raise r
+        return r
+
+    return httpx.Client(transport=httpx.MockTransport(handler))
+
+
+def test_get_retries_a_dropped_connection(monkeypatch):
+    monkeypatch.setattr(raw.time, "sleep", lambda s: None)
+    dropped = httpx.RemoteProtocolError("Server disconnected without sending a response.")
+    http = _client([dropped, httpx.Response(503), httpx.Response(200, text="ok")])
+    assert raw.get(http, "https://example.org/x").text == "ok"
+
+
+def test_get_raises_after_the_last_retry(monkeypatch):
+    monkeypatch.setattr(raw.time, "sleep", lambda s: None)
+    dropped = httpx.ConnectError("connection refused")
+    with pytest.raises(httpx.ConnectError):
+        raw.get(_client([dropped] * 4), "https://example.org/x")
+    with pytest.raises(httpx.HTTPStatusError):
+        raw.get(_client([httpx.Response(502)] * 4), "https://example.org/x")

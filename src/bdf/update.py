@@ -4,6 +4,7 @@ Each source derives its own window from what is already under data/raw, so the c
 dates and a missed week is caught up on the next run. The first run backfills the whole Wahlperiode.
 """
 
+from collections.abc import Callable
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -56,39 +57,62 @@ def _window(wp: int, last: date | None, today: date) -> tuple[date, date]:
 
 
 def run(wp: int = 21, today: date | None = None) -> int:
-    """Fetch all sources, then ingest. Returns a process exit code: 1 if a source had to be skipped."""
+    """Fetch all sources, then ingest. Returns a process exit code: 1 if a source had to be skipped.
+
+    A source that still fails after `raw.get`'s retries is skipped for this run; the others are fetched
+    and everything on disk is ingested, so one unreachable server does not hold back the rest.
+    """
     today = today or date.today()
-    failed = False
+    failed: list[str] = []
     with raw.client() as http:
-        print("stammdaten")
-        fetch_bundestag.fetch_stammdaten(http, force=True)  # republished irregularly under the same URL
 
-        print(f"protocols from {wp}/{next_protocol(wp)}")
-        for path in fetch_new_protocols(http, wp):
-            print(f"  {path.name}")
+        def source(name: str, fetch: Callable[[], None]) -> None:
+            try:
+                fetch()
+            except (httpx.HTTPError, SystemExit) as e:  # SystemExit: DIP's Enodia block
+                print(f"{name}: failed, skipped this run: {e}")
+                failed.append(name)
 
-        start, end = votes_window(wp, today)
-        print(f"votes {start}..{end}")
-        for row in fetch_bundestag.fetch_votes(http, start, end):
-            print(f"  {row['date']} #{row['number']} {row['title']}")
+        def stammdaten() -> None:
+            print("stammdaten")
+            fetch_bundestag.fetch_stammdaten(http, force=True)  # republished irregularly under the same URL
 
-        election = fetch_wahl.ELECTION_OF_WAHLPERIODE[wp]
-        print(f"wahl {election}")
-        fetch_wahl.fetch_election(http, election)  # published once; downloaded only if missing
+        def protocols() -> None:
+            print(f"protocols from {wp}/{next_protocol(wp)}")
+            for path in fetch_new_protocols(http, wp):
+                print(f"  {path.name}")
 
-        print(f"abgeordnetenwatch WP {wp}")
-        fetch_aw.fetch_wahlperiode(http, wp, force=True)
+        def votes() -> None:
+            start, end = votes_window(wp, today)
+            print(f"votes {start}..{end}")
+            for row in fetch_bundestag.fetch_votes(http, start, end):
+                print(f"  {row['date']} #{row['number']} {row['title']}")
 
-        if not dip_api_key():
-            print("dip: skipped, DIP_API_KEY is not set")
-        else:
+        def election() -> None:
+            name = fetch_wahl.ELECTION_OF_WAHLPERIODE[wp]
+            print(f"wahl {name}")
+            fetch_wahl.fetch_election(http, name)  # published once; downloaded only if missing
+
+        def abgeordnetenwatch() -> None:
+            print(f"abgeordnetenwatch WP {wp}")
+            fetch_aw.fetch_wahlperiode(http, wp, force=True)
+
+        def dip() -> None:
             start, end = dip_window(wp, today)
             print(f"dip {start}..{end}")
-            try:
-                fetch_dip.fetch_range(http, wp, start, end)
-            except SystemExit as e:  # Enodia block: ingest what we have, report the failure
-                print(f"dip: {e}")
-                failed = True
+            fetch_dip.fetch_range(http, wp, start, end)
+
+        source("stammdaten", stammdaten)
+        source("protocols", protocols)
+        source("votes", votes)
+        source("wahl", election)
+        source("abgeordnetenwatch", abgeordnetenwatch)
+        if dip_api_key():
+            source("dip", dip)
+        else:
+            print("dip: skipped, DIP_API_KEY is not set")
 
     ingest.ingest_all(db.connect(db_path()))
+    if failed:
+        print(f"update: ingested, but these sources failed: {', '.join(failed)}")
     return 1 if failed else 0
