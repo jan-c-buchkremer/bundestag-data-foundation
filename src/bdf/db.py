@@ -166,7 +166,8 @@ CREATE TABLE IF NOT EXISTS roll_call_vote (
     absent INTEGER NOT NULL,
     xlsx_url TEXT NOT NULL,
     pdf_url TEXT,
-    {PROVENANCE}
+    {PROVENANCE},
+    agenda_item_id TEXT REFERENCES agenda_item(id)  -- same sitting: Drucksache on the agenda, else the decision's
 );
 
 CREATE TABLE IF NOT EXISTS individual_vote (
@@ -251,7 +252,42 @@ CREATE TABLE IF NOT EXISTS government_role (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS agenda_item_paragraph (
+    id TEXT PRIMARY KEY,                -- "<agenda_item_id>/<position>"
+    agenda_item_id TEXT NOT NULL REFERENCES agenda_item(id),
+    position INTEGER NOT NULL,
+    kind TEXT NOT NULL,                 -- chair | comment | procedural | speaker | text
+    text TEXT NOT NULL,
+    {PROVENANCE}
+);
+
+CREATE TABLE IF NOT EXISTS decision (
+    id TEXT PRIMARY KEY,                -- roll-call: roll_call_vote.id ("21/90/7", else "21/90/n<k>");
+                                        -- show of hands: "<sitting_id>/h<n>"
+    sitting_id TEXT NOT NULL REFERENCES sitting(id),
+    agenda_item_id TEXT REFERENCES agenda_item(id),
+    n INTEGER NOT NULL,                 -- running number per kind within the sitting
+    position INTEGER NOT NULL,          -- order among all decisions of the sitting
+    kind TEXT NOT NULL,                 -- namentlich | handzeichen
+    subject TEXT NOT NULL,
+    drucksache_number TEXT,
+    result TEXT,                        -- angenommen | abgelehnt | NULL (not found)
+    roll_call_vote_id TEXT REFERENCES roll_call_vote(id),
+    text TEXT NOT NULL,                 -- the chair's words the decision was read from
+    {PROVENANCE}
+);
+
+CREATE TABLE IF NOT EXISTS decision_fraction (
+    decision_id TEXT NOT NULL REFERENCES decision(id),
+    fraction TEXT NOT NULL,             -- normalised, as membership.name
+    position TEXT NOT NULL,             -- yes | no | abstain
+    PRIMARY KEY (decision_id, fraction)
+);
+
 CREATE INDEX IF NOT EXISTS speech_person ON speech(person_id);
+CREATE INDEX IF NOT EXISTS agenda_paragraph_item ON agenda_item_paragraph(agenda_item_id);
+CREATE INDEX IF NOT EXISTS decision_sitting ON decision(sitting_id);
+CREATE INDEX IF NOT EXISTS decision_agenda_item ON decision(agenda_item_id);
 CREATE INDEX IF NOT EXISTS speech_sitting ON speech(sitting_id);
 CREATE INDEX IF NOT EXISTS paragraph_speech ON speech_paragraph(speech_id);
 CREATE INDEX IF NOT EXISTS vote_person ON individual_vote(person_id);
@@ -274,7 +310,19 @@ def connect(path: Path) -> sqlite3.Connection:
     conn.execute("PRAGMA journal_mode = WAL")
     conn.execute("PRAGMA foreign_keys = ON")
     conn.executescript(SCHEMA)
+    _migrate(conn)
     return conn
+
+
+# Columns added after stores already existed: (table, column, declaration)
+_ADDED_COLUMNS = [("roll_call_vote", "agenda_item_id", "TEXT REFERENCES agenda_item(id)")]
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    """ALTER TABLE for columns that CREATE TABLE IF NOT EXISTS does not add to an existing store."""
+    for table, column, decl in _ADDED_COLUMNS:
+        if column not in {r["name"] for r in conn.execute(f"PRAGMA table_info({table})")}:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {decl}")
 
 
 def upsert(conn: sqlite3.Connection, table: str, rows: Iterable[Mapping[str, object]]) -> int:

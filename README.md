@@ -73,6 +73,7 @@ uv run bdf query speeches    --person "Nina Warken"   --from 2026-07-06 --to 202
 uv run bdf query votes       --person "Pascal Meiser" --from 2026-07-06 --to 2026-07-10
 uv run bdf query drucksachen --person "Pascal Meiser" --from 2026-07-06 --to 2026-07-10
 uv run bdf query corpus --from 2026-07-06 --to 2026-07-10 --json > week.jsonl
+uv run bdf query decisions --sitting 21/90
 ```
 
 Portraits and the government roster (current state, no date range):
@@ -87,7 +88,9 @@ uv run bdf query photos --missing               # sitting members without a port
 
 `--person` takes an MdB id (`11004819`) or a name. `votes` shows the member's own vote next
 to their fraction's majority. `corpus` gives one clean speech per line with speaker id,
-fraction, role, date and agenda item — the input for the topic landscape.
+fraction, role, date and agenda item — the input for the topic landscape. `decisions` lists every
+decision on substance the chair announced in a sitting — show of hands with each fraction's position,
+roll-call votes with their totals — with its agenda item, Drucksache and the protocol as source.
 
 The same pipeline is exercised offline by `uv run pytest` on the fixtures in `tests/fixtures/`
 (a real protocol excerpt, a real vote XLSX, a Stammdaten excerpt, abgeordnetenwatch records,
@@ -125,5 +128,9 @@ Details and quotes in `docs/licences.md`. Code is MIT.
   `beratungsstand` stays as it was at the first fetch. `fetch dip --force` over a range refreshes them.
 - abgeordnetenwatch's `ext_id_bundestagsverwaltung` is wrong for ~9 % of WP21 members and is
   therefore never trusted on its own.
+- Decisions are read from the chair's words by rules (`docs/decisions.md` has the measured recall).
+  Show-of-hands results are per fraction as announced; where the chair names no fraction ("Wer stimmt
+  dafür? – Wer stimmt dagegen? – … angenommen") the decision has no fraction rows. Subjects are the
+  chair's phrase ("Beschlussempfehlung des Ausschusses …"), sometimes only a noun.
 - One `<rede>` with a question from another member becomes several speech rows
   (`ID…`, `ID…-2`, `ID…-3`); presidency remarks inside a speech are kept as `chair` paragraphs.

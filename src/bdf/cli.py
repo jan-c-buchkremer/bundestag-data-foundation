@@ -67,6 +67,9 @@ def build_parser() -> argparse.ArgumentParser:
     qph.add_argument("--missing", action="store_true", help="list sitting members without a portrait instead")
     for sp in (qg, qph):
         sp.add_argument("--json", action="store_true", help="JSON lines instead of text")
+    qd = qs.add_parser("decisions", help="decisions announced by the chair in one sitting")
+    qd.add_argument("--sitting", required=True, help='sitting id, e.g. "21/90"')
+    qd.add_argument("--json", action="store_true", help="JSON lines instead of text")
     return p
 
 
@@ -105,10 +108,14 @@ def cmd_query(args: argparse.Namespace) -> None:
         for r in rows:
             print(json.dumps(r, ensure_ascii=False) if args.json else _format(args.query, r))
         return
-    start, end = args.start.isoformat(), args.end.isoformat()
-    if args.query == "corpus":
-        rows = queries.corpus(conn, start, end)
+    if args.query == "decisions":
+        rows = queries.decisions(conn, args.sitting)
+        if not args.json:
+            print(f"# sitting {args.sitting}: {len(rows)} decisions\n")
+    elif args.query == "corpus":
+        rows = queries.corpus(conn, args.start.isoformat(), args.end.isoformat())
     else:
+        start, end = args.start.isoformat(), args.end.isoformat()
         person = queries.resolve_person(conn, args.person)
         rows = getattr(queries, args.query)(conn, person["id"], start, end)
         if not args.json:
@@ -150,6 +157,17 @@ def _format(kind: str, r: dict) -> str:
         if "local_path" not in r:  # --missing
             return f"{r['person_id']} {r['first_name']} {r['last_name']} [{r['fraction'] or '?'}]"
         return f"{r['person_id']} {r['first_name']} {r['last_name']}: {r['local_path']} (© {r['credit']})\n{src}"
+    if kind == "decisions":
+        how = (
+            ", ".join(f"{f} {p}" for f, p in r["fractions"].items())
+            if r["kind"] == "handzeichen"
+            else (f"{r['roll_call']['yes']} yes / {r['roll_call']['no']} no / {r['roll_call']['abstain']} abstain"
+                  f" ({r['roll_call_vote_id']})" if r["roll_call"] else "roll-call vote not in the store")
+        )  # fmt: skip
+        return (
+            f"{r['decision_id']} [{r['kind']}] {r['top_id'] or '?'} · {r['subject'][:110]} "
+            f"(Drs. {r['drucksache_number'] or '?'})\n  {r['result'] or 'result not found'}: {how}\n{src}\n"
+        )
     who = f"{r['person_id']} {r['first_name']} {r['last_name']} [{r['fraction'] or r['speaker_role']}]"
     return f"{r['date']} {r['sitting_id']} {who} {len(r['text'])} chars\n{src}"
 
