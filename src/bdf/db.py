@@ -6,6 +6,26 @@ from pathlib import Path
 
 PROVENANCE = "source_url TEXT NOT NULL, source_document_id TEXT NOT NULL, retrieved_at TEXT NOT NULL"
 
+GOVERNMENT_ROLE = f"""CREATE TABLE IF NOT EXISTS government_role (
+    id TEXT PRIMARY KEY,                -- wikidata: statement id of the "position held" (P39) claim;
+                                        -- else "<source_kind>:<person_id>:<kind>:<department key>"
+    person_id TEXT REFERENCES person(id),
+    wikidata_qid TEXT,                  -- the holder's QID, when known
+    name TEXT NOT NULL,                 -- the holder's Wikidata label, else first + last name of the person
+    office TEXT NOT NULL,               -- Wikidata's position label, else a generic one, "Bundesminister der Finanzen"
+    department TEXT,                    -- ministry or office, "Bundesministerium der Finanzen"
+    kind TEXT NOT NULL,                 -- kanzler | minister | staatsminister | parl_sts | beamteter_sts
+    from_date TEXT NOT NULL,            -- wikidata, stammdaten: start of office; protocol: first sitting that
+                                        -- prints the role for the person (evidence, not the appointment)
+    to_date TEXT,                       -- wikidata, stammdaten: end of office (or inferred, docs/decisions.md);
+                                        -- protocol: last sitting that prints the role (evidence, not the end)
+    {PROVENANCE},
+    source_kind TEXT NOT NULL DEFAULT 'wikidata'  -- wikidata | stammdaten | protocol: source of dates + provenance
+);
+"""
+
+GOVERNMENT_ROLE_INDEX = "CREATE INDEX IF NOT EXISTS government_role_person ON government_role(person_id)"
+
 SCHEMA = f"""
 CREATE TABLE IF NOT EXISTS person (
     id TEXT PRIMARY KEY,                -- Bundestag MdB id (MDB/ID == redner/@id)
@@ -239,19 +259,7 @@ CREATE TABLE IF NOT EXISTS person_photo (
     {PROVENANCE}
 );
 
-CREATE TABLE IF NOT EXISTS government_role (
-    id TEXT PRIMARY KEY,                -- Wikidata statement id of the "position held" (P39) claim
-    person_id TEXT REFERENCES person(id),
-    wikidata_qid TEXT NOT NULL,
-    name TEXT NOT NULL,                 -- the holder's Wikidata label
-    office TEXT NOT NULL,               -- the position's German label, "Bundesminister der Finanzen"
-    department TEXT,                    -- ministry or office, "Bundesministerium der Finanzen"
-    kind TEXT NOT NULL,                 -- kanzler | minister | staatsminister | parl_sts | beamteter_sts
-    from_date TEXT NOT NULL,
-    to_date TEXT,
-    {PROVENANCE}
-);
-
+{GOVERNMENT_ROLE}
 CREATE TABLE IF NOT EXISTS agenda_item_paragraph (
     id TEXT PRIMARY KEY,                -- "<agenda_item_id>/<position>"
     agenda_item_id TEXT NOT NULL REFERENCES agenda_item(id),
@@ -299,7 +307,7 @@ CREATE INDEX IF NOT EXISTS author_dip_person ON drucksache_author(dip_person_id)
 CREATE INDEX IF NOT EXISTS drucksache_date ON drucksache(date);
 CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
 CREATE INDEX IF NOT EXISTS candidacy_person ON election_candidacy(person_id);
-CREATE INDEX IF NOT EXISTS government_role_person ON government_role(person_id);
+{GOVERNMENT_ROLE_INDEX};
 """
 
 
@@ -315,7 +323,10 @@ def connect(path: Path) -> sqlite3.Connection:
 
 
 # Columns added after stores already existed: (table, column, declaration)
-_ADDED_COLUMNS = [("roll_call_vote", "agenda_item_id", "TEXT REFERENCES agenda_item(id)")]
+_ADDED_COLUMNS = [
+    ("roll_call_vote", "agenda_item_id", "TEXT REFERENCES agenda_item(id)"),
+    ("government_role", "source_kind", "TEXT NOT NULL DEFAULT 'wikidata'"),  # all earlier rows came from Wikidata
+]
 
 
 def _migrate(conn: sqlite3.Connection) -> None:
@@ -323,6 +334,22 @@ def _migrate(conn: sqlite3.Connection) -> None:
     for table, column, decl in _ADDED_COLUMNS:
         if column not in {r["name"] for r in conn.execute(f"PRAGMA table_info({table})")}:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {decl}")
+    _relax_government_role(conn)
+
+
+def _relax_government_role(conn: sqlite3.Connection) -> None:
+    """government_role.wikidata_qid was NOT NULL while Wikidata was the only source. SQLite cannot drop a
+    constraint, so the table is rebuilt with its rows (all columns kept by name)."""
+    cols = {r["name"]: r for r in conn.execute("PRAGMA table_info(government_role)")}
+    if not cols["wikidata_qid"]["notnull"]:
+        return
+    names = ", ".join(cols)
+    with conn:
+        conn.execute("ALTER TABLE government_role RENAME TO government_role_old")
+        conn.execute(GOVERNMENT_ROLE)
+        conn.execute(f"INSERT INTO government_role ({names}) SELECT {names} FROM government_role_old")
+        conn.execute("DROP TABLE government_role_old")  # drops its index too
+        conn.execute(GOVERNMENT_ROLE_INDEX)
 
 
 def upsert(conn: sqlite3.Connection, table: str, rows: Iterable[Mapping[str, object]]) -> int:
