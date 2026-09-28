@@ -6,6 +6,9 @@
 - ``kerg2.csv``: results per area, party and vote (Stimme 1 = Erststimme, 2 = Zweitstimme) in long format. On
   Wahlkreis rows, ``Gewählt`` names the party whose candidate got the seat, or "–" when the winner got none
   (since the 2023 reform a constituency winner needs Zweitstimmendeckung).
+- ``*_wkr_gemeinden_*_utf8.csv``: the Wahlkreiseinteilung, one row per Gemeinde and Wahlkreis. A Gemeinde split
+  across Wahlkreise (18 in 2025: Hamburg, Berlin and big cities) has one row per Wahlkreis with a
+  running Gemeindeteil number and the range Wahlkreis-von/-bis; the Gebietsstand is in a "# Gebietsstand:" line.
 """
 
 import re
@@ -124,6 +127,38 @@ def parse_kerg2(path: Path) -> tuple[list[dict], list[dict], str]:
             }
         )
     return list(constituencies.values()), results, table.as_of
+
+
+def parse_gemeinden(path: Path) -> tuple[list[dict], str]:
+    """Gemeinden per Wahlkreis with the 8-digit Amtlicher Gemeindeschlüssel (Land, RegBez, Kreis, Gemeinde);
+    and the file's Gebietsstand as ISO date."""
+    lines = path.read_text(encoding="utf-8-sig").splitlines()
+    as_of, header, out = "", None, []
+    for line in lines:
+        cells = [c.strip() for c in line.split(";")]
+        if header is None:
+            if cells[0].startswith("# Gebietsstand:"):
+                d, m, y = cells[0].split(":")[1].strip().split(".")
+                as_of = f"{y}-{m}-{d}"
+            elif cells[0] == "Wahlkreis-Nr":
+                header = cells
+            continue
+        if not line.strip(";"):
+            continue
+        r = dict(zip(header, cells, strict=False))
+        out.append(
+            {
+                "ags": r["RGS_Land"] + r["RGS_RegBez"] + r["RGS_Kreis"] + r["RGS_Gemeinde"],
+                "name": r["Gemeindename"],
+                "district": r["Kreisname"],
+                "state": LAND[int(r["RGS_Land"])],
+                "constituency_number": int(r["Wahlkreis-Nr"]),
+                "split": bool(r["Wahlkreis-von"]),
+            }
+        )
+    if header is None:
+        raise ValueError(f"{path}: no header row (Wahlkreis-Nr;…)")
+    return out, as_of
 
 
 def document_id(kind: str, election: str, as_of: str) -> str:

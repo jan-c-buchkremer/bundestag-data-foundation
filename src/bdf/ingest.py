@@ -35,7 +35,7 @@ from bdf.fetch_bundestag import (
     votes_index_path,
 )
 from bdf.fetch_dip import dip_dir
-from bdf.fetch_wahl import ELECTION_OF_WAHLPERIODE, ELECTIONS, gewaehlte_csv, gewaehlte_zip, kerg2_csv
+from bdf.fetch_wahl import ELECTION_OF_WAHLPERIODE, ELECTIONS, gemeinden_csv, gewaehlte_csv, gewaehlte_zip, kerg2_csv
 from bdf.match import PersonIndex
 from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_fraction, normalize_name
 
@@ -648,6 +648,27 @@ def ingest_wahl(conn: sqlite3.Connection) -> None:
         )
         for u in unmatched:
             print("    unmatched:", u)
+        ingest_municipalities(conn, election)
+
+
+def ingest_municipalities(conn: sqlite3.Connection, election: str) -> None:
+    """The Wahlkreiseinteilung: which Wahlkreis(e) each Gemeinde belongs to."""
+    path = gemeinden_csv(election)
+    if not path.exists():
+        print(f"wahl {election}: no Wahlkreiseinteilung fetched")
+        return
+    rows, as_of = parse_wahl.parse_gemeinden(path)
+    prov = raw.read_meta(path).provenance(parse_wahl.document_id("Wahlkreiseinteilung", election, as_of))
+    with conn:
+        conn.execute("DELETE FROM constituency_municipality WHERE election = ?", (election,))
+        upsert(
+            conn,
+            "constituency_municipality",
+            [{"id": f"{election}/{r['ags']}/{r['constituency_number']}", "election": election, **r, **prov}
+             for r in rows],
+        )  # fmt: skip
+    split = len({r["ags"] for r in rows if r["split"]})
+    print(f"wahl {election}: {len(rows)} Gemeinde rows ({split} Gemeinden split across Wahlkreise)")
 
 
 def _match_elected(index: PersonIndex, members: list[sqlite3.Row], c: dict) -> str | None:

@@ -123,6 +123,7 @@ TABLE_SOURCES = {
     "aw_profile": ["abgeordnetenwatch"],
     "constituency": ["bundeswahlleiterin"],
     "constituency_result": ["bundeswahlleiterin"],
+    "constituency_municipality": ["bundeswahlleiterin"],
     "election_candidacy": ["bundeswahlleiterin"],
     "person_photo": ["portraits"],
     "government_role": ["wikidata", "bundestag"],

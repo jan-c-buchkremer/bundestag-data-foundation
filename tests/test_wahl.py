@@ -73,3 +73,32 @@ def test_winner_share_matches_results_table(store):
         ).fetchone()
         if r is not None:  # only three Wahlkreise are in the fixture
             assert r["percent"] == c["first_vote_percent"]
+
+
+def test_parse_gemeinden_builds_ags_and_flags_split():
+    rows, as_of = parse_wahl.parse_gemeinden(FIXTURES / "btw25_wkr_gemeinden_20241130_utf8.csv")
+    assert as_of == "2024-11-30"
+    rostock = rows[0]
+    assert (rostock["ags"], rostock["name"], rostock["state"], rostock["constituency_number"]) == (
+        "13003000",
+        "Rostock, Hanse- und Universitätsstadt",
+        "MV",
+        14,
+    )
+    assert rostock["split"] is False and rostock["district"]
+    duisburg = next(r for r in rows if r["name"] == "Duisburg, Stadt")
+    assert (duisburg["ags"], duisburg["split"]) == ("05112000", True)
+
+
+def test_municipalities_one_row_per_wahlkreis(store):
+    rows = store.execute(
+        "SELECT * FROM constituency_municipality WHERE election = 'btw25' AND ags = '02000000' "
+        "ORDER BY constituency_number"
+    ).fetchall()
+    assert [r["constituency_number"] for r in rows] == [18, 19]
+    assert all(r["split"] == 1 and r["state"] == "HH" for r in rows)
+    assert rows[0]["id"] == "btw25/02000000/18"
+    assert rows[0]["source_document_id"] == "Bundeswahlleiterin, BTW 2025 Wahlkreiseinteilung (Stand 2024-11-30)"
+    assert rows[0]["source_url"].endswith("btw25_wkr_gemeinden_20241130_utf8.csv")
+    single = store.execute("SELECT * FROM constituency_municipality WHERE name = 'Beckingen'").fetchone()
+    assert (single["constituency_number"], single["split"], single["state"]) == (297, 0, "SL")
