@@ -364,9 +364,20 @@ def ingest_abgeordnetenwatch(conn: sqlite3.Connection) -> None:
     for path in raw.data_files(aw_dir(), "wp*-politicians.json"):
         wp = int(path.stem.split("-")[0][2:])
         index = PersonIndex(conn, wp)
-        matched, unmatched, disagree = [], [], []
+        meta = raw.read_meta(path)
+        matched, unmatched, disagree, profiles = [], [], [], []
         for p in raw.read_json(path):
             pid = index.match(p["last_name"], p["first_name"], str(p.get("year_of_birth") or ""))
+            profiles.append(
+                {
+                    "aw_politician_id": p["id"],
+                    "person_id": pid,
+                    "url": p["abgeordnetenwatch_url"],
+                    "questions": p.get("statistic_questions"),
+                    "questions_answered": p.get("statistic_questions_answered"),
+                    **meta.provenance(f"aw politician {p['id']}", url=p["api_url"]),
+                }
+            )
             if pid is None:
                 unmatched.append(p["label"])
                 continue
@@ -376,6 +387,7 @@ def ingest_abgeordnetenwatch(conn: sqlite3.Connection) -> None:
             matched.append((p["id"], p.get("qid_wikidata"), pid))
         with conn:
             conn.executemany("UPDATE person SET aw_politician_id = ?, wikidata_qid = ? WHERE id = ?", matched)
+            upsert(conn, "aw_profile", profiles)
         print(
             f"abgeordnetenwatch WP {wp}: {len(matched)} matched, {len(unmatched)} unmatched, "
             f"{len(disagree)} where ext_id_bundestagsverwaltung disagrees"
