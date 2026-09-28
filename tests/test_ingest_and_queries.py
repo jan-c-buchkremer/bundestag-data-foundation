@@ -187,3 +187,29 @@ def test_person_index_ambiguity(store):
 def test_resolve_person_by_name(store):
     assert queries.resolve_person(store, "Bärbel Bas")["id"] == "11004006"
     assert queries.resolve_person(store, "11004819")["last_name"] == "Meiser"
+
+
+def test_overlapping_dip_ranges_count_each_record_once(data_dir):
+    """`update` re-reads 14 days back, so a later range file repeats records of the earlier one."""
+    from bdf import db, ingest
+
+    dip = data_dir / "raw" / "dip"
+    for kind in ("drucksache", "vorgangsposition"):
+        src = dip / kind / "2026-07-06_2026-07-10.json"
+        records = json.loads(src.read_text(encoding="utf-8"))
+        if kind == "drucksache":
+            records[0]["titel"] = "later title"  # the most recently retrieved copy wins
+        (dip / kind / "2026-07-08_2026-07-22.json").write_text(json.dumps(records), encoding="utf-8")
+        (dip / kind / "2026-07-08_2026-07-22.json.meta.json").write_text(
+            json.dumps(
+                {"url": "https://search.dip.bundestag.de/api/v1/overlap", "retrieved_at": "2026-09-28T03:40:00+00:00"}
+            ),
+            encoding="utf-8",
+        )
+    conn = db.connect(data_dir / "bundestag.sqlite")
+    ingest.ingest_all(conn)
+    # the vote's one DIP decision is not doubled, so it still pairs with the one vote of the day
+    assert conn.execute("SELECT link_method FROM roll_call_vote WHERE id = '21/90/7'").fetchone()[0] == "dip_beschluss"
+    assert conn.execute("SELECT count(*) FROM drucksache").fetchone()[0] == 4
+    first = json.loads((dip / "drucksache" / "2026-07-06_2026-07-10.json").read_text(encoding="utf-8"))[0]
+    assert conn.execute("SELECT title FROM drucksache WHERE id = ?", (first["id"],)).fetchone()[0] == "later title"

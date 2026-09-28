@@ -7,6 +7,7 @@ import json
 import re
 import sqlite3
 from collections import defaultdict
+from pathlib import Path
 
 from bdf import parse_protocol, parse_stammdaten, parse_votes, raw
 from bdf.config import DIP_BASE_URL
@@ -206,52 +207,62 @@ def _ingest_dip_persons(conn: sqlite3.Connection) -> None:
         print(f"dip persons WP {wp}: {len(matches)} matched to MdB ids, {rest} not (non-MdB or ambiguous)")
 
 
+def _latest_list_records(directory: Path) -> list[tuple[dict, raw.RawMeta]]:
+    """Records of all DIP list files in ``directory``, each id once, from the most recently retrieved file.
+
+    `update` re-reads 14 days back, so consecutive date-range files overlap and the same record
+    appears in several of them.
+    """
+    latest: dict[str, tuple[dict, raw.RawMeta]] = {}
+    for path in raw.data_files(directory, "*.json"):
+        meta = raw.read_meta(path)
+        for record in raw.read_json(path):
+            seen = latest.get(record["id"])
+            if seen is None or meta.retrieved_at >= seen[1].retrieved_at:
+                latest[record["id"]] = (record, meta)
+    return list(latest.values())
+
+
 def _ingest_drucksachen(conn: sqlite3.Connection) -> None:
-    counts = {"drucksache": 0, "drucksache_author": 0, "vorgang_drucksache": 0}
     count_mismatches: list[str] = []
-    for path in raw.data_files(dip_dir() / "drucksache", "*.json"):
-        list_meta = raw.read_meta(path)
-        rows: dict[str, list[dict]] = defaultdict(list)
-        for d in raw.read_json(path):
-            doc_id = f"BT-Drs. {d['dokumentnummer']}"
-            rows["drucksache"].append(
-                {
-                    "id": d["id"],
-                    "number": d["dokumentnummer"],
-                    "wahlperiode": d["wahlperiode"],
-                    "type": d.get("drucksachetyp"),
-                    "title": d["titel"],
-                    "date": d["datum"],
-                    "pdf_url": (d.get("fundstelle") or {}).get("pdf_url"),
-                    "publisher": d.get("herausgeber"),
-                    "originators": json.dumps([u.get("titel") for u in d.get("urheber", [])], ensure_ascii=False),
-                    "author_count": d.get("autoren_anzahl"),
-                    **list_meta.provenance(doc_id, url=f"{DIP_BASE_URL}/drucksache/{d['id']}"),
-                }
-            )
-            authors = _author_rows(d["id"], doc_id)
-            # autoren_anzahl is 0 on Schriftliche Fragen that list over a hundred askers; where the
-            # activities were fetched, the number of distinct persons in them wins
-            if authors is not None and len(authors) != (d.get("autoren_anzahl") or 0):
-                count_mismatches.append(f"{d['dokumentnummer']} ({d.get('autoren_anzahl')} → {len(authors)})")
-                rows["drucksache"][-1]["author_count"] = len(authors)
-            rows["drucksache_author"] += authors or []
-            vorgaenge, links = _vorgang_rows(d["id"])
-            rows["vorgang"] += vorgaenge
-            rows["vorgang_drucksache"] += links
-        with conn:
-            for table in ("drucksache", "vorgang", "drucksache_author", "vorgang_drucksache"):
-                upsert(conn, table, rows[table])
-        for table in counts:
-            counts[table] += len(rows[table])
+    rows: dict[str, list[dict]] = defaultdict(list)
+    for d, list_meta in _latest_list_records(dip_dir() / "drucksache"):
+        doc_id = f"BT-Drs. {d['dokumentnummer']}"
+        rows["drucksache"].append(
+            {
+                "id": d["id"],
+                "number": d["dokumentnummer"],
+                "wahlperiode": d["wahlperiode"],
+                "type": d.get("drucksachetyp"),
+                "title": d["titel"],
+                "date": d["datum"],
+                "pdf_url": (d.get("fundstelle") or {}).get("pdf_url"),
+                "publisher": d.get("herausgeber"),
+                "originators": json.dumps([u.get("titel") for u in d.get("urheber", [])], ensure_ascii=False),
+                "author_count": d.get("autoren_anzahl"),
+                **list_meta.provenance(doc_id, url=f"{DIP_BASE_URL}/drucksache/{d['id']}"),
+            }
+        )
+        authors = _author_rows(d["id"], doc_id)
+        # autoren_anzahl is 0 on Schriftliche Fragen that list over a hundred askers; where the
+        # activities were fetched, the number of distinct persons in them wins
+        if authors is not None and len(authors) != (d.get("autoren_anzahl") or 0):
+            count_mismatches.append(f"{d['dokumentnummer']} ({d.get('autoren_anzahl')} → {len(authors)})")
+            rows["drucksache"][-1]["author_count"] = len(authors)
+        rows["drucksache_author"] += authors or []
+        vorgaenge, links = _vorgang_rows(d["id"])
+        rows["vorgang"] += vorgaenge
+        rows["vorgang_drucksache"] += links
     with conn:
+        for table in ("drucksache", "vorgang", "drucksache_author", "vorgang_drucksache"):
+            upsert(conn, table, rows[table])
         conn.execute(
             "UPDATE drucksache_author SET person_id = "
             "(SELECT id FROM person WHERE person.dip_person_id = drucksache_author.dip_person_id)"
         )
     print(
-        f"dip: {counts['drucksache']} drucksachen, {counts['drucksache_author']} author activities, "
-        f"{counts['vorgang_drucksache']} vorgang links"
+        f"dip: {len(rows['drucksache'])} drucksachen, {len(rows['drucksache_author'])} author activities, "
+        f"{len(rows['vorgang_drucksache'])} vorgang links"
     )
     if count_mismatches:
         print(
@@ -312,14 +323,13 @@ def _link_votes_to_dip(conn: sqlite3.Connection) -> None:
     to a Drucksache number in the vote title, else leave the vote unlinked.
     """
     decisions_by_date: dict[str, list[tuple[tuple[int, str], str | None, str | None]]] = defaultdict(list)
-    for path in raw.data_files(dip_dir() / "vorgangsposition", "*.json"):
-        for pos in raw.read_json(path):
-            for b in pos.get("beschlussfassung") or []:
-                if b.get("abstimmungsart") != "Namentliche Abstimmung":
-                    continue
-                page = re.match(r"(\d+)([A-D]?)", b.get("seite") or "0")
-                key = (int(page.group(1)), page.group(2))
-                decisions_by_date[pos["datum"]].append((key, b.get("dokumentnummer"), pos.get("vorgang_id")))
+    for pos, _ in _latest_list_records(dip_dir() / "vorgangsposition"):
+        for b in pos.get("beschlussfassung") or []:
+            if b.get("abstimmungsart") != "Namentliche Abstimmung":
+                continue
+            page = re.match(r"(\d+)([A-D]?)", b.get("seite") or "0")
+            key = (int(page.group(1)), page.group(2))
+            decisions_by_date[pos["datum"]].append((key, b.get("dokumentnummer"), pos.get("vorgang_id")))
     votes_by_date: dict[str, list[sqlite3.Row]] = defaultdict(list)
     for v in conn.execute("SELECT id, date, number, title FROM roll_call_vote ORDER BY date, number"):
         votes_by_date[v["date"]].append(v)
