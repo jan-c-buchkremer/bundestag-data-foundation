@@ -5,7 +5,7 @@ from datetime import date
 import httpx
 import pytest
 
-from bdf import fetch_aw, fetch_bundestag, fetch_dip, fetch_wikidata, raw, update
+from bdf import fetch_aw, fetch_bundestag, fetch_dip, fetch_wikidata, queries, raw, update
 
 TODAY = date(2026, 9, 23)
 
@@ -109,3 +109,14 @@ def test_get_raises_after_the_last_retry(monkeypatch):
         raw.get(_client([dropped] * 4), "https://example.org/x")
     with pytest.raises(httpx.HTTPStatusError):
         raw.get(_client([httpx.Response(502)] * 4), "https://example.org/x")
+
+
+def test_run_warns_about_stale_protocol_roles_without_failing(data_dir, offline, monkeypatch, capsys):
+    monkeypatch.delenv("DIP_API_KEY", raising=False)
+    stale = {"name": "W", "person_id": "999990154", "office": "Staatsminister beim Bundeskanzler",
+             "to_date": "2026-05-07", "days_since_seen": 139}  # fmt: skip
+    monkeypatch.setattr(queries, "stale_roles", lambda conn: [stale])
+    assert update.run(21, TODAY) == 0
+    out = capsys.readouterr().out
+    assert "update: warning: 1 protocol-only government roles not seen in a protocol for more than 90 days" in out
+    assert "W (999990154), Staatsminister beim Bundeskanzler: last seen 2026-05-07, 139 days" in out

@@ -65,7 +65,13 @@ def build_parser() -> argparse.ArgumentParser:
     qg.add_argument("--date", type=_date, help="only roles held on this day (default: all since 2025-05-06)")
     qph = qs.add_parser("photos", help="portraits with credit; persons of the Wahlperiode without one")
     qph.add_argument("--missing", action="store_true", help="list sitting members without a portrait instead")
-    for sp in (qg, qph):
+    qs_ = qs.add_parser(
+        "stale-roles", help="protocol-only government roles not printed in a protocol for a while (still current)"
+    )
+    qs_.add_argument(
+        "--days", type=int, default=queries.STALE_AFTER_DAYS, help="days before the newest sitting (default: 90)"
+    )
+    for sp in (qg, qph, qs_):
         sp.add_argument("--json", action="store_true", help="JSON lines instead of text")
     qd = qs.add_parser("decisions", help="decisions announced by the chair in one sitting")
     qd.add_argument("--sitting", required=True, help='sitting id, e.g. "21/90"')
@@ -100,9 +106,11 @@ def cmd_fetch(args: argparse.Namespace) -> None:
 
 def cmd_query(args: argparse.Namespace) -> None:
     conn = db.connect(db_path())
-    if args.query in ("government", "photos"):
+    if args.query in ("government", "photos", "stale-roles"):
         if args.query == "government":
             rows = queries.government(conn, args.date.isoformat() if args.date else None)
+        elif args.query == "stale-roles":
+            rows = queries.stale_roles(conn, args.days)
         else:
             rows = queries.photos_missing(conn) if args.missing else queries.photos(conn)
         for r in rows:
@@ -156,6 +164,11 @@ def _format(kind: str, r: dict) -> str:
         else:
             when = f"{r['from_date']}..{r['to_date'] or 'today'} ({r['source_kind']})"
         return f"{when} [{r['kind']}] {r['office']}: {who}\n{src}"
+    if kind == "stale-roles":
+        return (
+            f"last seen {r['to_date']} ({r['days_since_seen']} days before the newest sitting {r['newest_sitting']}), "
+            f"belegt ab {r['from_date']} [{r['kind']}] {r['office']}: {r['name']} ({r['person_id']})\n{src}"
+        )
     if kind == "photos":
         if "local_path" not in r:  # --missing
             return f"{r['person_id']} {r['first_name']} {r['last_name']} [{r['fraction'] or '?'}]"
