@@ -106,6 +106,14 @@ No separate `fraction` table: fraction is a normalised string (`CDU/CSU`, `SPD`,
 `BÜNDNIS 90/DIE GRÜNEN`, `Die Linke`, `fraktionslos`) with one normalisation function
 shared by the XML, XLSX and Stammdaten parsers. A table would add a join and nothing else.
 
+### Interjections
+
+**interjection** `*id ("<speech_id>/<paragraph>/<part>/<actor>"), speech_id →speech, paragraph (speech_paragraph.position), part, kind (beifall | zuruf | gegenruf | lachen | heiterkeit | widerspruch | zustimmung | unruhe | other), actor (fraction | members | person | house | unknown), fraction, person_id →person, name, text (the words of a Zuruf), to_person_id →person, to_name (addressee named in the comment; NULL = the speaker)`
+
+Parsed from the `comment` paragraphs (`bdf/parse_comments.py`) in the same transaction as the protocol's speeches,
+so it inherits provenance through `speech_id`. "Beifall bei der SPD sowie bei Abgeordneten der CDU/CSU" is two
+rows: `fraction` SPD and `members` CDU/CSU. A named interjection ("Name [Fraktion]: …") is a `zuruf` by a `person`.
+
 ### abgeordnetenwatch.de
 
 **aw_profile** `*aw_politician_id, person_id →person (NULL if unmatched), url (public profile), questions, questions_answered (citizen questions on the profile, lifetime totals), source_url, source_document_id, retrieved_at`
