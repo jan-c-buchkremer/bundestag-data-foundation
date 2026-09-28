@@ -10,6 +10,7 @@ run the full ingest on it.
 | `bundestag/votes/20260710_7-xls.xlsx` | Roll-call vote 21/90/7 (Gebäudemodernisierungsgesetz), **unchanged** | https://www.bundestag.de/resource/blob/1194636/20260710_7-xls.xlsx, Deutscher Bundestag |
 | `bundestag/votes/index.json` | the list row for that vote | bundestag.de vote list |
 | `abgeordnetenwatch/wp21-*.json` | 8 real politician / mandate records | abgeordnetenwatch.de API v2, CC0 1.0 |
+| `bundeswahlleiterin/btw25/*.csv` | **Excerpts**: 9 rows of the elected candidates (the fixture MdBs, plus two namesakes who are not in the fixture Stammdaten) and all rows of Wahlkreise 14, 114 and 297 from `kerg2.csv`; preamble and header unchanged | https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/opendata.html, © Die Bundeswahlleiterin, Wiesbaden 2025, Datenlizenz Deutschland – Namensnennung 2.0 |
 | `dip/**` | Recorded responses (2026-09-27), **trimmed**: 4 Drucksachen of 6–10 July 2026 — 21/6977 (Entschließungsantrag, Die Linke), 21/7107 (Beschlussempfehlung with Berichterstattung activities), 21/7052 (Schriftliche Fragen: 3 of 148 askers, 3 of 230 Vorgänge; `autoren_anzahl` is 0), 21/7009 (Beschlussempfehlung behind roll-call vote 21/90/7) — with their activities and Vorgänge; the one Vorgangsposition with the vote's Namentliche Abstimmung plus one other; the 13 WP21 persons matching the fixture Stammdaten or a Staatssekretär. | DIP API, Deutscher Bundestag/Bundesrat – DIP |
 
 Every raw file has a `.meta.json` sidecar with `url` and `retrieved_at`, as `bdf fetch` writes it.

@@ -9,7 +9,9 @@ from bdf.names import normalize_name
 
 # Known spelling differences between sources and the Stammdaten: (source last, source first),
 # both normalised, -> MdB id. Extend when `ingest` reports an unmatched name that is a real MdB.
-ALIASES: dict[tuple[str, str], str] = {}
+ALIASES: dict[tuple[str, str], str] = {
+    ("stegeman", "albert"): "11004415",  # Bundeswahlleiterin, BTW 2025 Gewählte: "Stegeman"; Stammdaten: Stegemann
+}
 
 _PREFIX_RE = re.compile(r"^((von|van|de|del|dos|da|di|zu|der|la|freiherr|graf) )+")
 

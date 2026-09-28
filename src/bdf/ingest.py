@@ -9,14 +9,15 @@ import sqlite3
 from collections import defaultdict
 from pathlib import Path
 
-from bdf import parse_protocol, parse_stammdaten, parse_votes, raw
+from bdf import parse_protocol, parse_stammdaten, parse_votes, parse_wahl, raw
 from bdf.config import DIP_BASE_URL
 from bdf.db import upsert
 from bdf.fetch_aw import aw_dir
 from bdf.fetch_bundestag import PROTOCOL_URL, protocols_dir, stammdaten_dir, vote_path, votes_index_path
 from bdf.fetch_dip import dip_dir
+from bdf.fetch_wahl import ELECTION_OF_WAHLPERIODE, ELECTIONS, gewaehlte_csv, gewaehlte_zip, kerg2_csv
 from bdf.match import PersonIndex
-from bdf.names import DRUCKSACHE_RE, VOTE_VALUES
+from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_name
 
 
 def ingest_all(conn: sqlite3.Connection) -> None:
@@ -25,6 +26,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_votes(conn)
     ingest_dip(conn)
     ingest_abgeordnetenwatch(conn)
+    ingest_wahl(conn)
 
 
 # --- bundestag.de -------------------------------------------------------------------------
@@ -380,3 +382,74 @@ def ingest_abgeordnetenwatch(conn: sqlite3.Connection) -> None:
         )
         for u in unmatched:
             print("    unmatched:", u)
+
+
+# --- Bundeswahlleiterin ------------------------------------------------------------------
+
+
+def ingest_wahl(conn: sqlite3.Connection) -> None:
+    """Official election results; elected candidates are matched to MdB ids of the Wahlperiode they formed."""
+    for wp, election in ELECTION_OF_WAHLPERIODE.items():
+        if election not in ELECTIONS:
+            continue
+        csv_path, kerg2 = gewaehlte_csv(election), kerg2_csv(election)
+        if not csv_path.exists() or not kerg2.exists():
+            print(f"wahl {election}: nothing fetched")
+            continue
+        constituencies, results, as_of = parse_wahl.parse_kerg2(kerg2)
+        prov = raw.read_meta(kerg2).provenance(parse_wahl.document_id("Ergebnisse nach Wahlkreisen", election, as_of))
+        elected, as_of = parse_wahl.parse_gewaehlte(csv_path)
+        cprov = raw.read_meta(gewaehlte_zip(election)).provenance(parse_wahl.document_id("Gewählte", election, as_of))
+        index = PersonIndex(conn, wp)
+        members = conn.execute(
+            "SELECT p.id, p.last_name, substr(p.birth_date, 1, 4) AS year FROM person p "
+            "JOIN mandate m ON m.person_id = p.id WHERE m.wahlperiode = ?",
+            (wp,),
+        ).fetchall()
+        candidacies, unmatched = [], []
+        for n, c in enumerate(elected, start=1):
+            pid = _match_elected(index, members, c)
+            if pid is None:
+                unmatched.append(f"{c['first_names']} {c['last_name']} ({c['party']}, {c['birth_year']})")
+            keep = ("last_name", "first_names", "birth_year", "party", "elected_via", "constituency_number",
+                    "first_vote_percent", "list_state", "list_position", "occupation")  # fmt: skip
+            candidacies.append(
+                {"id": f"{election}/{n}", "election": election, "person_id": pid, **{k: c[k] for k in keep}, **cprov}
+            )
+        with conn:
+            upsert(
+                conn,
+                "constituency",
+                [{"id": f"{election}/{c['number']}", "election": election, **c, **prov} for c in constituencies],
+            )
+            upsert(
+                conn,
+                "constituency_result",
+                [
+                    {"id": f"{election}/{r['constituency_number']}/{r['group_order']}/{r['vote']}",
+                     "election": election, **{k: v for k, v in r.items() if k != "group_order"}, **prov}
+                    for r in results
+                ],
+            )  # fmt: skip
+            upsert(conn, "election_candidacy", candidacies)
+        seatless = sum(c["seat_party"] is None for c in constituencies)
+        print(
+            f"wahl {election}: {len(constituencies)} Wahlkreise ({seatless} without a seat), {len(results)} results, "
+            f"{len(candidacies)} elected, {len(unmatched)} unmatched"
+        )
+        for u in unmatched:
+            print("    unmatched:", u)
+
+
+def _match_elected(index: PersonIndex, members: list[sqlite3.Row], c: dict) -> str | None:
+    """The official file has every given name and the legal surname, the Stammdaten the name in use:
+    "Joachim-Friedrich Martin Josef Merz" is Friedrich Merz, "Saleh, Kassem Taher" is Kassem Taher Saleh.
+    Try the full names, then each given name, then a unique member with that surname part and birth year."""
+    year = str(c["birth_year"] or "")
+    for first in [c["first_names"], *re.split(r"[\s-]+", c["first_names"])[1:]]:
+        pid = index.match(c["last_name"], first, year)
+        if pid is not None:
+            return pid
+    last = set(normalize_name(c["last_name"]).split())
+    same = [m["id"] for m in members if m["year"] == year and last & set(normalize_name(m["last_name"]).split())]
+    return same[0] if len(same) == 1 else None

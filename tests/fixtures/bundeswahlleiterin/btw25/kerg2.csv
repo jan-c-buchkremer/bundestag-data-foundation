@@ -1,0 +1,152 @@
+﻿(c) Die Bundeswahlleiterin, Wiesbaden 2025;;;;;;;;;;;;;;;;
+Datenlizenz Deutschland – Namensnennung – Version 2.0 (https://www.govdata.de/dl-de/by-2-0);;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+Ergebnisse nach Wahlkreisen;;;;;;;;;;;;;;;;
+Status:;Endgültig;;;;;;;;;;;;;;;
+Stand:;14.03.2025;10:50;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+Format: CSV. Trennzeichen: Semikolon. Zeichensatz: UTF-8 mit BOM;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+Wahlart;Wahltag;Gebietsart;Gebietsnummer;Gebietsname;UegGebietsart;UegGebietsnummer;Gruppenart;Gruppenname;Gruppenreihenfolge;Stimme;Anzahl;Prozent;VorpAnzahl;VorpProzent;DiffProzent;DiffProzentPkt;Bemerkung;Gewählt
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;System-Gruppe;Wahlberechtigte;-4;;221164;;222705;;-0,691947;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;System-Gruppe;Wählende;-3;;179109;80,984699;165329;74,236771;8,334896;6,747929;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;System-Gruppe;Ungültige;-2;1;1541;0,86037;2319;1,402658;-33,548944;-0,542288;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;System-Gruppe;Ungültige;-2;2;1089;0,60801;2352;1,422618;-53,69898;-0,814608;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;System-Gruppe;Gültige;-1;1;177568;99,13963;163010;98,597342;8,93074;0,542288;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;System-Gruppe;Gültige;-1;2;178020;99,39199;162977;98,577382;9,230137;0,814608;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;SPD;1;1;30034;16,914084;43932;26,950494;-31,635254;-10,03641;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;SPD;1;2;25368;14,250084;47280;29,010228;-46,345178;-14,760144;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;AfD;2;1;47597;26,804942;19882;12,196798;139,397445;14,608145;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;AfD;2;2;45612;25,62184;20658;12,675408;120,795818;12,946432;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;CDU;3;1;34403;19,374549;27672;16,975646;24,324227;2,398904;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;CDU;3;2;29910;16,801483;23103;14,17562;29,463706;2,625863;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Die Linke;4;1;45518;25,634123;29715;18,228943;53,181895;7,40518;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Die Linke;4;2;30743;17,269408;21491;13,186523;43,050579;4,082885;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;FDP;5;1;5037;2,83666;12242;7,509969;-58,854762;-4,673309;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;FDP;5;2;6057;3,402427;14852;9,112942;-59,217614;-5,710516;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;GRÜNE;6;1;9400;5,293747;16556;10,156432;-43,223001;-4,862685;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;GRÜNE;6;2;15929;8,947871;20941;12,849052;-23,93391;-3,901181;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Tierschutzpartei;7;1;;;4476;2,745844;;-2,745844;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Tierschutzpartei;7;2;2784;1,563869;3935;2,414451;-29,250318;-0,850582;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;FREIE WÄHLER;8;1;3431;1,932218;2131;1,307282;61,004223;0,624936;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;FREIE WÄHLER;8;2;1502;0,843725;1871;1,148015;-19,722074;-0,304289;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Volt;9;1;;;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Volt;9;2;1702;0,956072;501;0,307405;239,720559;0,648667;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;MLPD;10;1;623;0,350852;356;0,218392;75;0,13246;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;MLPD;10;2;240;0,134816;152;0,093265;57,894737;0,041552;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;BÜNDNIS DEUTSCHLAND;11;1;1525;0,858826;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;BÜNDNIS DEUTSCHLAND;11;2;549;0,308392;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;BSW;12;1;;;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;BSW;12;2;17624;9,900011;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;dieBasis;13;1;;;4744;2,910251;;-2,910251;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;dieBasis;13;2;;;3488;2,140179;;-2,140179;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Team Todenhöfer;14;1;;;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Team Todenhöfer;14;2;;;408;0,250342;;-0,250342;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;ÖDP;15;1;;;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;ÖDP;15;2;;;274;0,168122;;-0,168122;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;PdH;16;1;;;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;PdH;16;2;;;290;0,177939;;-0,177939;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Die PARTEI;17;1;;;;;;;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;Die PARTEI;17;2;;;2036;1,249256;;-1,249256;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;PIRATEN;18;1;;;1304;0,799951;;-0,799951;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;Partei;PIRATEN;18;2;;;854;0,524;;-0,524;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;System-Gruppe;Übrige;1000;1;;;0;0;;0;;–
+BT;23.02.2025;Wahlkreis;014;Rostock – Landkreis Rostock II;LAND;13;System-Gruppe;Übrige;1000;2;;;843;0,517251;;-0,517251;;–
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;System-Gruppe;Wahlberechtigte;-4;;159961;;163394;;-2,101056;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;System-Gruppe;Wählende;-3;;127170;79,500628;118600;72,585285;7,22597;6,915344;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;System-Gruppe;Ungültige;-2;1;1297;1,019895;1320;1,112985;-1,742424;-0,09309;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;System-Gruppe;Ungültige;-2;2;862;0,677833;1006;0,848229;-14,314115;-0,170397;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;System-Gruppe;Gültige;-1;1;125873;98,980105;117280;98,887015;7,32691;0,09309;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;System-Gruppe;Gültige;-1;2;126308;99,322167;117594;99,151771;7,410242;0,170397;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;SPD;1;1;49116;39,020282;47314;40,342769;3,808598;-1,322487;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;SPD;1;2;32468;25,705419;41308;35,127643;-21,400213;-9,422224;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;CDU;2;1;27748;22,044442;24299;20,718793;14,194;1,325649;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;CDU;2;2;28994;22,954999;23166;19,699985;25,157558;3,255014;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;GRÜNE;3;1;9830;7,809459;16777;14,305082;-41,40788;-6,495623;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;GRÜNE;3;2;13470;10,664408;17912;15,23207;-24,799017;-4,567662;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;FDP;4;1;3081;2,447705;8203;6,994372;-62,440571;-4,546667;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;FDP;4;2;4228;3,347373;10593;9,008113;-60,08685;-5,66074;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;AfD;5;1;22224;17,655891;11101;9,465382;100,19818;8,190509;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;AfD;5;2;21867;17,312443;9802;8,335459;123,087125;8,976983;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Die Linke;6;1;10805;8,584049;5500;4,689632;96,454545;3,894417;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Die Linke;6;2;13149;10,410267;5580;4,74514;135,645161;5,665127;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Tierschutzpartei;7;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Tierschutzpartei;7;2;2083;1,649143;2135;1,815569;-2,435597;-0,166425;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Die PARTEI;8;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Die PARTEI;8;2;882;0,698293;1482;1,260268;-40,48583;-0,561975;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;dieBasis;9;1;;;1395;1,189461;;-1,189461;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;dieBasis;9;2;267;0,211388;1081;0,919265;-75,300648;-0,707877;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Team Todenhöfer;10;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Team Todenhöfer;10;2;455;0,360231;1603;1,363165;-71,615721;-1,002934;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;FREIE WÄHLER;11;1;1378;1,094754;1470;1,253411;-6,258503;-0,158656;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;FREIE WÄHLER;11;2;582;0,460778;780;0,663299;-25,384615;-0,202521;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Volt;12;1;1389;1,103493;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Volt;12;2;755;0,597745;308;0,261918;145,12987;0,335827;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;MLPD;13;1;302;0,239924;489;0,416951;-38,241309;-0,177027;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;MLPD;13;2;118;0,093422;148;0,125857;-20,27027;-0,032434;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;PdF;14;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;PdF;14;2;260;0,205846;35;0,029763;642,857143;0,176083;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;BÜNDNIS DEUTSCHLAND;15;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;BÜNDNIS DEUTSCHLAND;15;2;153;0,121132;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;BSW;16;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;BSW;16;2;6412;5,07648;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;MERA25;17;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;MERA25;17;2;102;0,080755;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;WerteUnion;18;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;WerteUnion;18;2;63;0,049878;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Bündnis C;19;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Bündnis C;19;2;;;75;0,063779;;-0,063779;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;ÖDP;20;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;ÖDP;20;2;;;79;0,06718;;-0,06718;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;PdH;21;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;PdH;21;2;;;128;0,108849;;-0,108849;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Verjüngungsforschung;22;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;Verjüngungsforschung;22;2;;;156;0,13266;;-0,13266;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;PIRATEN;23;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;PIRATEN;23;2;;;487;0,414137;;-0,414137;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;SGP;24;1;;;;;;;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;Partei;SGP;24;2;;;22;0,018708;;-0,018708;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;System-Gruppe;Übrige;1000;1;;;732;0,624147;;-0,624147;;SPD
+BT;23.02.2025;Wahlkreis;114;Duisburg I;LAND;05;System-Gruppe;Übrige;1000;2;;;714;0,607174;;-0,607174;;SPD
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;System-Gruppe;Wahlberechtigte;-4;;198307;;203279;;-2,445899;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;System-Gruppe;Wählende;-3;;164765;83,085821;159170;78,301251;3,51511;4,78457;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;System-Gruppe;Ungültige;-2;1;2373;1,440233;3047;1,914305;-22,120118;-0,474072;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;System-Gruppe;Ungültige;-2;2;1634;0,991715;2891;1,816297;-43,479765;-0,824582;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;System-Gruppe;Gültige;-1;1;162392;98,559767;156123;98,085695;4,015424;0,474072;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;System-Gruppe;Gültige;-1;2;163131;99,008285;156279;98,183703;4,384466;0,824582;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;SPD;1;1;46008;28,331445;57354;36,736419;-19,782404;-8,404974;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;SPD;1;2;34688;21,263892;56920;36,42204;-39,058327;-15,158148;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;CDU;2;1;51704;31,839007;43671;27,972176;18,394358;3,866831;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;CDU;2;2;46089;28,252754;38085;24,369877;21,016148;3,882877;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;FDP;3;1;5260;3,239076;12777;8,183932;-58,832277;-4,944856;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;FDP;3;2;7259;4,449798;18872;12,075839;-61,535608;-7,626041;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;AfD;4;1;35621;21,935194;15111;9,678907;135,728939;12,256287;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;AfD;4;2;35421;21,713224;15651;10,014781;126,317807;11,698443;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Die Linke;5;1;10903;6,714001;8405;5,383576;29,720405;1,330425;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Die Linke;5;2;11036;6,765115;10512;6,726432;4,984779;0,038684;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Tierschutzpartei;6;1;;;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Tierschutzpartei;6;2;3333;2,043143;4535;2,901861;-26,504961;-0,858718;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;FREIE WÄHLER;7;1;5170;3,183654;4352;2,787546;18,795956;0,396109;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;FREIE WÄHLER;7;2;2170;1,330219;3315;2,121206;-34,53997;-0,790987;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Volt;8;1;;;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Volt;8;2;1000;0,613004;954;0,610447;4,821803;0,002558;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;PIRATEN;9;1;;;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;PIRATEN;9;2;463;0,283821;860;0,550298;-46,162791;-0,266477;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;MLPD;10;1;;;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;MLPD;10;2;55;0,033715;76;0,048631;-27,631579;-0,014916;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;BÜNDNIS DEUTSCHLAND;11;1;;;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;BÜNDNIS DEUTSCHLAND;11;2;384;0,235394;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;GRÜNE;12;1;7726;4,757624;7383;4,728964;4,645808;0,02866;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;GRÜNE;12;2;10190;6,246514;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;BSW;13;1;;;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;BSW;13;2;11043;6,769406;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;dieBasis;14;1;;;2466;1,579524;;-1,579524;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;dieBasis;14;2;;;2221;1,421176;;-1,421176;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Team Todenhöfer;15;1;;;;;;;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Team Todenhöfer;15;2;;;599;0,383289;;-0,383289;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;ÖDP;16;1;;;751;0,481031;;-0,481031;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;ÖDP;16;2;;;593;0,37945;;-0,37945;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Die PARTEI;17;1;;;3853;2,467926;;-2,467926;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;Partei;Die PARTEI;17;2;;;2736;1,750715;;-1,750715;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;System-Gruppe;Übrige;1000;1;;;0;0;;0;;CDU
+BT;23.02.2025;Wahlkreis;297;Saarlouis;LAND;10;System-Gruppe;Übrige;1000;2;;;350;0,223958;;-0,223958;;CDU
