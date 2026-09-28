@@ -1,0 +1,372 @@
+{
+ "head": {
+  "vars": [
+   "st",
+   "person",
+   "personLabel",
+   "pos",
+   "posLabel",
+   "class",
+   "start",
+   "end",
+   "dept",
+   "deptLabel",
+   "birth",
+   "party",
+   "partyShort",
+   "partyLabel",
+   "image",
+   "familyLabel"
+  ]
+ },
+ "results": {
+  "bindings": [
+   {
+    "party": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q49762"
+    },
+    "partyShort": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "CDU"
+    },
+    "person": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q566257"
+    },
+    "pos": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q4970706"
+    },
+    "class": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q4970706"
+    },
+    "st": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/statement/Q566257-5cf60de9-4081-d786-2f78-8706dfae8f9f"
+    },
+    "start": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "2025-05-06T00:00:00Z"
+    },
+    "birth": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "1955-11-11T00:00:00Z"
+    },
+    "image": {
+     "type": "uri",
+     "value": "http://commons.wikimedia.org/wiki/Special:FilePath/2025-02-23%20Bundestagswahl%20%E2%80%93%20Wahlabend%20CDU%20by%20Sandro%20Halank%E2%80%93070.jpg"
+    },
+    "personLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Friedrich Merz"
+    },
+    "posLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bundeskanzler der Bundesrepublik Deutschland"
+    },
+    "partyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Christlich Demokratische Union Deutschlands"
+    },
+    "familyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Merz"
+    }
+   },
+   {
+    "party": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q49768"
+    },
+    "partyShort": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "SPD"
+    },
+    "person": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q1019016"
+    },
+    "pos": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q30533351"
+    },
+    "class": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q248352"
+    },
+    "st": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/statement/Q1019016-5a7d47fe-433e-805a-b804-701403d06314"
+    },
+    "start": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "2025-05-06T00:00:00Z"
+    },
+    "birth": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "1968-05-03T00:00:00Z"
+    },
+    "dept": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q491578"
+    },
+    "image": {
+     "type": "uri",
+     "value": "http://commons.wikimedia.org/wiki/Special:FilePath/2025-05-05%20Unterzeichnung%20des%20Koalitionsvertrages%20der%2021.%20Wahlperiode%20des%20Bundestages%20by%20Sandro%20Halank%E2%80%93033.jpg"
+    },
+    "personLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bärbel Bas"
+    },
+    "posLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bundesminister für Arbeit und Soziales"
+    },
+    "deptLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bundesministerium für Arbeit und Soziales"
+    },
+    "partyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Sozialdemokratische Partei Deutschlands"
+    },
+    "familyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bas"
+    }
+   },
+   {
+    "party": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q49762"
+    },
+    "partyShort": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "CDU"
+    },
+    "person": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q15644599"
+    },
+    "pos": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q30545012"
+    },
+    "class": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q30545012"
+    },
+    "st": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/statement/Q15644599-4f9669fc-4176-93ec-37c5-3336c6d5695b"
+    },
+    "start": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "2026-07-29T00:00:00Z"
+    },
+    "birth": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "1979-05-15T00:00:00Z"
+    },
+    "dept": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q317027"
+    },
+    "image": {
+     "type": "uri",
+     "value": "http://commons.wikimedia.org/wiki/Special:FilePath/2020-02-13%20Deutscher%20Bundestag%20IMG%203091%20by%20Stepro.jpg"
+    },
+    "personLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Nina Warken"
+    },
+    "posLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Chef des Bundeskanzleramtes"
+    },
+    "deptLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bundeskanzleramt"
+    },
+    "partyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Christlich Demokratische Union Deutschlands"
+    },
+    "familyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Warken"
+    }
+   },
+   {
+    "party": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q49762"
+    },
+    "partyShort": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "CDU"
+    },
+    "person": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q15644599"
+    },
+    "pos": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q30533368"
+    },
+    "class": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q248352"
+    },
+    "st": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/statement/Q15644599-5f1b49f4-47fb-a893-d7f8-4f1bdb0e1ab2"
+    },
+    "start": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "2025-05-06T00:00:00Z"
+    },
+    "birth": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "1979-05-15T00:00:00Z"
+    },
+    "dept": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q491566"
+    },
+    "image": {
+     "type": "uri",
+     "value": "http://commons.wikimedia.org/wiki/Special:FilePath/2020-02-13%20Deutscher%20Bundestag%20IMG%203091%20by%20Stepro.jpg"
+    },
+    "personLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Nina Warken"
+    },
+    "posLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bundesminister für Gesundheit"
+    },
+    "deptLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bundesministerium für Gesundheit"
+    },
+    "partyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Christlich Demokratische Union Deutschlands"
+    },
+    "familyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Warken"
+    },
+    "end": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "2026-07-29T00:00:00Z"
+    }
+   },
+   {
+    "party": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q49768"
+    },
+    "partyShort": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "SPD"
+    },
+    "person": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q20172451"
+    },
+    "pos": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q30542236"
+    },
+    "class": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q248352"
+    },
+    "st": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/statement/Q20172451-f6bcbcb9-4dc2-636d-8605-b4feacdce7bf"
+    },
+    "start": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "2025-05-06T00:00:00Z"
+    },
+    "birth": {
+     "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+     "type": "literal",
+     "value": "1968-12-15T00:00:00Z"
+    },
+    "dept": {
+     "type": "uri",
+     "value": "http://www.wikidata.org/entity/Q498251"
+    },
+    "image": {
+     "type": "uri",
+     "value": "http://commons.wikimedia.org/wiki/Special:FilePath/2025-05-05%20Unterzeichnung%20des%20Koalitionsvertrages%20der%2021.%20Wahlperiode%20des%20Bundestages%20by%20Sandro%20Halank%E2%80%93122.jpg"
+    },
+    "personLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Stefanie Hubig"
+    },
+    "posLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bundesminister der Justiz und für Verbraucherschutz"
+    },
+    "deptLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Bundesministerium der Justiz und für Verbraucherschutz"
+    },
+    "partyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Sozialdemokratische Partei Deutschlands"
+    },
+    "familyLabel": {
+     "xml:lang": "de",
+     "type": "literal",
+     "value": "Hubig"
+    }
+   }
+  ]
+ }
+}

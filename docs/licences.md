@@ -14,6 +14,9 @@ terms checked.
 | DIP API | Drucksachen, Vorgänge, authorship, persons | DIP Nutzungsbedingungen (27 Feb 2023, PDF in this folder) | "Deutscher Bundestag/Bundesrat – DIP" + BT-Drs./BT-PlPr. number; commercial use must note that the data is free at dip.bundestag.de | yes, explicitly | permissive with attribution |
 | abgeordnetenwatch.de API v2 | cross-IDs, mandates, (optionally) polls/votes | **CC0 1.0** | none (courtesy attribution recommended) | yes | public domain |
 | Bundeswahlleiterin — Open Data BTW 2025 | elected candidates, results per Wahlkreis | **Datenlizenz Deutschland – Namensnennung 2.0** | "© Die Bundeswahlleiterin, Wiesbaden 2025" | yes | permissive with attribution |
+| bundestag.de — MdB biography portraits | one portrait per MdB | bundestag.de Nutzungsbedingungen; photos are third-party works | the credit printed under each photo (`person_photo.credit`) | not verified per photo | show with credit; rights not checked |
+| Wikidata | government roster (offices, dates, departments, birth dates) | **CC0 1.0** | none | yes | public domain |
+| Wikimedia Commons | portraits of government members without a bundestag.de portrait | per file, mostly CC BY-SA 4.0 | author + licence (`person_photo.credit`) and a link to the file page (`source_url`) | yes, share-alike on the image | permissive with attribution |
 
 Nothing in the store depends on a share-alike or non-commercial source. Data from
 Open Discourse (CC0), GermaParl (CC BY-SA), Machtblick (AGPL code) is **not** used;
@@ -87,10 +90,29 @@ the licence is named in the first two lines of every CSV: "(c) Die Bundeswahllei
 change and redistribution are allowed, commercially too, with the attribution and a link to the licence;
 changes must be marked. Our `source_document_id` names the file and its "Stand" date.
 
+## Portraits (bundestag.de, Wikimedia Commons)
+
+bundestag.de shows every MdB with a portrait and a caption "© <rights holder>": the member, the fraction, the
+Bundestag's photographers ("DBT/ Inga Haar") or a named photographer. The Nutzungsbedingungen say the Bundestag
+accepts no liability for third-party rights such as photos, so the portraits are not covered by the free-use
+clause for Bundestag material. Decision of 2026-09-28: use them without a per-photo licence check and always show
+the credit as stored (without the "©", which the display adds). A publisher should clear this before wider use.
+
+Government members without a bundestag.de portrait get their Wikidata image (P18) from Wikimedia Commons. Each file
+has its own licence; `person_photo.credit` stores "<author>, <licence short name>" from the file's metadata and
+`source_url` the file page, which carries the full licence. CC BY-SA requires the author, the licence with a link,
+and share-alike for adaptations (a downscaled thumbnail is fine to publish under the same licence).
+
+## Wikidata
+
+Wikidata's structured data is **CC0 1.0** (https://www.wikidata.org/wiki/Wikidata:Licensing). No attribution is
+required; `source_url` points at the item anyway. The SPARQL service asks for a descriptive User-Agent, which
+`bdf` sends (`config.USER_AGENT`).
+
 ## What this repository publishes
 
 - Code: MIT (see `LICENSE`).
 - `tests/fixtures/`: small excerpts of one Plenarprotokoll XML, one roll-call XLSX,
-  a Stammdaten excerpt, and recorded API responses — all under the terms above, with
+  a Stammdaten excerpt, recorded API responses, and three portraits with their credits — all under the terms above, with
   source attribution in `tests/fixtures/README.md`. Excerpts are marked as excerpts.
 - No bulk data is committed.

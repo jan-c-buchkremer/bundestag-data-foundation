@@ -5,7 +5,7 @@ from datetime import date
 import httpx
 import pytest
 
-from bdf import fetch_aw, fetch_bundestag, fetch_dip, raw, update
+from bdf import fetch_aw, fetch_bundestag, fetch_dip, fetch_wikidata, raw, update
 
 TODAY = date(2026, 9, 23)
 
@@ -45,6 +45,8 @@ def offline(monkeypatch):
     monkeypatch.setattr(update, "fetch_new_protocols", lambda http, wp: calls.append("protocols") or [])
     monkeypatch.setattr(fetch_bundestag, "fetch_votes", lambda http, s, e: calls.append(("votes", s, e)) or [])
     monkeypatch.setattr(fetch_aw, "fetch_wahlperiode", lambda http, wp, force: calls.append("aw"))
+    monkeypatch.setattr(fetch_bundestag, "fetch_biografien", lambda http: calls.append("photos") or [])
+    monkeypatch.setattr(fetch_wikidata, "fetch_government", lambda http: calls.append("government") or [])
     return calls
 
 
@@ -52,7 +54,7 @@ def test_run_without_dip_key_skips_dip_and_ingests(data_dir, offline, monkeypatc
     monkeypatch.delenv("DIP_API_KEY", raising=False)
     monkeypatch.setattr(fetch_dip, "fetch_range", lambda *a, **k: pytest.fail("DIP called without a key"))
     assert update.run(21, TODAY) == 0
-    assert offline == ["stammdaten", "protocols", ("votes", date(2026, 6, 26), TODAY), "aw"]
+    assert offline == ["stammdaten", "protocols", ("votes", date(2026, 6, 26), TODAY), "aw", "photos", "government"]
     assert (data_dir / "bundestag.sqlite").exists()
 
 

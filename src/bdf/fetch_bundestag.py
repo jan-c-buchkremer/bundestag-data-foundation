@@ -1,4 +1,4 @@
-"""Download bundestag.de Open Data: Stammdaten, Plenarprotokoll XML, roll-call vote XLSX."""
+"""Download bundestag.de: Stammdaten, Plenarprotokoll XML, roll-call vote XLSX, the MdB biography list and portraits."""
 
 import re
 import zipfile
@@ -7,13 +7,16 @@ from pathlib import Path
 
 import httpx
 
-from bdf import raw
+from bdf import parse_biografien, raw
 from bdf.config import raw_dir
 from bdf.names import clean_text
 
 STAMMDATEN_URL = "https://www.bundestag.de/resource/blob/472878/MdB-Stammdaten.zip"
 PROTOCOL_URL = "https://dserver.bundestag.de/btp/{wp}/{wp}{nr:03d}.{ext}"
 VOTE_LIST_URL = "https://www.bundestag.de/ajax/filterlist/de/parlament/plenum/abstimmung/liste/462112-462112"
+# the card list behind https://www.bundestag.de/abgeordnete (current members); the server returns 12 cards per page
+BIO_LIST_URL = "https://www.bundestag.de/ajax/filterlist/de/abgeordnete/1040594-1040594"
+BIO_PAGE = 12
 
 _ROW_RE = re.compile(r"<tr\b.*?</tr>", re.S)
 # file names vary: 20260710_7.pdf, 20260710_7-xls.xlsx, 20260709_1_xls.xlsx
@@ -117,3 +120,46 @@ def fetch_votes(http: httpx.Client, start: date, end: date, *, force: bool = Fal
     index.update({r["xlsx_url"]: r for r in found})
     raw.write_json(index_path, VOTE_LIST_URL, sorted(index.values(), key=lambda r: (r["date"], r["number"])))
     return found
+
+
+def biografien_dir() -> Path:
+    return raw_dir() / "bundestag" / "biografien"
+
+
+def fotos_dir() -> Path:
+    return raw_dir() / "bundestag" / "fotos"
+
+
+def photo_path(card: parse_biografien.Card) -> Path:
+    """Local file of a card's portrait: the bundestag.de image resource id plus the original extension."""
+    return fotos_dir() / f"{card.image_id}{Path(card.image_url or '').suffix or '.jpg'}"
+
+
+def fetch_biografien(http: httpx.Client, *, force: bool = False) -> list[parse_biografien.Card]:
+    """Fetch every page of the biography list (always: it is the current state), then each portrait not on disk yet.
+
+    The pages are stored unchanged as ``biografien/page-NNN.html``; pages left over from a longer earlier list are
+    removed. Portrait URLs carry a content hash, so an existing file is never re-downloaded unless ``force``.
+    """
+    pages: list[tuple[str, str]] = []
+    while True:
+        url = f"{BIO_LIST_URL}?limit={BIO_PAGE}&offset={len(pages) * BIO_PAGE}"
+        fragment = raw.get(http, url).text
+        if not parse_biografien.parse(fragment):
+            break
+        pages.append((url, fragment))
+    directory = biografien_dir()
+    directory.mkdir(parents=True, exist_ok=True)
+    for old in raw.data_files(directory, "page-*.html"):
+        old.unlink()
+        raw.meta_path(old).unlink(missing_ok=True)
+    cards = []
+    for n, (url, fragment) in enumerate(pages):
+        path = directory / f"page-{n:03d}.html"
+        path.write_text(fragment, encoding="utf-8")
+        raw.write_meta(path, url)
+        cards += parse_biografien.parse(fragment)
+    for card in cards:
+        if card.image_url:
+            raw.download(http, card.image_url, photo_path(card), force=force)
+    return cards

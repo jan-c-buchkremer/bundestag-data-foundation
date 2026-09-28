@@ -3,6 +3,7 @@
 import sqlite3
 
 from bdf.names import VOTE_VALUES, normalize_name
+from bdf.parse_wikidata import KINDS
 
 # DIP activity types that make a person an author of a Drucksache. The others DIP returns per Drucksache are
 # roles of their own: Berichterstattung (committee rapporteur on a Beschlussempfehlung) and Antwort
@@ -132,5 +133,49 @@ def corpus(conn: sqlite3.Connection, start: str, end: str) -> list[dict]:
         ORDER BY st.date, s.position
         """,
         (start, end),
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def government(conn: sqlite3.Connection, on: str | None = None) -> list[dict]:
+    """Government roles from Wikidata, by kind and start; ``on`` keeps the roles held on that day."""
+    rows = conn.execute(
+        """
+        SELECT g.id, g.person_id, g.wikidata_qid, g.name, g.office, g.department, g.kind, g.from_date, g.to_date,
+               p.is_mdb, g.source_url, g.source_document_id, g.retrieved_at
+        FROM government_role g
+        LEFT JOIN person p ON p.id = g.person_id
+        WHERE ? IS NULL OR (g.from_date <= ? AND (g.to_date IS NULL OR g.to_date >= ?))
+        ORDER BY g.from_date, g.office
+        """,
+        (on, on, on),
+    ).fetchall()
+    return sorted((dict(r) for r in rows), key=lambda r: KINDS.index(r["kind"]))
+
+
+def photos(conn: sqlite3.Connection) -> list[dict]:
+    rows = conn.execute(
+        """
+        SELECT f.person_id, p.first_name, p.last_name, f.image_url, f.credit, f.bio_url, f.local_path,
+               f.source_url, f.source_document_id, f.retrieved_at
+        FROM person_photo f JOIN person p ON p.id = f.person_id
+        ORDER BY p.last_name, p.first_name
+        """
+    ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def photos_missing(conn: sqlite3.Connection) -> list[dict]:
+    """Sitting members of the latest Wahlperiode without a portrait, with their current fraction."""
+    rows = conn.execute(
+        """
+        SELECT p.id AS person_id, p.first_name, p.last_name,
+               (SELECT name FROM membership b WHERE b.person_id = p.id AND b.wahlperiode = m.wahlperiode
+                AND b.kind = 'fraction' ORDER BY b.from_date DESC LIMIT 1) AS fraction
+        FROM mandate m JOIN person p ON p.id = m.person_id
+        WHERE m.wahlperiode = (SELECT MAX(wahlperiode) FROM mandate) AND m.to_date IS NULL
+          AND p.id NOT IN (SELECT person_id FROM person_photo)
+        ORDER BY p.last_name, p.first_name
+        """
     ).fetchall()
     return [dict(r) for r in rows]

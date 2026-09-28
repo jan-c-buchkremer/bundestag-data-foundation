@@ -229,6 +229,28 @@ CREATE TABLE IF NOT EXISTS election_candidacy (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS person_photo (
+    person_id TEXT PRIMARY KEY REFERENCES person(id),
+    image_url TEXT NOT NULL,            -- the image as downloaded (bundestag.de rendition or Commons thumbnail)
+    credit TEXT,                        -- photographer / rights holder as printed by the source, without "©"
+    bio_url TEXT,                       -- bundestag.de biography page; NULL for Commons portraits
+    local_path TEXT NOT NULL,           -- the unchanged download, relative to data/raw/
+    {PROVENANCE}
+);
+
+CREATE TABLE IF NOT EXISTS government_role (
+    id TEXT PRIMARY KEY,                -- Wikidata statement id of the "position held" (P39) claim
+    person_id TEXT REFERENCES person(id),
+    wikidata_qid TEXT NOT NULL,
+    name TEXT NOT NULL,                 -- the holder's Wikidata label
+    office TEXT NOT NULL,               -- the position's German label, "Bundesminister der Finanzen"
+    department TEXT,                    -- ministry or office, "Bundesministerium der Finanzen"
+    kind TEXT NOT NULL,                 -- kanzler | minister | staatsminister | parl_sts | beamteter_sts
+    from_date TEXT NOT NULL,
+    to_date TEXT,
+    {PROVENANCE}
+);
+
 CREATE INDEX IF NOT EXISTS speech_person ON speech(person_id);
 CREATE INDEX IF NOT EXISTS speech_sitting ON speech(sitting_id);
 CREATE INDEX IF NOT EXISTS paragraph_speech ON speech_paragraph(speech_id);
@@ -241,6 +263,7 @@ CREATE INDEX IF NOT EXISTS author_dip_person ON drucksache_author(dip_person_id)
 CREATE INDEX IF NOT EXISTS drucksache_date ON drucksache(date);
 CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
 CREATE INDEX IF NOT EXISTS candidacy_person ON election_candidacy(person_id);
+CREATE INDEX IF NOT EXISTS government_role_person ON government_role(person_id);
 """
 
 

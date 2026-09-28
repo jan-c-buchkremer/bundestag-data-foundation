@@ -5,7 +5,7 @@ import json
 import sys
 from datetime import date
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, ingest, queries, raw, update
+from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, ingest, queries, raw, update
 from bdf.config import db_path
 
 
@@ -38,7 +38,9 @@ def build_parser() -> argparse.ArgumentParser:
     fa.add_argument("--wp", type=int, default=21, choices=sorted(fetch_aw.PERIOD_BY_WAHLPERIODE))
     fw = fs.add_parser("wahl", help="Bundeswahlleiterin: elected candidates and results per Wahlkreis")
     fw.add_argument("--election", default="btw25", choices=sorted(fetch_wahl.ELECTIONS))
-    for sp in (fp, fv, fd, fa, fw):
+    fph = fs.add_parser("photos", help="bundestag.de MdB biography list (all pages) and the portraits")
+    fs.add_parser("government", help="Wikidata: federal government roles since 2025-05-06, Commons portraits")
+    for sp in (fp, fv, fd, fa, fw, fph):
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")
 
     sub.add_parser("ingest", help="parse everything under data/raw into the SQLite store")
@@ -59,6 +61,12 @@ def build_parser() -> argparse.ArgumentParser:
             qp.add_argument("--person", required=True, help="MdB id or name")
         _add_range(qp)
         qp.add_argument("--json", action="store_true", help="JSON lines instead of text")
+    qg = qs.add_parser("government", help="government roles (Wikidata) with the matched person")
+    qg.add_argument("--date", type=_date, help="only roles held on this day (default: all since 2025-05-06)")
+    qph = qs.add_parser("photos", help="portraits with credit; persons of the Wahlperiode without one")
+    qph.add_argument("--missing", action="store_true", help="list sitting members without a portrait instead")
+    for sp in (qg, qph):
+        sp.add_argument("--json", action="store_true", help="JSON lines instead of text")
     return p
 
 
@@ -79,10 +87,24 @@ def cmd_fetch(args: argparse.Namespace) -> None:
         elif args.source == "wahl":
             for path in fetch_wahl.fetch_election(http, args.election, force=args.force):
                 print(path)
+        elif args.source == "photos":
+            cards = fetch_bundestag.fetch_biografien(http, force=args.force)
+            print(f"{len(cards)} biography cards, portraits in {fetch_bundestag.fotos_dir()}")
+        elif args.source == "government":
+            roles = fetch_wikidata.fetch_government(http)
+            print(f"{len(roles)} result rows in {fetch_wikidata.government_path()}")
 
 
 def cmd_query(args: argparse.Namespace) -> None:
     conn = db.connect(db_path())
+    if args.query in ("government", "photos"):
+        if args.query == "government":
+            rows = queries.government(conn, args.date.isoformat() if args.date else None)
+        else:
+            rows = queries.photos_missing(conn) if args.missing else queries.photos(conn)
+        for r in rows:
+            print(json.dumps(r, ensure_ascii=False) if args.json else _format(args.query, r))
+        return
     start, end = args.start.isoformat(), args.end.isoformat()
     if args.query == "corpus":
         rows = queries.corpus(conn, start, end)
@@ -120,6 +142,14 @@ def _format(kind: str, r: dict) -> str:
             f"{r['date']} BT-Drs. {r['number']} [{r['type']}] {r['title'][:120]}\n"
             f"  as: {r['activity_type']}; {r['author_count']} authors\n{src}\n"
         )
+    if kind == "government":
+        until = r["to_date"] or "today"
+        who = f"{r['name']} ({r['person_id']}{', MdB' if r['is_mdb'] else ''})"
+        return f"{r['from_date']}..{until} [{r['kind']}] {r['office']}: {who}\n{src}"
+    if kind == "photos":
+        if "local_path" not in r:  # --missing
+            return f"{r['person_id']} {r['first_name']} {r['last_name']} [{r['fraction'] or '?'}]"
+        return f"{r['person_id']} {r['first_name']} {r['last_name']}: {r['local_path']} (© {r['credit']})\n{src}"
     who = f"{r['person_id']} {r['first_name']} {r['last_name']} [{r['fraction'] or r['speaker_role']}]"
     return f"{r['date']} {r['sitting_id']} {who} {len(r['text'])} chars\n{src}"
 
