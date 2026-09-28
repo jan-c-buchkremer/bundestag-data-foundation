@@ -9,7 +9,7 @@ import sqlite3
 from collections import defaultdict
 from pathlib import Path
 
-from bdf import parse_protocol, parse_stammdaten, parse_votes, parse_wahl, raw
+from bdf import parse_comments, parse_protocol, parse_stammdaten, parse_votes, parse_wahl, raw
 from bdf.config import DIP_BASE_URL
 from bdf.db import upsert
 from bdf.fetch_aw import aw_dir
@@ -48,6 +48,7 @@ def ingest_stammdaten(conn: sqlite3.Connection) -> None:
 
 def ingest_protocols(conn: sqlite3.Connection) -> None:
     known = {r["id"] for r in conn.execute("SELECT id FROM person")}
+    resolvers: dict[int, NameResolver] = {}
     for path in raw.data_files(protocols_dir(), "*/*.xml"):
         protocol = parse_protocol.parse(path)
         prov = raw.read_meta(path).provenance(protocol.document_id)
@@ -86,9 +87,10 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
             upsert(conn, "agenda_item", [{**item, "sitting_id": sid, **prov} for item in protocol.agenda_items])
             upsert(conn, "person", list(new_persons.values()))
             # a re-ingested protocol replaces its speeches wholesale
-            conn.execute(
-                "DELETE FROM speech_paragraph WHERE speech_id IN (SELECT id FROM speech WHERE sitting_id = ?)", (sid,)
-            )
+            for child in ("interjection", "speech_paragraph"):
+                conn.execute(
+                    f"DELETE FROM {child} WHERE speech_id IN (SELECT id FROM speech WHERE sitting_id = ?)", (sid,)
+                )
             conn.execute("DELETE FROM speech WHERE sitting_id = ?", (sid,))
             upsert(
                 conn,
@@ -118,11 +120,54 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                     for n, (kind, text) in enumerate(s.paragraphs, start=1)
                 ],
             )
+            resolver = resolvers.setdefault(protocol.wahlperiode, NameResolver(PersonIndex(conn, protocol.wahlperiode)))
+            upsert(conn, "interjection", interjection_rows(protocol.speeches, resolver))
         known.update(new_persons)
         print(
             f"protocol {sid} ({protocol.date}): {len(protocol.agenda_items)} agenda items, "
             f"{len(protocol.speeches)} speeches, {len(new_persons)} new non-MdB speakers"
         )
+
+
+class NameResolver:
+    """MdB id for a printed name ("Dr. Götz Frömming", "Beatrix von Storch"): the surname is the last one,
+    two or three words; cached, since the same few hundred names recur in every protocol."""
+
+    def __init__(self, index: PersonIndex):
+        self.index = index
+        self.cache: dict[str, str | None] = {}
+
+    def __call__(self, name: str) -> str | None:
+        if name not in self.cache:
+            words = name.split()
+            self.cache[name] = next(
+                (pid for k in (1, 2, 3) if len(words) > k
+                 if (pid := self.index.match(" ".join(words[-k:]), " ".join(words[:-k]))) is not None),
+                None,
+            )  # fmt: skip
+        return self.cache[name]
+
+
+def interjection_rows(speeches: list, resolve: NameResolver) -> list[dict]:
+    """One row per actor of every part of every comment paragraph (docs/design.md, interjection)."""
+    rows = []
+    for s in speeches:
+        for n, (kind, text) in enumerate(s.paragraphs, start=1):
+            if kind != "comment":
+                continue
+            for i, part in enumerate(parse_comments.parse(text), start=1):
+                for j, a in enumerate(part.actors, start=1):
+                    rows.append(
+                        {
+                            "id": f"{s.id}/{n}/{i}/{j}", "speech_id": s.id, "paragraph": n, "part": i,
+                            "kind": part.kind, "actor": a.kind, "fraction": a.fraction,
+                            "person_id": resolve(a.name) if a.kind == "person" and a.name else None,
+                            "name": a.name, "text": part.text,
+                            "to_person_id": resolve(part.to.name) if part.to and part.to.name else None,
+                            "to_name": part.to.name if part.to else None,
+                        }
+                    )  # fmt: skip
+    return rows
 
 
 def ingest_votes(conn: sqlite3.Connection) -> None:

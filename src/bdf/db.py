@@ -93,6 +93,22 @@ CREATE TABLE IF NOT EXISTS speech_paragraph (
     text TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS interjection (
+    id TEXT PRIMARY KEY,                -- "<speech_id>/<paragraph>/<part>/<actor>"
+    speech_id TEXT NOT NULL REFERENCES speech(id),
+    paragraph INTEGER NOT NULL,         -- speech_paragraph.position of the comment
+    part INTEGER NOT NULL,              -- order of the part within the comment
+    kind TEXT NOT NULL,                 -- beifall | zuruf | gegenruf | lachen | heiterkeit | widerspruch
+                                        -- | zustimmung | unruhe | other
+    actor TEXT NOT NULL,                -- fraction | members (some of the fraction) | person | house | unknown
+    fraction TEXT,
+    person_id TEXT REFERENCES person(id),
+    name TEXT,                          -- printed name of a person
+    text TEXT,                          -- the words of a Zuruf / Gegenruf, when printed
+    to_person_id TEXT REFERENCES person(id),  -- addressee named in the comment ("an den Abg. …");
+    to_name TEXT                        -- NULL: aimed at the speaker of speech_id
+);
+
 CREATE TABLE IF NOT EXISTS drucksache (
     id TEXT PRIMARY KEY,                -- DIP id
     number TEXT NOT NULL,               -- "21/7300"
@@ -217,6 +233,8 @@ CREATE INDEX IF NOT EXISTS speech_person ON speech(person_id);
 CREATE INDEX IF NOT EXISTS speech_sitting ON speech(sitting_id);
 CREATE INDEX IF NOT EXISTS paragraph_speech ON speech_paragraph(speech_id);
 CREATE INDEX IF NOT EXISTS vote_person ON individual_vote(person_id);
+CREATE INDEX IF NOT EXISTS interjection_speech ON interjection(speech_id);
+CREATE INDEX IF NOT EXISTS interjection_person ON interjection(person_id);
 CREATE INDEX IF NOT EXISTS vote_vote ON individual_vote(vote_id);
 CREATE INDEX IF NOT EXISTS author_person ON drucksache_author(person_id);
 CREATE INDEX IF NOT EXISTS author_dip_person ON drucksache_author(dip_person_id);
