@@ -39,8 +39,9 @@ uv run bdf update          # fetch everything new since the last run from all so
 Each source picks its own window from what is already in `data/raw/`: protocols from the next sitting
 number (probing until three in a row are not published), votes and DIP from the latest date on disk minus
 14 days (late publications), Stammdaten and abgeordnetenwatch in full. The first run backfills the whole
-Wahlperiode. Without `DIP_API_KEY` DIP is skipped; if DIP blocks the IP, the rest is still ingested and the
-command exits 1.
+Wahlperiode. Without `DIP_API_KEY` DIP is skipped; network errors and 429/5xx are retried
+with backoff; a source that still fails (or a DIP IP block) is skipped for that run, the other sources are fetched,
+everything on disk is ingested, and the command exits 1.
 
 ## Container
 
