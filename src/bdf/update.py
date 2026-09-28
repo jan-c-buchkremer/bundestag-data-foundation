@@ -10,7 +10,7 @@ from pathlib import Path
 
 import httpx
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, ingest, raw
+from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, ingest, raw
 from bdf.config import db_path, dip_api_key
 
 # constituent sitting of each Wahlperiode: the earliest date any source is asked for
@@ -97,6 +97,15 @@ def run(wp: int = 21, today: date | None = None) -> int:
             print(f"abgeordnetenwatch WP {wp}")
             fetch_aw.fetch_wahlperiode(http, wp, force=True)
 
+        def photos() -> None:
+            print("photos (bundestag.de biographies)")
+            cards = fetch_bundestag.fetch_biografien(http)  # list in full; portraits only when new
+            print(f"  {len(cards)} cards")
+
+        def government() -> None:
+            print("government (Wikidata)")
+            print(f"  {len(fetch_wikidata.fetch_government(http))} result rows")
+
         def dip() -> None:
             start, end = dip_window(wp, today)
             print(f"dip {start}..{end}")
@@ -107,6 +116,8 @@ def run(wp: int = 21, today: date | None = None) -> int:
         source("votes", votes)
         source("wahl", election)
         source("abgeordnetenwatch", abgeordnetenwatch)
+        source("photos", photos)
+        source("government", government)
         if dip_api_key():
             source("dip", dip)
         else:

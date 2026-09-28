@@ -11,6 +11,10 @@ from bdf.names import normalize_name
 # both normalised, -> MdB id. Extend when `ingest` reports an unmatched name that is a real MdB.
 ALIASES: dict[tuple[str, str], str] = {
     ("stegeman", "albert"): "11004415",  # Bundeswahlleiterin, BTW 2025 Gewählte: "Stegeman"; Stammdaten: Stegemann
+    (
+        "krampe",
+        "jan",
+    ): "11005511",  # bundestag.de biography 2026: "Krampe, Jan" (born 1997, Die Linke); Stammdaten: Köstering
 }
 
 _PREFIX_RE = re.compile(r"^((von|van|de|del|dos|da|di|zu|der|la|freiherr|graf) )+")

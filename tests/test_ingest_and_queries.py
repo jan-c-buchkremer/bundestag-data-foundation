@@ -28,7 +28,8 @@ def test_counts(store):
     assert counts["sitting"] == 1 and counts["agenda_item"] == 2 and counts["speech"] == 5
     assert counts["roll_call_vote"] == 1 and counts["individual_vote"] == 630
     assert counts["drucksache"] == 4 and counts["drucksache_author"] == 31 and counts["vorgang"] == 8
-    assert counts["person"] == 11  # all fixture MdBs are Stammdaten records; no unknown speakers here
+    # the 11 fixture MdBs are Stammdaten records, no unknown speakers here; plus 3 government members (Wikidata)
+    assert counts["person"] == 14
 
 
 def test_every_fact_row_has_provenance(store):

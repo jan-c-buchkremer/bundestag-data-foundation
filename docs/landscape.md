@@ -76,6 +76,25 @@ not data · **ignore** = not useful for this project.
 | Maintained | Yes (NGO, editorial team; polls appear days after the vote). |
 | Verdict | **reuse for cross-IDs (with our own validation) and as a secondary/derived vote source; primary vote record stays bundestag.de XLSX** (see §4). |
 
+### 1.7 bundestag.de — MdB biographies and portraits (added 2026-09-28)
+
+| | |
+|---|---|
+| Covers | The card list behind https://www.bundestag.de/abgeordnete: 639 cards on 2026-09-28 (all 630 sitting members plus 9 who left in WP 21 or joined after the last Stammdaten file). |
+| Format | HTML fragment from `https://www.bundestag.de/ajax/filterlist/de/abgeordnete/1040594-1040594?limit=12&offset=N`; the server caps `limit` at 12, so 54 pages; an offset past the end returns no cards. Each card: printed name ("Aken, Jan van", "Schneider (Erfurt), Carsten", with academic titles), fraction, biography URL, the portrait in 3:4 renditions up to 864×1152 (`/resource/image/<id>/3x4/864/1152/<hash>/…`), and the image caption **"© <credit>"**. The biography page has the same caption and no MdB id (its number is a CMS id), so the list alone is enough. |
+| Licence | bundestag.de terms; the Bundestag disclaims third-party rights, and most portraits are supplied by the members or fractions ("© Sanae Abdi/SPD-Fraktion", "© DBT/ Inga Haar", "© Tobias Koch"). Shown with the credit, without a licence check (decision of 2026-09-28). |
+| Verdict | **reuse** for portraits and credits. |
+
+### 1.8 Wikidata — federal government roster (added 2026-09-28)
+
+| | |
+|---|---|
+| Covers | "position held" (P39) with start (P580), end (P582), "of" (P642) qualifiers; the positions have classes Bundesminister (Q248352), Parlamentarischer Staatssekretär (Q19731005), beamteter Staatssekretär (Q22703996), Staatsminister (Q2325058); Bundeskanzler Q4970706, Chef des Bundeskanzleramtes Q30545012, BKM Q813386. Person: birth date P569, party P102, image P18, family name P734. |
+| Format | SPARQL at query.wikidata.org (JSON). A property path over subclasses in one query times out (60 s), so position items are listed first and the statements asked for with `VALUES`. |
+| Coverage on 2026-09-28 | The Kanzler and all 17 original Bundesminister of the Merz cabinet with dates and departments, Warken's move to the Chancellery (29 July 2026), and one beamteter Staatssekretär (Böhning). **Missing**: Linnemann (Gesundheit) and Bilger (Verkehr), who speak as ministers in the protocols since September 2026; every Parlamentarischer Staatssekretär and every Staatsminister of this government (their items have no such P39 statement, or none with a start date). |
+| Licence | CC0 1.0. P18 images live on Wikimedia Commons under their own licences (mostly CC BY-SA 4.0). |
+| Verdict | **reuse** for the cabinet; not complete below cabinet level. `ingest` reports government speakers in the protocols without a roster role. |
+
 ## 2. Corpora and derived datasets
 
 ### 2.1 Open Discourse (open-discourse.de, GitHub open-discourse/open-discourse)

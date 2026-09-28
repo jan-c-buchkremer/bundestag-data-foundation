@@ -1,7 +1,8 @@
 # Design
 
 Scope: a weekly-updated store of Bundestag data for the current Wahlperiode (21),
-built from three sources — bundestag.de Open Data, the DIP API, abgeordnetenwatch.de —
+built from bundestag.de Open Data, the DIP API and abgeordnetenwatch.de, plus the Bundeswahlleiterin's results,
+bundestag.de portraits and the Wikidata government roster —
 with a source pointer on every fact. See `landscape.md` for why these sources.
 
 ## Storage
@@ -32,6 +33,13 @@ data/
     bundeswahlleiterin/
       btw25/btw25_gewaehlte_utf8.zip         # + extracted btw25_gewaehlte_utf8.csv: the elected
       btw25/kerg2.csv                        # results per Wahlkreis, party and vote
+    bundestag/biografien/page-000.html …     # the MdB card list, 12 cards per page, replaced on every fetch
+    bundestag/fotos/<image id>.jpg           # portraits as downloaded (864×1152), never re-downloaded
+    wikidata/
+      positions.json                         # SPARQL: position items under Bundesminister / PStS / beamteter StS
+      government.json                        # SPARQL: P39 statements since 2025-05-06 with dates, department, person
+      commons.json                           # Commons imageinfo (thumbnail URL, author, licence) of the P18 images
+      fotos/<Commons file name>              # 864 px thumbnails
   bundestag.sqlite
 ```
 
@@ -130,6 +138,20 @@ Only the candidates elected on election day are in the source file; Nachrücker 
 A list member's own first-vote share is the party's `vote = 1` row in `constituency_result`
 for their `constituency_number`.
 
+### Portraits and government
+
+**person_photo** `*person_id →person, image_url, credit (photographer / rights holder as printed, without "©"), bio_url (bundestag.de biography; NULL for Commons), local_path (relative to data/raw/), source_url, source_document_id, retrieved_at`
+— one portrait per person, replaced wholesale on ingest. MdBs: the bundestag.de biography card; the credit is the
+caption of the card's image ("© Sanae Abdi/SPD-Fraktion"). Government members without a card (non-MdB ministers):
+the Wikidata P18 image from Commons, credit "<author>, <licence>", `source_url` the Commons file page.
+
+**government_role** `*id (Wikidata statement id), person_id →person, wikidata_qid, name, office (position label), department, kind (kanzler | minister | staatsminister | parl_sts | beamteter_sts), from_date, to_date, source_url, source_document_id, retrieved_at`
+— one row per "position held" (P39) statement starting on or after 2025-05-06, replaced wholesale on ingest.
+`kind` comes from the position's class: Bundeskanzler; subclasses of Bundesminister and the Chef des
+Bundeskanzleramtes → minister; Staatsminister (Bund) and the BKM → staatsminister; subclasses of Parlamentarischer
+Staatssekretär and beamteter Staatssekretär. `department` is the statement's "of" qualifier or the position's
+"directs" (P2389).
+
 ## Entity linking
 
 1. **Speech → person**: `redner/@id` directly. Unknown ids (non-MdB speakers) create a
@@ -150,6 +172,13 @@ for their `constituency_number`.
    protocol page, paired with the votes of that sitting ordered by `Abstimmnr` when the
    counts match; otherwise a Drucksache number found by regex in the vote title;
    otherwise unlinked (reported).
+6. **Biography card → person**: printed name ("Aken, Jan van", "Schneider (Erfurt), Carsten", titles stripped)
+   with the shared name index; if that is ambiguous, a unique WP member with the same surname, first given name
+   and fraction. A card whose fraction differs from the store's is reported.
+7. **Government role → person**: `person.wikidata_qid` (from abgeordnetenwatch), then the full name with an equal
+   or unknown birth date (non-MdB speakers from the protocols have none), then the shared name index with the
+   birth year. A match by name writes the QID onto the person. The rest get a person row with `id` = QID and
+   `is_mdb = 0`; such a row is deleted again once the person is matched.
 
 ## Incremental updates
 
@@ -167,10 +196,14 @@ bdf fetch protocols --wp 21 --from 88 --to 90
 bdf fetch votes --from 2026-07-06 --to 2026-07-10
 bdf fetch dip --from 2026-07-06 --to 2026-07-10     # drucksachen, authors, vorgänge, vorgangspositionen, persons
 bdf fetch aw --wp 21
+bdf fetch photos                                    # bundestag.de biography list + portraits
+bdf fetch government                                # Wikidata roster + Commons portraits
 bdf ingest                                          # everything under data/raw → sqlite
 bdf query speeches   --person 11004006 --from … --to …
 bdf query votes      --person 11004006 --from … --to …
 bdf query drucksachen --person 11004006 --from … --to …
+bdf query government [--date 2026-09-28]           # roles, optionally those held on a day
+bdf query photos     [--missing]                    # portraits with credit, or sitting members without one
 bdf query corpus     --from … --to …                # JSONL: one clean speech per line with speaker id, fraction, date, source
 ```
 

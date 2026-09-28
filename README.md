@@ -11,7 +11,7 @@ fact sheet per MdB, and a topic landscape of one sitting week. This repository h
 ## How it works
 
 ```
-bdf fetch …   raw files from bundestag.de, DIP and abgeordnetenwatch → data/raw/ (kept unchanged)
+bdf fetch …   raw files from bundestag.de, DIP, abgeordnetenwatch, Bundeswahlleiterin, Wikidata → data/raw/ (kept unchanged)
 bdf ingest    parse data/raw/ → data/bundestag.sqlite (idempotent upserts, never touches the network)
 bdf query …   canned queries with source pointers (text or JSON lines)
 ```
@@ -38,7 +38,8 @@ uv run bdf update          # fetch everything new since the last run from all so
 
 Each source picks its own window from what is already in `data/raw/`: protocols from the next sitting
 number (probing until three in a row are not published), votes and DIP from the latest date on disk minus
-14 days (late publications), Stammdaten and abgeordnetenwatch in full. The first run backfills the whole
+14 days (late publications), Stammdaten, abgeordnetenwatch, the bundestag.de biography list and the Wikidata government
+roster in full (portrait images only when new). The first run backfills the whole
 Wahlperiode. Without `DIP_API_KEY` DIP is skipped; network errors and 429/5xx are retried
 with backoff; a source that still fails (or a DIP IP block) is skipped for that run, the other sources are fetched,
 everything on disk is ingested, and the command exits 1.
@@ -74,6 +75,16 @@ uv run bdf query drucksachen --person "Pascal Meiser" --from 2026-07-06 --to 202
 uv run bdf query corpus --from 2026-07-06 --to 2026-07-10 --json > week.jsonl
 ```
 
+Portraits and the government roster (current state, no date range):
+
+```sh
+uv run bdf fetch photos          # bundestag.de biography list (all pages) + portraits → data/raw/bundestag/{biografien,fotos}
+uv run bdf fetch government      # Wikidata roster + Commons portraits → data/raw/wikidata
+uv run bdf ingest
+uv run bdf query government --date 2026-09-28   # roles held that day, with person id and source
+uv run bdf query photos --missing               # sitting members without a portrait
+```
+
 `--person` takes an MdB id (`11004819`) or a name. `votes` shows the member's own vote next
 to their fraction's majority. `corpus` gives one clean speech per line with speaker id,
 fraction, role, date and agenda item — the input for the topic landscape.
@@ -91,11 +102,18 @@ and recorded DIP responses for four Drucksachen of that week).
 | bundestag.de — Namentliche Abstimmungen XLSX | roll-call votes, one row per member | as above |
 | DIP API | Drucksachen, authorship, Vorgänge, vote ↔ Drucksache link | free, incl. commercial; attribution "Deutscher Bundestag/Bundesrat – DIP" |
 | abgeordnetenwatch.de API v2 | cross-ids (validated by name + birth year), Wikidata QIDs | CC0 1.0 |
+| bundestag.de — MdB biographies (card list behind /abgeordnete) | portrait per MdB with photographer credit | Bundestag terms; photos: third-party rights, credit shown |
+| Wikidata (SPARQL) | government roster since 2025-05-06: offices, dates, departments | CC0 1.0 |
+| Wikimedia Commons | portraits of government members without a bundestag.de card | per file (mostly CC BY-SA), author + licence stored |
 
 Details and quotes in `docs/licences.md`. Code is MIT.
 
 ## Known limits
 
+- The government roster is only as complete as Wikidata: in September 2026 it has the Kanzler, the Bundesminister
+  (without the September reshuffle: Linnemann, Bilger) and one beamteter Staatssekretär, but no Parlamentarische
+  Staatssekretäre and no Staatsminister for this government. `ingest` lists every government speaker in the
+  protocols who has no role in the roster.
 - The Stammdaten file is published irregularly; members who joined after its date (two as
   of September 2026) have no mandate row and are stored with `is_mdb = 0` from their first
   speech until the next Stammdaten file arrives. `ingest` lists names it cannot match.

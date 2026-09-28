@@ -9,15 +9,33 @@ import sqlite3
 from collections import defaultdict
 from pathlib import Path
 
-from bdf import parse_comments, parse_protocol, parse_stammdaten, parse_votes, parse_wahl, raw
-from bdf.config import DIP_BASE_URL
+from bdf import (
+    fetch_wikidata,
+    parse_biografien,
+    parse_comments,
+    parse_protocol,
+    parse_stammdaten,
+    parse_votes,
+    parse_wahl,
+    parse_wikidata,
+    raw,
+)
+from bdf.config import DIP_BASE_URL, raw_dir
 from bdf.db import upsert
 from bdf.fetch_aw import aw_dir
-from bdf.fetch_bundestag import PROTOCOL_URL, protocols_dir, stammdaten_dir, vote_path, votes_index_path
+from bdf.fetch_bundestag import (
+    PROTOCOL_URL,
+    biografien_dir,
+    photo_path,
+    protocols_dir,
+    stammdaten_dir,
+    vote_path,
+    votes_index_path,
+)
 from bdf.fetch_dip import dip_dir
 from bdf.fetch_wahl import ELECTION_OF_WAHLPERIODE, ELECTIONS, gewaehlte_csv, gewaehlte_zip, kerg2_csv
 from bdf.match import PersonIndex
-from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_name
+from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_fraction, normalize_name
 
 
 def ingest_all(conn: sqlite3.Connection) -> None:
@@ -27,6 +45,8 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_dip(conn)
     ingest_abgeordnetenwatch(conn)
     ingest_wahl(conn)
+    ingest_government(conn)
+    ingest_photos(conn)
 
 
 # --- bundestag.de -------------------------------------------------------------------------
@@ -510,3 +530,227 @@ def _match_elected(index: PersonIndex, members: list[sqlite3.Row], c: dict) -> s
     last = set(normalize_name(c["last_name"]).split())
     same = [m["id"] for m in members if m["year"] == year and last & set(normalize_name(m["last_name"]).split())]
     return same[0] if len(same) == 1 else None
+
+
+# --- Wikidata: government roster ----------------------------------------------------------
+
+# government speakers as the protocols print their role; used to check the roster for completeness
+_GOVERNMENT_ROLE_RE = re.compile(
+    r"^(Bundeskanzler|Bundesminister|Parl\. Staatssekretär"
+    r"|Staatsminister(in)? (beim|bei der) |Staatssekretär(in)? (im|in der|beim|bei der) )"
+)
+
+
+def ingest_government(conn: sqlite3.Connection) -> None:
+    """Wikidata roles -> government_role, replaced wholesale. Holders are matched to persons by Wikidata QID, then by
+    name + birth date (non-MdB speakers from the protocols have no birth date and match on the name alone); the
+    rest get a person row with id = QID and is_mdb = 0."""
+    path = fetch_wikidata.government_path()
+    if not path.exists():
+        print("government: nothing fetched")
+        return
+    meta = raw.read_meta(path)
+    roles = parse_wikidata.parse_roles(raw.read_json(path))
+    persons = conn.execute(
+        "SELECT id, first_name, last_name, birth_date, wikidata_qid FROM person WHERE id NOT LIKE 'Q%'"
+    ).fetchall()
+    by_qid = {p["wikidata_qid"]: p["id"] for p in persons if p["wikidata_qid"]}
+    by_name: dict[str, list[sqlite3.Row]] = defaultdict(list)
+    for p in persons:
+        by_name[normalize_name(f"{p['first_name']} {p['last_name']}")].append(p)
+    index = PersonIndex(conn, _current_wahlperiode(conn))
+
+    def match(role: parse_wikidata.Role) -> tuple[str | None, str]:
+        if role.qid in by_qid:
+            return by_qid[role.qid], "qid"
+        same = [p for p in by_name.get(normalize_name(role.name), []) if p["birth_date"] in (None, role.birth_date)]
+        if len(same) == 1:
+            return same[0]["id"], "name"
+        first, last = parse_wikidata.split_name(role.name, role.family_name)
+        pid = index.match(last, first, (role.birth_date or "")[:4] or None)
+        birth = next((p["birth_date"] for p in persons if p["id"] == pid), None)
+        if pid is not None and not pid.startswith("Q") and birth in (None, role.birth_date):
+            return pid, "name"
+        return None, "new"
+
+    matched: dict[str, tuple[str | None, str]] = {r.qid: match(r) for r in roles}
+    new_persons = {}
+    for r in roles:
+        if matched[r.qid][1] == "new" and r.qid not in new_persons:
+            first, last = parse_wikidata.split_name(r.name, r.family_name)
+            new_persons[r.qid] = {
+                "id": r.qid, "first_name": first, "last_name": last, "birth_date": r.birth_date,
+                "party": r.party, "is_mdb": 0, "role": r.office, "wikidata_qid": r.qid,
+                **meta.provenance(f"Wikidata {r.qid}", url=f"https://www.wikidata.org/wiki/{r.qid}"),
+            }  # fmt: skip
+    rows = [
+        {
+            "id": r.id, "person_id": matched[r.qid][0] or r.qid, "wikidata_qid": r.qid, "name": r.name,
+            "office": r.office, "department": r.department, "kind": r.kind, "from_date": r.from_date,
+            "to_date": r.to_date,
+            **meta.provenance(f"Wikidata {r.id}", url=f"https://www.wikidata.org/wiki/{r.qid}#P39"),
+        }
+        for r in roles
+    ]  # fmt: skip
+    with conn:
+        conn.execute("DELETE FROM government_role")
+        upsert(conn, "person", list(new_persons.values()))
+        upsert(conn, "government_role", rows)
+        conn.executemany(
+            "UPDATE person SET wikidata_qid = ? WHERE id = ? AND wikidata_qid IS NULL",
+            [(qid, pid) for qid, (pid, how) in matched.items() if how == "name"],
+        )
+        # person rows made for a roster member who has since been matched (or dropped from the roster)
+        orphans = "SELECT id FROM person WHERE id LIKE 'Q%' AND id NOT IN (SELECT person_id FROM government_role)"
+        conn.execute(f"DELETE FROM person_photo WHERE person_id IN ({orphans})")
+        conn.execute(f"DELETE FROM person WHERE id IN ({orphans})")
+    kinds = {k: sum(r.kind == k for r in roles) for k in parse_wikidata.KINDS}
+    hows = [how for _, how in matched.values()]
+    print(
+        f"government: {len(roles)} roles ({', '.join(f'{k} {n}' for k, n in kinds.items())}) held by {len(matched)} "
+        f"persons: {hows.count('qid')} matched by QID, {hows.count('name')} by name, {hows.count('new')} new"
+    )
+    _check_government(conn, roles)
+
+
+def _current_wahlperiode(conn: sqlite3.Connection) -> int:
+    return conn.execute("SELECT COALESCE(MAX(wahlperiode), 21) FROM mandate").fetchone()[0]
+
+
+def _check_government(conn: sqlite3.Connection, roles: list[parse_wikidata.Role]) -> None:
+    """Report the current cabinet, and government speakers in the protocols who have no role in the roster."""
+    current = [r for r in roles if r.kind in ("kanzler", "minister") and r.to_date is None]
+    print(f"government: current cabinet in Wikidata: {len(current)} (Kanzler and Bundesminister)")
+    for r in current:
+        print(f"    {r.office}: {r.name}")
+    in_roster = {r["person_id"] for r in conn.execute("SELECT person_id FROM government_role")}
+    missing = {}
+    for s in conn.execute(
+        "SELECT s.person_id, s.speaker_name, s.speaker_role, MAX(st.date) AS last FROM speech s "
+        "JOIN sitting st ON st.id = s.sitting_id WHERE st.date >= ? AND s.speaker_role IS NOT NULL "
+        "GROUP BY s.person_id, s.speaker_role ORDER BY s.speaker_role",
+        (fetch_wikidata.GOVERNMENT_START,),
+    ):
+        if _GOVERNMENT_ROLE_RE.match(s["speaker_role"]) and s["person_id"] not in in_roster:
+            missing[(s["person_id"], s["speaker_role"])] = s["last"]
+    if missing:
+        print(f"government: {len(missing)} government speakers in the protocols have no role in the roster:")
+        for (pid, role), last in missing.items():
+            name = conn.execute("SELECT first_name, last_name FROM person WHERE id = ?", (pid,)).fetchone()
+            print(f"    {name['first_name']} {name['last_name']} ({pid}): {role}, last {last}")
+
+
+# --- bundestag.de biographies + Commons: portraits ----------------------------------------
+
+
+def ingest_photos(conn: sqlite3.Connection) -> None:
+    """One portrait per person, replaced wholesale: the bundestag.de biography card (matched by name, checked against
+    the fraction), else, for government members, the Commons image of their Wikidata item."""
+    rows: dict[str, dict] = {}
+    pages = raw.data_files(biografien_dir(), "page-*.html")
+    if pages:
+        rows.update(_bundestag_photos(conn, pages))
+    else:
+        print("photos: bundestag.de biographies not fetched")
+    rows.update({pid: row for pid, row in _commons_photos(conn).items() if pid not in rows})
+    with conn:
+        conn.execute("DELETE FROM person_photo")
+        upsert(conn, "person_photo", list(rows.values()))
+
+
+def _bundestag_photos(conn: sqlite3.Connection, pages: list[Path]) -> dict[str, dict]:
+    wp = _current_wahlperiode(conn)
+    index = PersonIndex(conn, wp)
+    fractions = {
+        r["person_id"]: r["name"]
+        for r in conn.execute(
+            "SELECT person_id, name FROM membership WHERE wahlperiode = ? AND kind = 'fraction' ORDER BY from_date",
+            (wp,),
+        )
+    }  # the latest fraction wins
+    members = conn.execute(
+        "SELECT p.id, p.first_name, p.last_name FROM person p JOIN mandate m ON m.person_id = p.id "
+        "WHERE m.wahlperiode = ?",
+        (wp,),
+    ).fetchall()
+    rows: dict[str, dict] = {}
+    cards = 0
+    unmatched, other_fraction, missing_file, twice = [], [], [], []
+    for page in pages:
+        meta = raw.read_meta(page)
+        for card in parse_biografien.parse(page.read_text(encoding="utf-8")):
+            cards += 1
+            pid = index.match(card.last_name, card.first_name) or _by_fraction(members, fractions, card)
+            if pid is None:
+                unmatched.append(f"{card.printed_name} ({card.fraction})")
+                continue
+            if card.fraction and fractions.get(pid) and normalize_fraction(fractions[pid]) != card.fraction:
+                other_fraction.append(
+                    f"{card.printed_name}: {card.fraction} on bundestag.de, {fractions[pid]} in store"
+                )
+            local = photo_path(card)
+            if not card.image_url or not local.exists():
+                missing_file.append(card.printed_name)
+                continue
+            if pid in rows:
+                twice.append(f"{card.printed_name} ({pid})")
+            rows[pid] = {
+                "person_id": pid,
+                "image_url": card.image_url,
+                "credit": card.credit,
+                "bio_url": card.bio_url,
+                "local_path": local.relative_to(raw_dir()).as_posix(),
+                **meta.provenance(f"bundestag.de Biografie {card.printed_name}"),
+            }
+    sitting = {
+        r["person_id"]
+        for r in conn.execute("SELECT person_id FROM mandate WHERE wahlperiode = ? AND to_date IS NULL", (wp,))
+    }
+    print(
+        f"photos: {cards} bundestag.de cards, {len(rows)} matched ({len(sitting & rows.keys())}/{len(sitting)} "
+        f"sitting WP {wp} members), {len(unmatched)} unmatched, {len(missing_file)} without a downloaded image"
+    )
+    for label, items in (("unmatched", unmatched), ("fraction differs", other_fraction), ("two cards", twice),
+                         ("image not downloaded", missing_file)):  # fmt: skip
+        for item in items:
+            print(f"    {label}: {item}")
+    return rows
+
+
+def _by_fraction(members: list[sqlite3.Row], fractions: dict[str, str], card: parse_biografien.Card) -> str | None:
+    """A unique WP member with the card's surname, first given name and fraction (namesakes in the store)."""
+    last = normalize_name(card.last_name)
+    first = normalize_name(card.first_name).split(" ")[0]
+    same = [
+        m["id"]
+        for m in members
+        if normalize_name(m["last_name"]) == last
+        and normalize_name(m["first_name"]).split(" ")[0] == first
+        and normalize_fraction(fractions.get(m["id"])) == card.fraction
+    ]
+    return same[0] if len(same) == 1 else None
+
+
+def _commons_photos(conn: sqlite3.Connection) -> dict[str, dict]:
+    government, commons = fetch_wikidata.government_path(), fetch_wikidata.commons_path()
+    if not government.exists() or not commons.exists():
+        return {}
+    images = parse_wikidata.parse_commons(raw.read_json(commons))
+    meta = raw.read_meta(commons)
+    person_of = {r["id"]: r["person_id"] for r in conn.execute("SELECT id, person_id FROM government_role")}
+    rows = {}
+    for role in parse_wikidata.parse_roles(raw.read_json(government)):
+        image = images.get(role.image or "")
+        pid = person_of.get(role.id)
+        local = fetch_wikidata.photo_path(image.title) if image else None
+        if pid is None or image is None or local is None or not local.exists():
+            continue
+        rows[pid] = {
+            "person_id": pid,
+            "image_url": image.thumb_url,
+            "credit": image.credit,
+            "bio_url": None,
+            "local_path": local.relative_to(raw_dir()).as_posix(),
+            **meta.provenance(f"Wikimedia Commons {image.title}", url=image.page_url),
+        }
+    return rows
