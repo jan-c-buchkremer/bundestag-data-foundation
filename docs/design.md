@@ -93,7 +93,8 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 
 **agenda_item** `*id, sitting_id →sitting, position, top_id (XML top-id attribute), title, drucksache_numbers (JSON array of "21/7300"), source_url, source_document_id, retrieved_at`
 
-**speech** `*id, sitting_id →sitting, agenda_item_id →agenda_item, position (order within sitting), person_id →person, speaker_name (as printed), speaker_role (rolle_lang or NULL), fraction (as printed, normalised), text (clean speech text: paragraphs of kind text only, joined by blank lines), source_url, source_document_id, retrieved_at`
+**speech** `*id, sitting_id →sitting, agenda_item_id →agenda_item, position (order within sitting), person_id →person, speaker_name (as printed), speaker_role (rolle_lang or NULL), fraction (as printed, normalised), text (clean speech text: paragraphs of kind text only, joined by blank lines), source_url, source_document_id, retrieved_at, kind (rede | fragestunde, default 'rede')`
+— `kind = 'fragestunde'`: a question, answer or Nachfrage from a Fragestunde (below), id `"<agenda_item_id>/f<n>"`. Shown like any other speech, but left out of speech counts and speaking shares by callers (it is not a debate contribution).
 
 **speech_paragraph** `*id, speech_id →speech, position, kind (text | comment | chair | procedural), text`
 — `text` = the speaker's words (`p` classes J, J_1, O, …); `comment` = `<kommentar>` (applause, interjections); `chair` = presidency remarks inside the `rede` (`<name>Vizepräsident…</name>` and the paragraphs until the speaker resumes); `procedural` = `T_*` classes.
@@ -124,8 +125,10 @@ shared by the XML, XLSX and Stammdaten parsers. A table would add a join and not
 
 ### Chair text and decisions
 
-**agenda_item_paragraph** `*id ("<agenda_item_id>/<position>"), agenda_item_id →agenda_item, position, kind (chair | comment | procedural | speaker | text), text, source_url, source_document_id, retrieved_at`
-— the text directly under `<tagesordnungspunkt>` outside any `<rede>`: the presidency calling items, putting questions to the vote and reading out results. `procedural` = the `T_*` agenda lines; `speaker`/`text` = a speaker line and words printed outside a `rede` (Fragestunden of early WP21). The roll-call name lists (`AL_Namen`…) are not kept.
+**agenda_item_paragraph** `*id ("<agenda_item_id>/<position>"), agenda_item_id →agenda_item, position, kind (chair | comment | procedural), text, source_url, source_document_id, retrieved_at`
+— the text directly under `<tagesordnungspunkt>` outside any `<rede>` and outside a Fragestunde speech: the presidency calling items, putting questions to the vote and reading out results. `procedural` = the `T_*` agenda lines. The roll-call name lists (`AL_Namen`…) are not kept.
+
+Every WP21 Fragestunde (25 agenda items, not just early ones) has no `<rede>` at all: the question, the answer and every Nachfrage are `<p klasse="redner">` paragraphs directly under `<tagesordnungspunkt>`. `parse_protocol._is_fragestunde` detects such an item structurally (no `<rede>`, at least one direct-child `<p klasse="redner">`) and `_split_fragestunde` turns each run starting at one of those paragraphs into a `speech` of `kind = 'fragestunde'`, the same way a normal `<rede>` is split; the presidency's own framing text between them stays `agenda_item_paragraph` (`chair`).
 
 **decision** `*id, sitting_id →sitting, agenda_item_id →agenda_item, n, position, kind (namentlich | handzeichen), subject, drucksache_number, result (angenommen | abgelehnt | NULL), roll_call_vote_id →roll_call_vote, text, source_url, source_document_id, retrieved_at`
 — one row per decision on substance announced by the chair (`bdf/parse_decisions.py`). Roll-call rows take the id of their `roll_call_vote` (`21/90/7`; `21/90/n<k>` without one), show-of-hands rows `<sitting>/h<n>`. `n` counts per kind within the sitting, `position` orders all decisions of the sitting. `text` is the chair's words the row was read from. Procedure (Überweisung, Tagesordnung, Aufsetzung …) and elections are not decisions.
