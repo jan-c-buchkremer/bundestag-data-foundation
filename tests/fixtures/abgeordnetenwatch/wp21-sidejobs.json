@@ -1,0 +1,323 @@
+[
+ {
+  "id": 21413,
+  "entity_type": "sidejob",
+  "label": "Mitglied des Stadtrates (ab 03.11.2025) ",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejobs/21413",
+  "job_title_extra": null,
+  "mandates": [
+   {
+    "id": 68687,
+    "entity_type": "candidacy_mandate",
+    "label": "Anna Leonore Labitzke Rathert (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68687"
+   }
+  ],
+  "category": "29229",
+  "income_level": null,
+  "income": 551.8,
+  "interval": "1",
+  "data_change_date": "2026-09-16",
+  "sidejob_organization": {
+   "id": 6598,
+   "entity_type": "sidejob_organization",
+   "label": "Stadt Recklinghausen",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejob-organizations/6598"
+  },
+  "additional_information": "<p>Brutto</p>",
+  "created": 1789549486,
+  "field_city": {
+   "id": 486,
+   "entity_type": "taxonomy_term",
+   "label": "Recklinghausen",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/cities/486"
+  },
+  "field_country": {
+   "id": 61,
+   "entity_type": "taxonomy_term",
+   "label": "Deutschland",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/countries/61"
+  },
+  "field_topics": [
+   {
+    "id": 24,
+    "entity_type": "taxonomy_term",
+    "label": "Staat und Verwaltung",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/24",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/staat-und-verwaltung"
+   }
+  ],
+  "income_total": null
+ },
+ {
+  "id": 21162,
+  "entity_type": "sidejob",
+  "label": "Dozentin (Tätigkeit vor der Mitgliedschaft im Deutschen Bundestag)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejobs/21162",
+  "job_title_extra": null,
+  "mandates": [
+   {
+    "id": 68407,
+    "entity_type": "candidacy_mandate",
+    "label": "Bärbel Bas (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68407"
+   }
+  ],
+  "category": "29234",
+  "income_level": null,
+  "income": null,
+  "interval": null,
+  "data_change_date": "2026-06-17",
+  "sidejob_organization": {
+   "id": 6520,
+   "entity_type": "sidejob_organization",
+   "label": "BKK Akademie GmbH",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejob-organizations/6520"
+  },
+  "additional_information": null,
+  "created": 1781690424,
+  "field_city": {
+   "id": 3913,
+   "entity_type": "taxonomy_term",
+   "label": "Rotenburg a.d. Fulda",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/cities/3913"
+  },
+  "field_country": {
+   "id": 61,
+   "entity_type": "taxonomy_term",
+   "label": "Deutschland",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/countries/61"
+  },
+  "field_topics": [
+   {
+    "id": 3,
+    "entity_type": "taxonomy_term",
+    "label": "Bildung und Erziehung",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/3",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/bildung-und-erziehung"
+   }
+  ],
+  "income_total": null
+ },
+ {
+  "id": 21161,
+  "entity_type": "sidejob",
+  "label": "Krankenkassenbetriebswirtin, Personalmanagement-Ökonomin (Tätigkeit vor der Mitgliedschaft im Deutschen Bundestag)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejobs/21161",
+  "job_title_extra": null,
+  "mandates": [
+   {
+    "id": 68407,
+    "entity_type": "candidacy_mandate",
+    "label": "Bärbel Bas (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68407"
+   }
+  ],
+  "category": "29234",
+  "income_level": null,
+  "income": null,
+  "interval": null,
+  "data_change_date": "2026-06-17",
+  "sidejob_organization": {
+   "id": 6519,
+   "entity_type": "sidejob_organization",
+   "label": "Betriebskrankenkasse futur",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejob-organizations/6519"
+  },
+  "additional_information": null,
+  "created": 1781690335,
+  "field_city": {
+   "id": 78,
+   "entity_type": "taxonomy_term",
+   "label": "Krefeld",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/cities/78"
+  },
+  "field_country": {
+   "id": 61,
+   "entity_type": "taxonomy_term",
+   "label": "Deutschland",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/countries/61"
+  },
+  "field_topics": [
+   {
+    "id": 28,
+    "entity_type": "taxonomy_term",
+    "label": "Gesundheit",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/28",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/gesundheit"
+   },
+   {
+    "id": 22,
+    "entity_type": "taxonomy_term",
+    "label": "Öffentliche Finanzen, Steuern und Abgaben",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/22",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/oeffentliche-finanzen-steuern-und-abgaben"
+   }
+  ],
+  "income_total": null
+ },
+ {
+  "id": 21007,
+  "entity_type": "sidejob",
+  "label": "Übernahme Reisekosten",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejobs/21007",
+  "job_title_extra": "Einkommen im Jahr 2026",
+  "mandates": [
+   {
+    "id": 68396,
+    "entity_type": "candidacy_mandate",
+    "label": "Peter Aumer (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68396"
+   }
+  ],
+  "category": "29232",
+  "income_level": "3",
+  "income": 8090,
+  "interval": null,
+  "data_change_date": "2026-06-04",
+  "sidejob_organization": {
+   "id": 5710,
+   "entity_type": "sidejob_organization",
+   "label": "Taipeh Vertretung in der Bundesrepublik Deutschland",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejob-organizations/5710"
+  },
+  "additional_information": null,
+  "created": 1780558756,
+  "field_city": {
+   "id": 65,
+   "entity_type": "taxonomy_term",
+   "label": "Berlin",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/cities/65"
+  },
+  "field_country": {
+   "id": 61,
+   "entity_type": "taxonomy_term",
+   "label": "Deutschland",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/countries/61"
+  },
+  "field_topics": [
+   {
+    "id": 21,
+    "entity_type": "taxonomy_term",
+    "label": "Außenpolitik und internationale Beziehungen",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/21",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/aussenpolitik-und-internationale-beziehungen"
+   },
+   {
+    "id": 11,
+    "entity_type": "taxonomy_term",
+    "label": "Außenwirtschaft",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/11",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/aussenwirtschaft"
+   }
+  ],
+  "income_total": null
+ },
+ {
+  "id": 20670,
+  "entity_type": "sidejob",
+  "label": "Mitglied des Beirates, ehrenamtlich (ab 04.02.2026)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejobs/20670",
+  "job_title_extra": null,
+  "mandates": [
+   {
+    "id": 68396,
+    "entity_type": "candidacy_mandate",
+    "label": "Peter Aumer (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68396"
+   }
+  ],
+  "category": "29230",
+  "income_level": null,
+  "income": null,
+  "interval": null,
+  "data_change_date": "2026-03-19",
+  "sidejob_organization": {
+   "id": 4478,
+   "entity_type": "sidejob_organization",
+   "label": "Katholische Akademie für Berufe im Gesundheits- und Sozialwesen in Bayern e.V.",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejob-organizations/4478"
+  },
+  "additional_information": null,
+  "created": 1773918787,
+  "field_city": {
+   "id": 821,
+   "entity_type": "taxonomy_term",
+   "label": "Regensburg",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/cities/821"
+  },
+  "field_country": {
+   "id": 61,
+   "entity_type": "taxonomy_term",
+   "label": "Deutschland",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/countries/61"
+  },
+  "field_topics": [
+   {
+    "id": 28,
+    "entity_type": "taxonomy_term",
+    "label": "Gesundheit",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/28",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/gesundheit"
+   },
+   {
+    "id": 3,
+    "entity_type": "taxonomy_term",
+    "label": "Bildung und Erziehung",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/3",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/bildung-und-erziehung"
+   }
+  ],
+  "income_total": null
+ },
+ {
+  "id": 20565,
+  "entity_type": "sidejob",
+  "label": "Mitglied des Aufsichtsrates (ab 01.01.2026)",
+  "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejobs/20565",
+  "job_title_extra": null,
+  "mandates": [
+   {
+    "id": 68846,
+    "entity_type": "candidacy_mandate",
+    "label": "Catarina dos Santos-Wintz (Bundestag 2025 - 2029)",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/candidacies-mandates/68846"
+   }
+  ],
+  "category": "29228",
+  "income_level": "1",
+  "income": 2400,
+  "interval": "2",
+  "data_change_date": "2026-03-10",
+  "sidejob_organization": {
+   "id": 6392,
+   "entity_type": "sidejob_organization",
+   "label": "Rhein-Maas Klinikum GmbH",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/sidejob-organizations/6392"
+  },
+  "additional_information": "<p>Brutto</p>",
+  "created": 1773148743,
+  "field_city": {
+   "id": 481,
+   "entity_type": "taxonomy_term",
+   "label": "Würselen",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/cities/481"
+  },
+  "field_country": {
+   "id": 61,
+   "entity_type": "taxonomy_term",
+   "label": "Deutschland",
+   "api_url": "https://www.abgeordnetenwatch.de/api/v2/countries/61"
+  },
+  "field_topics": [
+   {
+    "id": 28,
+    "entity_type": "taxonomy_term",
+    "label": "Gesundheit",
+    "api_url": "https://www.abgeordnetenwatch.de/api/v2/topics/28",
+    "abgeordnetenwatch_url": "https://www.abgeordnetenwatch.de/themen-dip21/gesundheit"
+   }
+  ],
+  "income_total": null
+ }
+]

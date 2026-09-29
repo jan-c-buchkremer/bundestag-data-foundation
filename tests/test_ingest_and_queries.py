@@ -2,7 +2,7 @@
 
 import json
 
-from bdf import queries
+from bdf import ingest, queries
 from bdf.match import PersonIndex
 
 WEEK = ("2026-07-06", "2026-07-10")
@@ -264,3 +264,24 @@ def test_aw_profile_statistics(store):
     assert bas["source_document_id"] == f"aw politician {bas['aw_politician_id']}"
     assert bas["source_url"].startswith("https://www.abgeordnetenwatch.de/api/v2/politicians/")
     assert store.execute("SELECT count(*) FROM aw_profile").fetchone()[0] == 8
+
+
+def test_side_jobs(store):
+    rows = {r["id"]: r for r in store.execute("SELECT * FROM side_job")}
+    assert len(rows) == 6
+    bas = [r for r in rows.values() if r["person_id"] == "11004006"]
+    assert len(bas) == 2 and {r["category"] for r in bas} == {
+        "Berufliche Tätigkeit vor der Mitgliedschaft im Deutschen Bundestag"
+    }
+    board = rows[20565]
+    assert board["organization"] == "Rhein-Maas Klinikum GmbH"
+    assert board["income_level"] == 1 and board["income_range"] == "1.000 € bis 3.500 €"
+    assert board["interval"] == "jährlich"
+    assert board["source_document_id"] == "aw sidejob 20565"
+    assert board["source_url"] == "https://www.abgeordnetenwatch.de/api/v2/sidejobs/20565"
+    assert json.loads(rows[21007]["topics"]) and rows[21007]["created"].startswith("20")
+    # a side job without a published Stufe keeps both fields empty
+    assert rows[20670]["income_level"] is None and rows[20670]["income_range"] is None
+    # re-ingest replaces, it does not duplicate
+    ingest.ingest_side_jobs(store)
+    assert store.execute("SELECT count(*) FROM side_job").fetchone()[0] == 6

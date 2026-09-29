@@ -7,6 +7,7 @@ import json
 import re
 import sqlite3
 from collections import defaultdict
+from datetime import UTC, datetime
 from pathlib import Path
 
 from bdf import (
@@ -24,7 +25,7 @@ from bdf import (
 )
 from bdf.config import DIP_BASE_URL, raw_dir
 from bdf.db import upsert
-from bdf.fetch_aw import aw_dir
+from bdf.fetch_aw import aw_dir, mandates_path
 from bdf.fetch_bundestag import (
     PROTOCOL_URL,
     biografien_dir,
@@ -47,6 +48,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_dip(conn)
     ingest_decisions(conn)
     ingest_abgeordnetenwatch(conn)
+    ingest_side_jobs(conn)
     ingest_wahl(conn)
     ingest_government(conn)
     ingest_photos(conn)
@@ -591,6 +593,77 @@ def ingest_abgeordnetenwatch(conn: sqlite3.Connection) -> None:
         )
         for u in unmatched:
             print("    unmatched:", u)
+
+
+# aw codes for the Bundestag's categories and published levels (https://www.abgeordnetenwatch.de/api/entitaeten/sidejob)
+SIDE_JOB_CATEGORY = {
+    "29231": "Beteiligung an Kapital- oder Personengesellschaften",
+    "29647": "Entgeltliche Tätigkeiten neben dem Mandat",
+    "29229": "Funktionen in Körperschaften und Anstalten des öffentlichen Rechts",
+    "29228": "Funktionen in Unternehmen",
+    "29230": "Funktionen in Vereinen, Verbänden und Stiftungen",
+    "29232": "Spenden/Zuwendungen für politische Tätigkeit",
+    "29233": "Vereinbarungen über künftige Tätigkeiten oder Vermögensvorteile",
+    "29234": "Berufliche Tätigkeit vor der Mitgliedschaft im Deutschen Bundestag",
+}
+INCOME_RANGE = {
+    0: "1 € bis 1.000 €",
+    1: "1.000 € bis 3.500 €",
+    2: "3.500 € bis 7.000 €",
+    3: "7.000 € bis 15.000 €",
+    4: "15.000 € bis 30.000 €",
+    5: "30.000 € bis 50.000 €",
+    6: "50.000 € bis 75.000 €",
+    7: "75.000 € bis 100.000 €",
+    8: "100.000 € bis 150.000 €",
+    9: "150.000 € bis 250.000 €",
+    10: "ab 250.000 €",
+}
+INTERVAL = {"0": "einmalig", "1": "monatlich", "2": "jährlich"}
+
+
+def ingest_side_jobs(conn: sqlite3.Connection) -> None:
+    """Replaces the side jobs of each Wahlperiode, so entries abgeordnetenwatch has withdrawn disappear."""
+    for path in raw.data_files(aw_dir(), "wp*-sidejobs.json"):
+        wp = int(path.stem.split("-")[0][2:])
+        meta = raw.read_meta(path)
+        politician = {m["id"]: m["politician"]["id"] for m in raw.read_json(mandates_path(wp))}
+        person = dict(conn.execute("SELECT aw_politician_id, person_id FROM aw_profile WHERE person_id IS NOT NULL"))
+        rows = []
+        for j in raw.read_json(path):
+            mandate = j["mandates"][0]["id"]
+            level = int(j["income_level"]) if j.get("income_level") not in (None, "") else None
+            org = j.get("sidejob_organization") or {}
+            rows.append(
+                {
+                    "id": j["id"],
+                    "wahlperiode": wp,
+                    "person_id": person.get(politician.get(mandate)),
+                    "aw_mandate_id": mandate,
+                    "label": j["label"],
+                    "job_title_extra": j.get("job_title_extra"),
+                    "category": SIDE_JOB_CATEGORY.get(j.get("category") or "", j.get("category")),
+                    "income_level": level,
+                    "income_range": INCOME_RANGE.get(level),
+                    "income": j.get("income"),
+                    "interval": INTERVAL.get(j.get("interval") or ""),
+                    "additional_information": j.get("additional_information"),
+                    "organization_id": org.get("id"),
+                    "organization": org.get("label"),
+                    "city": (j.get("field_city") or {}).get("label"),
+                    "topics": json.dumps([t["label"] for t in j.get("field_topics") or []], ensure_ascii=False),
+                    "created": datetime.fromtimestamp(j["created"], UTC).date().isoformat()
+                    if j.get("created")
+                    else None,
+                    "data_change_date": j.get("data_change_date"),
+                    **meta.provenance(f"aw sidejob {j['id']}", url=j["api_url"]),
+                }
+            )
+        with conn:
+            conn.execute("DELETE FROM side_job WHERE wahlperiode = ?", (wp,))
+            upsert(conn, "side_job", rows)
+        unmatched = sum(r["person_id"] is None for r in rows)
+        print(f"abgeordnetenwatch side jobs WP {wp}: {len(rows)}, {unmatched} without a matched person")
 
 
 # --- Bundeswahlleiterin ------------------------------------------------------------------

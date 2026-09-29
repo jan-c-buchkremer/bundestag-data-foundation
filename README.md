@@ -105,7 +105,7 @@ and recorded DIP responses for four Drucksachen of that week).
 | bundestag.de Open Data — MdB Stammdaten XML | persons, mandates, fraction/committee memberships | as above |
 | bundestag.de — Namentliche Abstimmungen XLSX | roll-call votes, one row per member | as above |
 | DIP API | Drucksachen, authorship, Vorgänge, vote ↔ Drucksache link | free, incl. commercial; attribution "Deutscher Bundestag/Bundesrat – DIP" |
-| abgeordnetenwatch.de API v2 | cross-ids (validated by name + birth year), Wikidata QIDs | CC0 1.0 |
+| abgeordnetenwatch.de API v2 | cross-ids (validated by name + birth year), Wikidata QIDs, side jobs (Nebentätigkeiten) | CC0 1.0 |
 | bundestag.de — MdB biographies (card list behind /abgeordnete) | portrait per MdB with photographer credit | Bundestag terms; photos: third-party rights, credit shown |
 | Wikidata (SPARQL) | government roster since 2025-05-06: offices, dates, departments (with Stammdaten and protocol roles) | CC0 1.0 |
 | Wikimedia Commons | portraits of government members without a bundestag.de card | per file (mostly CC BY-SA), author + licence stored |
