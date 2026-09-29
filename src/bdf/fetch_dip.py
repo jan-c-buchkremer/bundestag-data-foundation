@@ -1,11 +1,16 @@
 """Download DIP API entities for a date range into data/raw/dip/.
 
 Files written (all JSON, each with a .meta.json sidecar):
-  drucksache/<start>_<end>.json          all BT Drucksachen dated in the range (merged pages)
-  aktivitaet/drucksache-<id>.json        all Aktivitäten linked to one Drucksache (= full author list)
-  vorgang/drucksache-<id>.json           all Vorgänge linked to one Drucksache
-  vorgangsposition/<start>_<end>.json    all BT Vorgangspositionen dated in the range (vote linking)
-  person/wp<wp>.json                     all DIP persons with documents in the Wahlperiode
+  drucksache/<start>_<end>.json                 all BT Drucksachen dated in the range (merged pages)
+  aktivitaet/drucksache-<id>.json               all Aktivitäten linked to one Drucksache (= full author list)
+  vorgang/drucksache-<id>.json                  all Vorgänge linked to one Drucksache
+  vorgangsposition/<start>_<end>.json           all BT Vorgangspositionen dated in the range (vote linking)
+  vorgangsposition_other/<start>_<end>-<z>.json BR/BV/EK Vorgangspositionen dated in the range, one file per
+                                                 zuordnung `<z>` (Bundesrat steps: 1./2. Durchgang, Zustimmung,
+                                                 Einspruch, Vermittlungsausschuss, …); kept separate from the BT
+                                                 files so a first backfill of this new data does not get skipped
+                                                 as "already cached"
+  person/wp<wp>.json                            all DIP persons with documents in the Wahlperiode
 """
 
 import time
@@ -19,6 +24,12 @@ from bdf.config import DIP_BASE_URL, dip_api_key, raw_dir
 
 # ~14 requests/s got the IP blocked by DIP's bot protection (Enodia); 2/s has not
 DIP_REQUEST_INTERVAL = 0.5
+
+# f.zuordnung values other than BT (DIP's Zuordnung enum): Bundesrat, Bundesversammlung, Europakammer.
+# Bundesrat steps of a Gesetzgebungsvorgang (1./2. Durchgang, Zustimmung, Einspruch, Zustimmung versagt,
+# Anrufung/Beschluss des Vermittlungsausschusses, …) are zuordnung=BR; BV and EK are fetched too because
+# the extra request is cheap and the Zuordnung filter takes one value at a time.
+OTHER_ZUORDNUNG = ("BR", "BV", "EK")
 
 
 def dip_dir() -> Path:
@@ -63,6 +74,22 @@ def _fetch_list(http: httpx.Client, endpoint: str, params: dict, dest: Path, *, 
     return raw.cached_json(dest, url, lambda: list_all(http, endpoint, params), force=force)
 
 
+def _other_zuordnung_start(zuordnung: str, requested_start: date) -> date:
+    """The start date to fetch a non-BT `zuordnung` from.
+
+    This data is new: the first call for a given `zuordnung` (no file for it under
+    `vorgangsposition_other` yet) backfills from the earliest date any BT vorgangsposition range
+    has already been fetched for, since that is the closest thing to "the start of the
+    Wahlperiode" this module can read off disk without duplicating `update.WP_START`. Once a
+    file exists, later calls use the caller's own (usually much narrower) window.
+    """
+    if raw.data_files(dip_dir() / "vorgangsposition_other", f"*-{zuordnung}.json"):
+        return requested_start
+    bt_files = raw.data_files(dip_dir() / "vorgangsposition", "*.json")
+    starts = [date.fromisoformat(p.stem.split("_")[0]) for p in bt_files]
+    return min(starts, default=requested_start)
+
+
 def fetch_range(http: httpx.Client, wp: int, start: date, end: date, *, force: bool = False) -> None:
     span = f"{start.isoformat()}_{end.isoformat()}"
     date_params = {
@@ -84,6 +111,18 @@ def fetch_range(http: httpx.Client, wp: int, start: date, end: date, *, force: b
     positions = _fetch_list(
         http, "vorgangsposition", date_params, dip_dir() / "vorgangsposition" / f"{span}.json", force=force
     )
-    print(f"  vorgangspositionen: {len(positions)}")
+    print(f"  vorgangspositionen (BT): {len(positions)}")
+    for zuordnung in OTHER_ZUORDNUNG:
+        z_start = _other_zuordnung_start(zuordnung, start)
+        z_span = f"{z_start.isoformat()}_{end.isoformat()}"
+        z_params = {**date_params, "f.zuordnung": zuordnung, "f.datum.start": z_start.isoformat()}
+        z_positions = _fetch_list(
+            http,
+            "vorgangsposition",
+            z_params,
+            dip_dir() / "vorgangsposition_other" / f"{z_span}-{zuordnung}.json",
+            force=force,
+        )
+        print(f"  vorgangspositionen ({zuordnung}): {len(z_positions)}")
     persons = _fetch_list(http, "person", {"f.wahlperiode": wp}, dip_dir() / "person" / f"wp{wp}.json", force=True)
     print(f"  persons (WP {wp}): {len(persons)}")

@@ -161,6 +161,8 @@ CREATE TABLE IF NOT EXISTS vorgang (
     status TEXT,                        -- beratungsstand
     subjects TEXT NOT NULL,             -- JSON array (sachgebiet)
     initiators TEXT NOT NULL,           -- JSON array (initiative)
+    verkuendung TEXT,                   -- JSON array of DIP verkuendung objects (BGBl reference), NULL if none
+    inkrafttreten TEXT,                 -- JSON array of {{datum, erlaeuterung}} objects, NULL if none
     {PROVENANCE}
 );
 
@@ -380,6 +382,8 @@ def connect(path: Path) -> sqlite3.Connection:
 _ADDED_COLUMNS = [
     ("roll_call_vote", "agenda_item_id", "TEXT REFERENCES agenda_item(id)"),
     ("government_role", "source_kind", "TEXT NOT NULL DEFAULT 'wikidata'"),  # all earlier rows came from Wikidata
+    ("vorgang", "verkuendung", "TEXT"),
+    ("vorgang", "inkrafttreten", "TEXT"),
 ]
 
 

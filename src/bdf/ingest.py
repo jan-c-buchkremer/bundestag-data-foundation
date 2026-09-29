@@ -391,6 +391,8 @@ def _vorgang_rows(drucksache_id: str) -> tuple[list[dict], list[dict]]:
             "status": v.get("beratungsstand"),
             "subjects": json.dumps(v.get("sachgebiet", []), ensure_ascii=False),
             "initiators": json.dumps(v.get("initiative", []), ensure_ascii=False),
+            "verkuendung": _json_or_none(v.get("verkuendung") or []),
+            "inkrafttreten": _json_or_none(v.get("inkrafttreten") or []),
             **meta.provenance(f"DIP Vorgang {v['id']}", url=f"{DIP_BASE_URL}/vorgang/{v['id']}"),
         }
         for v in vorgaenge
@@ -399,9 +401,18 @@ def _vorgang_rows(drucksache_id: str) -> tuple[list[dict], list[dict]]:
     return rows, links
 
 
+def _vorgangsposition_records() -> list[tuple[dict, raw.RawMeta]]:
+    """BT positions plus BR/BV/EK ones from the separate directory `fetch_dip` fills for those
+    (`vorgangsposition_other`); ids are unique across zuordnung values, so both merge without collision."""
+    return _latest_list_records(dip_dir() / "vorgangsposition") + _latest_list_records(
+        dip_dir() / "vorgangsposition_other"
+    )
+
+
 def _ingest_vorgang_positions(conn: sqlite3.Connection) -> None:
-    """Every step of a Vorgang from the date-range lists: Drucksache, Beratung, Durchgang, Verkündung, …"""
-    rows = [_vorgang_position_row(p, meta) for p, meta in _latest_list_records(dip_dir() / "vorgangsposition")]
+    """Every step of a Vorgang from the date-range lists: Drucksache, Beratung, Durchgang, Zustimmung,
+    Vermittlungsausschuss, … across the Bundestag, Bundesrat, Bundesversammlung and Europakammer."""
+    rows = [_vorgang_position_row(p, meta) for p, meta in _vorgangsposition_records()]
     with conn:
         upsert(conn, "vorgang_position", rows)
     print(f"dip: {len(rows)} vorgangspositionen")
