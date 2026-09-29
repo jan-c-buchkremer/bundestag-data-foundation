@@ -1,0 +1,17 @@
+﻿# (c) Die Bundeswahlleiterin, Statistische Ämter des Bundes und der Länder, Wiesbaden 2024;;;;;;;;;;;;;;;;
+# Datenlizenz Deutschland – Namensnennung – Version 2.0 (https://www.govdata.de/dl-de/by-2-0);;;;;;;;;;;;;;;;
+# ;;;;;;;;;;;;;;;;
+# Wahlkreise und zugeordnete Gemeinden bei der Wahl zum 21. Deutschen Bundestag (gemäß 27. Gesetz zur Änderung des Bundeswahlgesetzes vom 07.03.2024 (BGBl. 2024 I Nr. 91) und Bekanntmachung zur Wahlkreiseinteilung vom 27.12.2024 (BGBl. 2024 I Nr. 437));;;;;;;;;;;;;;;;
+# ;;;;;;;;;;;;;;;;
+# Gebietsstand: 30.11.2024;;;;;;;;;;;;;;;;
+# ;;;;;;;;;;;;;;;;
+Wahlkreis-Nr;Wahlkreis-Bez;RGS_Land;RGS_RegBez;RGS_Kreis;RGS_GemVerband;RGS_Gemeinde;Landname;RegBez-Name;Kreisname;GemVerband-Name;Gemeindename;Gemeindeteil;Wahlkreis-von;Wahlkreis-bis;PLZ-GemVerwaltung;PLZ-mehrere
+014;Rostock – Landkreis Rostock II;13;0;03;0000;000;Mecklenburg-Vorpommern;;Rostock;;Rostock, Hanse- und Universitätsstadt;;;;18055;*****
+014;Rostock – Landkreis Rostock II;13;0;72;0000;029;Mecklenburg-Vorpommern;;Landkreis Rostock;;Dummerstorf;;;;18196;
+114;Duisburg I;05;1;12;0000;000;Nordrhein-Westfalen;Reg.-Bez. Düsseldorf;Duisburg, Stadt;;Duisburg, Stadt;1;114;115;47051;*****
+297;Saarlouis;10;0;42;0000;111;Saarland;;Merzig-Wadern;;Beckingen;;;;66701;
+297;Saarlouis;10;0;42;0000;112;Saarland;;Merzig-Wadern;;Losheim am See;;;;66679;
+018;Hamburg-Mitte;02;0;00;0000;000;Hamburg;;Hamburg, Freie und Hansestadt;;Hamburg, Freie und Hansestadt;1;018;023;20038;*****
+019;Hamburg-Altona;02;0;00;0000;000;Hamburg;;Hamburg, Freie und Hansestadt;;Hamburg, Freie und Hansestadt;2;018;023;20038;*****
+258;Stuttgart I;08;1;11;0000;000;Baden-Württemberg;Reg.-Bez. Stuttgart;Stuttgart, Stadtkreis;;Stuttgart, Landeshauptstadt;1;258;259;70173;*****
+259;Stuttgart II;08;1;11;0000;000;Baden-Württemberg;Reg.-Bez. Stuttgart;Stuttgart, Stadtkreis;;Stuttgart, Landeshauptstadt;2;258;259;70173;*****

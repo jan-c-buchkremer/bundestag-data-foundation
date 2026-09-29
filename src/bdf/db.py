@@ -250,6 +250,18 @@ CREATE TABLE IF NOT EXISTS constituency_result (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS constituency_municipality (
+    id TEXT PRIMARY KEY,                -- "<election>/<ags>/<constituency number>", e.g. "btw25/02000000/18"
+    election TEXT NOT NULL,
+    ags TEXT NOT NULL,                  -- Amtlicher Gemeindeschlüssel, 8 digits
+    name TEXT NOT NULL,                 -- Gemeindename as in the file, e.g. "Flensburg, Stadt"
+    district TEXT NOT NULL,             -- Kreisname, tells the many "Neustadt" apart
+    state TEXT NOT NULL,                -- Land abbreviation, as constituency.state
+    constituency_number INTEGER NOT NULL,
+    split INTEGER NOT NULL,             -- 1: the Gemeinde is split across Wahlkreise, one row per Wahlkreis
+    {PROVENANCE}
+);
+
 CREATE TABLE IF NOT EXISTS election_candidacy (
     id TEXT PRIMARY KEY,                -- "<election>/<row in the Gewählte file>"
     election TEXT NOT NULL,
@@ -326,6 +338,7 @@ CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_vorgang ON vorgang_position(vorgang_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_date ON vorgang_position(date);
 CREATE INDEX IF NOT EXISTS candidacy_person ON election_candidacy(person_id);
+CREATE INDEX IF NOT EXISTS municipality_constituency ON constituency_municipality(election, constituency_number);
 {GOVERNMENT_ROLE_INDEX};
 """
 

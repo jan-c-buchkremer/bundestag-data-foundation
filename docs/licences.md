@@ -13,7 +13,7 @@ terms checked.
 | bundestag.de — Namentliche Abstimmungen XLSX/PDF | roll-call votes, individual votes | as above | "Deutscher Bundestag" | as above | permissive with attribution |
 | DIP API | Drucksachen, Vorgänge, authorship, persons | DIP Nutzungsbedingungen (27 Feb 2023, PDF in this folder) | "Deutscher Bundestag/Bundesrat – DIP" + BT-Drs./BT-PlPr. number; commercial use must note that the data is free at dip.bundestag.de | yes, explicitly | permissive with attribution |
 | abgeordnetenwatch.de API v2 | cross-IDs, mandates, (optionally) polls/votes | **CC0 1.0** | none (courtesy attribution recommended) | yes | public domain |
-| Bundeswahlleiterin — Open Data BTW 2025 | elected candidates, results per Wahlkreis | **Datenlizenz Deutschland – Namensnennung 2.0** | "© Die Bundeswahlleiterin, Wiesbaden 2025" | yes | permissive with attribution |
+| Bundeswahlleiterin — Open Data BTW 2025 | elected candidates, results per Wahlkreis, Gemeinden per Wahlkreis | **Datenlizenz Deutschland – Namensnennung 2.0** | "© Die Bundeswahlleiterin, Wiesbaden 2025" | yes | permissive with attribution |
 | bundestag.de — MdB biography portraits | one portrait per MdB | bundestag.de Nutzungsbedingungen; photos are third-party works | the credit printed under each photo (`person_photo.credit`) | not verified per photo | show with credit; rights not checked |
 | Wikidata | government roster (offices, dates, departments, birth dates) | **CC0 1.0** | none | yes | public domain |
 | Wikimedia Commons | portraits of government members without a bundestag.de portrait | per file, mostly CC BY-SA 4.0 | author + licence (`person_photo.credit`) and a link to the file page (`source_url`) | yes, share-alike on the image | permissive with attribution |
@@ -89,6 +89,10 @@ the licence is named in the first two lines of every CSV: "(c) Die Bundeswahllei
 "Datenlizenz Deutschland – Namensnennung – Version 2.0" (https://www.govdata.de/dl-de/by-2-0). Use,
 change and redistribution are allowed, commercially too, with the attribution and a link to the licence;
 changes must be marked. Our `source_document_id` names the file and its "Stand" date.
+
+The Wahlkreiseinteilung by Gemeinde (https://www.bundeswahlleiterin.de/bundestagswahlen/2025/wahlkreiseinteilung/downloads.html,
+`btw25_wkr_gemeinden_20241130_utf8.csv`) carries the same licence with the attribution
+"(c) Die Bundeswahlleiterin, Statistische Ämter des Bundes und der Länder, Wiesbaden 2024".
 
 ## Portraits (bundestag.de, Wikimedia Commons)
 
