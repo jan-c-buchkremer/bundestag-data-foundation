@@ -8,13 +8,29 @@ Speech splitting rules (see docs/decisions.md):
 - presidency remarks inside a ``<rede>`` (``<name>Vizepräsident …:</name>`` and the paragraphs
   that follow until the speaker resumes) are kept as paragraphs of kind ``chair``;
 - ``<kommentar>`` is kind ``comment``; ``T_*`` classes are ``procedural``; all else is ``text``.
+- ``Speech.kind`` is ``rede`` for all of the above.
 
-Text directly under ``<tagesordnungspunkt>``, outside any ``<rede>``, is where the presidency calls
-items, puts questions to the vote and announces results. It is kept as agenda item paragraphs
-(``Protocol.agenda_paragraphs``) with the same kinds: ``chair`` until another speaker's
-``<p klasse="redner">`` (Fragestunde in early WP21 protocols), whose line becomes kind ``speaker``
-and whose words ``text``, until the next presidency ``<name>``. The printed name lists of roll-call
-votes (``AL_Namen``, ``AL_Partei``, ``AL_Ja-Nein-Enth``) are left out: the XLSX has them per member.
+Every WP21 Fragestunde (25 agenda items, one per sitting week) has no ``<rede>`` at all: the
+question, the minister's or Staatssekretär's answer and every Nachfrage are ``<p klasse="redner">``
+paragraphs directly under ``<tagesordnungspunkt>``, framed by the presidency's own text ("Ich rufe
+die Frage 1 … auf", "Herr Staatssekretär.", "Haben Sie eine Nachfrage?"). ``_is_fragestunde`` detects
+such an item structurally (no ``<rede>``, at least one direct ``<p klasse="redner">``) rather than by
+title, so it also catches any other Wahlperiode that turns out to print Fragestunden the same way.
+``_split_fragestunde`` turns each run starting at such a paragraph into its own ``Speech`` of kind
+``fragestunde`` (id ``"<agenda_item_id>/f<n>"``, ``n`` counting redner runs in document order —
+synthetic but stable across re-parses), the same way ``_split_rede`` does inside a ``<rede>``:
+``<kommentar>`` attaches to it as a ``comment`` paragraph (and so earns interjection rows), and the
+run ends at the next redner paragraph or presidency ``<name>``. The presidency's own framing text
+(calling the item, the ministry, the question number, "Haben Sie eine Nachfrage?") is not attached to
+any speech; it stays an ``agenda_item_paragraph`` of kind ``chair``, as it always was. Recording the
+question number and the addressed ministry as their own fields was skipped: ``speech.fraction`` (the
+asker) and ``speech.speaker_role`` (the answering office) already cover the counts callers need.
+
+Text directly under ``<tagesordnungspunkt>``, outside any ``<rede>`` and outside a Fragestunde item,
+is where the presidency calls items, puts questions to the vote and announces results. It is kept as
+agenda item paragraphs (``Protocol.agenda_paragraphs``) with kinds ``chair``, ``comment`` and
+``procedural`` (``T_*`` classes). The printed name lists of roll-call votes (``AL_Namen``,
+``AL_Partei``, ``AL_Ja-Nein-Enth``) are left out: the XLSX has them per member.
 """
 
 import json
@@ -47,6 +63,7 @@ class Speech:
     position: int
     agenda_item_id: str | None
     paragraphs: list[tuple[str, str]] = field(default_factory=list)  # (kind, text)
+    kind: str = "rede"  # rede | fragestunde
 
     @property
     def text(self) -> str:
@@ -196,6 +213,69 @@ def _agenda_paragraphs(top: ET.Element, agenda_item_id: str, speeches_before: in
     return rows
 
 
+def _is_fragestunde(top: ET.Element) -> bool:
+    """A Fragestunde-style agenda item: no ``<rede>`` at all, but at least one direct-child
+    ``<p klasse="redner">`` (docstring above). Structural, not title-based, so it is robust to any
+    Wahlperiode printing its Fragestunde this way, without depending on the German wording."""
+    return top.find("rede") is None and any(
+        p.get("klasse") == "redner" and p.find("redner") is not None for p in top.findall("p")
+    )
+
+
+def _split_fragestunde(top: ET.Element, agenda_item_id: str, position: int, speeches_before: int) -> tuple[
+    list[Speech], list[dict]
+]:  # fmt: skip
+    """A Fragestunde tagesordnungspunkt: each run starting at a direct-child ``<p klasse="redner">``
+    becomes a ``Speech`` of kind ``fragestunde`` (mirrors ``_split_rede``, applied to the top's own
+    children instead of a ``<rede>``'s); the presidency's framing text before, between and after those
+    runs is returned as agenda_item_paragraph rows, exactly as ``_agenda_paragraphs`` would keep it."""
+    speeches: list[Speech] = []
+    paragraphs: list[dict] = []
+    current: Speech | None = None
+    n = 0
+    for el in top:
+        klasse = el.get("klasse") or ""
+        if klasse in _VOTE_LIST_CLASSES:
+            continue
+        if el.tag == "p" and klasse == "redner" and el.find("redner") is not None:
+            n += 1
+            speeches_before += 1
+            current = Speech(
+                id=f"{agenda_item_id}/f{n}",
+                speaker=_speaker(el),
+                position=position + len(speeches),
+                agenda_item_id=agenda_item_id,
+                kind="fragestunde",
+            )
+            speeches.append(current)
+            continue
+        if el.tag == "name":
+            current = None
+            text = clean_text("".join(el.itertext()))
+            if text:
+                m = len(paragraphs) + 1
+                paragraphs.append(
+                    {"id": f"{agenda_item_id}/{m}", "agenda_item_id": agenda_item_id, "position": m,
+                     "kind": "chair", "text": text, "after_speeches": speeches_before}
+                )  # fmt: skip
+            continue
+        if el.tag not in ("p", "kommentar", "zitat"):
+            continue
+        text = clean_text("".join(el.itertext()))
+        if not text:
+            continue
+        if current is not None:
+            current.paragraphs.append((_paragraph_kind(el, chair_mode=False), text))
+            continue
+        kind = "procedural" if klasse.startswith("T_") else _paragraph_kind(el, chair_mode=True)
+        m = len(paragraphs) + 1
+        paragraphs.append(
+            {"id": f"{agenda_item_id}/{m}", "agenda_item_id": agenda_item_id, "position": m,
+             "kind": kind, "text": text, "after_speeches": speeches_before}
+        )  # fmt: skip
+    return speeches, paragraphs
+
+
 def _rede_speakers(rede: ET.Element):
     """The speeches a <rede> splits into, as _split_rede counts them (one per change of speaker)."""
     last = None
@@ -221,9 +301,14 @@ def parse(path: Path) -> Protocol:
         elif el.tag == "tagesordnungspunkt":
             item = _agenda_item(el, sitting_id, len(agenda_items) + 1)
             agenda_items.append(item)
-            agenda_paragraphs += _agenda_paragraphs(el, item["id"], len(speeches))
-            for rede in el.findall("rede"):
-                speeches += _split_rede(rede, len(speeches) + 1, item["id"])
+            if _is_fragestunde(el):
+                fq_speeches, fq_paragraphs = _split_fragestunde(el, item["id"], len(speeches) + 1, len(speeches))
+                speeches += fq_speeches
+                agenda_paragraphs += fq_paragraphs
+            else:
+                agenda_paragraphs += _agenda_paragraphs(el, item["id"], len(speeches))
+                for rede in el.findall("rede"):
+                    speeches += _split_rede(rede, len(speeches) + 1, item["id"])
     return Protocol(
         wahlperiode=wp,
         number=nr,

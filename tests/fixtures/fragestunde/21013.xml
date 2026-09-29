@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dbtplenarprotokoll
+  SYSTEM "dbtplenarprotokoll.dtd">
+<dbtplenarprotokoll vertrieb="Bundesanzeiger Verlag GmbH" herstellung="H. Heenemann GmbH" sitzung-ort="Berlin" herausgeber="Deutscher Bundestag" issn="0722-7980" wahlperiode="21" sitzung-nr="13" sitzung-datum="25.06.2025" sitzung-start-uhrzeit="13:00" sitzung-ende-uhrzeit="19:06" sitzung-naechste-datum="26.06.2025" start-seitennr="999">
+    <!-- EXCERPT for tests: Plenarprotokoll 21/13 (Deutscher Bundestag), reduced to the Fragestunde agenda item
+         (Tagesordnungspunkt 4), Frage 1 (two Nachfragen) and the start of Frage 2 (no Nachfrage). Fragestunde
+         items have no <rede>: questions, answers and Nachfragen are <p klasse="redner"> paragraphs directly
+         under <tagesordnungspunkt>. Source: https://dserver.bundestag.de/btp/21/21013.xml -->
+<vorspann><kopfdaten>
+            <plenarprotokoll-nummer>Plenarprotokoll <wahlperiode>21</wahlperiode>/<sitzungsnr>13</sitzungsnr></plenarprotokoll-nummer>
+            <herausgeber>Deutscher Bundestag</herausgeber>
+            <berichtart>Stenografischer Bericht</berichtart>
+            <sitzungstitel><sitzungsnr>13</sitzungsnr>. Sitzung</sitzungstitel>
+            <veranstaltungsdaten><ort>Berlin</ort>, <datum date="25.06.2025">Mittwoch, den 25. Juni 2025</datum></veranstaltungsdaten>
+        </kopfdaten>
+        </vorspann>
+<sitzungsverlauf>
+<tagesordnungspunkt top-id="Tagesordnungspunkt 4">
+            <p klasse="J">Ich rufe den Tagesordnungspunkt 4 auf: </p>
+            <p klasse="T_fett">		Fragestunde </p>
+            <p klasse="T_Drs">		Drucksache <a href="https://dserver.bundestag.de/btd/21/005/2100513.pdf">21/513</a></p>
+            <p klasse="J">Die mündlichen Fragen auf Drucksache 21/513 werden in der üblichen Reihenfolge aufgerufen. – Ich warte noch kurz, bis ein bisschen mehr Ruhe eingekehrt ist.</p>
+            <p klasse="J">Ich rufe auf den Geschäftsbereich des Bundesministeriums der Verteidigung. Zur Beantwortung steht der Parlamentarische Staatssekretär Dr. Nils Schmid bereit.</p>
+            <p klasse="J">Ich rufe nun die Frage 1 des Abgeordneten Dr. Michael Kaufmann auf: </p>
+            <p klasse="p">Ist dem Bundesministerium der Verteidigung bekannt, dass laut Medienberichten deutsche Neonazis als offizieller Truppenbestandteil in das ukrainische Freiwilligenbataillon Karpaten-Sitsch aufgenommen worden sein sollen und dort nun nach NATO-Standards trainiert und mit NATO-Waffen ausgerüstet werden, und, wenn ja, hat es deswegen bei der ukrainischen Regierung interveniert?</p>
+            <p klasse="J">Herr Staatssekretär.</p>
+            <p klasse="redner"><redner id="11004876"><name><titel>Dr.</titel><vorname>Nils</vorname><nachname>Schmid</nachname><rolle><rolle_lang>Parl. Staatssekretär beim Bundesminister der Verteidigung</rolle_lang><rolle_kurz>Parl. Staatssekretär BMVg</rolle_kurz></rolle></name></redner>Dr. Nils Schmid, Parl. Staatssekretär beim Bundesminister der Verteidigung:</p>
+            <p klasse="J_1">Frau Präsidentin! Meine sehr verehrten Damen und Herren! Hier die Antwort: Die Bundesregierung kommentiert Medienberichte grundsätzlich nicht. Darüber hinaus liegen der Bundesregierung keine Erkenntnisse im Sinne der Fragestellung vor.</p>
+            <name>Vizepräsidentin Josephine Ortleb:</name>
+            <p klasse="J_1">Haben Sie eine Nachfrage?</p>
+            <p klasse="redner"><redner id="11005100"><name><titel>Dr.</titel><vorname>Michael</vorname><nachname>Kaufmann</nachname><fraktion>AfD</fraktion></name></redner>Dr. Michael Kaufmann (AfD):</p>
+            <p klasse="J_1">Ja. – Können Sie sich dann erklären, wieso sich der Leiter des Planungs- und Führungsstabs des Bundesministers der Verteidigung, Generalmajor Christian Freuding, am 8. Mai 2025 mit dem Asow-Kommandeur Oleg Romanow getroffen und mit diesem in Felduniform für ein Foto posiert hat?</p>
+            <p klasse="redner"><redner id="11004876"><name><titel>Dr.</titel><vorname>Nils</vorname><nachname>Schmid</nachname><rolle><rolle_lang>Parl. Staatssekretär beim Bundesminister der Verteidigung</rolle_lang><rolle_kurz>Parl. Staatssekretär BMVg</rolle_kurz></rolle></name></redner>Dr. Nils Schmid, Parl. Staatssekretär beim Bundesminister der Verteidigung:</p>
+            <p klasse="J_1">Das eine hat mit dem anderen nichts zu tun.</p>
+            <p klasse="redner"><redner id="11005100"><name><titel>Dr.</titel><vorname>Michael</vorname><nachname>Kaufmann</nachname><fraktion>AfD</fraktion></name></redner>Dr. Michael Kaufmann (AfD):</p>
+            <p klasse="J_1">Das sehe ich anders. – Die Asow-Brigaden haben offenbar am 25. Februar dieses Jahres eine Rekrutierungsveranstaltung in Berlin durchgeführt; Quelle ist die Webseite der Asow-Brigaden. Ist das mit dem Verteidigungsministerium abgestimmt? Wie stehen Sie dazu?</p>
+            <p klasse="redner"><redner id="11004876"><name><titel>Dr.</titel><vorname>Nils</vorname><nachname>Schmid</nachname><rolle><rolle_lang>Parl. Staatssekretär beim Bundesminister der Verteidigung</rolle_lang><rolle_kurz>Parl. Staatssekretär BMVg</rolle_kurz></rolle></name></redner>Dr. Nils Schmid, Parl. Staatssekretär beim Bundesminister der Verteidigung:</p>
+            <p klasse="J_1">Dazu liegen uns keine Erkenntnisse vor.</p>
+            <kommentar>(Stephan Brandner [AfD]: Völlige Ahnungslosigkeit!)</kommentar>
+            <p klasse="O">Wir haben Wissen über die aktiven Soldaten im Zuständigkeitsbereich des BMVg. Wir haben keine Erkenntnisse darüber, dass sie in irgendeiner Verbindung mit Neonazis tätig werden.</p>
+            <kommentar>(Dr. Michael Kaufmann [AfD]: Also Ahnungslosigkeit! Gut!)</kommentar>
+            <name>Vizepräsidentin Josephine Ortleb:</name>
+            <p klasse="J_1">Haben Sie noch eine weitere Nachfrage?</p>
+            <p klasse="redner"><redner id="11005100"><name><titel>Dr.</titel><vorname>Michael</vorname><nachname>Kaufmann</nachname><fraktion>AfD</fraktion></name></redner>Dr. Michael Kaufmann (AfD):</p>
+            <p klasse="J_1">Ich hatte jetzt schon zwei.</p>
+            <name>Vizepräsidentin Josephine Ortleb:</name>
+            <p klasse="J_1">Das ist meine erste Fragestunde als Vizepräsidentin.</p>
+            <p klasse="J">Ich rufe jetzt die Frage 2 des Abgeordneten Stefan Schröder auf: </p>
+            <p klasse="p">Kann das Bundesministerium der Verteidigung bestätigen, dass alle Piloten der Bundeswehr genügend Flugstunden absolvieren?</p>
+            <p klasse="J">Herr Staatssekretär.</p>
+            <p klasse="redner"><redner id="11004876"><name><titel>Dr.</titel><vorname>Nils</vorname><nachname>Schmid</nachname><rolle><rolle_lang>Parl. Staatssekretär beim Bundesminister der Verteidigung</rolle_lang><rolle_kurz>Parl. Staatssekretär BMVg</rolle_kurz></rolle></name></redner>Dr. Nils Schmid, Parl. Staatssekretär beim Bundesminister der Verteidigung:</p>
+            <p klasse="J_1">Frau Präsidentin! Liebe Kolleginnen und Kollegen! Hier die Antwort: Die zur Verfügung stehenden Flugstundenkontingente sind grundsätzlich hinreichend, um den Erhalt der erforderlichen personellen Einsatzbereitschaft der Piloten der Bundeswehr zu decken.</p>
+            <p klasse="J">Konkrete Zahlen im Sinne der Fragestellung können nicht genannt werden, da diese Rückschlüsse auf die Einsatzbereitschaft der Streitkräfte zuließen und daher der Vertraulichkeit unterliegen.</p>
+        </tagesordnungspunkt>
+</sitzungsverlauf>
+</dbtplenarprotokoll>

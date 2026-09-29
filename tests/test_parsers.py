@@ -7,6 +7,7 @@ from bdf.raw import RawMeta
 from tests.conftest import FIXTURES
 
 PROTOCOL = FIXTURES / "bundestag" / "protocols" / "21" / "21094.xml"
+FRAGESTUNDE = FIXTURES / "fragestunde" / "21013.xml"
 
 
 def test_protocol_header_and_agenda():
@@ -56,6 +57,46 @@ def test_protocol_non_mdb_speaker_keeps_role():
     assert bas.fraction is None
     assert bas.role == "Bundesministerin für Arbeit und Soziales"
     assert bas.printed == "Bärbel Bas, Bundesministerin für Arbeit und Soziales"
+
+
+def test_fragestunde_speeches_have_no_rede():
+    """WP21 Fragestunde: questions, answers and Nachfragen are <p klasse="redner"> paragraphs
+    directly under <tagesordnungspunkt>, with no <rede> at all (docs/decisions.md 2026-09-29)."""
+    p = parse_protocol.parse(FRAGESTUNDE)
+    assert [a["title"] for a in p.agenda_items] == ["Fragestunde"]
+    assert len(p.speeches) == 7
+    assert all(s.kind == "fragestunde" for s in p.speeches)
+    ids = [s.id for s in p.speeches]
+    assert ids == [f"21/13/1/f{n}" for n in range(1, 8)]
+    assert [s.position for s in p.speeches] == list(range(1, 8))
+    assert all(s.agenda_item_id == "21/13/1" for s in p.speeches)
+    # alternates: Staatssekretär answers, then the asker's Nachfrage, ...
+    schmid, kaufmann = p.speeches[0].speaker, p.speeches[1].speaker
+    assert (schmid.id, schmid.role) == ("11004876", "Parl. Staatssekretär beim Bundesminister der Verteidigung")
+    assert (kaufmann.id, kaufmann.fraction, kaufmann.role) == ("11005100", "AfD", None)
+    assert p.speeches[2].speaker.id == "11004876" and p.speeches[3].speaker.id == "11005100"
+    # a <kommentar> inside a Fragestunde run attaches to the speech, like inside a <rede>
+    kinds = [k for k, _ in p.speeches[4].paragraphs]
+    assert kinds.count("comment") == 2 and kinds.count("text") == 2
+    # Frage 2 has no Nachfrage: the run just continues to the end of the agenda item
+    assert p.speeches[6].text.startswith("Frau Präsidentin! Liebe Kolleginnen")
+    assert "Konkrete Zahlen" in p.speeches[6].text
+
+
+def test_fragestunde_chair_text_stays_agenda_paragraph():
+    p = parse_protocol.parse(FRAGESTUNDE)
+    kinds = {r["kind"] for r in p.agenda_paragraphs}
+    assert kinds == {"chair", "procedural"}
+    texts = [r["text"] for r in p.agenda_paragraphs]
+    assert "Ich rufe nun die Frage 1 des Abgeordneten Dr. Michael Kaufmann auf:" in texts
+    assert "Herr Staatssekretär." in texts
+    assert "Fragestunde" in texts and "Drucksache 21/513" in texts
+    # none of the redner lines or their answers leaked into agenda_item_paragraph
+    assert not any("Frau Präsidentin! Meine sehr verehrten" in t for t in texts)
+    # after_speeches tracks the Fragestunde speeches already opened, like inside a normal item
+    by_text = {r["text"]: r["after_speeches"] for r in p.agenda_paragraphs}
+    assert by_text["Haben Sie eine Nachfrage?"] == 1
+    assert by_text["Haben Sie noch eine weitere Nachfrage?"] == 5
 
 
 def test_stammdaten():

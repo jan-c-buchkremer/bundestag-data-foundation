@@ -93,7 +93,8 @@ CREATE TABLE IF NOT EXISTS agenda_item (
 );
 
 CREATE TABLE IF NOT EXISTS speech (
-    id TEXT PRIMARY KEY,                -- XML rede/@id, "-2", "-3" … when split
+    id TEXT PRIMARY KEY,                -- XML rede/@id, "-2", "-3" … when split; Fragestunde:
+                                        -- "<agenda_item_id>/f<n>" (synthetic, docs/decisions.md)
     sitting_id TEXT NOT NULL REFERENCES sitting(id),
     agenda_item_id TEXT REFERENCES agenda_item(id),
     position INTEGER NOT NULL,          -- order within the sitting
@@ -102,7 +103,9 @@ CREATE TABLE IF NOT EXISTS speech (
     speaker_role TEXT,
     fraction TEXT,
     text TEXT NOT NULL,                 -- clean text: paragraphs of kind 'text', blank-line joined
-    {PROVENANCE}
+    {PROVENANCE},
+    kind TEXT NOT NULL DEFAULT 'rede'   -- rede | fragestunde: a Fragestunde question, answer or
+                                        -- Nachfrage; shown, but left out of speech counts and shares
 );
 
 CREATE TABLE IF NOT EXISTS speech_paragraph (
@@ -384,6 +387,7 @@ _ADDED_COLUMNS = [
     ("government_role", "source_kind", "TEXT NOT NULL DEFAULT 'wikidata'"),  # all earlier rows came from Wikidata
     ("vorgang", "verkuendung", "TEXT"),
     ("vorgang", "inkrafttreten", "TEXT"),
+    ("speech", "kind", "TEXT NOT NULL DEFAULT 'rede'"),  # all earlier rows are speeches from a <rede>
 ]
 
 

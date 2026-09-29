@@ -141,6 +141,7 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                         "speaker_role": s.speaker.role,
                         "fraction": s.speaker.fraction,
                         "text": s.text,
+                        "kind": s.kind,
                         **prov,
                     }
                     for s in protocol.speeches
