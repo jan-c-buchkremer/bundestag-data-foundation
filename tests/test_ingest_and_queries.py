@@ -213,14 +213,15 @@ def test_overlapping_dip_ranges_count_each_record_once(data_dir):
     # the vote's one DIP decision is not doubled, so it still pairs with the one vote of the day
     assert conn.execute("SELECT link_method FROM roll_call_vote WHERE id = '21/90/7'").fetchone()[0] == "dip_beschluss"
     assert conn.execute("SELECT count(*) FROM drucksache").fetchone()[0] == 4
-    assert conn.execute("SELECT count(*) FROM vorgang_position").fetchone()[0] == 2
+    # 2 BT (deduplicated) + 2 BR from the untouched tests/fixtures/dip/vorgangsposition_other fixture
+    assert conn.execute("SELECT count(*) FROM vorgang_position").fetchone()[0] == 4
     first = json.loads((dip / "drucksache" / "2026-07-06_2026-07-10.json").read_text(encoding="utf-8"))[0]
     assert conn.execute("SELECT title FROM drucksache WHERE id = ?", (first["id"],)).fetchone()[0] == "later title"
 
 
 def test_vorgang_positions(store):
     rows = {r["id"]: dict(r) for r in store.execute("SELECT * FROM vorgang_position")}
-    assert len(rows) == 2
+    assert len(rows) == 4
     third = rows["696837"]
     assert (third["vorgang_id"], third["position"], third["chamber"], third["document_kind"]) == (
         "334923",
@@ -235,6 +236,41 @@ def test_vorgang_positions(store):
     assert json.loads(question["originators"]) == ["Fraktion der AfD"] and question["decisions"] is None
     assert question["source_document_id"] == "DIP Vorgangsposition 696051"
     assert question["source_url"] == "https://search.dip.bundestag.de/api/v1/vorgangsposition/696051"
+
+
+def test_bundesrat_positions_from_the_separate_directory(store):
+    """`vorgangsposition_other` (f.zuordnung=BR/BV/EK) merges into the same table as the BT positions."""
+    rows = {r["id"]: dict(r) for r in store.execute("SELECT * FROM vorgang_position WHERE chamber = 'BR'")}
+    assert set(rows) == {"700001", "700002"}
+    assert all(r["vorgang_id"] == "334923" for r in rows.values())
+    first_durchgang = rows["700001"]
+    assert (first_durchgang["position"], first_durchgang["document_type"]) == (
+        "Gesetzentwurf",
+        "Gesetzentwurf der Bundesregierung",
+    )
+    assert json.loads(first_durchgang["originators"]) == ["Bundesregierung"]
+    no_objection = rows["700002"]
+    assert (no_objection["date"], no_objection["document_kind"]) == ("2026-07-17", "Plenarprotokoll")
+    assert no_objection["source_document_id"] == "DIP Vorgangsposition 700002"
+
+
+def test_vorgang_verkuendung_and_inkrafttreten(store):
+    """The Verkündung/Ausfertigung (BGBl) and Inkrafttreten dates come from the /vorgang record itself,
+    not from a vorgangsposition entry: no zuordnung ever carries a "Verkündung" vorgangsposition."""
+    v = store.execute("SELECT * FROM vorgang WHERE id = '334923'").fetchone()
+    assert v["status"] == "Verkündet"
+    verkuendung = json.loads(v["verkuendung"])
+    assert len(verkuendung) == 1
+    assert (verkuendung[0]["ausfertigungsdatum"], verkuendung[0]["verkuendungsdatum"]) == (
+        "2026-07-23",
+        "2026-07-28",
+    )
+    assert verkuendung[0]["fundstelle"] == "BGBl I 2026, 226"
+    inkrafttreten = json.loads(v["inkrafttreten"])
+    assert [i["datum"] for i in inkrafttreten] == ["2026-07-29", "2027-01-01", "2028-01-01", "2030-01-01"]
+    # a Vorgang without a Verkündung (not yet promulgated, or not a law) keeps NULL, not "[]"
+    other = store.execute("SELECT verkuendung, inkrafttreten FROM vorgang WHERE id = '337023'").fetchone()
+    assert other["verkuendung"] is None and other["inkrafttreten"] is None
 
 
 def test_vorgang_position_ressort_and_page_range():

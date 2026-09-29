@@ -1,0 +1,4 @@
+{
+ "url": "https://search.dip.bundestag.de/api/v1/vorgangsposition?f.zuordnung=BR&f.wahlperiode=21&f.datum.start=2025-03-25&f.datum.end=2026-07-10",
+ "retrieved_at": "2026-09-27T09:27:05+00:00"
+}

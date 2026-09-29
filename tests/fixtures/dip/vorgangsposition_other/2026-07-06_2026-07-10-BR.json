@@ -1,0 +1,60 @@
+[
+ {
+  "id": "700001",
+  "vorgangsposition": "Gesetzentwurf",
+  "zuordnung": "BR",
+  "gang": true,
+  "fortsetzung": false,
+  "nachtrag": false,
+  "vorgangstyp": "Gesetzgebung",
+  "titel": "Gesetz zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich",
+  "typ": "Vorgangsposition",
+  "dokumentart": "Drucksache",
+  "aktualisiert": "2026-05-20T09:00:00+02:00",
+  "urheber": [
+   {
+    "einbringer": true,
+    "bezeichnung": "BReg",
+    "titel": "Bundesregierung"
+   }
+  ],
+  "fundstelle": {
+   "id": "233026",
+   "dokumentnummer": "233/26",
+   "datum": "2026-05-15",
+   "dokumentart": "Drucksache",
+   "drucksachetyp": "Gesetzentwurf der Bundesregierung",
+   "herausgeber": "BR",
+   "urheber": [
+    "Bundesregierung"
+   ],
+   "pdf_url": "https://www.bundesrat.de/SharedDocs/downloads/DE/plenarprotokolle/2026/0233-26.pdf"
+  },
+  "datum": "2026-05-15",
+  "vorgang_id": "334923"
+ },
+ {
+  "id": "700002",
+  "vorgangsposition": "Kein Einspruch eingelegt",
+  "zuordnung": "BR",
+  "gang": true,
+  "fortsetzung": false,
+  "nachtrag": false,
+  "vorgangstyp": "Gesetzgebung",
+  "titel": "Gesetz zur Änderung des Gebäudeenergiegesetzes, zur Änderung des Gebäude-Elektromobilitätsinfrastruktur-Gesetzes und zur Änderung weiterer Vorschriften im Wärmebereich",
+  "typ": "Vorgangsposition",
+  "dokumentart": "Plenarprotokoll",
+  "aktualisiert": "2026-07-18T12:00:00+02:00",
+  "fundstelle": {
+   "id": "10630726",
+   "dokumentnummer": "1063/26",
+   "datum": "2026-07-17",
+   "dokumentart": "Plenarprotokoll",
+   "herausgeber": "BR",
+   "urheber": [],
+   "pdf_url": "https://www.bundesrat.de/SharedDocs/downloads/DE/plenarprotokolle/2026/Plenarprotokoll-1063.pdf"
+  },
+  "datum": "2026-07-17",
+  "vorgang_id": "334923"
+ }
+]

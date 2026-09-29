@@ -25,6 +25,10 @@ data/
       drucksache/2026-07-06_2026-07-10.json  # list responses, one file per fetched range
       aktivitaet/drucksache-<id>.json        # authors of one Drucksache
       vorgangsposition/2026-07-06_2026-07-10.json  # all BT Vorgangspositionen dated in the range
+      vorgangsposition_other/2025-03-25_2026-07-10-BR.json  # BR/BV/EK Vorgangspositionen, one file per
+                                                              # zuordnung and range (Bundesrat steps: 1./2.
+                                                              # Durchgang, Zustimmung, Einspruch, Vermittlungs-
+                                                              # ausschuss, …)
       vorgang/drucksache-<id>.json           # all Vorgänge linked to one Drucksache
       person/wp21.json
     abgeordnetenwatch/
@@ -99,12 +103,13 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 **drucksache_author** `*id, drucksache_id →drucksache, dip_person_id, person_id →person (NULL until resolved), name (DIP titel), activity_type (aktivitaetsart: Antrag, Kleine Anfrage, Große Anfrage, Entschließungsantrag, Änderungsantrag, Gesetzentwurf, Frage count as authorship; Berichterstattung and Antwort do not), source_url, source_document_id, retrieved_at`
 — from `/aktivitaet?f.drucksache=<id>`; DIP's `autoren_anzeige` alone is truncated to 4.
 
-**vorgang** `*id (DIP), wahlperiode, type (vorgangstyp), title, status (beratungsstand), subjects (JSON sachgebiet), initiators (JSON initiative), source_url, source_document_id, retrieved_at`
+**vorgang** `*id (DIP), wahlperiode, type (vorgangstyp), title, status (beratungsstand), subjects (JSON sachgebiet), initiators (JSON initiative), verkuendung (JSON DIP verkuendung objects: BGBl reference, Ausfertigungs-/Verkündungsdatum, or NULL), inkrafttreten (JSON array of {datum, erlaeuterung}, or NULL), source_url, source_document_id, retrieved_at`
+— Verkündung/Ausfertigung is not a vorgangsposition step under any zuordnung (checked against the whole BT-only Wahlperiode so far: no "Verkündung"/"Ausfertigung" position exists); DIP carries it only on the Vorgang record itself.
 
 **vorgang_drucksache** `vorgang_id →vorgang, drucksache_id →drucksache` (composite PK)
 
 **vorgang_position** `*id (DIP), vorgang_id (DIP; not every Vorgang is in vorgang), date, position (vorgangsposition: "Gesetzentwurf", "1. Beratung", "Antwort", …), chamber (zuordnung), document_kind (Drucksache | Plenarprotokoll), document_number, document_type (drucksachetyp), pdf_url, pages ("1234-1236", protocols), originators (JSON urheber titles), ressort (JSON [{titel, federfuehrend}] or NULL), decisions (JSON beschlussfassung as in DIP, or NULL), source_url, source_document_id ("DIP Vorgangsposition <id>"), retrieved_at`
-— one row per step of a Vorgang, from the same date-range lists as the vote linking (deduplicated by id, latest copy wins). Only BT positions are fetched so far (`f.zuordnung=BT`), so Bundesrat steps (Durchgänge) are missing.
+— one row per step of a Vorgang, from the same date-range lists as the vote linking (deduplicated by id, latest copy wins). `chamber` (zuordnung) is BT, BR, BV or EK: BT positions come from the main range file, BR/BV/EK positions from the separate `vorgangsposition_other` files (one per zuordnung and range), so a step such as "1. Durchgang", "Zustimmung", "Kein Einspruch eingelegt" or "Anrufung des Vermittlungsausschusses" is a BR row like any BT row. Vote linking (`_link_votes_to_dip`) still reads BT positions only.
 
 **roll_call_vote** `*id, sitting_id →sitting, number (Abstimmnr), date, title (from the bundestag.de list), drucksache_number (NULL until linked), vorgang_id →vorgang (NULL until linked), link_method (dip_beschluss | title_regex | manual | NULL), yes, no, abstain, invalid, absent (totals computed from individual_vote), xlsx_url, pdf_url, source_url, source_document_id, retrieved_at, agenda_item_id →agenda_item (see Chair text and decisions)`
 
