@@ -142,6 +142,9 @@ rows: `fraction` SPD and `members` CDU/CSU. A named interjection ("Name [Fraktio
 
 **aw_profile** `*aw_politician_id, person_id →person (NULL if unmatched), url (public profile), questions, questions_answered (citizen questions on the profile, lifetime totals), source_url, source_document_id, retrieved_at`
 
+**side_job** `*id (aw sidejob id), wahlperiode, person_id →person (via the aw mandate, NULL if unmatched), aw_mandate_id, label (the entry as published), job_title_extra, category (aw's Bundestag Verhaltensregeln category), income_level (Stufe 0..10, NULL if none published), income_range (the Stufe's range as published), income (exact amount if aw has one, NULL otherwise), interval (einmalig | monatlich | jährlich), additional_information, organization_id, organization, city, topics (JSON list of aw topic labels), created, data_change_date, source_url, source_document_id, retrieved_at`
+— Nebentätigkeiten (side jobs) reported under the Bundestag's Verhaltensregeln, republished by abgeordnetenwatch as CC0. One row per aw sidejob record; `ingest_side_jobs` replaces a Wahlperiode's rows wholesale, so entries aw withdraws disappear. Facts as published only: no linking of income to speeches or votes, no ranking, no sums across members (`docs/decisions.md`).
+
 ### Election (Bundeswahlleiterin)
 
 **constituency** `*id ("btw25/114"), election, number, name, state, seat_party (party whose candidate got the seat; NULL when the winner had no Zweitstimmendeckung), electorate, voters, source_url, source_document_id, retrieved_at`

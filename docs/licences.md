@@ -12,7 +12,7 @@ terms checked.
 | bundestag.de Open Data — MdB Stammdaten XML | persons, mandates, memberships | bundestag.de Nutzungsbedingungen | "Deutscher Bundestag" | as above | permissive with attribution |
 | bundestag.de — Namentliche Abstimmungen XLSX/PDF | roll-call votes, individual votes | as above | "Deutscher Bundestag" | as above | permissive with attribution |
 | DIP API | Drucksachen, Vorgänge, authorship, persons | DIP Nutzungsbedingungen (27 Feb 2023, PDF in this folder) | "Deutscher Bundestag/Bundesrat – DIP" + BT-Drs./BT-PlPr. number; commercial use must note that the data is free at dip.bundestag.de | yes, explicitly | permissive with attribution |
-| abgeordnetenwatch.de API v2 | cross-IDs, mandates, (optionally) polls/votes | **CC0 1.0** | none (courtesy attribution recommended) | yes | public domain |
+| abgeordnetenwatch.de API v2 | cross-IDs, mandates, side jobs (Nebentätigkeiten), (optionally) polls/votes | **CC0 1.0** | none (courtesy attribution recommended) | yes | public domain |
 | Bundeswahlleiterin — Open Data BTW 2025 | elected candidates, results per Wahlkreis, Gemeinden per Wahlkreis | **Datenlizenz Deutschland – Namensnennung 2.0** | "© Die Bundeswahlleiterin, Wiesbaden 2025" | yes | permissive with attribution |
 | bundestag.de — MdB biography portraits | one portrait per MdB | bundestag.de Nutzungsbedingungen; photos are third-party works | the credit printed under each photo (`person_photo.credit`) | not verified per photo | show with credit; rights not checked |
 | Wikidata | government roster (offices, dates, departments, birth dates) | **CC0 1.0** | none | yes | public domain |
@@ -81,6 +81,14 @@ API page (https://www.abgeordnetenwatch.de/api) and every API response
 (`meta.abgeordnetenwatch_api.licence`): **CC0 1.0 Universal**. No key, 30 requests per
 minute per IP, bulk downloads requested outside 06:00–22:00. Attribution is not required;
 we keep `source_url` anyway.
+
+Side jobs (`side_job`, `/sidejobs`): the CC0 licence covers abgeordnetenwatch's own
+republication, not the underlying obligation. The facts themselves are the "Veröffentlichungspflichtige
+Angaben" every Bundestag member must file under the Verhaltensregeln für Mitglieder des Deutschen
+Bundestages (Anlage 1 GO-BT, § 44a AbgG); the Bundestag publishes them on bundestag.de per member,
+and abgeordnetenwatch republishes the same facts, structured, under CC0. We store what abgeordnetenwatch
+publishes (label, category, Stufe/range, dates, organisation) as facts only, with a source link to the
+abgeordnetenwatch record for each row.
 
 ## Bundeswahlleiterin
 

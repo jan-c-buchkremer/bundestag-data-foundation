@@ -226,6 +226,28 @@ CREATE TABLE IF NOT EXISTS aw_profile (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS side_job (
+    id INTEGER PRIMARY KEY,             -- abgeordnetenwatch sidejob id
+    wahlperiode INTEGER NOT NULL,
+    person_id TEXT REFERENCES person(id), -- via aw mandate -> politician; NULL if the politician is unmatched
+    aw_mandate_id INTEGER NOT NULL,
+    label TEXT NOT NULL,                -- the entry as published, e.g. "Mitglied des Beirates, ehrenamtlich (ab …)"
+    job_title_extra TEXT,
+    category TEXT,                      -- Bundestag category (Verhaltensregeln), label of aw's code
+    income_level INTEGER,               -- published Stufe 0..10; NULL: none published
+    income_range TEXT,                  -- the Stufe's range, e.g. "1.000 € bis 3.500 €"
+    income REAL,                        -- amount as published by aw (`income`); NULL if none
+    interval TEXT,                      -- einmalig | monatlich | jährlich
+    additional_information TEXT,        -- aw's free text (may contain HTML)
+    organization_id INTEGER,            -- aw sidejob_organization id
+    organization TEXT,
+    city TEXT,
+    topics TEXT,                        -- JSON list of aw topic labels
+    created TEXT,                       -- date first recorded by aw
+    data_change_date TEXT,              -- date aw last changed the record
+    {PROVENANCE}
+);
+
 CREATE TABLE IF NOT EXISTS constituency (
     id TEXT PRIMARY KEY,                -- "<election>/<number>", e.g. "btw25/114"
     election TEXT NOT NULL,             -- "btw25"

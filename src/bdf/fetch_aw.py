@@ -1,7 +1,7 @@
-"""Download abgeordnetenwatch.de mandates and politicians of one Wahlperiode.
+"""Download abgeordnetenwatch.de mandates, politicians and side jobs of one Wahlperiode.
 
 Rate limit is 30 requests/minute/IP; a full period is ~7 mandate pages + ~7 politician
-pages, so a 2 s pause between calls keeps us well under it.
+pages + ~50 side job pages, so a 2 s pause between calls keeps us well under it.
 """
 
 import json
@@ -29,6 +29,10 @@ def mandates_path(wp: int) -> Path:
 
 def politicians_path(wp: int) -> Path:
     return aw_dir() / f"wp{wp}-politicians.json"
+
+
+def sidejobs_path(wp: int) -> Path:
+    return aw_dir() / f"wp{wp}-sidejobs.json"
 
 
 def _list_all(http: httpx.Client, endpoint: str, params: dict) -> list[dict]:
@@ -72,3 +76,10 @@ def fetch_wahlperiode(http: httpx.Client, wp: int, *, force: bool = False) -> No
         force=force,
     )
     print(f"  politicians: {len(politicians)}")
+    sidejobs = raw.cached_json(
+        sidejobs_path(wp),
+        f"{AW_BASE_URL}/sidejobs?mandates[entity.parliament_period]={period}",
+        lambda: _list_all(http, "sidejobs", {"mandates[entity.parliament_period]": period}),
+        force=force,
+    )
+    print(f"  side jobs: {len(sidejobs)}")

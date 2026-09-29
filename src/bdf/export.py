@@ -121,6 +121,7 @@ TABLE_SOURCES = {
     "vorgang_drucksache": ["dip"],
     "vorgang_position": ["dip"],
     "aw_profile": ["abgeordnetenwatch"],
+    "side_job": ["abgeordnetenwatch"],
     "constituency": ["bundeswahlleiterin"],
     "constituency_result": ["bundeswahlleiterin"],
     "constituency_municipality": ["bundeswahlleiterin"],
