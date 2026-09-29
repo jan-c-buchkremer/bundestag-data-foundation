@@ -364,3 +364,28 @@ def test_ingest_decisions_and_vote_agenda_link(data_dir):
     assert geg["roll_call"] == {"yes": 323, "no": 271, "abstain": 0} and geg["top_id"] == "Zusatzpunkt 28, 29"
     assert geg["source_url"] == "https://dserver.bundestag.de/btp/21/21090.xml"
     assert rows[0]["fractions"] == {"AfD": "no", GRUENE: "no", "CDU/CSU": "yes", LINKE: "no", "SPD": "yes"}
+
+
+@pytest.mark.parametrize(
+    ("result", "expected"),
+    [
+        # 21/47, TOP 1, Schlussabstimmung (Linksfraktion)
+        (
+            "Der Gesetzentwurf ist mit den Stimmen der Koalitionsfraktionen bei Ablehnung von Bündnis 90/Die Grünen "
+            "und der AfD-Fraktion und Enthaltung der Linksfraktion angenommen worden.",
+            {"CDU/CSU": "yes", "SPD": "yes", GRUENE: "no", "AfD": "no", LINKE: "abstain"},
+        ),
+        # 21/56, TOP 34 (Grünenfraktion)
+        (
+            "Damit ist der Gesetzentwurf angenommen mit den Stimmen der Koalitionsfraktionen gegen die Stimmen der "
+            "Fraktionen Die Linke und der AfD und bei Enthaltung der Grünenfraktion.",
+            {"CDU/CSU": "yes", "SPD": "yes", LINKE: "no", "AfD": "no", GRUENE: "abstain"},
+        ),
+        # 21/14 (Linkspartei), 21/56 (Linkenfraktion)
+        ("Der Antrag ist bei Zustimmung der Linkspartei angenommen worden.", {LINKE: "yes"}),
+        ("Der Antrag ist bei Zustimmung der Linkenfraktion angenommen worden.", {LINKE: "yes"}),
+    ],
+)
+def test_fraction_name_variants(result, expected):
+    positions = parse_decisions.fraction_positions(result, result, "angenommen", 21)
+    assert positions == expected

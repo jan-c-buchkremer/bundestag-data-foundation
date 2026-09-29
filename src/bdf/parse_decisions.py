@@ -81,7 +81,7 @@ _VOTE_EVIDENCE = re.compile(
 _CLAUSE_RE = re.compile(
     r"(?P<majority>\bmit (?:den Stimmen|der Stimme|der Mehrheit|großer Mehrheit|Mehrheit)\b)"
     r"|(?P<against>\bgegen (?:die )?Stimmen?\b)"
-    r"|(?P<abstain>\bbei (?:Stimm)?[Ee]nthaltung(?:en)?\b)"
+    r"|(?P<abstain>\b(?:bei|und) (?:Stimm)?[Ee]nthaltung(?:en)?\b)"
     r"|(?P<approve>\bbei Zustimmung\b)"
     r"|(?P<reject>\bbei (?:Ablehnung|Gegenstimmen)\b)"
 )
@@ -91,8 +91,8 @@ _FRACTION_RE = re.compile(
     r"|(?P<all>\b[Aa]lle Fraktionen|\b[Aa]lle\b(?! Abgeordneten)|\b(?:gesamte|ganze) Haus\b|\beinstimmig\b)"
     r"|(?P<coalition>\bKoalition(?:sfraktionen)?\b)"
     r"|(?P<opposition>\bOpposition(?:sfraktionen)?\b)"
-    r"|(?P<gruene>BÜNDNIS(?:SES)? 90/ ?DIE GRÜNEN|Bündnis(?:ses)? 90/ ?Die Grünen|\bGrünen?\b)"
-    r"|(?P<linke>\b(?:Die|DIE) (?:Linke|LINKE)\b|\bLinken?\b)"
+    r"|(?P<gruene>BÜNDNIS(?:SES)? 90/ ?DIE GRÜNEN|Bündnis(?:ses)? 90/ ?Die Grünen|\bGrünen?(?:fraktion)?\b)"
+    r"|(?P<linke>\b(?:Die|DIE) (?:Linke|LINKE)\b|\bLinken?(?:fraktion)?\b|\bLinksfraktion\b|\bLinkspartei\b)"
     r"|(?P<union>CDU/CSU|\bUnion(?:sfraktion)?\b)"
     r"|(?P<spd>\bSPD\b)"
     r"|(?P<afd>\bAfD\b)"
