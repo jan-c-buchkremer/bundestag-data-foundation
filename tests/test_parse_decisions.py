@@ -389,3 +389,65 @@ def test_ingest_decisions_and_vote_agenda_link(data_dir):
 def test_fraction_name_variants(result, expected):
     positions = parse_decisions.fraction_positions(result, result, "angenommen", 21)
     assert positions == expected
+
+
+@pytest.mark.parametrize(
+    "paragraphs, drucksache, fractions",
+    [
+        (  # 21/50, TOP 37b (item 21/50/7)
+            (
+                "Drucksache 21/3087. Es handelt sich um 53 Petitionen. Wer stimmt dafür? – "
+                "Das sind alle Fraktionen. Wer stimmt dagegen? – "
+                "Enthaltungen? – Dann ist das einstimmig so beschlossen.",
+            ),
+            "21/3087",
+            {"CDU/CSU", "AfD", "SPD", GRUENE, LINKE},
+        ),
+        (  # 21/14, TOP 37g
+            (
+                "Drucksache 21/363. Das sind 45 Petitionen. Wer stimmt dafür? – "
+                "Union, AfD, SPD, Bündnis 90/Die Grünen und Die Linke. "
+                "Neinstimmen? – Enthaltungen? – Dann ist auch dies so beschlossen worden.",
+            ),
+            "21/363",
+            {"CDU/CSU", "AfD", "SPD", GRUENE, LINKE},
+        ),
+        (  # 21/25, Finanzplan des Bundes
+            (
+                "Der Haushaltsausschuss empfiehlt in seiner Beschlussempfehlung auf Drucksache 21/1063, den Finanzplan "
+                "zur Kenntnis zu nehmen. Wer stimmt für diese Beschlussempfehlung? – Alle. Wer stimmt gegen die "
+                "Beschlussempfehlung? – Niemand. Wer möchte sich enthalten? – Damit ist die Kenntnisnahme einstimmig "
+                "beschlossen.",
+            ),
+            "21/1063",
+            None,
+        ),
+    ],
+)
+def test_vote_closed_with_beschlossen(tmp_path, paragraphs, drucksache, fractions):
+    d = _one(tmp_path, *paragraphs, drucksachen=f"Drucksache {drucksache}")
+    assert d.kind == "handzeichen" and d.result == "angenommen" and d.drucksache_number == drucksache
+    if fractions is not None:
+        assert set(d.fractions) == fractions
+
+
+def test_bare_einstimmig_beschlossen_names_no_fraction(tmp_path):
+    d = _one(
+        tmp_path,
+        "Drucksache 21/3087. Wer stimmt dafür? – Wer stimmt dagegen? – Enthaltungen? – "
+        "Dann ist das einstimmig so beschlossen.",
+    )
+    assert d.result == "angenommen" and d.fractions == {}
+
+
+@pytest.mark.parametrize(
+    "paragraph",
+    [
+        # 21/52: a referral after a vote on it, and a decision on the motion read afterwards stays one decision
+        "Dann ist die Überweisung so beschlossen.",
+        "Für die Aussprache wurde eine Dauer von 60 Minuten beschlossen.",
+        "Ich rufe den Tagesordnungspunkt 5 auf. Dann ist das so beschlossen.",  # no vote was put
+    ],
+)
+def test_beschlossen_without_a_vote_is_no_decision(tmp_path, paragraph):
+    assert parse_decisions.extract(_protocol(tmp_path, paragraph)) == []
