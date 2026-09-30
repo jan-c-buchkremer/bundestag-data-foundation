@@ -18,6 +18,7 @@ Enthaltung der Z". A fraction keeps the first position found for it. See docs/de
 the measured recall and the phrasings that are not handled.
 """
 
+import json
 import re
 from dataclasses import dataclass, field
 
@@ -149,6 +150,10 @@ class Decision:
     n: int = 0
     id: str = ""
     roll_call_vote_id: str | None = None
+    sub_item_id: str | None = None
+    # where the chair's words were read: agenda item and the agenda_item_paragraph position it stood at
+    at_item: str | None = None
+    at_paragraph: int | None = None
 
 
 @dataclass
@@ -156,6 +161,7 @@ class _Sentence:
     agenda_item_id: str
     paragraph: int  # running number of the chair paragraph in the sitting
     text: str
+    at: int | None = None  # agenda_item_paragraph.position it stands at (a speech: the last one before it)
 
 
 @dataclass
@@ -167,6 +173,7 @@ class _Announcement:
     drucksachen: list[str]
     text: str
     subject: str
+    at: int | None = None
 
 
 # --- chair text as a stream of sentences -----------------------------------------------------
@@ -176,28 +183,33 @@ def chair_stream(protocol: Protocol) -> list[_Sentence]:
     """Chair sentences of the whole sitting in document order: agenda item paragraphs and
     the chair paragraphs of the speeches, interleaved by speech position."""
     order = {a["id"]: i for i, a in enumerate(protocol.agenda_items)}
-    keyed: list[tuple[tuple, str, str]] = []
+    keyed: list[tuple[tuple, str, str, int | None]] = []
     for p in protocol.agenda_paragraphs:
         # the Drucksache lines of the agenda (T_Drs) often stand between the chair's sentences
         if p["kind"] == "chair" or (p["kind"] == "procedural" and _DRUCKSACHE_LINE.match(p["text"])):
             item = p["agenda_item_id"]
-            keyed.append(((p["after_speeches"], order[item], 1, p["position"]), item, p["text"]))
+            keyed.append(((p["after_speeches"], order[item], 1, p["position"]), item, p["text"], p["position"]))
     for s in protocol.speeches:
         if s.agenda_item_id is None:
             continue
         for i, (kind, text) in enumerate(s.paragraphs):
             if kind == "chair":
-                keyed.append(((s.position - 1, order[s.agenda_item_id], 2, i), s.agenda_item_id, text))
+                before = [
+                    p["position"] for p in protocol.agenda_paragraphs
+                    if p["agenda_item_id"] == s.agenda_item_id and p["after_speeches"] <= s.position - 1
+                ]  # fmt: skip
+                keyed.append(((s.position - 1, order[s.agenda_item_id], 2, i), s.agenda_item_id, text,
+                              max(before, default=None)))  # fmt: skip
     keyed.sort(key=lambda k: k[0])
     out: list[_Sentence] = []
-    for n, (_, item_id, text) in enumerate(keyed, start=1):
+    for n, (_, item_id, text, at) in enumerate(keyed, start=1):
         if _CHAIR_NAME.match(text):
             continue
         # footnote markers are glued to the text: "…um 11:10 Uhr sein.2Ergebnis Seite 11140 C"
         text = re.sub(r"(?<=[.:])\d?(?:Ergebnisse?|Anlage|Namensverzeichnis)\b.*$", "", text)
         for sentence in _SENTENCE_END.split(text):
             if sentence.strip():
-                out.append(_Sentence(item_id, n, sentence.strip()))
+                out.append(_Sentence(item_id, n, sentence.strip(), at))
     return out
 
 
@@ -478,6 +490,7 @@ def extract(
                     DRUCKSACHE_RE.findall(text),
                     text,
                     _object(unit_text.split(" Mit Ja")[0][-300:]) or "",
+                    sentence.at,
                 )
             )
             continue
@@ -526,7 +539,7 @@ def extract(
                         sitting_id=sid, agenda_item_id=item, position=len(decisions) + 1, kind="namentlich",
                         subject=subject, drucksache_number=numbers[k] if k < len(numbers) else
                         (numbers[0] if numbers else None), result=None, text=vote_text,
-                        drucksachen=list(numbers), opened=True,
+                        drucksachen=list(numbers), opened=True, at_item=current, at_paragraph=sentence.at,
                     )
                 )  # fmt: skip
             unit = []
@@ -580,16 +593,48 @@ def extract(
                 sitting_id=sid, agenda_item_id=item, position=len(decisions) + 1, kind="handzeichen",
                 subject=subject, drucksache_number=drucksache, result=result, text=vote_text,
                 fractions=fraction_positions(vote_text, s, result, wp), drucksachen=numbers,
+                at_item=current, at_paragraph=sentence.at,
             )
         )  # fmt: skip
 
     _pair_announcements(decisions, announcements, sid, pending or [])
+    _attach_sub_items(decisions, protocol)
     n = 0
     for d in decisions:
         if d.kind == "handzeichen":
             n += 1
             d.n, d.id = n, f"{sid}/h{n}"
     return decisions
+
+
+_SAMMEL = re.compile(r"Sammelübersicht (\d+)")
+
+
+def _attach_sub_items(decisions: list[Decision], protocol: Protocol) -> None:
+    """Set ``sub_item_id``: the sub-item the chair had last called up where the decision was read, if the
+    decision stayed with that agenda item. A sub-item names what the chair's words leave out: the number
+    of a Sammelübersicht ("Auch diese Sammelübersicht ist einstimmig angenommen") and a lone Drucksache."""
+    subs: dict[str, list[dict]] = {}
+    for sub in protocol.agenda_sub_items:
+        subs.setdefault(sub["agenda_item_id"], []).append(sub)
+    for d in decisions:
+        if d.at_item != d.agenda_item_id or d.at_paragraph is None:
+            continue
+        sub = next((x for x in reversed(subs.get(d.at_item, [])) if x["first_paragraph"] <= d.at_paragraph), None)
+        if sub is None:
+            continue
+        d.sub_item_id = sub["id"]
+        numbers = json.loads(sub["drucksache_numbers"])
+        if d.drucksache_number is None and len(numbers) == 1:
+            d.drucksache_number = numbers[0]
+        numbers = set(_SAMMEL.findall(sub["title"] or ""))
+        if len(numbers) == 1:
+            # the chair's words name none ("Sammelübersicht", "Vorlage") or run on into the next sentence
+            named = _SAMMEL.match(d.subject)
+            if d.subject == "Vorlage" or (
+                d.subject.startswith("Sammelübersicht") and (not named or named[1] in numbers)
+            ):
+                d.subject = f"Sammelübersicht {next(iter(numbers))}"
 
 
 def _last_intro(intros: dict[str, list[str]], item: str | None, noun: str | None) -> str | None:
@@ -634,6 +679,7 @@ def _pair_announcements(
                     kind="namentlich", subject=a.subject or "Namentliche Abstimmung",
                     drucksache_number=a.drucksachen[0] if a.drucksachen else None, result=a.result,
                     text=a.text, counts=a.counts, drucksachen=a.drucksachen,
+                    at_item=a.agenda_item_id, at_paragraph=a.at,
                 )
             )  # fmt: skip
             continue
