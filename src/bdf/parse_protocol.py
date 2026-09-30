@@ -65,6 +65,7 @@ class Speech:
     agenda_item_id: str | None
     paragraphs: list[tuple[str, str]] = field(default_factory=list)  # (kind, text)
     kind: str = "rede"  # rede | fragestunde
+    sub_item_id: str | None = None  # agenda_sub_item.id of the block item this speech was given in
 
     @property
     def text(self) -> str:
@@ -291,6 +292,33 @@ def _rede_speakers(rede: ET.Element):
                 yield sid
 
 
+def _assign_speech_sub_items(speeches: list[Speech], agenda_paragraphs: list[dict], sub_items: list[dict]) -> None:
+    """Set ``Speech.sub_item_id``: the sub-item whose span holds the place where the speech stands.
+
+    A speech has no paragraph position, but every agenda paragraph knows how many speeches of the sitting
+    precede it (``after_speeches``). Speech ``position`` p stands after the agenda paragraphs with
+    ``after_speeches <= p - 1`` and before those with a larger count, so the last such paragraph of its item
+    is the chair paragraph before the speech; the sub-item whose ``first_paragraph``..``last_paragraph``
+    contains it is the speech's. A speech before the item's first call-up, or in an item without
+    sub-items, stays None. A speech that follows another with no agenda paragraph between (a speaker change
+    inside one ``<rede>``) takes the same paragraph, hence the same sub-item."""
+    spans: dict[str, list[dict]] = {}
+    for sub in sub_items:
+        spans.setdefault(sub["agenda_item_id"], []).append(sub)
+    by_item: dict[str, list[dict]] = {}
+    for p in agenda_paragraphs:
+        by_item.setdefault(p["agenda_item_id"], []).append(p)
+    for speech in speeches:
+        subs = spans.get(speech.agenda_item_id or "")
+        if not subs:
+            continue
+        before = [p for p in by_item[speech.agenda_item_id] if p["after_speeches"] < speech.position]
+        if not before:
+            continue
+        pos = before[-1]["position"]
+        speech.sub_item_id = next((s["id"] for s in subs if s["first_paragraph"] <= pos <= s["last_paragraph"]), None)
+
+
 def parse(path: Path) -> Protocol:
     root = ET.parse(path).getroot()
     wp, nr = int(root.get("wahlperiode")), int(root.get("sitzung-nr"))
@@ -314,6 +342,7 @@ def parse(path: Path) -> Protocol:
                 for rede in el.findall("rede"):
                     speeches += _split_rede(rede, len(speeches) + 1, item["id"])
     sub_items, no_debate = _split_sub_items(agenda_items, agenda_paragraphs)
+    _assign_speech_sub_items(speeches, agenda_paragraphs, sub_items)
     for item in agenda_items:
         item["no_debate"] = int(no_debate[item["id"]])
     return Protocol(

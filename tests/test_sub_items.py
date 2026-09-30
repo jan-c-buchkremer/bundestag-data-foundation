@@ -30,6 +30,35 @@ def _subs(protocol, item_id):
     return [s for s in protocol.agenda_sub_items if s["agenda_item_id"] == item_id]
 
 
+def _drop_column(conn, table, column):
+    """Rebuild `table` without `column`. ALTER TABLE .. DROP COLUMN fails on older SQLite versions (the CI runner's)
+    when the column is the last one and its definition carries a comment, so the old store is built the long way."""
+    sql = conn.execute("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = ?", (table,)).fetchone()[0]
+    sql = "\n".join(line.split("--")[0].rstrip() for line in sql.splitlines())  # comments may hold commas
+    head, body = sql.split("(", 1)
+    body = body.rsplit(")", 1)[0]
+    defs, depth, cur = [], 0, ""
+    for ch in body:
+        depth += ch == "("
+        depth -= ch == ")"
+        if ch == "," and depth == 0:
+            defs.append(cur.strip())
+            cur = ""
+        else:
+            cur += ch
+    defs.append(cur.strip())
+    kept = [d for d in defs if d.split()[0] != column]
+    cols = ", ".join(d.split()[0] for d in kept if d.split()[0] not in ("PRIMARY", "UNIQUE", "FOREIGN", "CHECK"))
+    conn.commit()  # the pragma does nothing inside a transaction
+    conn.execute("PRAGMA foreign_keys = OFF")
+    conn.execute(f"{head.replace(table, table + '__new', 1)}({', '.join(kept)})")
+    conn.execute(f"INSERT INTO {table}__new ({cols}) SELECT {cols} FROM {table}")
+    conn.execute(f"DROP TABLE {table}")
+    conn.execute(f"ALTER TABLE {table}__new RENAME TO {table}")
+    conn.commit()
+    conn.execute("PRAGMA foreign_keys = ON")
+
+
 def test_call_up_paragraphs():
     assert call_up("Tagesordnungspunkt 41b:") == "41b"
     assert call_up("Zusatzpunkt 8:") == "ZP8"
@@ -245,8 +274,14 @@ def test_vorgang_links(blocks):
 def test_existing_store_is_migrated(blocks, data_dir):
     """A store built before the sub-item tables gets the new columns and tables on connect, and keeps its rows."""
     blocks.execute("DROP INDEX decision_sub_item")
-    for table, column in (("decision", "sub_item_id"), ("decision", "vorgang_id"), ("agenda_item", "no_debate")):
-        blocks.execute(f"ALTER TABLE {table} DROP COLUMN {column}")
+    blocks.execute("DROP INDEX speech_sub_item")
+    for table, column in (
+        ("speech", "sub_item_id"),
+        ("decision", "sub_item_id"),
+        ("decision", "vorgang_id"),
+        ("agenda_item", "no_debate"),
+    ):
+        _drop_column(blocks, table, column)
     blocks.execute("DROP TABLE agenda_item_vorlage")
     blocks.execute("DROP TABLE agenda_sub_item")
     blocks.commit()
@@ -279,3 +314,97 @@ def test_sub_items_a_reparse_drops_go_away(blocks):
     ingest.ingest_protocols(blocks)
     assert blocks.execute("SELECT count(*) FROM agenda_sub_item WHERE label = '41zz'").fetchone()[0] == 0
     assert blocks.execute("SELECT sub_item_id FROM decision WHERE id = '21/96/h1'").fetchone()[0] is None
+
+
+# --- speeches -----------------------------------------------------------------------------------
+
+
+def test_speech_belongs_to_the_sub_item_it_was_given_in(p96):
+    """Corinna Rüffer's ergänzende Berichterstattung (ID219606600) follows the call-up of 41l."""
+    (speech,) = p96.speeches
+    assert (speech.id, speech.speaker.last_name, speech.agenda_item_id) == ("ID219606600", "Rüffer", "21/96/1")
+    assert speech.sub_item_id == "21/96/1/41l"
+    sub = next(s for s in p96.agenda_sub_items if s["id"] == speech.sub_item_id)
+    paragraphs = {p["position"]: p for p in p96.agenda_paragraphs if p["agenda_item_id"] == "21/96/1"}
+    before = [p for p in paragraphs.values() if p["after_speeches"] < speech.position]
+    assert sub["first_paragraph"] <= before[-1]["position"] <= sub["last_paragraph"]
+    span = [p["text"] for p in paragraphs.values() if sub["first_paragraph"] <= p["position"] <= sub["last_paragraph"]]
+    assert any("Corinna Rüffer das Wort" in t for t in span)  # the chair gave her the floor inside 41l
+
+
+def _protocol(tmp_path, body):
+    path = tmp_path / "21999.xml"
+    path.write_text(
+        '<dbtplenarprotokoll wahlperiode="21" sitzung-nr="999" sitzung-datum="01.01.2026"><sitzungsverlauf>'
+        + body
+        + "</sitzungsverlauf></dbtplenarprotokoll>",
+        encoding="utf-8",
+    )
+    return parse_protocol.parse(path)
+
+
+def _rede(rid, pid, name):
+    return (
+        f'<rede id="{rid}"><p klasse="redner"><redner id="{pid}"><name><vorname>A</vorname><nachname>{name}</nachname>'
+        f'<fraktion>SPD</fraktion></name></redner>A {name} (SPD):</p><p klasse="J">Text.</p></rede>'
+    )
+
+
+def test_speeches_take_the_last_call_up_before_them(tmp_path):
+    def call(label):
+        return f'<p klasse="J">Tagesordnungspunkt {label}:</p><p klasse="T_fett">Titel {label}</p>'
+
+    debated = '<tagesordnungspunkt top-id="Tagesordnungspunkt 1"><p klasse="J">Ich eröffne die Aussprache.</p>'
+    debated += _rede("R1", "1", "Erste") + "</tagesordnungspunkt>"
+    block = '<tagesordnungspunkt top-id="Tagesordnungspunkt 2"><p klasse="J">Vorab.</p>' + _rede("R2", "2", "Vorab")
+    block += call("2a") + _rede("R3", "3", "Dritte") + '<p klasse="J">Das ist angenommen.</p>'
+    block += call("2b") + _rede("R4", "4", "Vierte") + _rede("R5", "5", "Fuenfte")  # two speeches in a row
+    block += call("2c") + '<p klasse="J">Das ist angenommen.</p></tagesordnungspunkt>'
+    protocol = _protocol(tmp_path, debated + block)
+    assert {s.id: s.sub_item_id for s in protocol.speeches} == {
+        "R1": None,  # item without sub-items
+        "R2": None,  # before the first call-up of its item
+        "R3": "21/999/2/2a",
+        "R4": "21/999/2/2b",
+        "R5": "21/999/2/2b",
+    }
+
+
+def test_speech_sub_item_is_stored_and_reingest_is_idempotent(blocks):
+    def q(sql):
+        return [tuple(r) for r in blocks.execute(sql)]
+
+    assert q("SELECT sub_item_id FROM speech WHERE id = 'ID219606600'") == [("21/96/1/41l",)]
+    assert q("SELECT id, sub_item_id FROM speech WHERE sub_item_id IS NOT NULL ORDER BY id") == [
+        ("ID215006400", "21/50/1/ZP10f"),
+        ("ID219606600", "21/96/1/41l"),
+    ]
+    assert q("SELECT count(*) FROM speech WHERE sub_item_id IS NULL AND agenda_item_id IN ('21/96/1', '21/50/1')") == [
+        (0,)
+    ]
+    before = _dump(blocks, "speech", "agenda_sub_item")
+    ingest.ingest_protocols(blocks)
+    assert _dump(blocks, "speech", "agenda_sub_item") == before
+
+
+def test_speech_sub_item_migrates_and_reparse_clears_it(blocks, data_dir):
+    blocks.execute("UPDATE speech SET sub_item_id = NULL")
+    blocks.execute("DROP INDEX speech_sub_item")
+    _drop_column(blocks, "speech", "sub_item_id")
+    blocks.commit()
+    blocks.close()
+    conn = db.connect(data_dir / "bundestag.sqlite")  # migrates
+    assert conn.execute("SELECT count(*) FROM speech WHERE sub_item_id IS NOT NULL").fetchone()[0] == 0
+    ingest.ingest_protocols(conn)
+    assert conn.execute("SELECT sub_item_id FROM speech WHERE id = 'ID219606600'").fetchone()[0] == "21/96/1/41l"
+    conn.execute("PRAGMA foreign_keys = OFF")
+    conn.execute(
+        "INSERT INTO agenda_sub_item SELECT '21/96/1/41zz', agenda_item_id, '41zz', 99, NULL, '[]', 1, 2, "
+        "source_url, source_document_id, retrieved_at, 0 FROM agenda_sub_item WHERE id = '21/96/1/41l'"
+    )
+    conn.execute("PRAGMA foreign_keys = ON")
+    conn.execute("UPDATE speech SET sub_item_id = '21/96/1/41zz' WHERE id = 'ID219606600'")
+    conn.commit()
+    ingest.ingest_protocols(conn)  # the stale sub-item goes; the speech is rewritten
+    assert conn.execute("SELECT count(*) FROM agenda_sub_item WHERE label = '41zz'").fetchone()[0] == 0
+    assert conn.execute("SELECT sub_item_id FROM speech WHERE id = 'ID219606600'").fetchone()[0] == "21/96/1/41l"

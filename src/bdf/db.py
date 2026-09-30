@@ -127,8 +127,10 @@ CREATE TABLE IF NOT EXISTS speech (
     fraction TEXT,
     text TEXT NOT NULL,                 -- clean text: paragraphs of kind 'text', blank-line joined
     {PROVENANCE},
-    kind TEXT NOT NULL DEFAULT 'rede'   -- rede | fragestunde: a Fragestunde question, answer or
+    kind TEXT NOT NULL DEFAULT 'rede',  -- rede | fragestunde: a Fragestunde question, answer or
                                         -- Nachfrage; shown, but left out of speech counts and shares
+    sub_item_id TEXT REFERENCES agenda_sub_item(id)  -- the sub-item of a block item during which the speech was
+                                        -- given (its call-up is the last one before the speech), else NULL
 );
 
 CREATE TABLE IF NOT EXISTS speech_paragraph (
@@ -419,6 +421,7 @@ _ADDED_COLUMNS = [
     ("agenda_item", "no_debate", "INTEGER NOT NULL DEFAULT 0"),  # set on the next protocol ingest
     ("decision", "sub_item_id", "TEXT REFERENCES agenda_sub_item(id)"),  # set on the next decisions ingest
     ("decision", "vorgang_id", "TEXT REFERENCES vorgang(id)"),
+    ("speech", "sub_item_id", "TEXT REFERENCES agenda_sub_item(id)"),  # set on the next protocol ingest
 ]
 
 
@@ -429,6 +432,7 @@ def _migrate(conn: sqlite3.Connection) -> None:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {decl}")
     _relax_government_role(conn)
     conn.execute("CREATE INDEX IF NOT EXISTS decision_sub_item ON decision(sub_item_id)")  # column may be new
+    conn.execute("CREATE INDEX IF NOT EXISTS speech_sub_item ON speech(sub_item_id)")
 
 
 def _relax_government_role(conn: sqlite3.Connection) -> None:

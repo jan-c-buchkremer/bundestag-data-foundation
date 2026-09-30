@@ -95,7 +95,7 @@ roll-call votes with their totals — with its agenda item, Drucksache and the p
 
 Agenda items that are blocks of many items voted one by one (e.g. 21/96/6, TOP 41b–41s) also have
 `agenda_sub_item` rows (one per called-up item, with its own title and Drucksachen); `decision.sub_item_id`
-says which. `agenda_item_vorlage` lists every Drucksache of an item or sub-item with its Vorgang, and
+and `speech.sub_item_id` say which. `agenda_item_vorlage` lists every Drucksache of an item or sub-item with its Vorgang, and
 `no_debate` on items and sub-items is set where the chair says no Aussprache is provided.
 
 The same pipeline is exercised offline by `uv run pytest` on the fixtures in `tests/fixtures/`
