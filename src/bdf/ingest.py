@@ -147,6 +147,7 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                         "fraction": s.speaker.fraction,
                         "text": s.text,
                         "kind": s.kind,
+                        "sub_item_id": s.sub_item_id,
                         **prov,
                     }
                     for s in protocol.speeches
@@ -510,6 +511,7 @@ def _replace_sub_items(conn: sqlite3.Connection, sitting_id: str, rows: list[dic
     ]
     for sub_id in stale:
         conn.execute("UPDATE decision SET sub_item_id = NULL WHERE sub_item_id = ?", (sub_id,))
+        conn.execute("UPDATE speech SET sub_item_id = NULL WHERE sub_item_id = ?", (sub_id,))
         conn.execute("DELETE FROM agenda_item_vorlage WHERE sub_item_id = ?", (sub_id,))
         conn.execute("DELETE FROM agenda_sub_item WHERE id = ?", (sub_id,))
 

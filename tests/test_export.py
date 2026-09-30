@@ -45,6 +45,10 @@ def test_export_writes_every_table_with_a_datapackage(store: sqlite3.Connection,
     assert {"fields": "sitting_id", "reference": {"resource": "sitting", "fields": "id"}} in speech["schema"][
         "foreignKeys"
     ]
+    assert fields["sub_item_id"]["description"].startswith("→ agenda_sub_item.id")
+    assert {"fields": "sub_item_id", "reference": {"resource": "agenda_sub_item", "fields": "id"}} in speech["schema"][
+        "foreignKeys"
+    ]
     assert speech["licenses"][0]["path"] == "https://www.bundestag.de/nutzungsbedingungen"
     vd = next(r for r in package["resources"] if r["name"] == "vorgang_drucksache")
     assert vd["schema"]["primaryKey"] == ["vorgang_id", "drucksache_id"]

@@ -94,7 +94,7 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 **agenda_item** `*id, sitting_id →sitting, position, top_id (XML top-id attribute), title, drucksache_numbers (JSON array of "21/7300"), source_url, source_document_id, retrieved_at, no_debate (0 | 1, default 0)`
 — `no_debate = 1`: the chair said that no Aussprache is provided ("zu denen keine Aussprache vorgesehen ist", "ohne Debatte", "Eine Aussprache ist nicht vorgesehen"). For a block item (below) it means the block was called up that way. Speeches of the item stay as they are.
 
-**speech** `*id, sitting_id →sitting, agenda_item_id →agenda_item, position (order within sitting), person_id →person, speaker_name (as printed), speaker_role (rolle_lang or NULL), fraction (as printed, normalised), text (clean speech text: paragraphs of kind text only, joined by blank lines), source_url, source_document_id, retrieved_at, kind (rede | fragestunde, default 'rede')`
+**speech** `*id, sitting_id →sitting, agenda_item_id →agenda_item, position (order within sitting), person_id →person, speaker_name (as printed), speaker_role (rolle_lang or NULL), fraction (as printed, normalised), text (clean speech text: paragraphs of kind text only, joined by blank lines), source_url, source_document_id, retrieved_at, kind (rede | fragestunde, default 'rede'), sub_item_id →agenda_sub_item`
 — `kind = 'fragestunde'`: a question, answer or Nachfrage from a Fragestunde (below), id `"<agenda_item_id>/f<n>"`. Shown like any other speech, but left out of speech counts and speaking shares by callers (it is not a debate contribution).
 
 **speech_paragraph** `*id, speech_id →speech, position, kind (text | comment | chair | procedural), text`
