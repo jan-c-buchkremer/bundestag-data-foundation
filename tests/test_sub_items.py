@@ -297,7 +297,7 @@ def test_existing_store_is_migrated(blocks, data_dir):
     ingest.ingest_decisions(conn)
     ingest.ingest_vorlagen(conn)
     assert conn.execute("SELECT count(*) FROM agenda_sub_item").fetchone()[0] == 45
-    assert conn.execute("SELECT count(*) FROM decision WHERE sub_item_id IS NOT NULL").fetchone()[0] == 46
+    assert conn.execute("SELECT count(*) FROM decision WHERE sub_item_id IS NOT NULL").fetchone()[0] == 47
     assert conn.execute("SELECT sum(no_debate) FROM agenda_item").fetchone()[0] == 2
 
 

@@ -39,6 +39,11 @@ _CHAIR_NAME = re.compile(r"^(?:Alters)?(?:Vize)?[Pp]räsident(?:in)?\b.*:$")
 _RESULT = re.compile(r"\b(angenommen|abgelehnt)\b")
 _RESULT_VERB = re.compile(r"\b(?:ist|sind|wurde|wurden|worden|bleibt)\b")
 _NOT_RESULT = re.compile(r"\b(?:Zwischenfrage|Kurzintervention|[Nn]achdem|[Ww]enn|[Ff]alls|sollte|würde|Annahme)\b")
+# a vote closed without "angenommen": "Dann ist das einstimmig so beschlossen", "Damit ist das Gesetz beschlossen"
+_IMPLICIT_RESULT = re.compile(
+    r"\beinstimmig\b[^.?]{0,40}\bbeschlossen\b|\b(?:so|damit|dies|dann)\b[^.?]{0,40}\bbeschlossen(?: worden)?\b"
+    r"|\bbeschlossen (?:worden )?ist\b"
+)
 _ROLL_CALL_RESULT = re.compile(r"[Mm]it Ja haben (?:\w+ )?gestimmt|[Aa]uf Ja entfielen|[Mm]it Ja, [^.]*haben gestimmt")
 # a vote needing the majority of members (Art. 87 Abs. 3 GG, Einspruch des Bundesrates)
 _MAJORITY_RESULT = re.compile(r"hat (?:damit )?die erforderliche Mehrheit (?:von \d+ Stimmen )?(nicht )?erreicht")
@@ -241,8 +246,11 @@ def _assign(positions: dict[str, str], mentions: list, position: str, wp: int) -
             positions.setdefault(f, position)
 
 
-def fraction_positions(text: str, result_sentence: str, result: str | None, wp: int) -> dict[str, str]:
-    """Positions from the answers to the vote questions in ``text``, then from the result sentence."""
+def fraction_positions(
+    text: str, result_sentence: str, result: str | None, wp: int, unanimous: bool = True
+) -> dict[str, str]:
+    """Positions from the answers to the vote questions in ``text``, then from the result sentence.
+    ``unanimous`` lets a bare "einstimmig" stand for every fraction."""
     positions: dict[str, str] = {}
     questions = list(_QUESTION_RE.finditer(text))
     stop = text.find(result_sentence) if result_sentence in text else len(text)
@@ -264,7 +272,7 @@ def fraction_positions(text: str, result_sentence: str, result: str | None, wp: 
             "reject": NO,
         }[c.lastgroup]
         _assign(positions, _mentions(result_sentence[c.end() : end], wp), position, wp)
-    if not positions and re.search(r"\beinstimmig\b", text):
+    if unanimous and not positions and re.search(r"\beinstimmig\b", text):
         _assign(positions, ["all"], majority, wp)
     return positions
 
@@ -545,21 +553,30 @@ def extract(
             unit = []
             continue
 
+        implicit = False
         if not (_RESULT.search(s) and _RESULT_VERB.search(s)):
-            continue
+            if not _IMPLICIT_RESULT.search(s):
+                continue
+            implicit = True
         if _NOT_RESULT.search(s):
             skipped.append(("conditional", s))
             continue
-        result = _RESULT.search(s).group(1)
-        first_q = next((i for i, x in enumerate(unit) if _VOTE_EVIDENCE.search(x.text)), None)
+        result = "angenommen" if implicit else _RESULT.search(s).group(1)
+        if implicit:  # only after a vote put to the house, with no decision read for it yet
+            first_q = next((i for i, x in enumerate(unit[:-1]) if _QUESTION_RE.search(x.text)), None)
+        else:
+            first_q = next((i for i, x in enumerate(unit) if _VOTE_EVIDENCE.search(x.text)), None)
         if first_q is None:  # no vote was put: narrative ("…, der abgelehnt worden ist")
-            skipped.append(("no_vote", s))
-            unit = []
+            if not implicit:
+                skipped.append(("no_vote", s))
+                unit = []
             continue
         vote = _trim(unit, first_q)
         vote_text = " ".join(x.text for x in vote)
         question_sentence = unit[first_q].text
         preceding = unit[first_q - 1].text if first_q > 0 else ""
+        if implicit and (_PROCEDURAL.search(s)):
+            continue  # "Dann ist die Überweisung so beschlossen": leaves the passage as it was
         unit = []
         if (
             _PROCEDURAL.search(s)
@@ -592,7 +609,7 @@ def extract(
             Decision(
                 sitting_id=sid, agenda_item_id=item, position=len(decisions) + 1, kind="handzeichen",
                 subject=subject, drucksache_number=drucksache, result=result, text=vote_text,
-                fractions=fraction_positions(vote_text, s, result, wp), drucksachen=numbers,
+                fractions=fraction_positions(vote_text, s, result, wp, unanimous=not implicit), drucksachen=numbers,
                 at_item=current, at_paragraph=sentence.at,
             )
         )  # fmt: skip
