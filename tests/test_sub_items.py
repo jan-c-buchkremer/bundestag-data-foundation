@@ -30,6 +30,35 @@ def _subs(protocol, item_id):
     return [s for s in protocol.agenda_sub_items if s["agenda_item_id"] == item_id]
 
 
+def _drop_column(conn, table, column):
+    """Rebuild `table` without `column`. ALTER TABLE .. DROP COLUMN fails on older SQLite versions (the CI runner's)
+    when the column is the last one and its definition carries a comment, so the old store is built the long way."""
+    sql = conn.execute("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = ?", (table,)).fetchone()[0]
+    sql = "\n".join(line.split("--")[0].rstrip() for line in sql.splitlines())  # comments may hold commas
+    head, body = sql.split("(", 1)
+    body = body.rsplit(")", 1)[0]
+    defs, depth, cur = [], 0, ""
+    for ch in body:
+        depth += ch == "("
+        depth -= ch == ")"
+        if ch == "," and depth == 0:
+            defs.append(cur.strip())
+            cur = ""
+        else:
+            cur += ch
+    defs.append(cur.strip())
+    kept = [d for d in defs if d.split()[0] != column]
+    cols = ", ".join(d.split()[0] for d in kept if d.split()[0] not in ("PRIMARY", "UNIQUE", "FOREIGN", "CHECK"))
+    conn.commit()  # the pragma does nothing inside a transaction
+    conn.execute("PRAGMA foreign_keys = OFF")
+    conn.execute(f"{head.replace(table, table + '__new', 1)}({', '.join(kept)})")
+    conn.execute(f"INSERT INTO {table}__new ({cols}) SELECT {cols} FROM {table}")
+    conn.execute(f"DROP TABLE {table}")
+    conn.execute(f"ALTER TABLE {table}__new RENAME TO {table}")
+    conn.commit()
+    conn.execute("PRAGMA foreign_keys = ON")
+
+
 def test_call_up_paragraphs():
     assert call_up("Tagesordnungspunkt 41b:") == "41b"
     assert call_up("Zusatzpunkt 8:") == "ZP8"
@@ -252,7 +281,7 @@ def test_existing_store_is_migrated(blocks, data_dir):
         ("decision", "vorgang_id"),
         ("agenda_item", "no_debate"),
     ):
-        blocks.execute(f"ALTER TABLE {table} DROP COLUMN {column}")
+        _drop_column(blocks, table, column)
     blocks.execute("DROP TABLE agenda_item_vorlage")
     blocks.execute("DROP TABLE agenda_sub_item")
     blocks.commit()
@@ -361,7 +390,7 @@ def test_speech_sub_item_is_stored_and_reingest_is_idempotent(blocks):
 def test_speech_sub_item_migrates_and_reparse_clears_it(blocks, data_dir):
     blocks.execute("UPDATE speech SET sub_item_id = NULL")
     blocks.execute("DROP INDEX speech_sub_item")
-    blocks.execute("ALTER TABLE speech DROP COLUMN sub_item_id")
+    _drop_column(blocks, "speech", "sub_item_id")
     blocks.commit()
     blocks.close()
     conn = db.connect(data_dir / "bundestag.sqlite")  # migrates
