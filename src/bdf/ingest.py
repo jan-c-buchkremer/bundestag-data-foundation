@@ -47,6 +47,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_votes(conn)
     ingest_dip(conn)
     ingest_decisions(conn)
+    ingest_vorlagen(conn)
     ingest_abgeordnetenwatch(conn)
     ingest_side_jobs(conn)
     ingest_wahl(conn)
@@ -118,8 +119,12 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
             upsert(
                 conn,
                 "agenda_item_paragraph",
-                [{k: v for k, v in p.items() if k != "after_speeches"} | prov for p in protocol.agenda_paragraphs],
+                [
+                    {k: v for k, v in p.items() if k not in ("after_speeches", "klasse")} | prov
+                    for p in protocol.agenda_paragraphs
+                ],
             )
+            _replace_sub_items(conn, sid, [{**sub, **prov} for sub in protocol.agenda_sub_items])
             upsert(conn, "person", list(new_persons.values()))
             # a re-ingested protocol replaces its speeches wholesale
             for child in ("interjection", "speech_paragraph"):
@@ -492,6 +497,73 @@ def _link_votes_to_dip(conn: sqlite3.Connection) -> None:
 # --- decisions -----------------------------------------------------------------------------
 
 
+def _replace_sub_items(conn: sqlite3.Connection, sitting_id: str, rows: list[dict]) -> None:
+    """Upsert a sitting's sub-items and drop the ones a re-parse no longer finds (with what points at them)."""
+    upsert(conn, "agenda_sub_item", rows)
+    stale = [
+        r["id"]
+        for r in conn.execute(
+            "SELECT s.id FROM agenda_sub_item s JOIN agenda_item a ON a.id = s.agenda_item_id WHERE a.sitting_id = ?",
+            (sitting_id,),
+        )
+        if r["id"] not in {row["id"] for row in rows}
+    ]
+    for sub_id in stale:
+        conn.execute("UPDATE decision SET sub_item_id = NULL WHERE sub_item_id = ?", (sub_id,))
+        conn.execute("DELETE FROM agenda_item_vorlage WHERE sub_item_id = ?", (sub_id,))
+        conn.execute("DELETE FROM agenda_sub_item WHERE id = ?", (sub_id,))
+
+
+def _vorgang_by_drucksache(conn: sqlite3.Connection) -> dict[str, str]:
+    """Drucksache number -> Vorgang id, for the Drucksachen that belong to exactly one Vorgang."""
+    vorgaenge: dict[str, set[str]] = defaultdict(set)
+    for r in conn.execute(
+        "SELECT d.number, vd.vorgang_id FROM vorgang_drucksache vd JOIN drucksache d ON d.id = vd.drucksache_id"
+    ):
+        vorgaenge[r["number"]].add(r["vorgang_id"])
+    return {number: next(iter(ids)) for number, ids in vorgaenge.items() if len(ids) == 1}
+
+
+def ingest_vorlagen(conn: sqlite3.Connection) -> None:
+    """agenda_item_vorlage (one row per Drucksache of an agenda item; of a sub-item where the item has
+    sub-items, plus the Drucksachen of the item outside them) and decision.vorgang_id. Both are rebuilt from
+    the store, after agenda items, decisions and DIP are in: the Vorgang comes from vorgang_drucksache."""
+    vorgang = _vorgang_by_drucksache(conn)
+    subs: dict[str, list[sqlite3.Row]] = defaultdict(list)
+    for sub in conn.execute("SELECT * FROM agenda_sub_item ORDER BY agenda_item_id, position"):
+        subs[sub["agenda_item_id"]].append(sub)
+    rows = []
+    for item in conn.execute("SELECT * FROM agenda_item ORDER BY sitting_id, position"):
+        prov = {k: item[k] for k in ("source_url", "source_document_id", "retrieved_at")}
+        in_subs = set()
+        for sub in subs.get(item["id"], []):
+            for number in json.loads(sub["drucksache_numbers"]):
+                in_subs.add(number)
+                rows.append(_vorlage_row(sub["id"], item["id"], sub["id"], number, vorgang, prov))
+        for number in json.loads(item["drucksache_numbers"]):
+            if number not in in_subs:
+                rows.append(_vorlage_row(item["id"], item["id"], None, number, vorgang, prov))
+    with conn:
+        conn.execute("DELETE FROM agenda_item_vorlage")
+        upsert(conn, "agenda_item_vorlage", rows)
+        conn.executemany(
+            "UPDATE decision SET vorgang_id = ? WHERE id = ?",
+            [
+                (vorgang.get(r["drucksache_number"]), r["id"])
+                for r in conn.execute("SELECT id, drucksache_number FROM decision")
+            ],
+        )
+    linked = sum(1 for r in rows if r["vorgang_id"])
+    print(f"vorlagen: {len(rows)} Drucksachen on agenda items ({linked} with a Vorgang)")
+
+
+def _vorlage_row(owner: str, item_id: str, sub_id: str | None, number: str, vorgang: dict, prov: dict) -> dict:
+    return {
+        "id": f"{owner}/{number}", "agenda_item_id": item_id, "sub_item_id": sub_id,
+        "drucksache_number": number, "vorgang_id": vorgang.get(number), **prov,
+    }  # fmt: skip
+
+
 def ingest_decisions(conn: sqlite3.Connection) -> None:
     """Decisions announced by the chair (bdf/parse_decisions.py), linked to roll_call_vote, and
     roll_call_vote.agenda_item_id. Runs after votes and DIP: linking uses the votes' counts and Drucksachen.
@@ -502,6 +574,8 @@ def ingest_decisions(conn: sqlite3.Connection) -> None:
     for v in conn.execute("SELECT id, sitting_id, number, yes, no, drucksache_number FROM roll_call_vote"):
         votes[v["sitting_id"]].append(dict(v))
     rows: dict[str, list[dict]] = defaultdict(list)
+    vorgang = _vorgang_by_drucksache(conn)
+    known_subs = {r["id"] for r in conn.execute("SELECT id FROM agenda_sub_item")}
     sittings: list[str] = []
     pending: list = []
     previous = None
@@ -527,6 +601,8 @@ def ingest_decisions(conn: sqlite3.Connection) -> None:
                     "position": d.position, "kind": d.kind, "subject": d.subject,
                     "drucksache_number": d.drucksache_number, "result": d.result,
                     "roll_call_vote_id": d.roll_call_vote_id, "text": d.text, **prov,
+                    "sub_item_id": d.sub_item_id if d.sub_item_id in known_subs else None,
+                    "vorgang_id": vorgang.get(d.drucksache_number),
                 }
             )  # fmt: skip
             rows["decision_fraction"] += [

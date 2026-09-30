@@ -108,6 +108,8 @@ TABLE_SOURCES = {
     "sitting": ["bundestag"],
     "agenda_item": ["bundestag"],
     "agenda_item_paragraph": ["bundestag"],
+    "agenda_sub_item": ["bundestag"],
+    "agenda_item_vorlage": ["bundestag", "dip"],
     "speech": ["bundestag"],
     "speech_paragraph": ["bundestag"],
     "interjection": ["bundestag"],

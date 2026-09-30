@@ -39,8 +39,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from bdf.names import DRUCKSACHE_RE, clean_text, iso_date, normalize_fraction
+from bdf.parse_sub_items import TITLE_CLASSES_SKIPPED as _TITLE_CLASSES_SKIPPED
+from bdf.parse_sub_items import split as _split_sub_items
 
-_TITLE_CLASSES_SKIPPED = {"T_Drs", "T_Ueberweisung"}
 _VOTE_LIST_CLASSES = {"AL_Namen", "AL_Partei", "AL_Ja-Nein-Enth"}
 
 
@@ -79,9 +80,12 @@ class Protocol:
     end_time: str | None
     agenda_items: list[dict]
     speeches: list[Speech]
-    # text directly under <tagesordnungspunkt>: dicts with id, agenda_item_id, position, kind, text and
-    # after_speeches (how many speeches of the sitting precede it, to interleave with speech paragraphs)
+    # text directly under <tagesordnungspunkt>: dicts with id, agenda_item_id, position, kind, text,
+    # klasse (the XML class of a procedural paragraph) and after_speeches (how many speeches of the sitting
+    # precede it, to interleave with speech paragraphs)
     agenda_paragraphs: list[dict] = field(default_factory=list)
+    # blocks of items called up one by one inside one agenda item (bdf/parse_sub_items.py)
+    agenda_sub_items: list[dict] = field(default_factory=list)
 
     @property
     def sitting_id(self) -> str:
@@ -208,7 +212,7 @@ def _agenda_paragraphs(top: ET.Element, agenda_item_id: str, speeches_before: in
             n = len(rows) + 1
             rows.append(
                 {"id": f"{agenda_item_id}/{n}", "agenda_item_id": agenda_item_id, "position": n, "kind": kind,
-                 "text": text, "after_speeches": speeches_before}
+                 "text": text, "klasse": klasse, "after_speeches": speeches_before}
             )  # fmt: skip
     return rows
 
@@ -271,7 +275,7 @@ def _split_fragestunde(top: ET.Element, agenda_item_id: str, position: int, spee
         m = len(paragraphs) + 1
         paragraphs.append(
             {"id": f"{agenda_item_id}/{m}", "agenda_item_id": agenda_item_id, "position": m,
-             "kind": kind, "text": text, "after_speeches": speeches_before}
+             "kind": kind, "text": text, "klasse": klasse, "after_speeches": speeches_before}
         )  # fmt: skip
     return speeches, paragraphs
 
@@ -309,6 +313,9 @@ def parse(path: Path) -> Protocol:
                 agenda_paragraphs += _agenda_paragraphs(el, item["id"], len(speeches))
                 for rede in el.findall("rede"):
                     speeches += _split_rede(rede, len(speeches) + 1, item["id"])
+    sub_items, no_debate = _split_sub_items(agenda_items, agenda_paragraphs)
+    for item in agenda_items:
+        item["no_debate"] = int(no_debate[item["id"]])
     return Protocol(
         wahlperiode=wp,
         number=nr,
@@ -318,4 +325,5 @@ def parse(path: Path) -> Protocol:
         agenda_items=agenda_items,
         speeches=speeches,
         agenda_paragraphs=agenda_paragraphs,
+        agenda_sub_items=sub_items,
     )

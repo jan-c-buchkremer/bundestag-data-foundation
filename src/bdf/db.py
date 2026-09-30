@@ -89,6 +89,29 @@ CREATE TABLE IF NOT EXISTS agenda_item (
     top_id TEXT NOT NULL,               -- XML top-id attribute, e.g. "Tagesordnungspunkt 3"
     title TEXT,
     drucksache_numbers TEXT NOT NULL,   -- JSON array of "21/7300"
+    {PROVENANCE},
+    no_debate INTEGER NOT NULL DEFAULT 0  -- 1: the chair says no Aussprache is provided ("keine Aussprache vorgesehen")
+);
+
+CREATE TABLE IF NOT EXISTS agenda_sub_item (
+    id TEXT PRIMARY KEY,                -- "<agenda_item_id>/<label>", e.g. "21/96/6/41b"
+    agenda_item_id TEXT NOT NULL REFERENCES agenda_item(id),
+    label TEXT NOT NULL,                -- as called up: "41b"; Zusatzpunkte "ZP8", "ZP1a"
+    position INTEGER NOT NULL,          -- order within the agenda item
+    title TEXT,                         -- this sub-item's title lines, joined with " | "
+    drucksache_numbers TEXT NOT NULL,   -- JSON array of "21/7300", this sub-item's only
+    first_paragraph INTEGER NOT NULL,   -- agenda_item_paragraph.position of the chair's call-up
+    last_paragraph INTEGER NOT NULL,    -- … of the last paragraph before the next call-up (or the item's end)
+    {PROVENANCE},
+    no_debate INTEGER NOT NULL DEFAULT 0  -- 1: the chair says no Aussprache is provided (for the block or this item)
+);
+
+CREATE TABLE IF NOT EXISTS agenda_item_vorlage (
+    id TEXT PRIMARY KEY,                -- "<agenda_item_id or sub_item_id>/<drucksache_number>"
+    agenda_item_id TEXT NOT NULL REFERENCES agenda_item(id),
+    sub_item_id TEXT REFERENCES agenda_sub_item(id),  -- set for the Drucksachen of a sub-item, NULL otherwise
+    drucksache_number TEXT NOT NULL,    -- "21/7300"
+    vorgang_id TEXT REFERENCES vorgang(id),  -- the only Vorgang of that Drucksache in vorgang_drucksache; else NULL
     {PROVENANCE}
 );
 
@@ -338,7 +361,9 @@ CREATE TABLE IF NOT EXISTS decision (
     result TEXT,                        -- angenommen | abgelehnt | NULL (not found)
     roll_call_vote_id TEXT REFERENCES roll_call_vote(id),
     text TEXT NOT NULL,                 -- the chair's words the decision was read from
-    {PROVENANCE}
+    {PROVENANCE},
+    sub_item_id TEXT REFERENCES agenda_sub_item(id),  -- the block item the chair had called up last, else NULL
+    vorgang_id TEXT REFERENCES vorgang(id)  -- the only Vorgang of drucksache_number in vorgang_drucksache, else NULL
 );
 
 CREATE TABLE IF NOT EXISTS decision_fraction (
@@ -352,6 +377,9 @@ CREATE INDEX IF NOT EXISTS speech_person ON speech(person_id);
 CREATE INDEX IF NOT EXISTS agenda_paragraph_item ON agenda_item_paragraph(agenda_item_id);
 CREATE INDEX IF NOT EXISTS decision_sitting ON decision(sitting_id);
 CREATE INDEX IF NOT EXISTS decision_agenda_item ON decision(agenda_item_id);
+CREATE INDEX IF NOT EXISTS agenda_sub_item_item ON agenda_sub_item(agenda_item_id);
+CREATE INDEX IF NOT EXISTS vorlage_item ON agenda_item_vorlage(agenda_item_id);
+CREATE INDEX IF NOT EXISTS vorlage_drucksache ON agenda_item_vorlage(drucksache_number);
 CREATE INDEX IF NOT EXISTS speech_sitting ON speech(sitting_id);
 CREATE INDEX IF NOT EXISTS paragraph_speech ON speech_paragraph(speech_id);
 CREATE INDEX IF NOT EXISTS vote_person ON individual_vote(person_id);
@@ -388,6 +416,9 @@ _ADDED_COLUMNS = [
     ("vorgang", "verkuendung", "TEXT"),
     ("vorgang", "inkrafttreten", "TEXT"),
     ("speech", "kind", "TEXT NOT NULL DEFAULT 'rede'"),  # all earlier rows are speeches from a <rede>
+    ("agenda_item", "no_debate", "INTEGER NOT NULL DEFAULT 0"),  # set on the next protocol ingest
+    ("decision", "sub_item_id", "TEXT REFERENCES agenda_sub_item(id)"),  # set on the next decisions ingest
+    ("decision", "vorgang_id", "TEXT REFERENCES vorgang(id)"),
 ]
 
 
@@ -397,6 +428,7 @@ def _migrate(conn: sqlite3.Connection) -> None:
         if column not in {r["name"] for r in conn.execute(f"PRAGMA table_info({table})")}:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {decl}")
     _relax_government_role(conn)
+    conn.execute("CREATE INDEX IF NOT EXISTS decision_sub_item ON decision(sub_item_id)")  # column may be new
 
 
 def _relax_government_role(conn: sqlite3.Connection) -> None:
