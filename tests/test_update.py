@@ -43,6 +43,8 @@ def offline(monkeypatch):
     calls = []
     monkeypatch.setattr(fetch_bundestag, "fetch_stammdaten", lambda http, force: calls.append("stammdaten"))
     monkeypatch.setattr(update, "fetch_new_protocols", lambda http, wp: calls.append("protocols") or [])
+    monkeypatch.setattr(fetch_bundestag, "refetch_preliminary", lambda http, wp, skip=(): [])
+    monkeypatch.setattr(update.fetch_wahl, "fetch_election", lambda http, name: [])
     monkeypatch.setattr(fetch_bundestag, "fetch_votes", lambda http, s, e: calls.append(("votes", s, e)) or [])
     monkeypatch.setattr(fetch_aw, "fetch_wahlperiode", lambda http, wp, force: calls.append("aw"))
     monkeypatch.setattr(fetch_bundestag, "fetch_biografien", lambda http: calls.append("photos") or [])

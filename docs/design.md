@@ -89,7 +89,11 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 **membership** `*id, person_id →person, wahlperiode, kind (fraction | committee | other), name, role (FKT_LANG, e.g. Vorsitzende), from_date, to_date, source_url, source_document_id, retrieved_at`
 — from Stammdaten `INSTITUTIONEN`; `kind` is derived from `INSART_LANG`.
 
-**sitting** `*id, wahlperiode, number, date, start_time, end_time, xml_url, pdf_url, source_url, source_document_id, retrieved_at`
+**sitting** `*id, wahlperiode, number, date, start_time, end_time, xml_url, pdf_url, source_url, source_document_id, retrieved_at, preliminary (0 | 1), final_announced, final_fetched_at, first_page, last_page`
+— `preliminary = 1`: the XML on disk is the preliminary version (below, "Preliminary protocols"); `final_announced` is the date its note gives for the final version, `final_fetched_at` the `retrieved_at` of the XML once it is final (NULL while preliminary). `first_page` is `start-seitennr`, `last_page` the highest `druckseitennummer` marker in `<sitzungsverlauf>` (NULL without markers): the Druckseiten the XML covers.
+
+**protocol_gap_page** `*id ("<sitting_id>/<page>"), sitting_id →sitting, page, text, source_url, source_document_id ("DIP Plenarprotokoll-Text <id>"), retrieved_at`
+— for a preliminary sitting, each Druckseite after its `last_page` as plain text from DIP's `plenarprotokoll-text` (made from the PDF), unparsed: no speeches, decisions or interjections are read from it. Rebuilt on every ingest; once the sitting's XML is final its rows are gone.
 
 **agenda_item** `*id, sitting_id →sitting, position, top_id (XML top-id attribute), title, drucksache_numbers (JSON array of "21/7300"), source_url, source_document_id, retrieved_at, no_debate (0 | 1, default 0)`
 — `no_debate = 1`: the chair said that no Aussprache is provided ("zu denen keine Aussprache vorgesehen ist", "ohne Debatte", "Eine Aussprache ist nicht vorgesehen"). For a block item (below) it means the block was called up that way. Speeches of the item stay as they are.
@@ -259,11 +263,38 @@ protocol-only; a successor in a Kanzler/Bundesminister office takes it out of th
 - Stammdaten and DIP persons are re-fetched whole (small) and upserted.
 - Corrections to protocols are rare; `fetch --force` + `ingest` handles them.
 
+### Preliminary protocols
+
+bundestag.de serves a protocol's XML at its final URL (`btp/21/21031.xml`) before the final version exists. The
+preliminary version carries a note, "Der gesamte und damit endgültige Stenografische Bericht der 31. Sitzung wird
+am … veröffentlicht", and may end before the sitting did: in WP 21 the downstream cards found 17 of 97 protocols
+still preliminary, 8 of them (21/14, 21/31, 21/37, 21/59, 21/80, 21/83, 21/89, 21/96) without their last 33–82
+pages, the late-evening debates.
+
+- **Detect** (`protocol_status.status`): the note (also "vorläufiger Stenografischer Bericht") anywhere in the
+  document text, the announced date, and the Druckseiten the `<sitzungsverlauf>` covers. Stored on `sitting`.
+- **Re-fetch** (`fetch_bundestag.refetch_preliminary`, run by `update` on every run, by hand with
+  `bdf fetch protocols --preliminary`): every preliminary XML on disk is downloaded again and replaces the file;
+  `ingest` then replaces the sitting's speeches, items and paragraphs as for any re-ingested protocol, and the new
+  agenda items, speeches and decisions of the missing pages appear.
+- **Fall back** until then (`fetch_dip.fetch_protocol_texts`, run by `update` with a DIP key, by hand with
+  `bdf fetch protocol-texts`): DIP's `plenarprotokoll-text` of each preliminary protocol, re-fetched every run,
+  is cut into pages at the running page headers ("3392 Deutscher Bundestag – 21. Wahlperiode – 31. Sitzung.
+  Berlin, …"); the pages after the XML's `last_page` become `protocol_gap_page` rows. The PDF (`sitting.pdf_url`)
+  stays the reference when DIP has no text, no header is found or the XML has no page markers.
+- **Check** (`bdf query protocol-gaps`): per sitting that is preliminary or has one, every Beratung DIP places in
+  its Plenarprotokoll (BT `vorgang_position` of kind Plenarprotokoll with pages, position "…Beratung…") under which
+  no agenda item or sub-item of the sitting names a Drucksache of the Vorgang, with its cause: `missing_pages`
+  (it starts after the XML's last page), `in_xml` (its pages are in the XML: the item names other Drucksachen, or
+  the parser misses it; to be looked at) or `unknown` (no page markers).
+
 ## CLI
 
 ```
 bdf fetch stammdaten
 bdf fetch protocols --wp 21 --from 88 --to 90
+bdf fetch protocols --wp 21 --preliminary           # the preliminary protocols on disk again
+bdf fetch protocol-texts --wp 21                    # DIP plenarprotokoll-text of the preliminary protocols
 bdf fetch votes --from 2026-07-06 --to 2026-07-10
 bdf fetch dip --from 2026-07-06 --to 2026-07-10     # drucksachen, authors, vorgänge, vorgangspositionen, persons
 bdf fetch aw --wp 21
@@ -277,6 +308,7 @@ bdf query government [--date 2026-09-28]           # roles, optionally those hel
 bdf query stale-roles [--days 90]                   # protocol-only roles not printed for >90 days before the newest sitting
 bdf query photos     [--missing]                    # portraits with credit, or sitting members without one
 bdf query decisions  --sitting 21/90                # decisions announced by the chair, fraction positions / roll-call totals
+bdf query protocol-gaps                             # preliminary protocols, missing pages, Beratungen without an item
 bdf query corpus     --from … --to …                # JSONL: one clean speech per line with speaker id, fraction, date, source
 bdf export data/export                              # open data: one CSV.gz per table, datapackage.json, README.md
 ```

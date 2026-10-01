@@ -11,6 +11,9 @@ Files written (all JSON, each with a .meta.json sidecar):
                                                  files so a first backfill of this new data does not get skipped
                                                  as "already cached"
   person/wp<wp>.json                            all DIP persons with documents in the Wahlperiode
+  plenarprotokoll-text/<wp><nnn>.json           the full text of one Plenarprotokoll (DIP makes it from the PDF);
+                                                 fetched only while the protocol's XML is preliminary, as the
+                                                 fallback for the pages the XML lacks (fetch_protocol_texts)
 """
 
 import time
@@ -126,3 +129,19 @@ def fetch_range(http: httpx.Client, wp: int, start: date, end: date, *, force: b
         print(f"  vorgangspositionen ({zuordnung}): {len(z_positions)}")
     persons = _fetch_list(http, "person", {"f.wahlperiode": wp}, dip_dir() / "person" / f"wp{wp}.json", force=True)
     print(f"  persons (WP {wp}): {len(persons)}")
+
+
+def protocol_text_path(wp: int, nr: int) -> Path:
+    return dip_dir() / "plenarprotokoll-text" / f"{wp}{nr:03d}.json"
+
+
+def fetch_protocol_texts(http: httpx.Client, wp: int, numbers: list[int]) -> list[Path]:
+    """DIP's plenarprotokoll-text of each given sitting, always re-fetched: DIP may replace the text when the
+    final protocol is published, and only preliminary protocols are asked for, a handful per run."""
+    paths = []
+    for nr in numbers:
+        params = {"f.zuordnung": "BT", "f.wahlperiode": wp, "f.dokumentnummer": f"{wp}/{nr}"}
+        docs = _fetch_list(http, "plenarprotokoll-text", params, protocol_text_path(wp, nr), force=True)
+        print(f"  plenarprotokoll-text {wp}/{nr}: {'found' if docs else 'not in DIP yet'}")
+        paths.append(protocol_text_path(wp, nr))
+    return paths

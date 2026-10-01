@@ -38,6 +38,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from bdf import protocol_status
 from bdf.names import DRUCKSACHE_RE, clean_text, iso_date, normalize_fraction
 from bdf.parse_sub_items import TITLE_CLASSES_SKIPPED as _TITLE_CLASSES_SKIPPED
 from bdf.parse_sub_items import split as _split_sub_items
@@ -87,6 +88,8 @@ class Protocol:
     agenda_paragraphs: list[dict] = field(default_factory=list)
     # blocks of items called up one by one inside one agenda item (bdf/parse_sub_items.py)
     agenda_sub_items: list[dict] = field(default_factory=list)
+    # preliminary version, announced date of the final one, Druckseiten covered (bdf/protocol_status.py)
+    status: protocol_status.Status = field(default_factory=lambda: protocol_status.Status(False, None, None, None))
 
     @property
     def sitting_id(self) -> str:
@@ -355,4 +358,5 @@ def parse(path: Path) -> Protocol:
         speeches=speeches,
         agenda_paragraphs=agenda_paragraphs,
         agenda_sub_items=sub_items,
+        status=protocol_status.status(root),
     )

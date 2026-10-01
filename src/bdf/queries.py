@@ -1,5 +1,6 @@
 """Canned queries. Every row carries source_url and source_document_id."""
 
+import json
 import sqlite3
 
 from bdf.government import KINDS, STALE_AFTER_DAYS, held_on, stale
@@ -236,6 +237,94 @@ def decisions(conn: sqlite3.Connection, sitting_id: str) -> list[dict]:
                 "source_document_id": d["source_document_id"],
                 "pdf_url": d["pdf_url"],
                 "retrieved_at": d["retrieved_at"],
+            }
+        )
+    return out
+
+
+def _first_page(pages: str | None) -> int | None:
+    head = (pages or "").split("-")[0].strip()
+    return int(head) if head.isdigit() else None
+
+
+def protocol_gaps(conn: sqlite3.Connection) -> list[dict]:
+    """Per sitting, what the protocol XML in the store lacks: preliminary sittings with the pages after the XML's
+    last page, and every Beratung DIP places in the sitting's Plenarprotokoll under which no agenda item (or
+    sub-item) of the sitting names one of the Vorgang's Drucksachen.
+
+    Each such Beratung gets a ``cause``: ``missing_pages`` (it starts after the XML's last page, the preliminary
+    XML ends before it), ``in_xml`` (its pages are in the XML, so the agenda item names other Drucksachen or the
+    parser misses the item; worth a look) or ``unknown`` (the XML has no page markers). One row per sitting that
+    is preliminary or has such a Beratung, oldest first; the source is the protocol XML."""
+    items: dict[str, set[str]] = {}
+    for sql in (
+        "SELECT sitting_id, drucksache_numbers FROM agenda_item",
+        "SELECT a.sitting_id, s.drucksache_numbers FROM agenda_sub_item s "
+        "JOIN agenda_item a ON a.id = s.agenda_item_id",
+    ):
+        for r in conn.execute(sql):
+            items.setdefault(r["sitting_id"], set()).update(json.loads(r["drucksache_numbers"]))
+    vorlagen: dict[str, set[str]] = {}
+    for r in conn.execute(
+        "SELECT vd.vorgang_id, d.number FROM vorgang_drucksache vd JOIN drucksache d ON d.id = vd.drucksache_id "
+        "UNION SELECT vorgang_id, document_number FROM vorgang_position "
+        "WHERE document_kind = 'Drucksache' AND chamber = 'BT' AND document_number IS NOT NULL"
+    ):
+        vorlagen.setdefault(r[0], set()).add(r[1])
+    sittings = {r["id"]: dict(r) for r in conn.execute("SELECT * FROM sitting")}
+    gap_pages = {
+        r["sitting_id"]: (r["n"], r["lo"], r["hi"])
+        for r in conn.execute(
+            "SELECT sitting_id, COUNT(*) AS n, MIN(page) AS lo, MAX(page) AS hi FROM protocol_gap_page GROUP BY 1"
+        )
+    }
+    unmatched: dict[str, list[dict]] = {}
+    dip_last: dict[str, int] = {}
+    for p in conn.execute(
+        "SELECT vp.*, v.title FROM vorgang_position vp LEFT JOIN vorgang v ON v.id = vp.vorgang_id "
+        "WHERE vp.chamber = 'BT' AND vp.document_kind = 'Plenarprotokoll' AND vp.pages IS NOT NULL "
+        "AND vp.position LIKE '%Beratung%' ORDER BY vp.date, vp.pages"
+    ):
+        sid, start = p["document_number"], _first_page(p["pages"])
+        st = sittings.get(sid)
+        if st is None or start is None:
+            continue
+        end = _first_page((p["pages"] or "").split("-")[-1])
+        dip_last[sid] = max(dip_last.get(sid, 0), end or start)
+        if vorlagen.get(p["vorgang_id"], set()) & items.get(sid, set()):
+            continue
+        cause = "unknown" if st["last_page"] is None else "missing_pages" if start > st["last_page"] else "in_xml"
+        unmatched.setdefault(sid, []).append(
+            {"vorgang_id": p["vorgang_id"], "title": p["title"], "position": p["position"], "pages": p["pages"],
+             "cause": cause, "vorgang_position_id": p["id"]}
+        )  # fmt: skip
+    out = []
+    for sid in sorted(set(unmatched) | {s for s, st in sittings.items() if st["preliminary"]},
+                      key=lambda s: tuple(int(x) for x in s.split("/"))):  # fmt: skip
+        st = sittings[sid]
+        n, lo, hi = gap_pages.get(sid, (0, None, None))
+        last = dip_last.get(sid)
+        missing = (
+            f"{st['last_page'] + 1}-{last}" if st["preliminary"] and st["last_page"] and last and last > st["last_page"]
+            else None
+        )  # fmt: skip
+        out.append(
+            {
+                "sitting_id": sid,
+                "date": st["date"],
+                "preliminary": bool(st["preliminary"]),
+                "final_announced": st["final_announced"],
+                "first_page": st["first_page"],
+                "last_page": st["last_page"],
+                "dip_last_page": last,
+                "missing_pages": missing,
+                "fallback_pages": f"{lo}-{hi}" if n else None,
+                "fallback_page_count": n,
+                "beratungen": unmatched.get(sid, []),
+                "pdf_url": st["pdf_url"],
+                "source_url": st["source_url"],
+                "source_document_id": st["source_document_id"],
+                "retrieved_at": st["retrieved_at"],
             }
         )
     return out

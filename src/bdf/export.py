@@ -112,6 +112,7 @@ TABLE_SOURCES = {
     "agenda_item_vorlage": ["bundestag", "dip"],
     "speech": ["bundestag"],
     "speech_paragraph": ["bundestag"],
+    "protocol_gap_page": ["dip"],
     "interjection": ["bundestag"],
     "decision": ["bundestag"],
     "decision_fraction": ["bundestag"],

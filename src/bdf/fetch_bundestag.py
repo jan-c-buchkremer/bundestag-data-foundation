@@ -2,12 +2,13 @@
 
 import re
 import zipfile
+from collections.abc import Iterable
 from datetime import date
 from pathlib import Path
 
 import httpx
 
-from bdf import parse_biografien, raw
+from bdf import parse_biografien, protocol_status, raw
 from bdf.config import raw_dir
 from bdf.names import clean_text
 
@@ -70,6 +71,26 @@ def fetch_protocols(http: httpx.Client, wp: int, first: int, last: int, *, force
                 continue
             raise
     return paths
+
+
+def preliminary_protocols(wp: int) -> list[Path]:
+    """The protocol XML files of a Wahlperiode on disk that are still the preliminary version."""
+    return [p for p in raw.data_files(protocols_dir() / str(wp), "*.xml") if protocol_status.is_preliminary(p)]
+
+
+def refetch_preliminary(http: httpx.Client, wp: int, skip: Iterable[Path] = ()) -> list[tuple[Path, bool]]:
+    """Download every preliminary protocol of the Wahlperiode again, replacing the file on disk (the URL stays the
+    same when the final version is published); `skip` holds files just downloaded. Returns (path, still
+    preliminary) per file."""
+    out = []
+    skipped = set(skip)
+    for path in preliminary_protocols(wp):
+        if path in skipped:
+            continue
+        nr = int(path.stem[len(str(wp)) :])
+        raw.download(http, PROTOCOL_URL.format(wp=wp, nr=nr, ext="xml"), path, force=True)
+        out.append((path, protocol_status.is_preliminary(path)))
+    return out
 
 
 def _parse_vote_list(fragment: str) -> list[dict]:

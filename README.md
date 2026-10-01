@@ -37,7 +37,8 @@ uv run bdf update          # fetch everything new since the last run from all so
 ```
 
 Each source picks its own window from what is already in `data/raw/`: protocols from the next sitting
-number (probing until three in a row are not published), votes and DIP from the latest date on disk minus
+number (probing until three in a row are not published) plus every protocol still in its preliminary version
+(until the final one is served), votes and DIP from the latest date on disk minus
 14 days (late publications), Stammdaten, abgeordnetenwatch, the bundestag.de biography list and the Wikidata government
 roster in full (portrait images only when new). The first run backfills the whole
 Wahlperiode. Without `DIP_API_KEY` DIP is skipped; network errors and 429/5xx are retried
@@ -140,6 +141,11 @@ Details and quotes in `docs/licences.md`. Code is MIT.
   `beratungsstand` stays as it was at the first fetch. `fetch dip --force` over a range refreshes them.
 - abgeordnetenwatch's `ext_id_bundestagsverwaltung` is wrong for ~9 % of WP21 members and is
   therefore never trusted on its own.
+- bundestag.de serves a preliminary protocol XML before the final one; it can lack the last pages of the sitting
+  (8 WP 21 protocols lacked 33–82 pages). Such sittings have `sitting.preliminary = 1` and the pages their XML
+  covers; `update` fetches them again until they are final, and meanwhile stores the missing pages as plain text
+  from DIP (`protocol_gap_page`, no speeches or decisions read from it). `bdf query protocol-gaps` lists them, with
+  every Beratung DIP places in a sitting that no agenda item there matches.
 - Decisions are read from the chair's words by rules (`docs/decisions.md` has the measured recall).
   Show-of-hands results are per fraction as announced; where the chair names no fraction ("Wer stimmt
   dafür? – Wer stimmt dagegen? – … angenommen") the decision has no fraction rows. Subjects are the

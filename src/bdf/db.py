@@ -79,7 +79,14 @@ CREATE TABLE IF NOT EXISTS sitting (
     end_time TEXT,
     xml_url TEXT NOT NULL,
     pdf_url TEXT NOT NULL,
-    {PROVENANCE}
+    {PROVENANCE},
+    preliminary INTEGER NOT NULL DEFAULT 0,  -- 1: the XML is the preliminary version ("Der gesamte und damit
+                                        -- endgültige Stenografische Bericht … wird am … veröffentlicht"); it can
+                                        -- lack the last pages. `update` re-fetches it until the final one is served
+    final_announced TEXT,               -- the date the preliminary XML announces for the final version, ISO
+    final_fetched_at TEXT,              -- retrieved_at of the XML once it is final; NULL while preliminary
+    first_page INTEGER,                 -- Druckseite the XML's sitzungsverlauf starts on (start-seitennr)
+    last_page INTEGER                   -- highest Druckseite marked in the XML's sitzungsverlauf; NULL: no markers
 );
 
 CREATE TABLE IF NOT EXISTS agenda_item (
@@ -131,6 +138,15 @@ CREATE TABLE IF NOT EXISTS speech (
                                         -- Nachfrage; shown, but left out of speech counts and shares
     sub_item_id TEXT REFERENCES agenda_sub_item(id)  -- the sub-item of a block item during which the speech was
                                         -- given (its call-up is the last one before the speech), else NULL
+);
+
+CREATE TABLE IF NOT EXISTS protocol_gap_page (
+    id TEXT PRIMARY KEY,                -- "<sitting_id>/<page>", e.g. "21/31/3392"
+    sitting_id TEXT NOT NULL REFERENCES sitting(id),
+    page INTEGER NOT NULL,              -- Druckseite after sitting.last_page of a preliminary protocol
+    text TEXT NOT NULL,                 -- the page's plain text from DIP's plenarprotokoll-text (made from the PDF),
+                                        -- unparsed; fallback until the final XML is out, then the rows are dropped
+    {PROVENANCE}
 );
 
 CREATE TABLE IF NOT EXISTS speech_paragraph (
@@ -383,6 +399,7 @@ CREATE INDEX IF NOT EXISTS agenda_sub_item_item ON agenda_sub_item(agenda_item_i
 CREATE INDEX IF NOT EXISTS vorlage_item ON agenda_item_vorlage(agenda_item_id);
 CREATE INDEX IF NOT EXISTS vorlage_drucksache ON agenda_item_vorlage(drucksache_number);
 CREATE INDEX IF NOT EXISTS speech_sitting ON speech(sitting_id);
+CREATE INDEX IF NOT EXISTS gap_page_sitting ON protocol_gap_page(sitting_id);
 CREATE INDEX IF NOT EXISTS paragraph_speech ON speech_paragraph(speech_id);
 CREATE INDEX IF NOT EXISTS vote_person ON individual_vote(person_id);
 CREATE INDEX IF NOT EXISTS interjection_speech ON interjection(speech_id);
@@ -422,6 +439,11 @@ _ADDED_COLUMNS = [
     ("decision", "sub_item_id", "TEXT REFERENCES agenda_sub_item(id)"),  # set on the next decisions ingest
     ("decision", "vorgang_id", "TEXT REFERENCES vorgang(id)"),
     ("speech", "sub_item_id", "TEXT REFERENCES agenda_sub_item(id)"),  # set on the next protocol ingest
+    ("sitting", "preliminary", "INTEGER NOT NULL DEFAULT 0"),  # the five sitting columns are set on the next
+    ("sitting", "final_announced", "TEXT"),  # protocol ingest
+    ("sitting", "final_fetched_at", "TEXT"),
+    ("sitting", "first_page", "INTEGER"),
+    ("sitting", "last_page", "INTEGER"),
 ]
 
 

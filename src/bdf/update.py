@@ -2,6 +2,8 @@
 
 Each source derives its own window from what is already under data/raw, so the command takes no
 dates and a missed week is caught up on the next run. The first run backfills the whole Wahlperiode.
+Protocols still in their preliminary version are fetched again on every run until the final one is served;
+meanwhile DIP's plenarprotokoll-text of each is fetched as the fallback for the pages the XML lacks.
 """
 
 import sqlite3
@@ -37,6 +39,11 @@ def fetch_new_protocols(http: httpx.Client, wp: int) -> list[Path]:
         misses = 0 if got else misses + 1
         nr += 1
     return paths
+
+
+def preliminary_numbers(wp: int) -> list[int]:
+    """Sitting numbers of the protocols on disk that are still preliminary."""
+    return [int(p.stem[len(str(wp)) :]) for p in fetch_bundestag.preliminary_protocols(wp)]
 
 
 def votes_window(wp: int, today: date) -> tuple[date, date]:
@@ -95,8 +102,14 @@ def run(wp: int = 21, today: date | None = None) -> int:
 
         def protocols() -> None:
             print(f"protocols from {wp}/{next_protocol(wp)}")
-            for path in fetch_new_protocols(http, wp):
+            new = fetch_new_protocols(http, wp)
+            for path in new:
                 print(f"  {path.name}")
+            refetched = fetch_bundestag.refetch_preliminary(http, wp, skip=new)
+            if refetched:
+                print(f"protocols: {len(refetched)} preliminary ones fetched again")
+            for path, still in refetched:
+                print(f"  {path.name}: {'still preliminary' if still else 'final version now'}")
 
         def votes() -> None:
             start, end = votes_window(wp, today)
@@ -126,6 +139,10 @@ def run(wp: int = 21, today: date | None = None) -> int:
             start, end = dip_window(wp, today)
             print(f"dip {start}..{end}")
             fetch_dip.fetch_range(http, wp, start, end)
+            numbers = preliminary_numbers(wp)
+            if numbers:
+                print(f"dip plenarprotokoll-text for the {len(numbers)} preliminary protocols")
+                fetch_dip.fetch_protocol_texts(http, wp, numbers)
 
         source("stammdaten", stammdaten)
         source("protocols", protocols)

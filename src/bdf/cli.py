@@ -29,8 +29,11 @@ def build_parser() -> argparse.ArgumentParser:
     fs.add_parser("stammdaten", help="MdB master data (whole file)")
     fp = fs.add_parser("protocols", help="Plenarprotokoll XML by sitting number")
     fp.add_argument("--wp", type=int, default=21)
-    fp.add_argument("--from", dest="first", type=int, required=True, metavar="NR")
-    fp.add_argument("--to", dest="last", type=int, required=True, metavar="NR")
+    fp.add_argument("--from", dest="first", type=int, metavar="NR")
+    fp.add_argument("--to", dest="last", type=int, metavar="NR")
+    fp.add_argument(
+        "--preliminary", action="store_true", help="instead of a range: fetch the preliminary protocols on disk again"
+    )
     fv = fs.add_parser("votes", help="roll-call vote XLSX/PDF by date range")
     _add_range(fv)
     fd = fs.add_parser("dip", help="DIP Drucksachen, authors, Vorgänge, Vorgangspositionen, persons by date range")
@@ -42,6 +45,8 @@ def build_parser() -> argparse.ArgumentParser:
     fw.add_argument("--election", default="btw25", choices=sorted(fetch_wahl.ELECTIONS))
     fph = fs.add_parser("photos", help="bundestag.de MdB biography list (all pages) and the portraits")
     fs.add_parser("government", help="Wikidata: federal government roles since 2025-05-06, Commons portraits")
+    ft = fs.add_parser("protocol-texts", help="DIP plenarprotokoll-text of the preliminary protocols on disk")
+    ft.add_argument("--wp", type=int, default=21)
     for sp in (fp, fv, fd, fa, fw, fph):
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")
 
@@ -76,7 +81,10 @@ def build_parser() -> argparse.ArgumentParser:
     qs_.add_argument(
         "--days", type=int, default=queries.STALE_AFTER_DAYS, help="days before the newest sitting (default: 90)"
     )
-    for sp in (qg, qph, qs_):
+    qgap = qs.add_parser(
+        "protocol-gaps", help="preliminary protocols and DIP Beratungen without an agenda item in the protocol XML"
+    )
+    for sp in (qg, qph, qs_, qgap):
         sp.add_argument("--json", action="store_true", help="JSON lines instead of text")
     qd = qs.add_parser("decisions", help="decisions announced by the chair in one sitting")
     qd.add_argument("--sitting", required=True, help='sitting id, e.g. "21/90"')
@@ -88,8 +96,16 @@ def cmd_fetch(args: argparse.Namespace) -> None:
     with raw.client() as http:
         if args.source == "stammdaten":
             print(fetch_bundestag.fetch_stammdaten(http))
+        elif args.source == "protocols" and args.preliminary:
+            for path, still in fetch_bundestag.refetch_preliminary(http, args.wp):
+                print(f"{path}: {'still preliminary' if still else 'final version now'}")
         elif args.source == "protocols":
+            if args.first is None or args.last is None:
+                raise SystemExit("bdf fetch protocols: --from and --to are required (or --preliminary)")
             for path in fetch_bundestag.fetch_protocols(http, args.wp, args.first, args.last, force=args.force):
+                print(path)
+        elif args.source == "protocol-texts":
+            for path in fetch_dip.fetch_protocol_texts(http, args.wp, update.preliminary_numbers(args.wp)):
                 print(path)
         elif args.source == "votes":
             for row in fetch_bundestag.fetch_votes(http, args.start, args.end, force=args.force):
@@ -111,8 +127,10 @@ def cmd_fetch(args: argparse.Namespace) -> None:
 
 def cmd_query(args: argparse.Namespace) -> None:
     conn = db.connect(db_path())
-    if args.query in ("government", "photos", "stale-roles"):
-        if args.query == "government":
+    if args.query in ("government", "photos", "stale-roles", "protocol-gaps"):
+        if args.query == "protocol-gaps":
+            rows = queries.protocol_gaps(conn)
+        elif args.query == "government":
             rows = queries.government(conn, args.date.isoformat() if args.date else None)
         elif args.query == "stale-roles":
             rows = queries.stale_roles(conn, args.days)
@@ -182,6 +200,17 @@ def _format(kind: str, r: dict) -> str:
             f"last seen {r['to_date']} ({r['days_since_seen']} days before the newest sitting {r['newest_sitting']}), "
             f"belegt ab {r['from_date']} [{r['kind']}] {r['office']}: {r['name']} ({r['person_id']})\n{src}"
         )
+    if kind == "protocol-gaps":
+        head = f"{r['sitting_id']} ({r['date']}): XML pages {r['first_page'] or '?'}-{r['last_page'] or '?'}"
+        if r["preliminary"]:
+            head += f", PRELIMINARY (final announced for {r['final_announced'] or '?'})"
+            head += f"; missing pages {r['missing_pages']}" if r["missing_pages"] else ""
+            head += f"; DIP text for pages {r['fallback_pages']}" if r["fallback_pages"] else "; no DIP text pages"
+        lines = [head] + [
+            f"  [{b['cause']}] {b['position']}, S. {b['pages']}: {(b['title'] or b['vorgang_id'])[:100]}"
+            for b in r["beratungen"]
+        ]
+        return "\n".join(lines) + f"\n    ↳ {r['source_document_id']} — {r['pdf_url']}"
     if kind == "photos":
         if "local_path" not in r:  # --missing
             return f"{r['person_id']} {r['first_name']} {r['last_name']} [{r['fraction'] or '?'}]"

@@ -21,6 +21,7 @@ from bdf import (
     parse_votes,
     parse_wahl,
     parse_wikidata,
+    protocol_status,
     raw,
 )
 from bdf.config import DIP_BASE_URL, raw_dir
@@ -35,7 +36,7 @@ from bdf.fetch_bundestag import (
     vote_path,
     votes_index_path,
 )
-from bdf.fetch_dip import dip_dir
+from bdf.fetch_dip import dip_dir, protocol_text_path
 from bdf.fetch_wahl import ELECTION_OF_WAHLPERIODE, ELECTIONS, gemeinden_csv, gewaehlte_csv, gewaehlte_zip, kerg2_csv
 from bdf.match import PersonIndex
 from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_fraction, normalize_name
@@ -44,6 +45,7 @@ from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_fraction, normalize_
 def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_stammdaten(conn)
     ingest_protocols(conn)
+    ingest_protocol_gap_pages(conn)
     ingest_votes(conn)
     ingest_dip(conn)
     ingest_decisions(conn)
@@ -79,6 +81,7 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
         protocol = parse_protocol.parse(path)
         prov = raw.read_meta(path).provenance(protocol.document_id)
         sid = protocol.sitting_id
+        status = protocol.status
         new_persons = {}
         for sp in (s.speaker for s in protocol.speeches):
             if sp.id not in known and sp.id not in new_persons:
@@ -107,6 +110,11 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                         "xml_url": prov["source_url"],
                         "pdf_url": PROTOCOL_URL.format(wp=protocol.wahlperiode, nr=protocol.number, ext="pdf"),
                         **prov,
+                        "preliminary": int(status.preliminary),
+                        "final_announced": status.final_announced,
+                        "final_fetched_at": None if status.preliminary else prov["retrieved_at"],
+                        "first_page": status.first_page,
+                        "last_page": status.last_page,
                     }
                 ],
             )
@@ -168,7 +176,56 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
         print(
             f"protocol {sid} ({protocol.date}): {len(protocol.agenda_items)} agenda items, "
             f"{len(protocol.speeches)} speeches, {len(new_persons)} new non-MdB speakers"
+            + (f"; PRELIMINARY, pages to {status.last_page or '?'}" if status.preliminary else "")
         )
+
+
+def ingest_protocol_gap_pages(conn: sqlite3.Connection) -> None:
+    """protocol_gap_page: for each preliminary sitting, the pages after the XML's last page from DIP's
+    plenarprotokoll-text, cut at the page headers (bdf/protocol_status.py). Rows of sittings whose XML is final
+    (or gone) are dropped, so the fallback disappears once the final protocol is ingested."""
+    rows: list[dict] = []
+    report: list[str] = []
+    preliminary = {
+        r["id"]: r for r in conn.execute("SELECT id, wahlperiode, number, first_page, last_page FROM sitting "
+                                         "WHERE preliminary = 1")
+    }  # fmt: skip
+    for sid, st in sorted(preliminary.items(), key=lambda kv: (kv[1]["wahlperiode"], kv[1]["number"])):
+        path = protocol_text_path(st["wahlperiode"], st["number"])
+        if not path.exists():
+            report.append(f"{sid}: no DIP text fetched")
+            continue
+        meta = raw.read_meta(path)
+        docs = [d for d in raw.read_json(path) if d.get("dokumentnummer") == sid and d.get("text")]
+        if not docs:
+            report.append(f"{sid}: DIP has no text yet")
+            continue
+        if st["last_page"] is None:  # what the XML covers is unknown, so is what it lacks
+            report.append(f"{sid}: the XML has no page markers, no fallback")
+            continue
+        doc = docs[0]
+        pages = protocol_status.split_pages(doc["text"], st["wahlperiode"], st["number"], st["first_page"])
+        found = {page: text for page, text in pages.items() if page > st["last_page"]}
+        prov = meta.provenance(
+            f"DIP Plenarprotokoll-Text {doc.get('id', sid)}", url=f"{DIP_BASE_URL}/plenarprotokoll-text/{doc.get('id')}"
+        )
+        rows += [
+            {"id": f"{sid}/{page}", "sitting_id": sid, "page": page, "text": text, **prov}
+            for page, text in sorted(found.items())
+        ]
+        if not pages:
+            report.append(f"{sid}: no page headers found in the DIP text, no fallback")
+        elif found:
+            report.append(f"{sid}: pages {min(found)}-{max(found)} from DIP (XML ends on {st['last_page']})")
+        else:
+            report.append(f"{sid}: DIP text ends on page {max(pages)}, nothing after the XML's last page")
+    with conn:
+        conn.execute("DELETE FROM protocol_gap_page")
+        upsert(conn, "protocol_gap_page", rows)
+    if preliminary:
+        print(f"protocol gaps: {len(preliminary)} preliminary protocols, {len(rows)} fallback pages from DIP")
+        for line in report:
+            print(f"    {line}")
 
 
 class NameResolver:
