@@ -90,10 +90,7 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 — from Stammdaten `INSTITUTIONEN`; `kind` is derived from `INSART_LANG`.
 
 **sitting** `*id, wahlperiode, number, date, start_time, end_time, xml_url, pdf_url, source_url, source_document_id, retrieved_at, preliminary (0 | 1), final_announced, final_fetched_at, first_page, last_page`
-— `preliminary = 1`: the XML on disk is the preliminary version (below, "Preliminary protocols"); `final_announced` is the date its note gives for the final version, `final_fetched_at` the `retrieved_at` of the XML once it is final (NULL while preliminary). `first_page` is `start-seitennr`, `last_page` the highest `druckseitennummer` marker in `<sitzungsverlauf>` (NULL without markers): the Druckseiten the XML covers.
-
-**protocol_gap_page** `*id ("<sitting_id>/<page>"), sitting_id →sitting, page, text, source_url, source_document_id ("DIP Plenarprotokoll-Text <id>"), retrieved_at`
-— for a preliminary sitting, each Druckseite after its `last_page` as plain text from DIP's `plenarprotokoll-text` (made from the PDF), unparsed: no speeches, decisions or interjections are read from it. Rebuilt on every ingest; once the sitting's XML is final its rows are gone.
+— `preliminary = 1`: the XML on disk is the preliminary version (below, "Preliminary protocols"); `final_announced` is the date its note gives for the final version, `final_fetched_at` the `retrieved_at` of the XML once it is final (NULL while preliminary). `first_page` is `start-seitennr`. `last_page` is set only for a preliminary sitting whose PDF part was read: the Druckseite the XML's text ends on, found in the final PDF; the agenda items, paragraphs and speeches after it come from the PDF and have it as their `source_url` (`source_document_id` "BT-PlPr. 21/31 (PDF)").
 
 **agenda_item** `*id, sitting_id →sitting, position, top_id (XML top-id attribute), title, drucksache_numbers (JSON array of "21/7300"), source_url, source_document_id, retrieved_at, no_debate (0 | 1, default 0)`
 — `no_debate = 1`: the chair said that no Aussprache is provided ("zu denen keine Aussprache vorgesehen ist", "ohne Debatte", "Eine Aussprache ist nicht vorgesehen"). For a block item (below) it means the block was called up that way. Speeches of the item stay as they are.
@@ -138,8 +135,8 @@ Every WP21 Fragestunde (25 agenda items, not just early ones) has no `<rede>` at
 **agenda_sub_item** `*id ("<agenda_item_id>/<label>", e.g. "21/96/6/41b"), agenda_item_id →agenda_item, label ("41b"; Zusatzpunkte "ZP8", "ZP10a"), position (order within the item), title (this sub-item's title lines joined with " | "), drucksache_numbers (JSON array), first_paragraph, last_paragraph (positions in agenda_item_paragraph), source_url, source_document_id, retrieved_at, no_debate (0 | 1)`
 — one `<tagesordnungspunkt>` is sometimes a block of many real items voted one by one ("Ich rufe auf die Tagesordnungspunkte 41b bis 41s. Es handelt sich um die Beschlussfassung zu Vorlagen, zu denen keine Aussprache vorgesehen ist."; 33 such items in the 97 sittings to 25 September 2026). Each is announced by a chair paragraph that is only the call-up ("Tagesordnungspunkt 41c:", "Zusatzpunkt 8:", "Wir kommen zu Tagesordnungspunkt 12k:"); `bdf/parse_sub_items.py` cuts the item there, the sub-item taking the procedural title lines and Drucksache lines up to the next call-up. Only an item with at least two distinct call-ups gets sub-items; all other items stay the unit, and the parent row is unchanged either way (title, Drucksachen, ids). Not split: a debated pair or triple ("Tagesordnungspunkte 7a und 7b", call-ups with words after them) and lettered lists that no call-up announces ("40 a) … b) …", Überweisungen im vereinfachten Verfahren). `no_debate` is the chair's statement made before the call-up (or in the sub-item), so the whole block carries it.
 
-**agenda_item_vorlage** `*id ("<agenda_item_id or sub_item_id>/<drucksache_number>"), agenda_item_id →agenda_item, sub_item_id →agenda_sub_item (NULL when the Drucksache is listed on the item itself), drucksache_number, vorgang_id →vorgang, source_url, source_document_id, retrieved_at`
-— the Drucksachen of `agenda_item.drucksache_numbers` as rows. An item with sub-items lists each Drucksache under its sub-item (and any Drucksache outside all of them under the item), so one query over `agenda_item_id` sees every Drucksache once. `vorgang_id` is the Vorgang of `vorgang_drucksache` when the Drucksache has exactly one, else NULL. Rebuilt in full by `ingest_vorlagen` after the DIP ingest.
+**agenda_item_vorlage** `*id ("<agenda_item_id or sub_item_id>/<drucksache_number>"), agenda_item_id →agenda_item, sub_item_id →agenda_sub_item (NULL when the Drucksache is listed on the item itself), drucksache_number, vorgang_id →vorgang, source_url, source_document_id, retrieved_at, via (title | decision)`
+— the Drucksachen of `agenda_item.drucksache_numbers` as rows (`via = 'title'`), plus each Drucksache a decision taken under the item names that the item's title does not (`via = 'decision'`, provenance of the decision): mostly the Entschließungsanträge to a bill, debated with it and voted on after it, which the printed title leaves out. An item with sub-items lists each Drucksache under its sub-item (and any Drucksache outside all of them under the item), so one query over `agenda_item_id` sees every Drucksache once. `vorgang_id` is the Vorgang of `vorgang_drucksache` when the Drucksache has exactly one, else NULL. Rebuilt in full by `ingest_vorlagen` after the DIP ingest.
 
 **decision** `*id, sitting_id →sitting, agenda_item_id →agenda_item, n, position, kind (namentlich | handzeichen), subject, drucksache_number, result (angenommen | abgelehnt | NULL), roll_call_vote_id →roll_call_vote, text, source_url, source_document_id, retrieved_at, sub_item_id →agenda_sub_item, vorgang_id →vorgang`
 — one row per decision on substance announced by the chair (`bdf/parse_decisions.py`). Roll-call rows take the id of their `roll_call_vote` (`21/90/7`; `21/90/n<k>` without one), show-of-hands rows `<sitting>/h<n>`. `n` counts per kind within the sitting, `position` orders all decisions of the sitting. `text` is the chair's words the row was read from. Procedure (Überweisung, Tagesordnung, Aufsetzung …) and elections are not decisions. `sub_item_id` is the sub-item whose call-up the chair had spoken last where the decision was read (NULL for items without sub-items, and for a decision moved to another item); it also supplies what the chair leaves out: the number of a Sammelübersicht ("Auch diese Sammelübersicht ist angenommen" is 305 under "Tagesordnungspunkt 41h") and a lone Drucksache. `vorgang_id` is the only Vorgang of `drucksache_number` in `vorgang_drucksache`, else NULL.
@@ -267,34 +264,40 @@ protocol-only; a successor in a Kanzler/Bundesminister office takes it out of th
 
 bundestag.de serves a protocol's XML at its final URL (`btp/21/21031.xml`) before the final version exists. The
 preliminary version carries a note, "Der gesamte und damit endgültige Stenografische Bericht der 31. Sitzung wird
-am … veröffentlicht", and may end before the sitting did: in WP 21 the downstream cards found 17 of 97 protocols
-still preliminary, 8 of them (21/14, 21/31, 21/37, 21/59, 21/80, 21/83, 21/89, 21/96) without their last 33–82
-pages, the late-evening debates.
+am … veröffentlicht", and may end hours before the sitting did. On 2026-10-01, 17 of 97 WP 21 protocols were still
+preliminary, some for a year (21/14, announced for 2025-07-01); 21/31 ends after TOP 22, the PDF goes on to TOP 31.
+DIP's `plenarprotokoll-text` was no help: for 21/31 it is the same preliminary text. The PDF at the same address
+(`btp/21/21031.pdf`) is the final version.
 
 - **Detect** (`protocol_status.status`): the note (also "vorläufiger Stenografischer Bericht") anywhere in the
-  document text, the announced date, and the Druckseiten the `<sitzungsverlauf>` covers. Stored on `sitting`.
+  document text, and the announced date. Stored on `sitting`.
 - **Re-fetch** (`fetch_bundestag.refetch_preliminary`, run by `update` on every run, by hand with
   `bdf fetch protocols --preliminary`): every preliminary XML on disk is downloaded again and replaces the file;
-  `ingest` then replaces the sitting's speeches, items and paragraphs as for any re-ingested protocol, and the new
-  agenda items, speeches and decisions of the missing pages appear.
-- **Fall back** until then (`fetch_dip.fetch_protocol_texts`, run by `update` with a DIP key, by hand with
-  `bdf fetch protocol-texts`): DIP's `plenarprotokoll-text` of each preliminary protocol, re-fetched every run,
-  is cut into pages at the running page headers ("3392 Deutscher Bundestag – 21. Wahlperiode – 31. Sitzung.
-  Berlin, …"); the pages after the XML's `last_page` become `protocol_gap_page` rows. The PDF (`sitting.pdf_url`)
-  stays the reference when DIP has no text, no header is found or the XML has no page markers.
+  `ingest` then replaces the sitting's speeches, items and paragraphs as for any re-ingested protocol (agenda items
+  it no longer has are dropped).
+- **PDF part** until then (`fetch_bundestag.fetch_preliminary_pdfs`, same runs): the PDF of each preliminary
+  protocol, fetched again every run and written only when it changed. `parse_protocol.parse` hands a preliminary
+  XML with a PDF beside it to `protocol_pdf.merge`, which reads the PDF column by column (pdfplumber; font size and
+  weight tell speaker lines, body text, agenda titles and comments apart), finds where the XML's text ends (its last
+  ~300 letters, normalized, in the PDF's text) and appends what follows as the elements the XML would have had:
+  `<tagesordnungspunkt>` at each call-up ("Ich rufe den Tagesordnungspunkt 29 auf:") with `T_*` title paragraphs,
+  `<rede>` with `<redner>`, `<name>` for the presidency, `<kommentar>`, `<p>`; it stops at "(Schluss: … Uhr)" and
+  leaves out the printed name lists of roll-call votes. Speakers get the id another protocol's XML gives the same
+  printed line or name; one never seen gets `pdf-<name>` (a non-MdB person row) and ingest names them. Everything
+  downstream (decisions, sub-items, interjections, Vorlagen) reads these rows like any other. Reading a PDF takes
+  about 30 s; the lines are kept beside it (`<pdf>.lines.json`) while the PDF is unchanged.
 - **Check** (`bdf query protocol-gaps`): per sitting that is preliminary or has one, every Beratung DIP places in
-  its Plenarprotokoll (BT `vorgang_position` of kind Plenarprotokoll with pages, position "…Beratung…") under which
-  no agenda item or sub-item of the sitting names a Drucksache of the Vorgang, with its cause: `missing_pages`
-  (it starts after the XML's last page), `in_xml` (its pages are in the XML: the item names other Drucksachen, or
-  the parser misses it; to be looked at) or `unknown` (no page markers).
+  its Plenarprotokoll (BT `vorgang_position` of kind Plenarprotokoll with pages, position "…Beratung…") that no
+  agenda item or sub-item of the sitting carries (a Drucksache of the Vorgang, or an `agenda_item_vorlage` row for
+  it), with its cause: `preliminary` (no PDF part read), `after_xml_end` (after the XML's end, so the PDF part
+  missed it) or `in_protocol` (the protocol has it: another Drucksache on the item, or the parser misses it).
 
 ## CLI
 
 ```
 bdf fetch stammdaten
 bdf fetch protocols --wp 21 --from 88 --to 90
-bdf fetch protocols --wp 21 --preliminary           # the preliminary protocols on disk again
-bdf fetch protocol-texts --wp 21                    # DIP plenarprotokoll-text of the preliminary protocols
+bdf fetch protocols --wp 21 --preliminary           # the preliminary protocols on disk again, and their PDFs
 bdf fetch votes --from 2026-07-06 --to 2026-07-10
 bdf fetch dip --from 2026-07-06 --to 2026-07-10     # drucksachen, authors, vorgänge, vorgangspositionen, persons
 bdf fetch aw --wp 21
@@ -308,7 +311,7 @@ bdf query government [--date 2026-09-28]           # roles, optionally those hel
 bdf query stale-roles [--days 90]                   # protocol-only roles not printed for >90 days before the newest sitting
 bdf query photos     [--missing]                    # portraits with credit, or sitting members without one
 bdf query decisions  --sitting 21/90                # decisions announced by the chair, fraction positions / roll-call totals
-bdf query protocol-gaps                             # preliminary protocols, missing pages, Beratungen without an item
+bdf query protocol-gaps                             # preliminary protocols, DIP Beratungen without an agenda item
 bdf query corpus     --from … --to …                # JSONL: one clean speech per line with speaker id, fraction, date, source
 bdf export data/export                              # open data: one CSV.gz per table, datapackage.json, README.md
 ```

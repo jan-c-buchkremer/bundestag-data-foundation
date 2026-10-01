@@ -32,7 +32,9 @@ def build_parser() -> argparse.ArgumentParser:
     fp.add_argument("--from", dest="first", type=int, metavar="NR")
     fp.add_argument("--to", dest="last", type=int, metavar="NR")
     fp.add_argument(
-        "--preliminary", action="store_true", help="instead of a range: fetch the preliminary protocols on disk again"
+        "--preliminary",
+        action="store_true",
+        help="instead of a range: fetch the preliminary protocols on disk again, and the final PDF of each",
     )
     fv = fs.add_parser("votes", help="roll-call vote XLSX/PDF by date range")
     _add_range(fv)
@@ -45,8 +47,6 @@ def build_parser() -> argparse.ArgumentParser:
     fw.add_argument("--election", default="btw25", choices=sorted(fetch_wahl.ELECTIONS))
     fph = fs.add_parser("photos", help="bundestag.de MdB biography list (all pages) and the portraits")
     fs.add_parser("government", help="Wikidata: federal government roles since 2025-05-06, Commons portraits")
-    ft = fs.add_parser("protocol-texts", help="DIP plenarprotokoll-text of the preliminary protocols on disk")
-    ft.add_argument("--wp", type=int, default=21)
     for sp in (fp, fv, fd, fa, fw, fph):
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")
 
@@ -82,7 +82,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--days", type=int, default=queries.STALE_AFTER_DAYS, help="days before the newest sitting (default: 90)"
     )
     qgap = qs.add_parser(
-        "protocol-gaps", help="preliminary protocols and DIP Beratungen without an agenda item in the protocol XML"
+        "protocol-gaps", help="preliminary protocols and DIP Beratungen without an agenda item in the protocol"
     )
     for sp in (qg, qph, qs_, qgap):
         sp.add_argument("--json", action="store_true", help="JSON lines instead of text")
@@ -99,13 +99,12 @@ def cmd_fetch(args: argparse.Namespace) -> None:
         elif args.source == "protocols" and args.preliminary:
             for path, still in fetch_bundestag.refetch_preliminary(http, args.wp):
                 print(f"{path}: {'still preliminary' if still else 'final version now'}")
+            for path, changed in fetch_bundestag.fetch_preliminary_pdfs(http, args.wp):
+                print(f"{path}: {'new or changed' if changed else 'unchanged'}")
         elif args.source == "protocols":
             if args.first is None or args.last is None:
                 raise SystemExit("bdf fetch protocols: --from and --to are required (or --preliminary)")
             for path in fetch_bundestag.fetch_protocols(http, args.wp, args.first, args.last, force=args.force):
-                print(path)
-        elif args.source == "protocol-texts":
-            for path in fetch_dip.fetch_protocol_texts(http, args.wp, update.preliminary_numbers(args.wp)):
                 print(path)
         elif args.source == "votes":
             for row in fetch_bundestag.fetch_votes(http, args.start, args.end, force=args.force):
@@ -201,11 +200,14 @@ def _format(kind: str, r: dict) -> str:
             f"belegt ab {r['from_date']} [{r['kind']}] {r['office']}: {r['name']} ({r['person_id']})\n{src}"
         )
     if kind == "protocol-gaps":
-        head = f"{r['sitting_id']} ({r['date']}): XML pages {r['first_page'] or '?'}-{r['last_page'] or '?'}"
+        head = f"{r['sitting_id']} ({r['date']})"
         if r["preliminary"]:
-            head += f", PRELIMINARY (final announced for {r['final_announced'] or '?'})"
-            head += f"; missing pages {r['missing_pages']}" if r["missing_pages"] else ""
-            head += f"; DIP text for pages {r['fallback_pages']}" if r["fallback_pages"] else "; no DIP text pages"
+            head += f": PRELIMINARY (final announced for {r['final_announced'] or '?'})"
+            head += (
+                f", XML ends on page {r['last_page']}, {r['pdf_speeches']} speeches from the PDF"
+                if r["last_page"]
+                else ", no PDF part"
+            )
         lines = [head] + [
             f"  [{b['cause']}] {b['position']}, S. {b['pages']}: {(b['title'] or b['vorgang_id'])[:100]}"
             for b in r["beratungen"]

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dbtplenarprotokoll
+  SYSTEM "dbtplenarprotokoll.dtd">
+<dbtplenarprotokoll vertrieb="Bundesanzeiger Verlag GmbH, Postfach 1 0 05 34, 50445 Köln, Telefon (02 21) 97 66 83 40, Fax (02 21) 97 66 83 44, www.bundesanzeiger-verlag.de" herstellung="H. Heenemann GmbH  Co. KG, Buch- und Offsetdruckerei, Bessemerstraße 83–91, 12103 Berlin, www.heenemann-druck.de" sitzung-ort="Berlin" herausgeber="Deutscher Bundestag" issn="0722-7980" wahlperiode="21" sitzung-nr="49" sitzung-datum="17.12.2025" sitzung-start-uhrzeit="14:00" sitzung-ende-uhrzeit="20:55" sitzung-naechste-datum="18.12.2025" start-seitennr="5735">
+<!-- Excerpt: one speaker line (Kerstin Griese as Parl. Staatssekretärin) and the paragraph after it, to resolve
+     the speaker the PDF part of 21/31 names; everything else is removed. -->
+    <sitzungsverlauf>
+        <tagesordnungspunkt top-id="Zusatzpunkt 1">
+            <rede id="ID214909700">
+                <p klasse="redner"><a id="r97"/><redner id="11003440"><name><vorname>Kerstin</vorname><nachname>Griese</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Kerstin Griese, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+                <p klasse="J_1">Vielen Dank. – Sehr geehrter Herr Präsident! Liebe Kolleginnen und Kollegen! Ich komme dann mal wieder zu den Fakten.</p>
+            </rede>
+        </tagesordnungspunkt>
+    </sitzungsverlauf>
+</dbtplenarprotokoll>

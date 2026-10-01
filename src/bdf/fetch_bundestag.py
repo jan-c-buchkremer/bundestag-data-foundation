@@ -93,6 +93,30 @@ def refetch_preliminary(http: httpx.Client, wp: int, skip: Iterable[Path] = ()) 
     return out
 
 
+def fetch_preliminary_pdfs(http: httpx.Client, wp: int) -> list[tuple[Path, bool]]:
+    """The PDF of every preliminary protocol on disk (``21031.pdf`` beside ``21031.xml``): the final text is there
+    long before the XML is (bdf/protocol_pdf.py). Fetched again on every run, since a PDF fetched on the day of the
+    sitting may still lack pages, but written only when it changed, so the lines read from it stay cached. Returns
+    (path, changed) per PDF found."""
+    out = []
+    for path in preliminary_protocols(wp):
+        nr = int(path.stem[len(str(wp)) :])
+        url, pdf = PROTOCOL_URL.format(wp=wp, nr=nr, ext="pdf"), path.with_suffix(".pdf")
+        try:
+            content = raw.get(http, url).content
+        except httpx.HTTPStatusError as e:
+            if e.response.status_code == 404:
+                print(f"  {wp}/{nr}: no PDF yet (404)")
+                continue
+            raise
+        changed = not pdf.exists() or pdf.read_bytes() != content
+        if changed:
+            pdf.write_bytes(content)
+            raw.write_meta(pdf, url)
+        out.append((pdf, changed))
+    return out
+
+
 def _parse_vote_list(fragment: str) -> list[dict]:
     """Rows of the bundestag.de roll-call list fragment: date, title, pdf/xlsx URLs."""
     items: dict[str, dict] = {}

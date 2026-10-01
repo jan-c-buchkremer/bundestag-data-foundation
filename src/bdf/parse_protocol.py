@@ -31,14 +31,19 @@ is where the presidency calls items, puts questions to the vote and announces re
 agenda item paragraphs (``Protocol.agenda_paragraphs``) with kinds ``chair``, ``comment`` and
 ``procedural`` (``T_*`` classes). The printed name lists of roll-call votes (``AL_Namen``,
 ``AL_Partei``, ``AL_Ja-Nein-Enth``) are left out: the XLSX has them per member.
+
+A preliminary XML can end before the sitting does. When the final PDF lies next to it (``21031.pdf`` beside
+``21031.xml``), bdf/protocol_pdf.py appends what the PDF has after the XML's last text as the same elements, marked
+``quelle="pdf"``; the agenda items, speeches and paragraphs read from them say so (``from_pdf``), so ingest gives
+them the PDF as their source.
 """
 
 import json
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
-from bdf import protocol_status
+from bdf import protocol_pdf, protocol_status
 from bdf.names import DRUCKSACHE_RE, clean_text, iso_date, normalize_fraction
 from bdf.parse_sub_items import TITLE_CLASSES_SKIPPED as _TITLE_CLASSES_SKIPPED
 from bdf.parse_sub_items import split as _split_sub_items
@@ -67,6 +72,7 @@ class Speech:
     paragraphs: list[tuple[str, str]] = field(default_factory=list)  # (kind, text)
     kind: str = "rede"  # rede | fragestunde
     sub_item_id: str | None = None  # agenda_sub_item.id of the block item this speech was given in
+    from_pdf: bool = False  # read from the final PDF, not the (preliminary) XML
 
     @property
     def text(self) -> str:
@@ -89,7 +95,7 @@ class Protocol:
     # blocks of items called up one by one inside one agenda item (bdf/parse_sub_items.py)
     agenda_sub_items: list[dict] = field(default_factory=list)
     # preliminary version, announced date of the final one, Druckseiten covered (bdf/protocol_status.py)
-    status: protocol_status.Status = field(default_factory=lambda: protocol_status.Status(False, None, None, None))
+    status: protocol_status.Status = field(default_factory=lambda: protocol_status.Status(False, None, None))
 
     @property
     def sitting_id(self) -> str:
@@ -150,6 +156,7 @@ def _split_rede(rede: ET.Element, position: int, agenda_item_id: str | None) -> 
                     speaker=speaker,
                     position=position + len(speeches),
                     agenda_item_id=agenda_item_id,
+                    from_pdf=rede.get("quelle") == "pdf",
                 )
                 speeches.append(current)
             continue
@@ -189,6 +196,7 @@ def _agenda_item(top: ET.Element, sitting_id: str, position: int) -> dict:
         "top_id": clean_text(top.get("top-id")),
         "title": " | ".join(title_parts) or None,
         "drucksache_numbers": json.dumps(numbers),
+        "from_pdf": top.get("quelle") == "pdf",
     }
 
 
@@ -216,7 +224,8 @@ def _agenda_paragraphs(top: ET.Element, agenda_item_id: str, speeches_before: in
             n = len(rows) + 1
             rows.append(
                 {"id": f"{agenda_item_id}/{n}", "agenda_item_id": agenda_item_id, "position": n, "kind": kind,
-                 "text": text, "klasse": klasse, "after_speeches": speeches_before}
+                 "text": text, "klasse": klasse, "after_speeches": speeches_before,
+                 "from_pdf": el.get("quelle") == "pdf"}
             )  # fmt: skip
     return rows
 
@@ -324,6 +333,10 @@ def _assign_speech_sub_items(speeches: list[Speech], agenda_paragraphs: list[dic
 
 def parse(path: Path) -> Protocol:
     root = ET.parse(path).getroot()
+    status = protocol_status.status(root)
+    pdf = path.with_suffix(".pdf")
+    if status.preliminary and pdf.exists():
+        status = replace(status, last_page=protocol_pdf.merge(root, pdf, path.parent))
     wp, nr = int(root.get("wahlperiode")), int(root.get("sitzung-nr"))
     sitting_id = f"{wp}/{nr}"
     verlauf = root.find("sitzungsverlauf")
@@ -358,5 +371,5 @@ def parse(path: Path) -> Protocol:
         speeches=speeches,
         agenda_paragraphs=agenda_paragraphs,
         agenda_sub_items=sub_items,
-        status=protocol_status.status(root),
+        status=status,
     )

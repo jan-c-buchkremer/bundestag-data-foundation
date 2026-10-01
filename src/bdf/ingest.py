@@ -21,7 +21,6 @@ from bdf import (
     parse_votes,
     parse_wahl,
     parse_wikidata,
-    protocol_status,
     raw,
 )
 from bdf.config import DIP_BASE_URL, raw_dir
@@ -36,7 +35,7 @@ from bdf.fetch_bundestag import (
     vote_path,
     votes_index_path,
 )
-from bdf.fetch_dip import dip_dir, protocol_text_path
+from bdf.fetch_dip import dip_dir
 from bdf.fetch_wahl import ELECTION_OF_WAHLPERIODE, ELECTIONS, gemeinden_csv, gewaehlte_csv, gewaehlte_zip, kerg2_csv
 from bdf.match import PersonIndex
 from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_fraction, normalize_name
@@ -45,7 +44,6 @@ from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_fraction, normalize_
 def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_stammdaten(conn)
     ingest_protocols(conn)
-    ingest_protocol_gap_pages(conn)
     ingest_votes(conn)
     ingest_dip(conn)
     ingest_decisions(conn)
@@ -82,6 +80,13 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
         prov = raw.read_meta(path).provenance(protocol.document_id)
         sid = protocol.sitting_id
         status = protocol.status
+        pdf = path.with_suffix(".pdf")
+        # rows read from the final PDF (a preliminary XML's missing end, bdf/protocol_pdf.py) name the PDF
+        pdf_prov = raw.read_meta(pdf).provenance(f"{protocol.document_id} (PDF)") if status.last_page else prov
+        resolver = resolvers.setdefault(protocol.wahlperiode, NameResolver(PersonIndex(conn, protocol.wahlperiode)))
+        for sp in (s.speaker for s in protocol.speeches if s.from_pdf and s.speaker.id.startswith("pdf-")):
+            # a PDF speaker no XML names (an MdB's first speech in a new office): the Stammdaten may know them
+            sp.id = resolver(f"{sp.first_name} {sp.last_name}") or sp.id
         new_persons = {}
         for sp in (s.speaker for s in protocol.speeches):
             if sp.id not in known and sp.id not in new_persons:
@@ -118,7 +123,16 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                     }
                 ],
             )
-            upsert(conn, "agenda_item", [{**item, "sitting_id": sid, **prov} for item in protocol.agenda_items])
+            upsert(
+                conn,
+                "agenda_item",
+                [
+                    {k: v for k, v in item.items() if k != "from_pdf"}
+                    | {"sitting_id": sid}
+                    | (pdf_prov if item["from_pdf"] else prov)
+                    for item in protocol.agenda_items
+                ],
+            )
             conn.execute(
                 "DELETE FROM agenda_item_paragraph WHERE agenda_item_id IN "
                 "(SELECT id FROM agenda_item WHERE sitting_id = ?)",
@@ -128,7 +142,8 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                 conn,
                 "agenda_item_paragraph",
                 [
-                    {k: v for k, v in p.items() if k not in ("after_speeches", "klasse")} | prov
+                    {k: v for k, v in p.items() if k not in ("after_speeches", "klasse", "from_pdf")}
+                    | (pdf_prov if p.get("from_pdf") else prov)
                     for p in protocol.agenda_paragraphs
                 ],
             )
@@ -156,7 +171,7 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                         "text": s.text,
                         "kind": s.kind,
                         "sub_item_id": s.sub_item_id,
-                        **prov,
+                        **(pdf_prov if s.from_pdf else prov),
                     }
                     for s in protocol.speeches
                 ],
@@ -170,62 +185,21 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                     for n, (kind, text) in enumerate(s.paragraphs, start=1)
                 ],
             )
-            resolver = resolvers.setdefault(protocol.wahlperiode, NameResolver(PersonIndex(conn, protocol.wahlperiode)))
             upsert(conn, "interjection", interjection_rows(protocol.speeches, resolver))
+            _drop_stale_agenda_items(conn, sid, {item["id"] for item in protocol.agenda_items})
         known.update(new_persons)
+        from_pdf = [s for s in protocol.speeches if s.from_pdf]
+        unmatched = sorted({s.speaker.printed for s in from_pdf if s.speaker.id.startswith("pdf-")})
         print(
             f"protocol {sid} ({protocol.date}): {len(protocol.agenda_items)} agenda items, "
             f"{len(protocol.speeches)} speeches, {len(new_persons)} new non-MdB speakers"
-            + (f"; PRELIMINARY, pages to {status.last_page or '?'}" if status.preliminary else "")
-        )
-
-
-def ingest_protocol_gap_pages(conn: sqlite3.Connection) -> None:
-    """protocol_gap_page: for each preliminary sitting, the pages after the XML's last page from DIP's
-    plenarprotokoll-text, cut at the page headers (bdf/protocol_status.py). Rows of sittings whose XML is final
-    (or gone) are dropped, so the fallback disappears once the final protocol is ingested."""
-    rows: list[dict] = []
-    report: list[str] = []
-    preliminary = {
-        r["id"]: r for r in conn.execute("SELECT id, wahlperiode, number, first_page, last_page FROM sitting "
-                                         "WHERE preliminary = 1")
-    }  # fmt: skip
-    for sid, st in sorted(preliminary.items(), key=lambda kv: (kv[1]["wahlperiode"], kv[1]["number"])):
-        path = protocol_text_path(st["wahlperiode"], st["number"])
-        if not path.exists():
-            report.append(f"{sid}: no DIP text fetched")
-            continue
-        meta = raw.read_meta(path)
-        docs = [d for d in raw.read_json(path) if d.get("dokumentnummer") == sid and d.get("text")]
-        if not docs:
-            report.append(f"{sid}: DIP has no text yet")
-            continue
-        if st["last_page"] is None:  # what the XML covers is unknown, so is what it lacks
-            report.append(f"{sid}: the XML has no page markers, no fallback")
-            continue
-        doc = docs[0]
-        pages = protocol_status.split_pages(doc["text"], st["wahlperiode"], st["number"], st["first_page"])
-        found = {page: text for page, text in pages.items() if page > st["last_page"]}
-        prov = meta.provenance(
-            f"DIP Plenarprotokoll-Text {doc.get('id', sid)}", url=f"{DIP_BASE_URL}/plenarprotokoll-text/{doc.get('id')}"
-        )
-        rows += [
-            {"id": f"{sid}/{page}", "sitting_id": sid, "page": page, "text": text, **prov}
-            for page, text in sorted(found.items())
-        ]
-        if not pages:
-            report.append(f"{sid}: no page headers found in the DIP text, no fallback")
-        elif found:
-            report.append(f"{sid}: pages {min(found)}-{max(found)} from DIP (XML ends on {st['last_page']})")
-        else:
-            report.append(f"{sid}: DIP text ends on page {max(pages)}, nothing after the XML's last page")
-    with conn:
-        conn.execute("DELETE FROM protocol_gap_page")
-        upsert(conn, "protocol_gap_page", rows)
-    if preliminary:
-        print(f"protocol gaps: {len(preliminary)} preliminary protocols, {len(rows)} fallback pages from DIP")
-        for line in report:
-            print(f"    {line}")
+            + (f"; PRELIMINARY (final announced for {status.final_announced or '?'})" if status.preliminary else "")
+            + (f", XML ends on page {status.last_page}, then {sum(i['from_pdf'] for i in protocol.agenda_items)} "
+               f"agenda items and {len(from_pdf)} speeches from the PDF" if status.last_page else "")
+            + (f"; no PDF part ({'PDF not fetched' if not pdf.exists() else 'XML end not found in the PDF'})"
+               if status.preliminary and not status.last_page else "")
+            + (f"; speakers not in any XML: {', '.join(unmatched)}" if unmatched else "")
+        )  # fmt: skip
 
 
 class NameResolver:
@@ -555,6 +529,21 @@ def _link_votes_to_dip(conn: sqlite3.Connection) -> None:
 # --- decisions -----------------------------------------------------------------------------
 
 
+def _drop_stale_agenda_items(conn: sqlite3.Connection, sitting_id: str, keep: set[str]) -> None:
+    """Drop the agenda items of a sitting that a re-parse no longer finds: the final XML can number the items read
+    from a preliminary protocol's PDF differently. Decisions and votes pointing at them are re-linked by their own
+    ingest; speeches, paragraphs and sub-items of the sitting are replaced before this runs."""
+    stale = [
+        r["id"] for r in conn.execute("SELECT id FROM agenda_item WHERE sitting_id = ?", (sitting_id,))
+        if r["id"] not in keep
+    ]  # fmt: skip
+    for item_id in stale:
+        conn.execute("UPDATE decision SET agenda_item_id = NULL WHERE agenda_item_id = ?", (item_id,))
+        conn.execute("UPDATE roll_call_vote SET agenda_item_id = NULL WHERE agenda_item_id = ?", (item_id,))
+        conn.execute("DELETE FROM agenda_item_vorlage WHERE agenda_item_id = ?", (item_id,))
+        conn.execute("DELETE FROM agenda_item WHERE id = ?", (item_id,))
+
+
 def _replace_sub_items(conn: sqlite3.Connection, sitting_id: str, rows: list[dict]) -> None:
     """Upsert a sitting's sub-items and drop the ones a re-parse no longer finds (with what points at them)."""
     upsert(conn, "agenda_sub_item", rows)
@@ -602,6 +591,20 @@ def ingest_vorlagen(conn: sqlite3.Connection) -> None:
         for number in json.loads(item["drucksache_numbers"]):
             if number not in in_subs:
                 rows.append(_vorlage_row(item["id"], item["id"], None, number, vorgang, prov))
+    # a Drucksache decided under an item without being in its title: mostly the Entschließungsanträge to a bill,
+    # debated with it and voted on after it, which the item's title does not list
+    seen = {r["id"] for r in rows}
+    on_item = {(r["agenda_item_id"], r["drucksache_number"]) for r in rows}
+    for d in conn.execute(
+        "SELECT * FROM decision WHERE agenda_item_id IS NOT NULL AND drucksache_number IS NOT NULL ORDER BY position"
+    ):
+        prov = {k: d[k] for k in ("source_url", "source_document_id", "retrieved_at")}
+        for number in DRUCKSACHE_RE.findall(d["drucksache_number"]):
+            row = _vorlage_row(d["sub_item_id"] or d["agenda_item_id"], d["agenda_item_id"], d["sub_item_id"], number,
+                               vorgang, prov, via="decision")  # fmt: skip
+            if row["id"] not in seen and (d["agenda_item_id"], number) not in on_item:
+                seen.add(row["id"])
+                rows.append(row)
     with conn:
         conn.execute("DELETE FROM agenda_item_vorlage")
         upsert(conn, "agenda_item_vorlage", rows)
@@ -613,13 +616,17 @@ def ingest_vorlagen(conn: sqlite3.Connection) -> None:
             ],
         )
     linked = sum(1 for r in rows if r["vorgang_id"])
-    print(f"vorlagen: {len(rows)} Drucksachen on agenda items ({linked} with a Vorgang)")
+    decided = sum(1 for r in rows if r["via"] == "decision")
+    print(f"vorlagen: {len(rows)} Drucksachen on agenda items ({linked} with a Vorgang), {decided} of them only "
+          "named in a decision under the item")  # fmt: skip
 
 
-def _vorlage_row(owner: str, item_id: str, sub_id: str | None, number: str, vorgang: dict, prov: dict) -> dict:
+def _vorlage_row(
+    owner: str, item_id: str, sub_id: str | None, number: str, vorgang: dict, prov: dict, via: str = "title"
+) -> dict:
     return {
         "id": f"{owner}/{number}", "agenda_item_id": item_id, "sub_item_id": sub_id,
-        "drucksache_number": number, "vorgang_id": vorgang.get(number), **prov,
+        "drucksache_number": number, "vorgang_id": vorgang.get(number), **prov, "via": via,
     }  # fmt: skip
 
 
