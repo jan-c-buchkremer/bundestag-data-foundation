@@ -30,6 +30,7 @@ import json
 import re
 import unicodedata
 import xml.etree.ElementTree as ET
+from collections import Counter
 from dataclasses import asdict, dataclass, field
 from functools import cache
 from pathlib import Path
@@ -50,7 +51,10 @@ _CALL_RE = re.compile(
 _END_RE = re.compile(r"^\(Schluss:\s*\d")
 _DRUCKSACHE_START = re.compile(r"^Drucksachen?\s+\d+/\d+")
 _RESULT_LIST = re.compile(r"^(?:Endgültiges\s+)?Ergebnis\b")
-_LINES_VERSION = 4  # bump when Line or the reading changes, so cached lines are read again
+# the bold heading the Anlagen start with ("Anlage 1", "Anlage", "Anlagen zum Stenografischen Bericht"); the sitting
+# ends before it, and its pages (excused members, statements on votes, speeches "zu Protokoll") are left out
+_ANLAGE_RE = re.compile(r"^Anlagen?(?:\s+\d+)?(?:\s+zum\s+Stenografischen\s+Bericht)?$")
+_LINES_VERSION = 6  # bump when Line or the reading changes, so cached lines are read again
 # gap between letters that still counts as one word; pdfplumber's default (3 pt) runs the words of some PDFs together
 # (21/96: "DeutscherBundestag–21.Wahlperiode")
 _X_TOLERANCE = 1.5
@@ -124,7 +128,9 @@ def _line(chars: list[dict], text: str, top: float, left: float, page: int) -> L
 # left pages print the number (or a range of numbers) before the running head, right pages after it with spaces
 # between the digits ("… 9. Oktober 2025 3 3 9 3"); the table of contents is numbered in roman numerals and is skipped
 _PAGE_LEFT_RE = re.compile(r"^(\d{1,5})(?:\s*[-–]\s*\d{1,5})?\s+Deutscher Bundestag")  # "3404-3424 …": a range
-_PAGE_RIGHT_RE = re.compile(r"^Deutscher Bundestag.*\b\d{4}((?:\s*\d){1,5})\s*$")
+_PAGE_RIGHT_RE = re.compile(
+    r"^Deutscher Bundestag.*\b\d{4}((?:\s*\d){1,5})(?:\s*[-–](?:\s*\d){1,5})?\s*$"
+)  # "… 4 7 0 3 - 4 7 1 8"
 
 
 def read_lines(pdf_path: Path) -> list[Line]:
@@ -145,38 +151,70 @@ def read_lines(pdf_path: Path) -> list[Line]:
 def _read_lines(pdf_path: Path) -> list[Line]:
     import pdfplumber  # imported here: only preliminary protocols need it
 
-    out: list[Line] = []
+    # (Druckseite, column position, pdfplumber lines); a column position is (left or right page, left or right column)
+    columns: list[tuple[int, tuple[bool, int], list[dict]]] = []
     with pdfplumber.open(pdf_path) as pdf:
         for page in pdf.pages:
             head = (page.extract_text(x_tolerance=_X_TOLERANCE) or "").split("\n", 1)[0].strip()
-            m = _PAGE_LEFT_RE.match(head) or _PAGE_RIGHT_RE.match(head)
+            left_page = _PAGE_LEFT_RE.match(head)
+            m = left_page or _PAGE_RIGHT_RE.match(head)
             if not m or "Wahlperiode" not in head:
                 continue
             number = int(re.sub(r"\s", "", m.group(1)))
             mid = page.width / 2
-            for x0, x1 in ((0, mid), (mid, page.width)):
+            for i, (x0, x1) in enumerate(((0, mid), (mid, page.width))):
                 col = page.crop((x0, _HEAD_BOTTOM, x1, page.height))
-                lines = col.extract_text_lines(return_chars=True, x_tolerance=_X_TOLERANCE)
-                body = [
-                    ln for ln in lines if abs(ln["chars"][0]["size"] - _BODY) < 0.3 and not _MARGIN_RE.match(ln["text"])
-                ]
-                left = min((ln["x0"] for ln in body), default=x0)
-                for ln in lines:
-                    line = _line(ln["chars"], ln["text"], ln["top"], left, number)
-                    if line is not None and line.size >= 9:
-                        out.append(line)
+                columns.append(
+                    (number, (bool(left_page), i), col.extract_text_lines(return_chars=True, x_tolerance=_X_TOLERANCE))
+                )
+    # the edge a body line starts at is the same on every page of a column position: the most frequent start there.
+    # Per column it is not: a stray line left of it, or a column holding more indented title lines than body text,
+    # would make every line look indented (21/40, 4649; 21/86, 10612)
+    starts: dict[tuple[bool, int], Counter] = {}
+    for _, pos, lines in columns:
+        starts.setdefault(pos, Counter()).update(
+            round(ln["x0"])
+            for ln in lines
+            if abs(ln["chars"][0]["size"] - _BODY) < 0.3 and not _MARGIN_RE.match(ln["text"])
+        )
+    edges = {pos: c.most_common(1)[0][0] for pos, c in starts.items() if c}
+    out: list[Line] = []
+    for number, pos, lines in columns:
+        if pos not in edges:
+            continue
+        for ln in lines:
+            line = _line(ln["chars"], ln["text"], ln["top"], edges[pos], number)
+            if line is not None and line.size >= 9:
+                out.append(line)
     return out
+
+
+def _quote_goes_on(prev: Line | None, ln: Line) -> bool:
+    """A block quote is indented as a whole: a line indented like the one before it continues that one when it was
+    not the end of a paragraph (it fills the column or ends hyphenated). A first-line indent follows a line at the
+    edge."""
+    return (
+        prev is not None
+        and prev.indent >= 6
+        and abs(ln.indent - prev.indent) < 1
+        and (prev.text.endswith("-") or len(prev.text) >= 40)
+    )
 
 
 def paragraphs(lines: list[Line]) -> list[Paragraph]:
     """Lines grouped into paragraphs. A new paragraph starts at a speaker line, at a first-line indent, at a jump
     between body text and the indented title block, and at a comment's opening parenthesis; a comment runs until its
-    parentheses close, a speaker line until its colon."""
+    parentheses close, a speaker line until its colon. Stops after "(Schluss: … Uhr)" and before the Anlagen."""
     out: list[Paragraph] = []
     cur: Paragraph | None = None
     prev: Line | None = None
     in_result = False  # the printed name list of a roll-call vote; the XML parser leaves it out too (AL_* classes)
     for ln in lines:
+        if ln.bold and _ANLAGE_RE.match(ln.text):
+            break
+        if _END_RE.match(ln.text):  # its own paragraph even when printed without indent (21/14)
+            out.append(Paragraph("comment", ln.page, [ln]))
+            break
         speaker = abs(ln.size - _SPEAKER) < 0.3 and ln.bold_start
         if speaker and _RESULT_LIST.match(ln.text):
             in_result, cur = True, None
@@ -193,7 +231,9 @@ def paragraphs(lines: list[Line]) -> list[Paragraph]:
             cur is not None
             and cur.kind == "comment"
             and cur.text.count("(") > cur.text.count(")")
-            and len(cur.lines) < 8
+            and len(cur.lines) < 20  # a long exchange of interjections runs over 8 lines (21/14)
+            and not speaker  # a comment is indented and ends before the next speaker, closed or not (21/37)
+            and ln.indent >= 6
         ):
             cur.lines.append(ln)
         elif speaker:
@@ -217,7 +257,7 @@ def paragraphs(lines: list[Line]) -> list[Paragraph]:
             else:
                 cur = Paragraph("title", ln.page, [ln])
                 out.append(cur)
-        elif cur is not None and cur.kind == "text" and ln.indent < 6:
+        elif cur is not None and cur.kind == "text" and (ln.indent < 6 or _quote_goes_on(prev, ln)):
             cur.lines.append(ln)
         else:
             cur = Paragraph("text", ln.page, [ln])

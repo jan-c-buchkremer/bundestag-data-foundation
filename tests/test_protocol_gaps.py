@@ -235,6 +235,70 @@ def test_pdf_lines_are_joined_without_the_hyphenation():
     assert _join(["Sicherheit –", "und"]) == "Sicherheit – und"
 
 
+def _lines(*specs: tuple) -> list:
+    """Lines from (text, indent) or (text, indent, size, bold); body text at 10 pt regular."""
+    from bdf.protocol_pdf import Line
+
+    out = []
+    for i, (text, indent, *rest) in enumerate(specs):
+        size, bold = rest if rest else (10.0, False)
+        out.append(Line(page=100, text=text, indent=indent, top=i * 11, size=size, bold=bold, bold_start=bold))
+    return out
+
+
+def _paragraphs(*specs: tuple) -> list[tuple[str, str]]:
+    from bdf.protocol_pdf import paragraphs
+
+    return [(p.kind, p.text) for p in paragraphs(_lines(*specs))]
+
+
+def test_pdf_reading_stops_at_the_end_of_the_sitting_and_before_the_anlagen():
+    paras = _paragraphs(
+        ("Die Sitzung ist geschlossen.", 10),
+        ("(Schluss: 00:29 Uhr)", 0),  # printed without indent (21/14)
+        ("Anlage 1", 0, 10.0, True),
+        ("Hans Koller (CDU/CSU):", 9, 9.5, True),
+        ("Zu Protokoll gegebene Rede", 10),
+    )
+    assert paras == [("text", "Die Sitzung ist geschlossen."), ("comment", "(Schluss: 00:29 Uhr)")]
+    # without the Schluss line (it was on a page the reading missed), the Anlage heading ends it
+    assert _paragraphs(("Ende.", 10), ("Anlage", 0, 10.0, True), ("Text", 10)) == [("text", "Ende.")]
+
+
+def test_pdf_block_quote_is_one_paragraph():
+    paras = _paragraphs(
+        ("Ich zitiere den Koalitionsvertrag:", 10),
+        ("„Wir werden die Schere zwischen der Entlastungs-", 10),
+        ("wirkung der Kinderfreibeträge und dem Kindergeld", 10),
+        ("schrittweise verringern.“", 10),
+        ("Danach geht es weiter.", 10),
+    )
+    assert paras == [
+        ("text", "Ich zitiere den Koalitionsvertrag:"),
+        ("text", "„Wir werden die Schere zwischen der Entlastungswirkung der Kinderfreibeträge und dem Kindergeld "
+                 "schrittweise verringern.“"),
+        ("text", "Danach geht es weiter."),
+    ]  # fmt: skip
+
+
+def test_pdf_comment_ends_at_the_next_speaker_even_unclosed():
+    paras = _paragraphs(
+        ("(Beifall bei der AfD – Zuruf von der SPD: Das", 30),
+        ("ist doch", 30),
+        ("Dr. Stefan Nacke (CDU/CSU):", 9, 9.5, True),
+        ("Frau Präsidentin!", 10),
+    )
+    assert [k for k, _ in paras] == ["comment", "speaker", "text"]
+
+
+def test_pdf_right_page_with_a_page_range_is_read():
+    from bdf.protocol_pdf import _PAGE_RIGHT_RE
+
+    head = "Deutscher Bundestag – 21. Wahlperiode – 40. Sitzung. Berlin, Donnerstag, den 13. November 2025 4 7 0 3 - 4 7 1 8"  # noqa: E501
+    m = _PAGE_RIGHT_RE.match(head)
+    assert m and m.group(1).replace(" ", "") == "4703"
+
+
 @pytest.fixture
 def pdf_store(data_dir):
     protocols = data_dir / "raw" / "bundestag" / "protocols" / "21"
