@@ -1,6 +1,8 @@
 """Canned queries. Every row carries source_url and source_document_id."""
 
+import json
 import sqlite3
+from collections import defaultdict
 
 from bdf.government import KINDS, STALE_AFTER_DAYS, held_on, stale
 from bdf.names import VOTE_VALUES, normalize_name
@@ -236,6 +238,91 @@ def decisions(conn: sqlite3.Connection, sitting_id: str) -> list[dict]:
                 "source_document_id": d["source_document_id"],
                 "pdf_url": d["pdf_url"],
                 "retrieved_at": d["retrieved_at"],
+            }
+        )
+    return out
+
+
+def _first_page(pages: str | None) -> int | None:
+    head = (pages or "").split("-")[0].strip()
+    return int(head) if head.isdigit() else None
+
+
+def protocol_gaps(conn: sqlite3.Connection) -> list[dict]:
+    """Per sitting, the Beratungen DIP places in its Plenarprotokoll that no agenda item (or sub-item) of the
+    sitting carries, by the rule the cards site uses: a BT Vorgangsposition in a Plenarprotokoll with pages whose
+    position names a Beratung, and no item of that sitting with one of the Vorgang's Drucksachen or a Vorlage row
+    (agenda_item_vorlage) for the Vorgang. The Vorgang's Drucksachen are those of vorgang_drucksache and those its
+    own Vorgangspositionen name, a little wider than the cards' match, so the list can be shorter than theirs.
+    Preliminary sittings are listed even without such a Beratung.
+
+    Each Beratung gets a ``cause``: ``preliminary`` (the sitting's XML is preliminary and no PDF part was read),
+    ``after_xml_end`` (it starts after the page the preliminary XML ends on, so the PDF part should have had it)
+    or ``in_protocol`` (the protocol has the pages: the item names other Drucksachen, or the parser misses it).
+    Oldest sitting first; the source is the protocol."""
+    numbers: dict[str, set[str]] = defaultdict(set)  # sitting -> Drucksachen on its items and sub-items
+    for sql in (
+        "SELECT sitting_id, drucksache_numbers FROM agenda_item",
+        "SELECT a.sitting_id, s.drucksache_numbers FROM agenda_sub_item s "
+        "JOIN agenda_item a ON a.id = s.agenda_item_id",
+    ):
+        for r in conn.execute(sql):
+            numbers[r["sitting_id"]].update(json.loads(r["drucksache_numbers"]))
+    carried: dict[str, set[str]] = defaultdict(set)  # sitting -> Vorgänge with a Vorlage row there
+    for r in conn.execute(
+        "SELECT a.sitting_id, v.vorgang_id FROM agenda_item_vorlage v JOIN agenda_item a ON a.id = v.agenda_item_id "
+        "WHERE v.vorgang_id IS NOT NULL"
+    ):
+        carried[r["sitting_id"]].add(r["vorgang_id"])
+    drucksachen: dict[str, set[str]] = defaultdict(set)
+    for r in conn.execute(
+        "SELECT vd.vorgang_id, d.number FROM vorgang_drucksache vd JOIN drucksache d ON d.id = vd.drucksache_id "
+        "UNION SELECT vorgang_id, document_number FROM vorgang_position "
+        "WHERE document_kind = 'Drucksache' AND chamber = 'BT' AND document_number IS NOT NULL"
+    ):
+        drucksachen[r[0]].add(r[1])
+    sittings = {r["id"]: dict(r) for r in conn.execute("SELECT * FROM sitting")}
+    pdf_speeches = dict(
+        conn.execute("SELECT sitting_id, COUNT(*) FROM speech WHERE source_url LIKE '%.pdf' GROUP BY sitting_id")
+    )
+    unmatched: dict[str, list[dict]] = {}
+    for p in conn.execute(
+        "SELECT vp.*, v.title FROM vorgang_position vp LEFT JOIN vorgang v ON v.id = vp.vorgang_id "
+        "WHERE vp.chamber = 'BT' AND vp.document_kind = 'Plenarprotokoll' AND vp.pages IS NOT NULL "
+        "AND vp.position LIKE '%Beratung%' ORDER BY vp.date, vp.pages"
+    ):
+        sid, start = p["document_number"], _first_page(p["pages"])
+        st = sittings.get(sid)
+        if st is None or p["vorgang_id"] in carried[sid] or drucksachen[p["vorgang_id"]] & numbers[sid]:
+            continue
+        if st["preliminary"] and not st["last_page"]:
+            cause = "preliminary"
+        elif st["preliminary"] and start is not None and start >= st["last_page"]:
+            cause = "after_xml_end"
+        else:
+            cause = "in_protocol"
+        unmatched.setdefault(sid, []).append(
+            {"vorgang_id": p["vorgang_id"], "title": p["title"], "position": p["position"], "pages": p["pages"],
+             "cause": cause, "vorgang_position_id": p["id"]}
+        )  # fmt: skip
+    out = []
+    for sid in sorted(set(unmatched) | {s for s, st in sittings.items() if st["preliminary"]},
+                      key=lambda s: tuple(int(x) for x in s.split("/"))):  # fmt: skip
+        st = sittings[sid]
+        out.append(
+            {
+                "sitting_id": sid,
+                "date": st["date"],
+                "preliminary": bool(st["preliminary"]),
+                "final_announced": st["final_announced"],
+                "first_page": st["first_page"],
+                "last_page": st["last_page"],
+                "pdf_speeches": pdf_speeches.get(sid, 0),
+                "beratungen": unmatched.get(sid, []),
+                "pdf_url": st["pdf_url"],
+                "source_url": st["source_url"],
+                "source_document_id": st["source_document_id"],
+                "retrieved_at": st["retrieved_at"],
             }
         )
     return out

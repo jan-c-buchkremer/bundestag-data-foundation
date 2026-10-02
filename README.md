@@ -37,7 +37,8 @@ uv run bdf update          # fetch everything new since the last run from all so
 ```
 
 Each source picks its own window from what is already in `data/raw/`: protocols from the next sitting
-number (probing until three in a row are not published), votes and DIP from the latest date on disk minus
+number (probing until three in a row are not published) plus every protocol still in its preliminary version
+and its PDF (until the final XML is served), votes and DIP from the latest date on disk minus
 14 days (late publications), Stammdaten, abgeordnetenwatch, the bundestag.de biography list and the Wikidata government
 roster in full (portrait images only when new). The first run backfills the whole
 Wahlperiode. Without `DIP_API_KEY` DIP is skipped; network errors and 429/5xx are retried
@@ -140,6 +141,12 @@ Details and quotes in `docs/licences.md`. Code is MIT.
   `beratungsstand` stays as it was at the first fetch. `fetch dip --force` over a range refreshes them.
 - abgeordnetenwatch's `ext_id_bundestagsverwaltung` is wrong for ~9 % of WP21 members and is
   therefore never trusted on its own.
+- bundestag.de serves a preliminary protocol XML before the final one, sometimes for months; it can end hours
+  before the sitting did. Such sittings have `sitting.preliminary = 1`; `update` fetches them again until they are
+  final, and meanwhile reads what the XML lacks from the final PDF: agenda items, speeches and the chair's words
+  after `sitting.last_page` have the PDF as their `source_url`. Text read from a PDF can carry layout slips the XML
+  would not have. `bdf query protocol-gaps` lists the preliminary sittings, with every Beratung DIP places in a
+  sitting that no agenda item there carries.
 - Decisions are read from the chair's words by rules (`docs/decisions.md` has the measured recall).
   Show-of-hands results are per fraction as announced; where the chair names no fraction ("Wer stimmt
   dafür? – Wer stimmt dagegen? – … angenommen") the decision has no fraction rows. Subjects are the

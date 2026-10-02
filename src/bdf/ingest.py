@@ -79,6 +79,14 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
         protocol = parse_protocol.parse(path)
         prov = raw.read_meta(path).provenance(protocol.document_id)
         sid = protocol.sitting_id
+        status = protocol.status
+        pdf = path.with_suffix(".pdf")
+        # rows read from the final PDF (a preliminary XML's missing end, bdf/protocol_pdf.py) name the PDF
+        pdf_prov = raw.read_meta(pdf).provenance(f"{protocol.document_id} (PDF)") if status.last_page else prov
+        resolver = resolvers.setdefault(protocol.wahlperiode, NameResolver(PersonIndex(conn, protocol.wahlperiode)))
+        for sp in (s.speaker for s in protocol.speeches if s.from_pdf and s.speaker.id.startswith("pdf-")):
+            # a PDF speaker no XML names (an MdB's first speech in a new office): the Stammdaten may know them
+            sp.id = resolver(f"{sp.first_name} {sp.last_name}") or sp.id
         new_persons = {}
         for sp in (s.speaker for s in protocol.speeches):
             if sp.id not in known and sp.id not in new_persons:
@@ -107,10 +115,24 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                         "xml_url": prov["source_url"],
                         "pdf_url": PROTOCOL_URL.format(wp=protocol.wahlperiode, nr=protocol.number, ext="pdf"),
                         **prov,
+                        "preliminary": int(status.preliminary),
+                        "final_announced": status.final_announced,
+                        "final_fetched_at": None if status.preliminary else prov["retrieved_at"],
+                        "first_page": status.first_page,
+                        "last_page": status.last_page,
                     }
                 ],
             )
-            upsert(conn, "agenda_item", [{**item, "sitting_id": sid, **prov} for item in protocol.agenda_items])
+            upsert(
+                conn,
+                "agenda_item",
+                [
+                    {k: v for k, v in item.items() if k != "from_pdf"}
+                    | {"sitting_id": sid}
+                    | (pdf_prov if item["from_pdf"] else prov)
+                    for item in protocol.agenda_items
+                ],
+            )
             conn.execute(
                 "DELETE FROM agenda_item_paragraph WHERE agenda_item_id IN "
                 "(SELECT id FROM agenda_item WHERE sitting_id = ?)",
@@ -120,7 +142,8 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                 conn,
                 "agenda_item_paragraph",
                 [
-                    {k: v for k, v in p.items() if k not in ("after_speeches", "klasse")} | prov
+                    {k: v for k, v in p.items() if k not in ("after_speeches", "klasse", "from_pdf")}
+                    | (pdf_prov if p.get("from_pdf") else prov)
                     for p in protocol.agenda_paragraphs
                 ],
             )
@@ -148,7 +171,7 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                         "text": s.text,
                         "kind": s.kind,
                         "sub_item_id": s.sub_item_id,
-                        **prov,
+                        **(pdf_prov if s.from_pdf else prov),
                     }
                     for s in protocol.speeches
                 ],
@@ -162,13 +185,21 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                     for n, (kind, text) in enumerate(s.paragraphs, start=1)
                 ],
             )
-            resolver = resolvers.setdefault(protocol.wahlperiode, NameResolver(PersonIndex(conn, protocol.wahlperiode)))
             upsert(conn, "interjection", interjection_rows(protocol.speeches, resolver))
+            _drop_stale_agenda_items(conn, sid, {item["id"] for item in protocol.agenda_items})
         known.update(new_persons)
+        from_pdf = [s for s in protocol.speeches if s.from_pdf]
+        unmatched = sorted({s.speaker.printed for s in from_pdf if s.speaker.id.startswith("pdf-")})
         print(
             f"protocol {sid} ({protocol.date}): {len(protocol.agenda_items)} agenda items, "
             f"{len(protocol.speeches)} speeches, {len(new_persons)} new non-MdB speakers"
-        )
+            + (f"; PRELIMINARY (final announced for {status.final_announced or '?'})" if status.preliminary else "")
+            + (f", XML ends on page {status.last_page}, then {sum(i['from_pdf'] for i in protocol.agenda_items)} "
+               f"agenda items and {len(from_pdf)} speeches from the PDF" if status.last_page else "")
+            + (f"; no PDF part ({'PDF not fetched' if not pdf.exists() else 'XML end not found in the PDF'})"
+               if status.preliminary and not status.last_page else "")
+            + (f"; speakers not in any XML: {', '.join(unmatched)}" if unmatched else "")
+        )  # fmt: skip
 
 
 class NameResolver:
@@ -498,6 +529,21 @@ def _link_votes_to_dip(conn: sqlite3.Connection) -> None:
 # --- decisions -----------------------------------------------------------------------------
 
 
+def _drop_stale_agenda_items(conn: sqlite3.Connection, sitting_id: str, keep: set[str]) -> None:
+    """Drop the agenda items of a sitting that a re-parse no longer finds: the final XML can number the items read
+    from a preliminary protocol's PDF differently. Decisions and votes pointing at them are re-linked by their own
+    ingest; speeches, paragraphs and sub-items of the sitting are replaced before this runs."""
+    stale = [
+        r["id"] for r in conn.execute("SELECT id FROM agenda_item WHERE sitting_id = ?", (sitting_id,))
+        if r["id"] not in keep
+    ]  # fmt: skip
+    for item_id in stale:
+        conn.execute("UPDATE decision SET agenda_item_id = NULL WHERE agenda_item_id = ?", (item_id,))
+        conn.execute("UPDATE roll_call_vote SET agenda_item_id = NULL WHERE agenda_item_id = ?", (item_id,))
+        conn.execute("DELETE FROM agenda_item_vorlage WHERE agenda_item_id = ?", (item_id,))
+        conn.execute("DELETE FROM agenda_item WHERE id = ?", (item_id,))
+
+
 def _replace_sub_items(conn: sqlite3.Connection, sitting_id: str, rows: list[dict]) -> None:
     """Upsert a sitting's sub-items and drop the ones a re-parse no longer finds (with what points at them)."""
     upsert(conn, "agenda_sub_item", rows)
@@ -545,6 +591,20 @@ def ingest_vorlagen(conn: sqlite3.Connection) -> None:
         for number in json.loads(item["drucksache_numbers"]):
             if number not in in_subs:
                 rows.append(_vorlage_row(item["id"], item["id"], None, number, vorgang, prov))
+    # a Drucksache decided under an item without being in its title: mostly the Entschließungsanträge to a bill,
+    # debated with it and voted on after it, which the item's title does not list
+    seen = {r["id"] for r in rows}
+    on_item = {(r["agenda_item_id"], r["drucksache_number"]) for r in rows}
+    for d in conn.execute(
+        "SELECT * FROM decision WHERE agenda_item_id IS NOT NULL AND drucksache_number IS NOT NULL ORDER BY position"
+    ):
+        prov = {k: d[k] for k in ("source_url", "source_document_id", "retrieved_at")}
+        for number in DRUCKSACHE_RE.findall(d["drucksache_number"]):
+            row = _vorlage_row(d["sub_item_id"] or d["agenda_item_id"], d["agenda_item_id"], d["sub_item_id"], number,
+                               vorgang, prov, via="decision")  # fmt: skip
+            if row["id"] not in seen and (d["agenda_item_id"], number) not in on_item:
+                seen.add(row["id"])
+                rows.append(row)
     with conn:
         conn.execute("DELETE FROM agenda_item_vorlage")
         upsert(conn, "agenda_item_vorlage", rows)
@@ -556,13 +616,17 @@ def ingest_vorlagen(conn: sqlite3.Connection) -> None:
             ],
         )
     linked = sum(1 for r in rows if r["vorgang_id"])
-    print(f"vorlagen: {len(rows)} Drucksachen on agenda items ({linked} with a Vorgang)")
+    decided = sum(1 for r in rows if r["via"] == "decision")
+    print(f"vorlagen: {len(rows)} Drucksachen on agenda items ({linked} with a Vorgang), {decided} of them only "
+          "named in a decision under the item")  # fmt: skip
 
 
-def _vorlage_row(owner: str, item_id: str, sub_id: str | None, number: str, vorgang: dict, prov: dict) -> dict:
+def _vorlage_row(
+    owner: str, item_id: str, sub_id: str | None, number: str, vorgang: dict, prov: dict, via: str = "title"
+) -> dict:
     return {
         "id": f"{owner}/{number}", "agenda_item_id": item_id, "sub_item_id": sub_id,
-        "drucksache_number": number, "vorgang_id": vorgang.get(number), **prov,
+        "drucksache_number": number, "vorgang_id": vorgang.get(number), **prov, "via": via,
     }  # fmt: skip
 
 

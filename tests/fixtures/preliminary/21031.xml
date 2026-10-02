@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dbtplenarprotokoll
+  SYSTEM "dbtplenarprotokoll.dtd">
+<dbtplenarprotokoll vertrieb="Bundesanzeiger Verlag GmbH, Postfach 1 0 05 34, 50445 Köln, Telefon (02 21) 97 66 83 40, Fax (02 21) 97 66 83 44, www.bundesanzeiger-verlag.de" herstellung="H. Heenemann GmbH  Co. KG, Buch- und Offsetdruckerei, Bessemerstraße 83–91, 12103 Berlin, www.heenemann-druck.de" sitzung-ort="Berlin" herausgeber="Deutscher Bundestag" issn="0722-7980" wahlperiode="21" sitzung-nr="31" sitzung-datum="09.10.2025" sitzung-start-uhrzeit="09:00" sitzung-ende-uhrzeit="23:39" sitzung-naechste-datum="10.10.2025" start-seitennr="3213">
+<!-- Excerpt: the last agenda item (TOP 22) of the preliminary XML as served on 2026-10-01, with the note that
+     the final report follows; the table of contents and the earlier agenda items are removed. -->
+    <sitzungsverlauf>
+        <tagesordnungspunkt top-id="Tagesordnungspunkt 22">
+            <p klasse="J">Ich rufe auf den Tagesordnungspunkt 22: </p>
+            <p klasse="T_NaS">		Erste Beratung des von der Bundesregierung eingebrachten Entwurfs eines Gesetzes zur Stärkung der Militärischen Sicherheit in der Bundeswehr </p>
+            <p klasse="T_Drs">		Drucksache <a href="https://dserver.bundestag.de/btd/21/018/2101846.pdf">21/1846</a></p>
+            <p klasse="T_Ueberweisung">		Überweisungsvorschlag: Verteidigungsausschuss (f) Auswärtiger Ausschuss Innenausschuss</p>
+            <p klasse="J">Für die Aussprache wurde eine Dauer von 20 Minuten vereinbart. – Ich eröffne diese erst, wenn hier Ruhe eingekehrt ist, alle, die gehen wollen, gegangen sind, und alle, die Platz nehmen wollen, sitzen, damit wir der Debatte fokussiert lauschen können. Ich bitte, dies zügig umzusetzen. – Vielen Dank.</p>
+            <p klasse="J">Ich eröffne die Aussprache. Das Wort hat der Bundesminister der Verteidigung, Boris Pistorius.</p>
+            <kommentar>(Beifall bei der SPD und der CDU/CSU – Zuruf von der SPD: Guter Mann!)</kommentar>
+            <rede id="ID213115000">
+                <p klasse="redner"><a id="r150"/><redner id="11005543"><name><vorname>Boris</vorname><nachname>Pistorius</nachname><rolle><rolle_lang>Bundesminister der Verteidigung</rolle_lang><rolle_kurz>Bundesminister BMVg</rolle_kurz></rolle></name></redner>Boris Pistorius, Bundesminister der Verteidigung:</p>
+                <p klasse="J_1">Sehr geehrter Herr Präsident! Meine sehr geehrten Damen und Herren! Liebe Kolleginnen! Liebe Kollegen! Drohnen über Flughäfen, zerstörte Kabel in der Ostsee, Cyberattacken auf Krankenhäuser, Verwaltungen und Unternehmen – beinahe täglich erleben wir weitreichende Sabotage- und Spionageangriffe. Die Bedrohungslage ist dabei komplex, aber die Gefährdung ist sehr konkret, auch für die Bundeswehr.</p>
+                <p klasse="J">Kasernen, Depots, logistische Routen sind Angriffsziele. Unsere Soldatinnen und Soldaten stehen im Visier. Unsere bisherigen rechtlichen Grundlagen, aus ganz anderen Zeiten stammend, reichen nicht aus, um angemessen auf diese Bedrohungslage reagieren zu können. Das ändern wir mit dem Artikelgesetz zur Stärkung der Militärischen Sicherheit in der Bundeswehr.</p>
+                <kommentar>(Beifall bei der SPD und der CDU/CSU)</kommentar>
+                <p klasse="O">Wir passen das Sicherheitsrecht dabei in drei wesentlichen Bereichen an:</p>
+                <p klasse="J">Erstens. Wir stärken die Befugnisse des Militärischen Abschirmdienstes. Mit dem Gesetzentwurf stellen wir uns der veränderten Sicherheitslage und stärken den Militärischen Abschirmdienst bei der Erfüllung seiner operativen, wichtigen Aufgaben. Wir müssen unsere Soldatinnen und Soldaten, zum Beispiel bei ihrem Einsatz in Litauen, und ihre Familien besser schützen. Das tun wir, indem wir die Tätigkeiten des Militärischen Abschirmdienstes im Ausland auf die Landes- und Bündnisverteidigung ausrichten. Das war lange nicht nötig, aber ist es jetzt. Dies geschieht in enger Zusammenarbeit mit dem Bundesnachrichtendienst und den litauischen Sicherheitsbehörden.</p>
+                <p klasse="J">Mit der Neufassung des MAD-Gesetzes stärken wir außerdem die Cyberabwehr, indem wir für den MAD die Möglichkeit schaffen, bei IT-Angriffen fremder Mächte eigenständige Maßnahmen zu ergreifen. Damit können wir uns effektiver gegen die immer häufigeren Angriffe auf IT-Systeme der Bundeswehr zur Wehr setzen.</p>
+                <kommentar>(Beifall bei der SPD und der CDU/CSU)</kommentar>
+                <p klasse="J">Auch die verfassungsrechtlichen Vorgaben zur Kontrolle nachrichtendienstlicher Arbeit setzen wir dabei um. Bis zur Neuaufstellung des Unabhängigen Kontrollrats wird ein Amtsgericht die notwendige Kontrolle übernehmen, unbürokratisch und pragmatisch.</p>
+                <p klasse="J">Der zweite wichtige Bereich, den wir mit dem Gesetz angehen, ist die Stärkung des personellen Schutzes in der Bundeswehr. Mit dem neuen Gesetz lösen wir die bisherige Soldaten-Einstellungsüberprüfung ab. Zukünftig wird es ein Verfahren geben, das sich auf bewährte Prüfmerkmale bezieht und konzentriert. Das wird aufgrund einer teilweise automatisierten Verarbeitung zukünftig auch schneller, aber deswegen nicht weniger gründlich verlaufen. Mit diesem verbesserten und beschleunigten Verfahren reagieren wir auf den über viele Jahre aufgebauten Stau der Sicherheitsüberprüfungen. Zugleich stellen wir sicher, dass kein zeitaufwendiges Verfahren den dringend notwendigen personellen Aufwuchs der Streitkräfte hemmt und verlangsamt.</p>
+                <kommentar>(Beifall bei der SPD und der CDU/CSU)</kommentar>
+                <p klasse="J">Drittens sollen die Feldjäger und andere berechtigte Personen neue Befugnisse bekommen, um die militärische Sicherheit zu stärken. Dazu gehören neue Vorschriften zum Anhalten und Überprüfen verdächtiger Personen innerhalb – sowieso – und auch außerhalb von militärischen Bereichen. Dadurch wird auch und gerade die Identifizierung und Verfolgung zum Beispiel illegaler Drohnenüberflüge künftig leichter und rechtssicherer möglich sein.</p>
+                <p klasse="J">Liebe Kolleginnen und Kollegen, eine verteidigungsbereite Bundeswehr braucht ein starkes rechtliches Fundament. Ich bitte Sie deshalb um Unterstützung. Lassen Sie uns gemeinsam die Bundeswehr stärken und die militärische Sicherheit und damit letztlich auch unser aller Sicherheit erhöhen!</p>
+                <p klasse="J">Vielen Dank.</p>
+                <kommentar>(Beifall bei der SPD und der CDU/CSU)</kommentar>
+                <name>Vizepräsident Omid Nouripour:</name>
+                <p klasse="J_1">Vielen Dank, Herr Minister. – Die nächste Rede hält Kurt Kleinschmidt für die AfD-Fraktion.</p>
+                <kommentar>(Beifall bei der AfD)</kommentar>
+            </rede>
+            <rede id="ID213115100">
+                <p klasse="redner"><a id="r151"/><redner id="11005498"><name><vorname>Kurt</vorname><nachname>Kleinschmidt</nachname><fraktion>AfD</fraktion></name></redner>Kurt Kleinschmidt (AfD):</p>
+                <p klasse="J_1">Sehr geehrter Herr Präsident! Sehr geehrte Abgeordnete! Sehr geehrte Kameraden! Als Soldat geht mein Dank heute erst mal an die CDU/CSU-Fraktion; denn dank Ihrer Intervention bezüglich der Pistorius-Wehrpflicht sind wir dem einen Schritt näher gekommen, was ich mir seit 2012 wünsche, nämlich die Rückkehr zur allgemeinen Wehrpflicht. Herzlichen Dank dafür!</p>
+                <kommentar>(Beifall bei der AfD)</kommentar>
+                <p klasse="J">Heute beraten wir in erster Lesung über einen Gesetzentwurf, von dessen Inhalt die meisten von Ihnen, sehr geehrte Damen und Herren der links-rot-grünen Parteien, weder eine sachliche, geschweige denn eine fachliche Kenntnis haben. Denn Sie, sehr geehrte Abgeordnete der links-rot-grünen Deutschlandabschaffer,</p>
+                <kommentar>(Gökay Akbulut [Die Linke]: Gehen Sie mal schlafen! Und hören Sie auf, irgendwelche Medikamente einzunehmen!)</kommentar>
+                <p klasse="O">und vor allen Dingen Sie, Frau Reichinnek – ich sehe sie jetzt nicht –, und Ihre SED-Nachfolgepartei, die Mauerschützenpartei,</p>
+                <kommentar>(Gökay Akbulut [Die Linke]: Wir haben das Jahr 2025! Wir leben in der Realität, nicht in Nazideutschland!)</kommentar>
+                <p klasse="O">haben das Riesenglück, dass Sie als gewählte Parlamentarier durch das Grundgesetz und die Geschäftsordnung des Deutschen Bundestages ein Recht auf Einsicht in Verschlusssachen im Rahmen Ihrer parlamentarischen Kontrolle haben. Ich kann Ihnen sagen, dass Sie dadurch sehr viel Glück haben.</p>
+                <kommentar>(Gökay Akbulut [Die Linke]: Die Märchenzeiten sind vorbei! Es tut mir wirklich leid für Sie! Gehen Sie doch heulen! Gehen Sie doch nach Hause!)</kommentar>
+                <p klasse="O">Denn Sie würden mit Pauken und Trompeten durch jede Sicherheitsüberprüfung des Militärischen Abschirmdienstes rasseln.</p>
+                <kommentar>(Beifall bei der AfD – Dr. Konstantin von Notz [BÜNDNIS 90/DIE GRÜNEN]: Herr Kleinschmidt, bei Ihren Kollegen wird die Immunität aufgehoben! Wovon reden Sie denn?)</kommentar>
+                <p klasse="O">– Die Unschuldsvermutung gilt so lange, bis jemand verurteilt ist, Herr von Notz.</p>
+                <kommentar>(Dr. Konstantin von Notz [BÜNDNIS 90/DIE GRÜNEN]: Ich sage nur: Die Immunität wurde aufgehoben!)</kommentar>
+                <p klasse="J">Sehr geehrte Damen und Herren, mit dem Gesetz möchten Sie jetzt Probleme beheben, die wir ohne Sie und/oder Ihre Vorgänger in diesem Umfang nie gehabt hätten. Und wer bin ich, dass ich so etwas behaupten und beurteilen kann, Herr von Notz? Als EloKa-Soldat bin ich über 35 Jahre lang alle fünf Jahre durch den Militärischen Abschirmdienst sicherheitsüberprüft worden.</p>
+                <kommentar>(Dr. Konstantin von Notz [BÜNDNIS 90/DIE GRÜNEN]: Das könnte heute schwierig werden, Herr Kleinschmidt! Ich will Ihnen nicht zu nahe treten!)</kommentar>
+                <p klasse="O">– Ah, Sie vertrauen dem Militärischen Abschirmdienst nicht. Das ist schon sehr interessant. – Außerdem habe ich als ausgebildeter und eingesetzter Sicherheitsbootsmann viele Jahre mit dem Militärischen Abschirmdienst zusammengearbeitet.</p>
+                <kommentar>(Dr. Konstantin von Notz [BÜNDNIS 90/DIE GRÜNEN]: Wären Sie mal nicht in die AfD eingetreten!)</kommentar>
+                <p klasse="O">Deshalb habe ich im Gegensatz zu Ihnen und den meisten hier im Plenum eine praktische Ahnung von dem, worüber Sie hier theoretisch debattieren.</p>
+                <kommentar>(Beifall bei der AfD)</kommentar>
+                <p klasse="J">Eine Gesetzesänderung ist notwendig; denn die Bedrohungen – der Minister hat es schon gesagt – durch Spionagetätigkeiten, Cyberattacken und hybride Angriffe gegen unsere Bundeswehr nehmen zu</p>
+                <kommentar>(Dr. Konstantin von Notz [BÜNDNIS 90/DIE GRÜNEN]: Von wem denn, Herr Kleinschmidt? – Zuruf von der Linken)</kommentar>
+                <p klasse="O">– ich verstehe, dass Sie von den Linken gelangweilt sind –, und das nicht nur durch die üblichen Protagonisten Russland oder China.</p>
+                <kommentar>(Dr. Irene Mihalic [BÜNDNIS 90/DIE GRÜNEN]: Von wem denn noch? – Zuruf des Abg. Dr. Konstantin von Notz [BÜNDNIS 90/DIE GRÜNEN])</kommentar>
+                <p klasse="O">– Lassen Sie mich doch ausreden! Ich weiß, dass Sie nervös sind, wenn Fakten auf den Tisch kommen, Herr von Notz.</p>
+                <p klasse="J">Mit dem geplanten Gesetz zur Stärkung der militärischen Sicherheit wird im Hinblick auf die Drohnenvorfälle und das Unmittelbarer-Zwang-Gesetz ein notwendiger Schritt gegangen. Die Befugnisse des Militärischen Abschirmdienstes müssen dazu selbstverständlich ausgebaut werden. Aber dabei dürfen wir die Grundrechte unserer Kameraden nicht vergessen.</p>
+                <p klasse="J">Das Gesetz ermöglicht dem Militärischen Abschirmdienst die Tiefenüberprüfung, also die Überwachung sensibler Bereiche, bis hin zum Postgeheimnis. So gut die Absicht, die Sicherheit zu erhöhen, auch ist – diese Befugnisse können nicht nur zum Schutz der Sicherheit in der Bundeswehr eingesetzt werden, sondern auch zur willkürlichen Steuerung. Es besteht tatsächlich die Gefahr, dass viele Maßnahmen nur dazu dienen, abweichende politische Meinungen zu unterdrücken und Menschen mit vermeintlich falschem Parteibuch unter Druck zu setzen, bis hin zu Entlassungen.</p>
+                <p klasse="J">Wenn Abgeordnete – jetzt wird es wieder interessant; jetzt können Sie wieder zuhören – den Ruf „Deutschland verrecke!“ als ihre Meinungsfreiheit ansehen und die Deutschlandfahne dafür immer mehr aus dem öffentlichen Bild verschwindet, läuft etwas grundsätzlich schief.</p>
+                <kommentar>(Jürgen Coße [SPD]: Das ist doch Quatsch!)</kommentar>
+                <p klasse="J">Wenn dann die Bundesratspräsidentin Anke Rehlinger am Tag der Deutschen Einheit ihre Neutralitätspflicht bricht und beim offiziellen Akt, also mitten im nationalen Gedenken, offen das Verbot der größten Oppositionspartei fordert</p>
+                <kommentar>(Isabelle Vandre [Die Linke]: Vollkommen zu Recht! – Boris Mijatović [BÜNDNIS 90/DIE GRÜNEN]: Das hätten Sie schon ganz alleine hingekriegt!)</kommentar>
+                <p klasse="O">und der Verfassungsschutzpräsident dabei auch noch klatscht, dann gehen bei mir die Alarmglocken los.</p>
+                <kommentar>(Beifall bei der AfD)</kommentar>
+                <p klasse="J">Das ist kein Zufall, sondern ein deutliches Zeichen: Bei falscher Anwendung driftet dieses Gesetz unaufhaltsam in Missbrauch und staatliche Übergriffe ab. Den Gesetzentwurf in dieser Fassung müssen und werden wir als Alternative für Deutschland ablehnen.</p>
+                <p klasse="J">Sehr geehrte Kameraden an den Fernsehern, liebe Zuschauer,</p>
+                <kommentar>(Dr. Irene Mihalic [BÜNDNIS 90/DIE GRÜNEN]: Wir reden hier immer noch im Parlament!)</kommentar>
+                <p klasse="O">als Alternative für Deutschland</p>
+                <kommentar>(Gökay Akbulut [Die Linke]: Nazideutschland!)</kommentar>
+                <p klasse="O">werden wir uns mit aller Kraft dafür einsetzen, dass Sie in keinen Stellvertreterkrieg geschickt werden,</p>
+                <kommentar>(Esra Limbacher [SPD]: Sie sind eine echte Gefahr für Deutschland! Das steht fest!)</kommentar>
+                <p klasse="O">schon gar nicht in die Ukraine. Meine Fraktion und ich wünschen Ihnen viel Soldatenglück. EloKa – hurra!</p>
+                <kommentar>(Beifall bei der AfD)</kommentar>
+                <name>Vizepräsident Omid Nouripour:</name>
+                <p klasse="J_1">Vielen Dank. – Der nächste Redner ist Thomas Silberhorn für die Unionsfraktion.</p>
+                <kommentar>(Beifall bei der CDU/CSU sowie bei Abgeordneten der SPD)</kommentar>
+            </rede>
+            <rede id="ID213115200">
+                <p klasse="redner"><a id="r152"/><redner id="11003636"><name><vorname>Thomas</vorname><nachname>Silberhorn</nachname><fraktion>CDU/CSU</fraktion></name></redner>Thomas Silberhorn (CDU/CSU):</p>
+                <p klasse="J_1">Herr Präsident! Liebe Kolleginnen und Kollegen! Ich komme zum Thema zurück.</p>
+                <kommentar>(Beifall bei Abgeordneten der CDU/CSU und der SPD)</kommentar>
+                <p klasse="J">Die Bundeswehr ist zunehmend Ziel von Spionage, von Sabotage und von hybriden Attacken aller Art. Die Angriffe werden häufiger, sie werden weiträumiger, und sie werden massiver. Sie treffen unsere militärischen Einrichtungen oder kritische Infrastruktur und sind tägliche Realität in Deutschland. Vor allem Russland tritt immer aggressiver auf.</p>
+                <kommentar>(Dr. Konstantin von Notz [BÜNDNIS 90/DIE GRÜNEN]: So ist es!)</kommentar>
+                <p klasse="J">Diese Bedrohung, liebe Kolleginnen und Kollegen, ist ernst, und sie richtet sich gezielt auch gegen unsere Streitkräfte. Der hier vorliegende Gesetzentwurf trägt dieser sicherheitspolitischen Lage Rechnung. Wir lassen uns nicht verunsichern, sondern handeln entschlossen und stärken die militärische Sicherheit der Bundeswehr.</p>
+                <p klasse="J">Wir novellieren umfassend das Gesetz über den militärischen Abschirmdienst. Dazu erweitern wir seine Aufgaben, zu denen künftig ausdrücklich auch die Abwehr von Sabotage und Spionage zählt. Wir verbreitern und präzisieren die Eingriffsbefugnisse, damit der MAD gegen aktuelle Gefährdungen wie Cyberangriffe und hybride Maßnahmen wirksam vorgehen kann. Und wir stellen sicher, dass der MAD im Spannungs- und Verteidigungsfall handlungsfähig bleibt.</p>
+                <p klasse="J">Mit dem Bundeswehr-Schutz-Gesetz verbessern wir die Prüfung der Verfassungstreue, bevor jemand Wehrdienst leistet, und die Sicherheitsüberprüfung von Soldaten in Verwendungen mit besonders hohen Sicherheitsanforderungen. Weil Soldaten der Einflussnahme von außen ausgesetzt sein können, schützen wir die Bundeswehr im Inneren und machen deutlich: Wer Uniform trägt, dient unserem Land, und nur, wer unserem Land treu dient, darf diese Uniform tragen.</p>
+                <kommentar>(Beifall bei der CDU/CSU sowie bei Abgeordneten der SPD und des BÜNDNISSES 90/DIE GRÜNEN)</kommentar>
+                <p klasse="J">Herr Bundesminister, im Gesetzgebungsverfahren haben wir sicherlich noch Gelegenheit, an der einen oder anderen Stelle nachzujustieren. Bei Luftsicherheit oder bei Seesicherheit zum Beispiel können wir noch besser werden. Feldjäger und Wachpersonal können noch stärker zur Sicherheit in der Bundeswehr beitragen. Wir sollten also das parlamentarische Verfahren nutzen, um militärische Sicherheit noch etwas umfassender und noch etwas wirksamer gewährleisten zu können.</p>
+                <kommentar>(Beifall bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="J">Insgesamt ist der Gesetzentwurf ein bedeutender Schritt, um die Bundeswehr vor Bedrohungen von innen wie von außen besser zu schützen. Dabei, liebe Kolleginnen und Kollegen, geht es auch um das Vertrauen, das wir als Gesellschaft in die Bundeswehr setzen. Wir dürfen uns darauf verlassen, dass sich unsere Soldaten schützend vor uns stellen. Deshalb stehen wir hinter der Bundeswehr und tun alles dafür, dass sie ihren Auftrag erfüllen kann.</p>
+                <p klasse="J">Vielen Dank.</p>
+                <kommentar>(Beifall bei der CDU/CSU und der SPD)</kommentar>
+            </rede>
+            <name>Vizepräsident Omid Nouripour:</name>
+            <p klasse="J_1">Vielen Dank. – Bevor wir zur nächsten Rede kommen, möchte ich noch mal zum Vorredner zurückkommen, zum Abgeordneten Kleinschmidt. Er hat hier eine Fraktion „Mauerschützenpartei“ genannt. Das war heute im Plenum schon einmal Thema und ist als unparlamentarisch zurückgewiesen worden. Dem habe ich mich anzuschließen.</p>
+            <kommentar>(Bernd Schattner [AfD]: Tatsachenbehauptung! – Weiterer Zuruf von der AfD)</kommentar>
+            <p klasse="O">– Wenn Sie über den Vorsitz diskutieren wollen, kommen Sie in den Ältestenrat. Sonst muss ich Ihnen per se einen Ordnungsruf erteilen, weil Kritik am Vorsitz qua vereinbarter Geschäftsordnung nicht erlaubt ist. – Ich möchte das als unparlamentarisch zurückweisen und bitte, das zu unterlassen.</p>
+            <kommentar>(Beifall bei der CDU/CSU, der SPD, dem BÜNDNIS 90/DIE GRÜNEN und der Linken)</kommentar>
+            <p klasse="J">Der nächste Redner ist Dr. Konstantin von Notz von der Fraktion Bündnis 90/Die Grünen.</p>
+            <kommentar>(Beifall beim BÜNDNIS 90/DIE GRÜNEN)</kommentar>
+            <rede id="ID213115300">
+                <p klasse="redner"><a id="r153"/><redner id="11004123"><name><titel>Dr.</titel><vorname>Konstantin</vorname><nachname>von Notz</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Dr. Konstantin von Notz (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Herr Präsident! Liebe Kolleginnen und Kollegen! Lieber Herr Minister! Um es gleich zu Beginn offen zu sagen: Wir begrüßen die heutige Vorlage dieses Artikelgesetzes, das die Selbstschutzrechte der Bundeswehr stärkt und Anpassungen an die grundlegend veränderten Gefahren endlich vornimmt. Sie alle wissen auch: Wir hätten uns das schon viel früher gewünscht und haben uns immer wieder, auch öffentlich, hierfür eingesetzt; denn diese Schutzlücken bestehen seit Langem. Wir haben auch in der letzten Legislatur schon daran gearbeitet.</p>
+                <p klasse="J">Gerade die Soldatinnen und Soldaten, aber auch ihre Familien und viele Zivilisten, die derzeit mit der Brigade „Litauen“ im Einsatz sind und sein werden und die Sicherheit unseres Landes und Europas verteidigen, haben unseren vollen Rückhalt und den bestmöglichen Schutz bei ihrem Einsatz verdient, meine Damen und Herren.</p>
+                <kommentar>(Beifall beim BÜNDNIS 90/DIE GRÜNEN und bei der SPD sowie bei Abgeordneten der CDU/CSU)</kommentar>
+                <p klasse="O">Gleichzeitig enthält die Vorlage leider noch – der Kollege Silberhorn hat es im Grunde auch gesagt – gravierende Lücken und ein paar Unklarheiten, mit denen wir uns im parlamentarischen Verfahren dringend beschäftigen müssen.</p>
+                <p klasse="J">Eine große, grundlegende Reform des Rechts der Nachrichtendienste steht seit Jahren aus. Es ist ein Versäumnis – das sage ich jetzt ganz langsam – der letzten Bundesregierung, dass es nicht gelungen ist, diese Reform vor dem Ampel-Aus durchzubringen. Aber ein Versäumnis – das sage ich in Richtung der Kolleginnen und Kollegen von CDU und CSU – war und ist auch, dass Sie einen Mangel an Konstruktivität gezeigt haben, als es darum ging, dieses wichtige Projekt noch mit uns gemeinsam umzusetzen.</p>
+                <kommentar>(Beifall beim BÜNDNIS 90/DIE GRÜNEN)</kommentar>
+                <p klasse="J">Jetzt weiß ich, dass dies in der Opposition in normalen Zeiten auch eher ungewöhnlich ist; so viel staatstragendes Verhalten wird da nicht abverlangt. Aber es sind halt keine normalen Zeiten. Die Zeiten sind außergewöhnlich und ernst und schwierig. In solchen Zeiten sollte man nicht auf den eigenen parteipolitischen Vorteil schielen, erst recht nicht, wenn man es von anderen ständig anders erwartet, ob bei der Bundeskanzlerwahl oder beim Sondervermögen. Insofern wünsche ich mir diese kollegiale Konstruktivität bei diesem Thema ganz besonders, liebe Kolleginnen und Kollegen.</p>
+                <kommentar>(Beifall beim BÜNDNIS 90/DIE GRÜNEN sowie des Abg. Dr. Hendrik Hoppenstedt [CDU/CSU])</kommentar>
+                <p klasse="J">Wir haben Zeit verloren. Die Drohnen fliegen, die Cyberattacken laufen, die Desinformation spaltet unser Land, und die Saboteure schlagen zu – das ist die Bestandsaufnahme. Deswegen muss es jetzt bei der großen Reform und beim BAMAD um Folgendes gehen: um neue Befugnisse, genauso aber um die Effektivierung der parlamentarischen Kontrolle. Sie ist verfassungsrechtlich die Voraussetzung und zentral für die Akzeptanz der Bevölkerung für die wichtige Arbeit der Dienste. Deswegen müssen wir das dringend angehen. Es geht darum, Urteile des Bundesverfassungsgerichts umzusetzen. Ich freue mich auf die konstruktiven Beratungen mit Ihnen.</p>
+                <p klasse="J">Herzlichen Dank.</p>
+                <kommentar>(Beifall beim BÜNDNIS 90/DIE GRÜNEN)</kommentar>
+            </rede>
+            <name>Vizepräsident Omid Nouripour:</name>
+            <p klasse="J_1">Herzlichen Dank. – Weil wir relativ bald den Vorsitz wechseln werden, möchte ich, bevor wir die Debatte fortsetzen, auf Folgendes hinweisen: Weil es hier im Raum Vorwürfe gibt, es habe Zwischenrufe gegeben, die nicht parlamentarisch gewesen seien, behalte ich mir vor, nach Durchsicht des Protokolls im Nachhinein Ordnungsmaßnahmen zu ergreifen.</p>
+            <p klasse="J">Die nächste Rede hält Zada Salihović für die Fraktion Die Linke.</p>
+            <kommentar>(Beifall bei der Linken)</kommentar>
+            <rede id="ID213115400">
+                <p klasse="redner"><a id="r154"/><redner id="11005562"><name><vorname>Zada</vorname><nachname>Salihović</nachname><fraktion>Die Linke</fraktion></name></redner>Zada Salihović (Die Linke):</p>
+                <p klasse="J_1">Herr Präsident! Werte Demokratinnen und Demokraten! Dieses Gesetz will unsere militärische Sicherheit stärken. Aber ich frage Sie: Sicherheit für wen und vor wem? Ja, wir brauchen Schutz vor Spionage, wir brauchen auch Schutz vor Sabotage, und vor allem brauchen wir Schutz vor Rechtsextremen in Uniform.</p>
+                <kommentar>(Beifall bei der Linken)</kommentar>
+                <p klasse="O">Aber dieses Gesetz schafft vor allem eines: mehr Überwachung, ohne das eigentliche Problem zu lösen.</p>
+                <p klasse="J">Rechte Netzwerke in der Bundeswehr sind keine Einzelfälle mehr; sie sind strukturelle Realität. Was bringt eine neue Verfassungstreueprüfung, wenn Reichsbürger wie die von der Gruppe Reuß trotzdem durch deutsche Kasernen spazieren konnten? Und jetzt sollen Soldatinnen und Soldaten Reiseverbote bekommen, private Sicherheitsdienste Menschen kontrollieren dürfen, auch außerhalb militärischer Zonen. Das ist kein gezielter Schutz, das ist Misstrauensverwaltung per Gesetz.</p>
+                <kommentar>(Beifall bei der Linken)</kommentar>
+                <p klasse="J">Die zentrale Frage bleibt unbeantwortet: Was passiert mit den Informationen, wenn sie da sind? Denn an Daten hat es ja nie gemangelt, nur eben an Konsequenzen, an Haltung und an Aufarbeitung. Sie schaffen mehr Befugnisse, aber keine bessere Kontrolle, mehr Vorschriften, aber keine neue Haltung, mehr Überwachung, aber keinen echten Schutz vor rechts.</p>
+                <kommentar>(Beifall bei der Linken)</kommentar>
+                <p klasse="J">Ich sage es mal so, wie es ein wichtiger Dichter und Denker meiner Generation gesagt hat: „Solidarisch nur mit Menschen, nie mit Staat und Polizei“. Und genau darum geht es hier. Vertrauen schafft man nicht durch Kontrolle, sondern durch Haltung. Wenn Sie wirklich etwas für die Truppe tun wollen, empfehle ich ein Gesetz für eine bessere Gesundheitsvorsorge und eine starke Militärseelsorge für die Soldatinnen und Soldaten. Da sind wir sicherlich dabei.</p>
+                <p klasse="J">Danke.</p>
+                <kommentar>(Beifall bei der Linken)</kommentar>
+                <name>Vizepräsident Omid Nouripour:</name>
+                <p klasse="J_1">Danke. – Der nächste und letzte Redner in dieser Debatte ist Jan-Wilhelm Pohlmann für die Unionsfraktion. Es ist seine erste Rede im Hohen Haus.</p>
+                <kommentar>(Beifall bei der CDU/CSU, der SPD und dem BÜNDNIS 90/DIE GRÜNEN)</kommentar>
+            </rede>
+            <p klasse="Ende">Der gesamte und damit endgültige Stenografische Bericht der 31. Sitzung wird am 14. Oktober 2025 veröffentlicht.</p>
+        </tagesordnungspunkt>
+        <sitzungsende sitzung-ende-uhrzeit="23:39"/>
+    </sitzungsverlauf>
+</dbtplenarprotokoll>
