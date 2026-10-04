@@ -384,6 +384,7 @@ def test_speech_sub_item_is_stored_and_reingest_is_idempotent(blocks):
     ]
     before = _dump(blocks, "speech", "agenda_sub_item")
     ingest.ingest_protocols(blocks)
+    ingest.ingest_groups(blocks)  # replaced speeches get their derived columns back, as in ingest_all
     assert _dump(blocks, "speech", "agenda_sub_item") == before
 
 

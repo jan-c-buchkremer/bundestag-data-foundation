@@ -46,7 +46,16 @@ from bdf.fetch_wahl import (
     nachfolger_pdf,
 )
 from bdf.match import PersonIndex
-from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_fraction, normalize_name
+from bdf.names import (
+    DRUCKSACHE_RE,
+    NO_FRACTION,
+    VOTE_VALUES,
+    normalize_fraction,
+    normalize_name,
+    originator_group,
+    party_fraction,
+    speaker_group,
+)
 
 
 def ingest_all(conn: sqlite3.Connection) -> None:
@@ -62,6 +71,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_government(conn)
     ingest_photos(conn)
     retire_pdf_speakers(conn)
+    ingest_groups(conn)
 
 
 # --- bundestag.de -------------------------------------------------------------------------
@@ -1372,3 +1382,92 @@ def _commons_photos(conn: sqlite3.Connection) -> dict[str, dict]:
             **meta.provenance(f"Wikimedia Commons {image.title}", url=image.page_url),
         }
     return rows
+
+
+# --- derived: fractions and speaker groups --------------------------------------------------
+
+
+def ingest_groups(conn: sqlite3.Connection) -> None:
+    """The columns every consumer would otherwise work out on its own, each in its own way (docs/design.md
+    "Fraction and speaker group"): person.fraction, speech.speaker_group and member_fraction,
+    drucksache.originator_groups, and the party_fraction table. Runs last; recomputed in full every time."""
+    spans: dict[tuple[str, int], list[tuple[str, str | None, str]]] = defaultdict(list)
+    for r in conn.execute(
+        "SELECT person_id, wahlperiode, name, from_date, to_date FROM membership WHERE kind = 'fraction' "
+        "ORDER BY from_date"
+    ):
+        spans[(r["person_id"], r["wahlperiode"])].append((r["from_date"] or "", r["to_date"], r["name"]))
+    members = {(r[0], r[1]) for r in conn.execute("SELECT person_id, wahlperiode FROM mandate")}
+
+    def fraction(person: str, wp: int, on: str | None = None) -> str | None:
+        """The fraction on a day (else the open membership), the last one when none covers it; fraktionslos for
+        a member without any; None for a non-member."""
+        if (person, wp) not in members:
+            return None
+        rows = spans.get((person, wp))
+        if not rows:
+            return NO_FRACTION
+        if on:
+            hit = [n for f, t, n in rows if f <= on and (t is None or on <= t)]
+        else:
+            hit = [n for f, t, n in rows if t is None]
+        return (hit or [rows[-1][2]])[-1]
+
+    newest = conn.execute("SELECT max(wahlperiode) FROM mandate").fetchone()[0]
+    is_government = {}
+    speeches = []
+    for r in conn.execute(
+        """SELECT s.id, s.person_id, s.fraction, st.wahlperiode, st.date,
+                  coalesce(s.speaker_role, CASE WHEN p.is_mdb = 0 THEN p.role END) AS role
+           FROM speech s JOIN sitting st ON st.id = s.sitting_id JOIN person p ON p.id = s.person_id"""
+    ):
+        role = r["role"]
+        if role not in is_government:
+            is_government[role] = bool(role) and government.parse_role(role) is not None
+        speeches.append(
+            (speaker_group(role, r["fraction"], is_government[role]),
+             fraction(r["person_id"], r["wahlperiode"], r["date"]) or normalize_fraction(r["fraction"]), r["id"])
+        )  # fmt: skip
+    # a Nachrücker not yet in the Stammdaten has no mandate row: the fraction printed in the protocols and vote lists
+    printed = dict(
+        conn.execute(
+            """SELECT person_id, fraction FROM (
+                   SELECT s.person_id, s.fraction, st.date FROM speech s JOIN sitting st ON st.id = s.sitting_id
+                   WHERE st.wahlperiode = :wp AND s.fraction IS NOT NULL
+                   UNION ALL
+                   SELECT i.person_id, i.fraction, v.date FROM individual_vote i
+                   JOIN roll_call_vote v ON v.id = i.vote_id JOIN sitting st ON st.id = v.sitting_id
+                   WHERE st.wahlperiode = :wp AND i.person_id IS NOT NULL)
+               ORDER BY date""",
+            {"wp": newest},
+        )
+    )  # the latest wins
+    current = {p: fraction(p, wp) for p, wp in members if wp == newest}
+    current |= {p: normalize_fraction(f) for p, f in printed.items() if p not in current}
+    drucksachen = [
+        (json.dumps(list(dict.fromkeys(g for g in map(originator_group, json.loads(r[1])) if g)), ensure_ascii=False),
+         r[0])
+        for r in conn.execute("SELECT id, originators FROM drucksache")
+    ]  # fmt: skip
+    parties = {
+        r[0]
+        for r in conn.execute(
+            """SELECT party FROM person UNION SELECT party FROM election_candidacy UNION SELECT seat_party
+               FROM constituency UNION SELECT party FROM constituency_result WHERE group_kind = 'party'"""
+        )
+        if r[0]
+    }
+    with conn:
+        conn.execute("UPDATE person SET fraction = NULL")
+        conn.executemany("UPDATE person SET fraction = ? WHERE id = ?", [(f, p) for p, f in current.items()])
+        conn.executemany("UPDATE speech SET speaker_group = ?, member_fraction = ? WHERE id = ?", speeches)
+        conn.executemany("UPDATE drucksache SET originator_groups = ? WHERE id = ?", drucksachen)
+        conn.execute("DELETE FROM party_fraction")
+        conn.executemany(
+            "INSERT INTO party_fraction (party, fraction) VALUES (?, ?)",
+            [(p, f) for p in sorted(parties) if (f := party_fraction(p))],
+        )
+    groups = defaultdict(int)
+    for g, _, _ in speeches:
+        groups[g] += 1
+    print("groups: speeches by speaker group " + ", ".join(f"{g} {n}" for g, n in sorted(groups.items())))

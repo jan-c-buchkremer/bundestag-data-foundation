@@ -57,6 +57,63 @@ def normalize_fraction(raw: str | None) -> str | None:
     return _FRACTIONS.get(key, raw.strip())
 
 
+# The fraction labels of WP 21, and the groups a speech can count for besides them (speech.speaker_group,
+# docs/design.md "Fraction and speaker group").
+FRACTIONS = ("AfD", "CDU/CSU", "BÜNDNIS 90/DIE GRÜNEN", "SPD", "Die Linke", "fraktionslos")
+NO_FRACTION = "fraktionslos"
+GOVERNMENT = "Bundesregierung"
+BUNDESRAT = "Bundesrat"  # members of a Land government, who speak for the Bundesrat
+OTHER = "Sonstige"  # the Wehrbeauftragte, guests
+
+# Party names as the Stammdaten (person.party) and the Bundeswahlleiterin print them -> the fraction they sit in.
+# Parties without a fraction of their own (SSW, the historic ones) map to nothing.
+_PARTY_FRACTION = {
+    "cdu": "CDU/CSU",
+    "csu": "CDU/CSU",
+    "spd": "SPD",
+    "afd": "AfD",
+    "grüne": "BÜNDNIS 90/DIE GRÜNEN",
+    "bündnis 90/die grünen": "BÜNDNIS 90/DIE GRÜNEN",
+    "die linke": "Die Linke",
+    "die linke.": "Die Linke",
+}
+
+_LAND_OFFICE = re.compile(r"^(Minister|Ministerin|Ministerpräsident|Ministerpräsidentin|Staatsminister|"
+                          r"Staatsministerin|Senator|Senatorin|(Erste[r]? |Regierende[r]? )?Bürgermeister(in)?)"
+                          r"\b.*\([^)]+\)$")  # fmt: skip
+_GOVERNMENT_COMMISSIONER = re.compile(r"^Beauftragte[r]? der Bundesregierung\b")
+
+
+def party_fraction(party: str | None) -> str | None:
+    """ "CSU" -> "CDU/CSU", "GRÜNE" -> "BÜNDNIS 90/DIE GRÜNEN", "DIE LINKE." -> "Die Linke"; None otherwise."""
+    return _PARTY_FRACTION.get(clean_text(party).lower()) if party else None
+
+
+def originator_group(title: str) -> str | None:
+    """The group behind a DIP Urheber title: a fraction ("Fraktion der SPD", "Fraktion DIE LINKE", "Gruppe BSW"),
+    the Bundesregierung (also a single ministry, "Bundesministerium der Finanzen"), or None (a committee, the
+    Bundesrat, the President)."""
+    t = clean_text(title)
+    if t.startswith(GOVERNMENT) or t.startswith("Bundesministerium"):
+        return GOVERNMENT
+    m = re.match(r"^(?:Fraktion|Gruppe)(?:en)?\s+(?:der\s+)?(.+)$", t)
+    if not m:
+        return None
+    fraction = normalize_fraction(m.group(1))
+    return fraction if fraction in _FRACTIONS.values() else None
+
+
+def speaker_group(role: str | None, fraction: str | None, is_government_role: bool) -> str:
+    """Who a speech counts for: the Bundesregierung when given in a federal government office (the member's
+    fraction does not count then), the Bundesrat for a Land office, else the printed fraction, else Sonstige.
+    `is_government_role` is government.parse_role(role) is not None, passed in to keep this module free of it."""
+    if role and (is_government_role or _GOVERNMENT_COMMISSIONER.match(role)):
+        return GOVERNMENT
+    if role and _LAND_OFFICE.match(role):
+        return BUNDESRAT
+    return normalize_fraction(fraction) or OTHER
+
+
 def normalize_name(s: str | None) -> str:
     """Lower-case ASCII form for matching: strips accents, titles, punctuation."""
     if not s:
