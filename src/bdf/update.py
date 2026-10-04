@@ -13,7 +13,7 @@ from pathlib import Path
 
 import httpx
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, ingest, queries, raw
+from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, health, ingest, queries, raw
 from bdf.config import db_path, dip_api_key
 
 # constituent sitting of each Wahlperiode: the earliest date any source is asked for
@@ -75,7 +75,8 @@ def warn_stale_roles(conn: sqlite3.Connection) -> list[dict]:
 
 
 def run(wp: int = 21, today: date | None = None) -> int:
-    """Fetch all sources, then ingest. Returns a process exit code: 1 if a source had to be skipped.
+    """Fetch all sources, then ingest, then check the store's health (bdf/health.py). Returns a process exit code:
+    1 if a source had to be skipped or the health check found the store clearly worse than on the last run.
 
     A source that still fails after `raw.get`'s retries is skipped for this run; the others are fetched
     and everything on disk is ingested, so one unreachable server does not hold back the rest.
@@ -154,6 +155,10 @@ def run(wp: int = 21, today: date | None = None) -> int:
     conn = db.connect(db_path())
     ingest.ingest_all(conn)
     warn_stale_roles(conn)
+    report = health.check(conn, today)
+    print("\n".join(report.lines))
     if failed:
         print(f"update: ingested, but these sources failed: {', '.join(failed)}")
-    return 1 if failed else 0
+    if report.failures:
+        print(f"update: the health check failed: {'; '.join(report.failures)}")
+    return 1 if failed or report.failures else 0

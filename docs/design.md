@@ -270,6 +270,30 @@ protocol-only; a successor in a Kanzler/Bundesminister office takes it out of th
 - Stammdaten and DIP persons are re-fetched whole (small) and upserted.
 - Corrections to protocols are rare; `fetch --force` + `ingest` handles them.
 
+### Health report
+
+After every ingest `update` takes a snapshot of the store (`bdf/health.py`): the rows of every table and the known
+problem counts, saved as `data/health/<date>.json` and compared with the newest earlier snapshot. The comparison is
+printed in the run's log; `bdf health` prints it for the current store without saving. The run fails (exit code 1;
+systemd reports it to Gatus, which alerts via ntfy) only when something clearly got worse:
+
+- a table that had rows is empty or gone, or lost more than 5 % of its rows (rows normally only grow);
+- a problem count rose by more than its threshold since the last snapshot:
+
+| Problem | Fails at a rise of |
+|---|---|
+| `protocol_gaps`: Beratungen without an agenda item, not counting preliminary protocols without a PDF part | 10 |
+| `unmatched_votes`: roll-call vote rows without a person | 100 |
+| `unlinked_roll_calls`: roll-call votes without a Vorgang | 5 |
+| `vorlagen_without_vorgang`: Drucksachen on agenda items without a Vorgang (DIP links new ones days later) | 150 |
+| `askers_without_person`: DIP persons asking Fragen without a person | 10 |
+| `unmatched_elected`, `unmatched_successors`: candidates and Mandatsnachfolger without a person | 3 |
+
+`protocol_gaps_preliminary`, `preliminary_sittings`, `stale_roles`, `placeholder_speakers` and `unresolved_authors`
+are reported only. A first snapshot, a new table and a new problem count never fail. A source that cannot be
+fetched fails the run as before. On 2026-10-04 the live store had 23 protocol gaps, 17 preliminary sittings, no
+unmatched votes and no unlinked roll calls, 188 Vorlagen without a Vorgang, 30 unresolved DIP authors.
+
 ### Preliminary protocols
 
 bundestag.de serves a protocol's XML at its final URL (`btp/21/21031.xml`) before the final version exists. The
@@ -329,6 +353,7 @@ bdf fetch aw --wp 21
 bdf fetch photos                                    # bundestag.de biography list + portraits
 bdf fetch government                                # Wikidata roster + Commons portraits
 bdf ingest                                          # everything under data/raw → sqlite
+bdf health                                          # rows per table and problem counts against the last update's snapshot
 bdf query speeches   --person 11004006 --from … --to …
 bdf query votes      --person 11004006 --from … --to …
 bdf query drucksachen --person 11004006 --from … --to …

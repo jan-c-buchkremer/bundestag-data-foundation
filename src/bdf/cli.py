@@ -6,7 +6,19 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, ingest, queries, raw, update
+from bdf import (
+    db,
+    fetch_aw,
+    fetch_bundestag,
+    fetch_dip,
+    fetch_wahl,
+    fetch_wikidata,
+    health,
+    ingest,
+    queries,
+    raw,
+    update,
+)
 from bdf.config import db_path
 from bdf.export import write_export
 
@@ -55,6 +67,7 @@ def build_parser() -> argparse.ArgumentParser:
     e = sub.add_parser("export", help="open-data export: one CSV.gz per table, datapackage.json, README.md")
     e.add_argument("dir", type=Path, help="target directory (replaced as a whole when the export succeeds)")
 
+    sub.add_parser("health", help="rows per table and problem counts, compared with the last update's snapshot")
     u = sub.add_parser("update", help="fetch everything new since the last run from all sources, then ingest")
     u.add_argument("--wp", type=int, default=21, choices=sorted(update.WP_START))
 
@@ -242,6 +255,10 @@ def main(argv: list[str] | None = None) -> None:
         ingest.ingest_all(db.connect(db_path()))
     elif args.command == "update":
         sys.exit(update.run(args.wp))
+    elif args.command == "health":
+        report = health.check(db.connect(db_path()), date.today(), save=False)
+        print("\n".join(report.lines))
+        sys.exit(1 if report.failures else 0)
     elif args.command == "query":
         cmd_query(args)
     elif args.command == "export":
