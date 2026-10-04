@@ -377,6 +377,13 @@ CREATE TABLE IF NOT EXISTS mandate_successor (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS person_alias (
+    alias_id TEXT PRIMARY KEY,          -- a placeholder person id that is gone: a Wikidata QID ("Q109023") made for a
+                                        -- government member, or "pdf-<name>" for a speaker read from a PDF
+    person_id TEXT NOT NULL REFERENCES person(id),  -- the person it turned out to be
+    recorded_at TEXT NOT NULL           -- when the ingest first retired the placeholder, ISO timestamp
+);
+
 CREATE TABLE IF NOT EXISTS person_photo (
     person_id TEXT PRIMARY KEY REFERENCES person(id),
     image_url TEXT NOT NULL,            -- the image as downloaded (bundestag.de rendition or Commons thumbnail)

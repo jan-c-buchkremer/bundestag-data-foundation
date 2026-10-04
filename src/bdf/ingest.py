@@ -61,6 +61,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_wahl(conn)
     ingest_government(conn)
     ingest_photos(conn)
+    retire_pdf_speakers(conn)
 
 
 # --- bundestag.de -------------------------------------------------------------------------
@@ -1026,6 +1027,38 @@ _GOVERNMENT_ROLE_RE = re.compile(
 _COMMISSIONER_RE = re.compile(r"^Beauftragte[r]? der Bundesregierung")
 
 
+def _record_aliases(conn: sqlite3.Connection, pairs: list[tuple[str, str]]) -> None:
+    """person_alias rows (placeholder id -> person id); the first recording time is kept."""
+    now = datetime.now(UTC).isoformat(timespec="seconds")
+    conn.executemany(
+        "INSERT INTO person_alias (alias_id, person_id, recorded_at) VALUES (?, ?, ?) "
+        "ON CONFLICT(alias_id) DO UPDATE SET person_id = excluded.person_id",
+        [(alias, pid, now) for alias, pid in pairs],
+    )
+
+
+def retire_pdf_speakers(conn: sqlite3.Connection) -> None:
+    """A speaker read from a preliminary protocol's PDF without an id gets "pdf-<name>"; once the final XML (or
+    another protocol) names them with their real id, nothing refers to the placeholder any more. Such a row is
+    deleted, leaving an alias to the person of the same name when exactly one other person has it."""
+    used = """SELECT person_id FROM speech UNION SELECT person_id FROM interjection WHERE person_id IS NOT NULL
+              UNION SELECT to_person_id FROM interjection WHERE to_person_id IS NOT NULL
+              UNION SELECT person_id FROM government_role WHERE person_id IS NOT NULL"""
+    gone = conn.execute(f"SELECT id, first_name, last_name FROM person WHERE id LIKE 'pdf-%' AND id NOT IN ({used})")
+    gone = gone.fetchall()
+    if not gone:
+        return
+    wp = conn.execute("SELECT max(wahlperiode) FROM sitting").fetchone()[0] or 0
+    with conn:
+        conn.executemany("DELETE FROM person_photo WHERE person_id = ?", [(r["id"],) for r in gone])
+        conn.executemany("DELETE FROM person WHERE id = ?", [(r["id"],) for r in gone])
+        index = PersonIndex(conn, wp)  # without the placeholders, which would make every name ambiguous
+        pairs = [(r["id"], pid) for r in gone
+                 if (pid := index.match(r["last_name"], r["first_name"])) and not pid.startswith("pdf-")]  # fmt: skip
+        _record_aliases(conn, pairs)
+    print(f"persons: {len(gone)} PDF placeholder speakers retired, {len(pairs)} with an alias to their real id")
+
+
 def ingest_government(conn: sqlite3.Connection) -> None:
     """government_role, replaced wholesale: Wikidata roles, Stammdaten government memberships and the government
     roles printed in the protocols, merged by bdf.government (one row per person + kind + department, dates from
@@ -1042,8 +1075,12 @@ def ingest_government(conn: sqlite3.Connection) -> None:
             "UPDATE person SET wikidata_qid = ? WHERE id = ? AND wikidata_qid IS NULL",
             [(qid, pid) for qid, (pid, how) in matched.items() if how == "name"],
         )
-        # person rows made for a roster member who has since been matched (or dropped from the roster)
+        # person rows made for a roster member who has since been matched (or dropped from the roster); a matched
+        # one leaves an alias, so the id that named them (a consumer's page address) still leads to them
         orphans = "SELECT id FROM person WHERE id LIKE 'Q%' AND id NOT IN (SELECT person_id FROM government_role)"
+        _record_aliases(conn, conn.execute(
+            f"SELECT o.id, p.id FROM ({orphans}) o JOIN person p ON p.wikidata_qid = o.id AND p.id NOT LIKE 'Q%'"
+        ).fetchall())  # fmt: skip
         conn.execute(f"DELETE FROM person_photo WHERE person_id IN ({orphans})")
         conn.execute(f"DELETE FROM person WHERE id IN ({orphans})")
     hows = [how for _, how in matched.values()]
