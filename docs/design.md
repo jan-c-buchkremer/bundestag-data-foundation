@@ -291,6 +291,21 @@ DIP's `plenarprotokoll-text` was no help: for 21/31 it is the same preliminary t
   agenda item or sub-item of the sitting carries (a Drucksache of the Vorgang, or an `agenda_item_vorlage` row for
   it), with its cause: `preliminary` (no PDF part read), `after_xml_end` (after the XML's end, so the PDF part
   missed it) or `in_protocol` (the protocol has it: another Drucksache on the item, or the parser misses it).
+  An item's Drucksachen include those only a decision under it names (`via = 'decision'`); DIP's
+  "Geschäftsordnungsantrag …" positions are left out (a motion on the agenda, not a Beratung of the Vorgang).
+
+  **Known gaps** (live store, 2026-10-04: 23 Beratungen, none a parser miss):
+
+  | Cause | n | Sittings |
+  |---|---|---|
+  | A Vorlage from WP 20: the item names the WP 20 Drucksache, DIP's new WP 21 Vorgang only later ones | 10 | 21/6 (Wehrbeauftragte 20/15060), 21/10 (Entlastung 20/12195), 21/14, 21/16–21/19 (Finanzplan 20/12401), 21/40, 21/50, 21/65 |
+  | Constitution and procedure without a Drucksache on the item: the constituent sitting, the Kanzlerwahl, a number of members fixed at the opening; the AfD's amendments to the Geschäftsordnung (21/4, 21/5), which DIP files under Vorgänge with only 21/2196 | 7 | 21/1 (5), 21/2, 21/21 |
+  | A change of committee referral announced at the opening, not an agenda item | 3 | 21/49, 21/52, 21/82 |
+  | Entschließungsanträge to the budget, debated with their Einzelplan (items without Drucksache), voted on in 21/25 | 2 | 21/23 |
+  | An Anlage: a corrected vote from sitting 13 | 1 | 21/15 |
+
+  Seven of these Vorgänge (three WP 20 reports, four procedure items) have no `vorgang` row: Vorgänge are
+  fetched through WP 21 Drucksachen, and these have none.
 
 ## CLI
 
