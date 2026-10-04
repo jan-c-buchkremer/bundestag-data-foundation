@@ -453,7 +453,9 @@ CREATE TABLE IF NOT EXISTS decision_vorgang (
     vorgang_id TEXT NOT NULL REFERENCES vorgang(id),
     via TEXT NOT NULL,                  -- roll_call: the roll call's Vorgang (DIP's Namentliche Abstimmung) |
                                         -- dip_step: DIP's step in this sitting deciding the Drucksache |
-                                        -- drucksache: a Vorgang of the decision's or roll call's Drucksache
+                                        -- drucksache: a Vorgang of the decision's or roll call's Drucksache |
+                                        -- agenda_item: the single Vorgang of its (sub-)item's Vorlagen, for a
+                                        -- decision whose Drucksache the chair does not name
     PRIMARY KEY (decision_id, vorgang_id)
 );
 

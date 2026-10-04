@@ -164,3 +164,53 @@ def test_decision_vorgaenge_and_check(store):
         ("missing", "21/9300"),
         ("result", "21/998/h1"),
     ]
+
+
+def test_decision_without_drucksache_and_check_rules(store):
+    """A decision whose Drucksache the chair does not name takes the single Vorgang of its agenda item's Vorlagen;
+    the check counts a DIP step on another Drucksache of the same Vorgang as found and leaves elections out."""
+    prov = {"source_url": "u", "source_document_id": "d", "retrieved_at": "2026-01-01"}
+    upsert(store, "sitting", [{"id": "21/997", "wahlperiode": 21, "number": 997, "date": "2026-01-01",
+                               "xml_url": "x", "pdf_url": "p", **prov}])  # fmt: skip
+    upsert(store, "agenda_item", [{"id": "21/997/1", "sitting_id": "21/997", "position": 1, "top_id": "TOP 1",
+                                   "title": "Immunität", "drucksache_numbers": '["21/9500"]', **prov}])  # fmt: skip
+    upsert(store, "vorgang", [
+        {"id": "I1", "wahlperiode": 21, "type": "Immunitätsangelegenheit", "title": "Immunität", "subjects": "[]",
+         "initiators": "[]", **prov},
+        {"id": "A1", "wahlperiode": 21, "type": "Antrag", "title": "Antrag", "subjects": "[]", "initiators": "[]",
+         **prov},
+        {"id": "W1", "wahlperiode": 21, "type": "Besetzung interner Gremien des BT", "title": "Wahl", "subjects": "[]",
+         "initiators": "[]", **prov},
+    ])  # fmt: skip
+    doc = {"wahlperiode": 21, "title": "t", "date": "2026-01-01", "originators": "[]", "publisher": "BT", **prov}
+    upsert(store, "drucksache", [{"id": "D5", "number": "21/9500", "type": "Beschlussempfehlung", **doc},
+                                 {"id": "D6", "number": "21/9600", "type": "Beschlussempfehlung", **doc},
+                                 {"id": "D7", "number": "21/9700", "type": "Antrag", **doc}])  # fmt: skip
+    upsert(store, "vorgang_drucksache", [{"vorgang_id": "I1", "drucksache_id": "D5"},
+                                         {"vorgang_id": "A1", "drucksache_id": "D6"},
+                                         {"vorgang_id": "A1", "drucksache_id": "D7"}])  # fmt: skip
+    step = {"date": "2026-01-01", "position": "Beratung", "chamber": "BT", "document_kind": "Plenarprotokoll",
+            "document_number": "21/997", "originators": "[]", **prov}  # fmt: skip
+    upsert(store, "vorgang_position", [
+        # DIP names the Antrag, the protocol the Beschlussempfehlung on it: found
+        {"id": "PA", "vorgang_id": "A1", **step,
+         "decisions": json.dumps([{"beschlusstenor": "Ablehnung der Vorlage", "dokumentnummer": "21/9700"}])},
+        # an election is no decision
+        {"id": "PW", "vorgang_id": "W1", **step,
+         "decisions": json.dumps([{"beschlusstenor": "Annahme", "dokumentnummer": "21/9800"}])},
+    ])  # fmt: skip
+    decision = {"sitting_id": "21/997", "agenda_item_id": "21/997/1", "kind": "handzeichen", "text": "t",
+                "result": "angenommen", "roll_call_vote_id": None, **prov}  # fmt: skip
+    upsert(store, "decision", [
+        {**decision, "id": "21/997/h1", "n": 1, "position": 1, "subject": "Beschlussempfehlung",
+         "drucksache_number": None},
+        {**decision, "id": "21/997/h2", "n": 2, "position": 2, "subject": "Beschlussempfehlung",
+         "drucksache_number": "21/9600"},
+    ])  # fmt: skip
+    store.commit()
+    ingest.ingest_vorlagen(store)
+    links = {
+        (r[0], r[1], r[2]) for r in store.execute("SELECT * FROM decision_vorgang WHERE decision_id = '21/997/h1'")
+    }
+    assert links == {("21/997/h1", "I1", "agenda_item")}
+    assert [r for r in queries.decision_check(store) if r["sitting_id"] == "21/997"] == []

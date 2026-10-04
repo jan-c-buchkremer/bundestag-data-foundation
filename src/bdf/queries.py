@@ -257,8 +257,9 @@ _DIP_ADOPTED = re.compile(r"^(Annahme|Zustimmung)")
 _DIP_REJECTED = re.compile(r"^(Ablehnung|Zurückweisung)")
 # DIP decisions that are procedure or elections, which `decision` does not hold (docs/design.md)
 _DIP_NOT_A_DECISION = re.compile(
-    r"Überweis|Wahlvorschl|Geschäftsordnung|Tagesordnung|Kenntnisnahme|Zurückverweis|erledigt"
+    r"Überweis|Überwies|Wahlvorschl|Geschäftsordnung|Tagesordnung|Kenntnisnahme|Zurückverweis|erledigt"
 )
+_ELECTION_VORGANG = "Besetzung interner Gremien des BT"  # DIP's type for the Bundestag's elections
 
 
 def decision_check(conn: sqlite3.Connection) -> list[dict]:
@@ -268,8 +269,9 @@ def decision_check(conn: sqlite3.Connection) -> list[dict]:
       A decision on a Beschlussempfehlung is left out: adopting a recommendation to reject is "Ablehnung der
       Vorlage" in DIP.
     - ``missing``: a DIP step in a sitting of the store that records a decision on a Drucksache, with no decision
-      of that sitting naming the Drucksache or linked to the step's Vorgang (decision_vorgang). Procedure and
-      elections are left out, as in `decision`.
+      of that sitting naming the Drucksache, linked to the step's Vorgang (decision_vorgang) or naming another
+      Drucksache of it (a Beschlussempfehlung where DIP names the Antrag). Procedure and elections (DIP's Vorgangstyp
+      "Besetzung interner Gremien des BT", a ballot or not) are left out, as in `decision`.
 
     A check like protocol-gaps, not a correction: the store keeps what the protocol says."""
     out = []
@@ -285,10 +287,18 @@ def decision_check(conn: sqlite3.Connection) -> list[dict]:
                         "dip_result": d["dip_result"], "dip_position_id": d["dip_position_id"],
                         **_provenance(d)})  # fmt: skip
     sittings = {r["id"]: r for r in conn.execute("SELECT * FROM sitting")}
+    of_number: dict[str, set[str]] = defaultdict(set)  # Drucksache number -> its Vorgänge
+    for number, vorgang in conn.execute(
+        "SELECT d.number, vd.vorgang_id FROM vorgang_drucksache vd JOIN drucksache d ON d.id = vd.drucksache_id"
+    ):
+        of_number[number].add(vorgang)
     named: dict[str, set[str]] = defaultdict(set)
-    for r in conn.execute("SELECT sitting_id, drucksache_number FROM decision WHERE drucksache_number IS NOT NULL"):
-        named[r[0]].update(DRUCKSACHE_RE.findall(r[1]))
     linked: dict[str, set[str]] = defaultdict(set)
+    for r in conn.execute("SELECT sitting_id, drucksache_number FROM decision WHERE drucksache_number IS NOT NULL"):
+        for number in DRUCKSACHE_RE.findall(r[1]):
+            named[r[0]].add(number)
+            linked[r[0]] |= of_number.get(number, set())
+    elections = {r[0] for r in conn.execute("SELECT id FROM vorgang WHERE type = ?", (_ELECTION_VORGANG,))}
     if conn.execute("SELECT name FROM sqlite_master WHERE name = 'decision_vorgang'").fetchone():
         for r in conn.execute(
             "SELECT d.sitting_id, v.vorgang_id FROM decision_vorgang v JOIN decision d ON d.id = v.decision_id"
@@ -299,7 +309,7 @@ def decision_check(conn: sqlite3.Connection) -> list[dict]:
         "WHERE vp.chamber = 'BT' AND vp.document_kind = 'Plenarprotokoll' AND vp.decisions IS NOT NULL"
     ):
         sid = p["document_number"]
-        if sid not in sittings:
+        if sid not in sittings or p["vorgang_id"] in elections:
             continue
         for b in json.loads(p["decisions"]):
             if not isinstance(b, dict) or "Wahl" in (b.get("abstimmungsart") or ""):

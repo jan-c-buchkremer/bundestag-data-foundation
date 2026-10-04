@@ -683,19 +683,36 @@ def _decision_vorgaenge(conn: sqlite3.Connection) -> tuple[list[dict], list[tupl
     """decision_vorgang rows, and per decision (vorgang_id, dip_position_id, dip_result, id). The Vorgänge of a
     decision, most precise source first: the roll call's (DIP's Namentliche Abstimmung, paired by page), else DIP's
     steps in the sitting that decide one of its Drucksachen, else every Vorgang of its Drucksachen and of its roll
-    call's (`_vorgaenge_by_drucksache`)."""
+    call's (`_vorgaenge_by_drucksache`). A decision whose Drucksache the chair does not name (an Einzelplan of the
+    budget, an immunity matter) takes the Vorlagen of its sub-item, else of its agenda item, when they belong to a
+    single Vorgang (`via = agenda_item` unless a DIP step names them)."""
     vorgaenge = _vorgaenge_by_drucksache(conn)
     steps = _dip_steps(conn)
     rcv = {r["id"]: r for r in conn.execute("SELECT id, drucksache_number, vorgang_id FROM roll_call_vote")}
+    # sub-item or agenda item -> the Drucksachen its title names (not those other decisions under it name)
+    vorlagen: dict[str, list[str]] = defaultdict(list)
+    for r in conn.execute(
+        "SELECT agenda_item_id, sub_item_id, drucksache_number FROM agenda_item_vorlage WHERE via = 'title'"
+    ):
+        vorlagen[r["sub_item_id"] or r["agenda_item_id"]].append(r["drucksache_number"])
     links, columns = [], []
-    for d in conn.execute("SELECT id, sitting_id, drucksache_number, roll_call_vote_id FROM decision"):
+    for d in conn.execute(
+        "SELECT id, sitting_id, drucksache_number, roll_call_vote_id, agenda_item_id, sub_item_id FROM decision"
+    ):
         numbers = DRUCKSACHE_RE.findall(d["drucksache_number"] or "")
         vote = rcv.get(d["roll_call_vote_id"])
+        from_item = False
+        if not numbers and vote is None:
+            numbers = vorlagen.get(d["sub_item_id"] or d["agenda_item_id"] or "", [])
+            from_item = True
         hits = [h for n in numbers for h in steps.get((d["sitting_id"], n), [])]
         if vote is not None and vote["vorgang_id"]:
             found, via = {vote["vorgang_id"]}, "roll_call"
         elif hits:
             found, via = {h[1] for h in hits}, "dip_step"
+        elif from_item:
+            found = set().union(*(vorgaenge.get(n, set()) for n in numbers))
+            found, via = (found if len(found) == 1 else set()), "agenda_item"
         else:
             if vote is not None:
                 numbers += [n for n in DRUCKSACHE_RE.findall(vote["drucksache_number"] or "") if n not in numbers]
