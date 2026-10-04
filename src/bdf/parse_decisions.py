@@ -18,6 +18,7 @@ Enthaltung der Z". A fraction keeps the first position found for it. See docs/de
 the measured recall and the phrasings that are not handled.
 """
 
+import itertools
 import json
 import re
 from dataclasses import dataclass, field
@@ -38,13 +39,18 @@ _CHAIR_NAME = re.compile(r"^(?:Alters)?(?:Vize)?[Pp]räsident(?:in)?\b.*:$")
 
 _RESULT = re.compile(r"\b(angenommen|abgelehnt)\b")
 _NEGATED = re.compile(r"\bnicht\s+$")  # "Damit ist der Wahlvorschlag nicht angenommen"
-_RESULT_VERB = re.compile(r"\b(?:ist|sind|wurde|wurden|worden|bleibt)\b")
+# a result needs its verb; "Mit dem gleichen Stimmverhältnis wiederum angenommen." (21/14) has none
+_RESULT_VERB = re.compile(
+    r"\b(?:ist|sind|wurde|wurden|worden|bleibt)\b|\b(?:wiederum|ebenfalls|ebenso)\b(?= (?:angenommen|abgelehnt)\b)"
+)
 _NOT_RESULT = re.compile(r"\b(?:Zwischenfrage|Kurzintervention|[Nn]achdem|[Ww]enn|[Ff]alls|sollte|würde|Annahme)\b")
 # a vote closed without "angenommen": "Dann ist das einstimmig so beschlossen", "Damit ist das Gesetz beschlossen"
 _IMPLICIT_RESULT = re.compile(
-    r"\beinstimmig\b[^.?]{0,40}\bbeschlossen\b|\b(?:so|damit|dies|dann)\b[^.?]{0,40}\bbeschlossen(?: worden)?\b"
-    r"|\bbeschlossen (?:worden )?ist\b"
+    r"\b[Ee]instimmig\b[^.?]{0,40}\bbeschlossen\b|\b(?:so|damit|dies|dann)\b[^.?]{0,40}\bbeschlossen(?: worden)?\b"
+    r"|\bbeschlossen (?:worden )?ist\b|^Dann wird so verfahren\.$"  # the last only after a vote question (21/80)
 )
+# a result sentence that also closes the vote before it: "…, genauso wie die Beschlussempfehlung vorher" (21/95)
+_SAME_AS_BEFORE = re.compile(r"\b(?:genauso|ebenso|wie) (?:wie )?(?:die|der|das|den) \w+ (?:vorher|zuvor|davor)\b")
 _ROLL_CALL_RESULT = re.compile(r"[Mm]it Ja haben (?:\w+ )?gestimmt|[Aa]uf Ja entfielen|[Mm]it Ja, [^.]*haben gestimmt")
 # a vote needing the majority of members (Art. 87 Abs. 3 GG, Einspruch des Bundesrates)
 _MAJORITY_RESULT = re.compile(r"hat (?:damit )?die erforderliche Mehrheit (?:von \d+ Stimmen )?(nicht )?erreicht")
@@ -64,13 +70,13 @@ _NUMBER_WORDS = {"eine": 1, "einer": 1, "keine": 0, "beiden": 2, "zwei": 2, "dre
 
 # a question the presidency puts to the house, by the position an answer to it stands for
 _QUESTIONS = [
-    (YES, r"Wer stimmt (?:dafür|für|zu)\b[^?–]*\?"),
+    (YES, r"Wer stimmt (?:hier |nun |jetzt |denn |also )?(?:dafür|für|zu)\b[^?–]*\?"),
     (YES, r"Wer stimmt (?!dagegen|gegen)[^?–]*\bzu\?"),  # "Wer stimmt dieser Beschlussempfehlung zu?"
     (YES, r"Wer (?:ist|war)(?: noch| denn)? (?:dafür|für\b[^?–]*)\?"),
     (YES, r"Wer möchte zustimmen\?"),
     (YES, r"\bdie [^.?–]*?zustimmen (?:wollen|möchten)[^.?–]*?(?:Handzeichen|zu erheben)[^.?–]*[.?!]?"),
     (YES, r"Ich bitte um (?:das |Ihr )?Handzeichen[.!]?"),
-    (NO, r"Wer stimmt (?:dagegen|gegen)\b[^?–]*\?"),
+    (NO, r"Wer stimmt (?:hier |nun |jetzt |denn |also )?(?:dagegen|gegen)\b[^?–]*\?"),
     (NO, r"Wer (?:ist|war)(?: noch| denn)? (?:dagegen|gegen\b[^?–]*)\?"),
     (NO, r"(?:Wer möchte|Möchte jemand) dagegen ?stimmen\?"),
     (NO, r"Gibt es jemanden, der dagegen ?stimmt\?"),
@@ -250,6 +256,26 @@ def _assign(positions: dict[str, str], mentions: list, position: str, wp: int) -
         names = tuple(f for f in HOUSE.get(wp, ()) if f not in positions) if m in ("rest", "all") else m
         for f in names:
             positions.setdefault(f, position)
+
+
+def _cycles(vote: list[_Sentence]) -> list[list[_Sentence]]:
+    """The votes in a passage that ends in one result sentence: a "for" question after a question against or on
+    abstentions starts the next vote, which begins after the last answer to the one before (its call-up, "Zusatzpunkt
+    6. Abstimmung über …", belongs to it). A "for" question right after the last answer, without a call-up, puts the
+    same vote again ("Noch mal: Wer stimmt …?", 21/56). Usually a single vote."""
+    starts, asked_against = [], False
+    for k, x in enumerate(vote):
+        asked = {_QUESTIONS[int(m.lastgroup[1:])][0] for m in _QUESTION_RE.finditer(x.text)}
+        if YES in asked and asked_against:
+            j = k
+            while j > 0 and not vote[j - 1].text.lstrip().startswith("–"):
+                j -= 1
+            if j < k:  # a call-up before the question; without one the chair puts the same vote again
+                starts.append(j)
+            asked_against = False
+        asked_against = asked_against or bool(asked & {NO, ABSTAIN})
+    bounds = [0, *starts, len(vote)]
+    return [vote[a:b] for a, b in itertools.pairwise(bounds) if a < b]
 
 
 def _result_word(sentence: str) -> str:
@@ -464,6 +490,41 @@ def extract(
             items.by_ref([s.text for s in text], current) or items.by_drucksache(numbers, current) or context or current
         )
 
+    def emit(vote: list[_Sentence], s: str, result: str | None, implicit: bool, question_sentence: str,
+             at: int | None) -> None:  # fmt: skip
+        """A show-of-hands decision from the sentences of its vote and its result sentence ``s`` ("" when the
+        vote has none of its own)."""
+        nonlocal context
+        vote_text = " ".join(x.text for x in vote)
+        noun = _object(s) or _object(question_sentence)
+        stage = ""
+        if "zweiter Beratung" in s:
+            stage = " – zweite Beratung"
+        elif re.search(r"Schlussabstimmung|dritter Beratung", vote_text):
+            stage = " – Schlussabstimmung"
+        # a bill's second and third reading follow its introduction, often in an earlier unit
+        follow_up = bool(stage) or (noun or "").startswith("Gesetzentw")
+        subject = _subject(
+            vote_text, noun, stage, _last_intro(intros, current, noun) if follow_up else None, noun or "Vorlage"
+        )
+        drucksache = _drucksache_for(vote_text, noun)
+        if drucksache is None and follow_up:
+            drucksache = _drucksache_for(item_text.get(current, ""), noun, last=True)
+        if drucksache is None:
+            m = DRUCKSACHE_RE.search(vote_text)
+            drucksache = m.group(1) if m else None
+        numbers = DRUCKSACHE_RE.findall(vote_text)
+        item = resolve(vote, ([drucksache] if drucksache else []) + numbers)
+        context = item
+        positions = fraction_positions(vote_text, s or "\0", result, wp, unanimous=not implicit)
+        decisions.append(
+            Decision(
+                sitting_id=sid, agenda_item_id=item, position=len(decisions) + 1, kind="handzeichen",
+                subject=subject, drucksache_number=drucksache, result=result, text=vote_text,
+                fractions=positions, drucksachen=numbers, at_item=current, at_paragraph=at,
+            )
+        )  # fmt: skip
+
     stream = chair_stream(protocol)
     i = 0
     while i < len(stream):
@@ -572,12 +633,15 @@ def extract(
             unit = []
             continue
 
+        if re.search(r"\bnicht in der Sache ab\b", s):  # after a referral: its Drucksache is not the next vote's
+            unit = []
+            continue
         implicit = False
         if not (_RESULT.search(s) and _RESULT_VERB.search(s)):
             if not _IMPLICIT_RESULT.search(s):
                 continue
             implicit = True
-        if _NOT_RESULT.search(s):
+        if _NOT_RESULT.search(re.sub(r"^(?:– )?Wenn das nicht der Fall ist, ", "", s)):
             skipped.append(("conditional", s))
             continue
         result = "angenommen" if implicit else _result_word(s)
@@ -591,12 +655,13 @@ def extract(
                 unit = []
             continue
         vote = _trim(unit, first_q)
-        vote_text = " ".join(x.text for x in vote)
         question_sentence = unit[first_q].text
         preceding = unit[first_q - 1].text if first_q > 0 else ""
-        if implicit and (_PROCEDURAL.search(s)):
-            continue  # "Dann ist die Überweisung so beschlossen": leaves the passage as it was
         unit = []
+        if implicit and (_PROCEDURAL.search(s)):
+            # "Dann ist die Überweisung so beschlossen" after a vote on it: that vote is over and the next one
+            # starts afresh (21/1, 21/52: the referral's question made the next real vote look like procedure)
+            continue
         if (
             _PROCEDURAL.search(s)
             or _PROCEDURAL.search(question_sentence)
@@ -604,34 +669,16 @@ def extract(
         ):
             skipped.append(("procedural", s))
             continue
-        noun = _object(s) or _object(question_sentence)
-        stage = ""
-        if "zweiter Beratung" in s:
-            stage = " – zweite Beratung"
-        elif re.search(r"Schlussabstimmung|dritter Beratung", vote_text):
-            stage = " – Schlussabstimmung"
-        # a bill's second and third reading follow its introduction, often in an earlier unit
-        follow_up = bool(stage) or (noun or "").startswith("Gesetzentw")
-        subject = _subject(
-            vote_text, noun, stage, _last_intro(intros, current, noun) if follow_up else None, noun or "Vorlage"
-        )
-        drucksache = _drucksache_for(vote_text, noun)
-        if drucksache is None and follow_up:
-            drucksache = _drucksache_for(item_text.get(current, ""), noun, last=True)
-        if drucksache is None:
-            m = DRUCKSACHE_RE.search(vote_text)
-            drucksache = m.group(1) if m else None
-        numbers = DRUCKSACHE_RE.findall(vote_text)
-        item = resolve(vote, ([drucksache] if drucksache else []) + numbers)
-        context = item
-        decisions.append(
-            Decision(
-                sitting_id=sid, agenda_item_id=item, position=len(decisions) + 1, kind="handzeichen",
-                subject=subject, drucksache_number=drucksache, result=result, text=vote_text,
-                fractions=fraction_positions(vote_text, s, result, wp, unanimous=not implicit), drucksachen=numbers,
-                at_item=current, at_paragraph=sentence.at,
-            )
-        )  # fmt: skip
+        # a vote closed without a result sentence of its own stands before this one (21/14: TOP 10b, then ZP 6;
+        # 21/95: "…, genauso wie die Beschlussempfehlung vorher"): a decision of its own, with this result only when
+        # the sentence says so, else none, since the protocol states none
+        *earlier, vote = _cycles(vote)
+        for cycle in earlier:
+            first = next((x.text for x in cycle if _QUESTION_RE.search(x.text)), "")
+            if not _PROCEDURAL.search(" ".join(x.text for x in cycle)):
+                emit(cycle, "", result if _SAME_AS_BEFORE.search(s) else None, False, first, cycle[-1].at)
+        first = next((x.text for x in vote if _QUESTION_RE.search(x.text)), question_sentence)
+        emit(vote, s, result, implicit, first, sentence.at)
 
     _pair_announcements(decisions, announcements, sid, pending or [])
     _attach_sub_items(decisions, protocol)
