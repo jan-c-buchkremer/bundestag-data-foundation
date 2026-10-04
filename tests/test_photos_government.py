@@ -85,6 +85,23 @@ def test_government_name_match_replaces_a_made_up_person(store):
     assert store.execute("SELECT wikidata_qid FROM person WHERE id = '999990151'").fetchone()[0] == "Q20172451"
     assert store.execute("SELECT 1 FROM person WHERE id = 'Q20172451'").fetchone() is None
     assert store.execute("SELECT 1 FROM person_photo WHERE person_id = '999990151'").fetchone()
+    # the made-up id named her before (a consumer's page address): it leads to her now
+    alias = store.execute("SELECT person_id FROM person_alias WHERE alias_id = 'Q20172451'").fetchone()
+    assert alias["person_id"] == "999990151"
+
+
+def test_a_pdf_speaker_named_in_the_final_xml_leaves_an_alias(store):
+    """A speaker read from a PDF got "pdf-<name>"; once nothing refers to it, the row goes and an alias leads to
+    the person of that name."""
+    with store:
+        store.execute(
+            "INSERT INTO person (id, first_name, last_name, is_mdb, source_url, source_document_id, retrieved_at) "
+            "VALUES ('pdf-baerbel-bas', 'Bärbel', 'Bas', 0, 'u', 'd', 't')"
+        )
+    ingest.retire_pdf_speakers(store)
+    assert store.execute("SELECT 1 FROM person WHERE id = 'pdf-baerbel-bas'").fetchone() is None
+    alias = store.execute("SELECT person_id FROM person_alias WHERE alias_id = 'pdf-baerbel-bas'").fetchone()
+    assert alias["person_id"] == "11004006"
 
 
 def test_government_query(store):

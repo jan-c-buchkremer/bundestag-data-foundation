@@ -67,6 +67,11 @@ Every raw file has a sidecar `<name>.meta.json` = `{"url", "retrieved_at"}` writ
 - `drucksache.id` / `vorgang.id` = DIP ids (TEXT); `drucksache.number` = `21/7300`.
 - `roll_call_vote.id` = `"<wp>/<sitting>/<abstimmnr>"`, e.g. `21/90/7`.
 - Cross-IDs live on `person`: `dip_person_id`, `aw_politician_id`, `wikidata_qid`.
+- Placeholder person ids (a Wikidata QID for a government member without a match, `pdf-<name>` for a speaker read
+  from a PDF) disappear once the person is matched. **person_alias** `*alias_id, person_id →person, recorded_at`
+  keeps where they went, so a consumer can redirect a page address built from the old id: written when
+  `ingest_government` drops a matched QID row and when `retire_pdf_speakers` (the last ingest step) drops a
+  `pdf-` row nothing refers to any more, aliased to the one other person of that name. Rows are never removed.
 
 ## Provenance
 
