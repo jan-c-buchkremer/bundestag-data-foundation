@@ -32,11 +32,18 @@ def _protocol_gaps(preliminary: bool) -> Callable[[sqlite3.Connection], int]:
     )
 
 
+def _decision_check(kind: str) -> Callable[[sqlite3.Connection], int]:
+    return lambda conn: sum(1 for r in queries.decision_check(conn) if r["kind"] == kind)
+
+
 # name -> (count, increase that fails the run or None for "report only", what it counts)
 PROBLEMS: dict[str, tuple[Callable[[sqlite3.Connection], int], int | None, str]] = {
     "protocol_gaps": (_protocol_gaps(False), 10, "DIP Beratungen without an agenda item (bdf query protocol-gaps)"),
     "protocol_gaps_preliminary": (_protocol_gaps(True), None,
                                   "the same in preliminary protocols whose final PDF is not read yet"),
+    "decision_results_disputed": (_decision_check("result"), 5,
+                                  "decisions whose result DIP records differently (bdf query decision-check)"),
+    "decisions_missing": (_decision_check("missing"), 10, "DIP decisions with no decision row (decision-check)"),
     "preliminary_sittings": (_count("SELECT COUNT(*) FROM sitting WHERE preliminary = 1"), None,
                              "sittings whose protocol is still the preliminary version"),
     "stale_roles": (lambda conn: len(queries.stale_roles(conn)), None,

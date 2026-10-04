@@ -334,6 +334,8 @@ systemd reports it to Gatus, which alerts via ntfy) only when something clearly 
 | Problem | Fails at a rise of |
 |---|---|
 | `protocol_gaps`: Beratungen without an agenda item, not counting preliminary protocols without a PDF part | 10 |
+| `decision_results_disputed`: decisions whose result DIP records differently (`bdf query decision-check`) | 5 |
+| `decisions_missing`: DIP decisions with no decision row (`decision-check`) | 10 |
 | `unmatched_votes`: roll-call vote rows without a person | 100 |
 | `unlinked_roll_calls`: roll-call votes without a Vorgang | 5 |
 | `vorlagen_without_vorgang`: Drucksachen on agenda items without a Vorgang (DIP links new ones days later) | 150 |
