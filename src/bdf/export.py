@@ -75,6 +75,16 @@ SOURCES = {
         "attribution": '"© Die Bundeswahlleiterin, Wiesbaden 2025", mit Link auf die Lizenz; Änderungen sind zu '
         "kennzeichnen.",
     },
+    "bundeswahlleiterin-nachfolger": {
+        "title": "Die Bundeswahlleiterin: Veränderungen im 21. Deutschen Bundestag (Mandatsnachfolger)",
+        "path": "https://www.bundeswahlleiterin.de/bundestagswahlen/2025/gewaehlte.html",
+        "license": {
+            "name": "bundeswahlleiterin-impressum",
+            "title": "Impressum der Bundeswahlleiterin: Vervielfältigung und Verbreitung mit Quellennachweis gestattet",
+            "path": "https://www.bundeswahlleiterin.de/info/impressum.html",
+        },
+        "attribution": '"Die Bundeswahlleiterin, Wiesbaden" als Herausgeberin; Änderungen sind zu kennzeichnen.',
+    },
     "wikidata": {
         "title": "Wikidata",
         "path": "https://www.wikidata.org",
@@ -119,6 +129,7 @@ TABLE_SOURCES = {
     "individual_vote": ["bundestag"],
     "drucksache": ["dip"],
     "drucksache_author": ["dip"],
+    "decision_vorgang": ["bundestag", "dip"],
     "question_activity": ["dip"],
     "vorgang": ["dip"],
     "vorgang_drucksache": ["dip"],
@@ -129,9 +140,11 @@ TABLE_SOURCES = {
     "constituency_result": ["bundeswahlleiterin"],
     "constituency_municipality": ["bundeswahlleiterin"],
     "election_candidacy": ["bundeswahlleiterin"],
-    "mandate_successor": ["bundeswahlleiterin"],
+    "mandate_successor": ["bundeswahlleiterin-nachfolger"],
     "person_photo": ["portraits"],
     "government_role": ["wikidata", "bundestag"],
+    "party_fraction": ["bundestag", "bundeswahlleiterin"],  # party names as these sources print them
+    "person_alias": ["bundestag", "wikidata"],  # placeholder ids from Wikidata and protocol PDFs
 }
 
 _SQL_TYPES = {"TEXT": "string", "INTEGER": "integer", "REAL": "number"}

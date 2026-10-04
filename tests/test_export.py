@@ -102,3 +102,9 @@ def test_cli_export_prints_a_size_summary(store: sqlite3.Connection, tmp_path: P
     out = capsys.readouterr().out
     assert "speech.csv.gz" in out and out.splitlines()[-1].startswith("total")
     assert (tmp_path / "out" / "datapackage.json").exists()
+
+
+def test_every_table_names_its_sources_and_licences(store: sqlite3.Connection) -> None:
+    tables = {r[0] for r in store.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
+    assert tables - set(export.TABLE_SOURCES) == set(), "add the new table to export.TABLE_SOURCES"
+    assert {s for ids in export.TABLE_SOURCES.values() for s in ids} <= set(export.SOURCES)
