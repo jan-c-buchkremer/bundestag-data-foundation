@@ -87,6 +87,103 @@ Child rows that are parsed from the *same* raw file as their parent
 (`speech_paragraph` ← `speech`, `individual_vote` ← `roll_call_vote`) inherit provenance
 through the foreign key and do not repeat the three columns. Every other row carries them.
 
+## Schema contract (from v1.0.0)
+
+What a consumer (the cards, the landscape, users of the open-data export) may rely on. The tables are described
+in full under "Tables"; this section says what stays.
+
+**Promised.** Every table and column in the schema (`bdf/db.py`, the export's `datapackage.json`) keeps its name, its
+type and its meaning, and every id keeps its form and keeps naming the same thing, except where "Ids" below says
+when one changes. Rows carry their provenance (`source_url`, `source_document_id`, `retrieved_at`, or the parent's).
+
+- **Minor release** (`v1.x.0`): new tables, new columns, new values of an enumerated column (`speech.kind`,
+  `decision_vorgang.via`, …), more rows because a parser finds more, rows corrected because a parser reads better.
+  The CHANGELOG names each one. Consumers must not fail on a column or value they do not know.
+- **Major release** (`v2.0.0`): a table or column removed or renamed, a meaning changed, an id form changed.
+- **Not covered:** the raw files under `data/raw`, the CLI's printed output, `data/health/*.json`, the order of rows
+  (sort by a column), and the facts themselves: values follow the sources, and derived columns
+  (`person.fraction`, `speech.speaker_group`, `decision_vorgang`, …) are recomputed on every ingest.
+
+### Ids
+
+| Id | Form | Changes when |
+|---|---|---|
+| `person.id` | Bundestag MdB id, `11004006` | never; a placeholder (`Q…` Wikidata QID, `pdf-<name>`) is replaced by the real id once matched, and `person_alias` records where it went |
+| `sitting.id` | `21/94` | never |
+| `agenda_item.id` | `<sitting>/<position>` | the final version of a preliminary protocol replaces it (items after the XML's end are counted anew) |
+| `agenda_sub_item.id` | `<agenda_item_id>/<label>`, `21/96/6/41b` | with its agenda item |
+| `speech.id` | XML `rede/@id` (`ID219400100`, parts `-2`, `-3`); Fragestunde turns `<agenda_item_id>/f<n>`; from a PDF part `ID21014pdf001` | PDF-part ids and Fragestunde numbers of a preliminary protocol change once with its final version |
+| `decision.id` | roll call: the vote's id `21/90/7` (`21/90/n<k>` before the vote list is published); show of hands: `<sitting>/p<paragraph>` (`-2`, `-3` for further votes asked in one paragraph) | the protocol text changes (final version of a preliminary protocol); not when the parser finds or drops other decisions |
+| `roll_call_vote.id` | `<sitting>/<Abstimmnr>`, `21/90/7` | never |
+| `drucksache.id`, `vorgang.id`, `vorgang_position.id`, `question_activity.id` | DIP ids | never (DIP's) |
+| `mandate.id`, `membership.id` | `<person>/<wp>`, `<person>/<wp>/<k>` | `membership` `k` counts the Stammdaten entries of a person and Wahlperiode, so a new Stammdaten file can renumber them: join on the columns, not the id |
+| `interjection.id`, `speech_paragraph.id`, `agenda_item_paragraph.id` | `<speech or item id>/<position>/…` | with the speech or item |
+| `constituency.id`, `constituency_result.id`, `election_candidacy.id`, `mandate_successor.id` | `btw25/…` | never (the files are final; `mandate_successor` uses the list's running number) |
+| `government_role.id` | Wikidata statement id, else `<source_kind>:<person>:<kind>:<department key>` | when a better source takes the row over (`source_kind`) |
+| `side_job.id`, `aw_profile.aw_politician_id` | abgeordnetenwatch ids | never (aw's) |
+
+Page addresses built from ids that can change should accept the old one too: `person_alias` for persons; for the
+rest, a changed id comes with a re-ingest of the same sitting, so a consumer can map old to new by sitting and text.
+
+### What NULL means
+
+NULL is never "zero" or "false". Columns not listed are NOT NULL, or declared nullable but filled in every row of
+the live data on 2026-10-04 (`sitting.start_time`, `speech.agenda_item_id`, `speech.speaker_group`,
+`decision.agenda_item_id`, `drucksache.type`, `vorgang.type`, `roll_call_vote.sitting_id`, …): a consumer may expect
+them filled but must not fail on a NULL.
+
+| Column | NULL means |
+|---|---|
+| `person.name_prefix`, `academic_title`, `birth_date`, `birth_place`, `gender`, `party` | not in the source (protocol-only speakers have names only) |
+| `person.role` | an MdB; set for non-MdB speakers (their printed role) |
+| `person.dip_person_id`, `aw_politician_id`, `wikidata_qid` | no match in that source |
+| `person.fraction` | not a member in the newest Wahlperiode |
+| `mandate.to_date` | the mandate is current |
+| `mandate.mandate_type`, `constituency_number`, `constituency_name` | not in the Stammdaten (list mandates have no Wahlkreis) |
+| `membership.role` | a plain member; `from_date`, `to_date`: not in the Stammdaten (only Wahlperioden 1–17 lack a start), resp. still a member |
+| `sitting.final_announced` | the protocol is final; `final_fetched_at`: still preliminary; `last_page`: no PDF part read |
+| `agenda_item.title` | the item has no title lines of its own (budget Einzelpläne continuing an item: 66) |
+| `agenda_item.kind` | a regular item (not Befragung, Fragestunde or Aktuelle Stunde) |
+| `agenda_item_vorlage.sub_item_id` | listed on the item itself; `vorgang_id`: no single Vorgang (none, or several) |
+| `speech.speaker_role` | the speaker spoke as a member; `fraction`: no fraction printed (government, Bundesrat, guests); `member_fraction`: not a member that day |
+| `speech.sub_item_id` | the item has no sub-items |
+| `speech.interruption`, `interruption_start` | the main speaker's part, or a Befragung/Fragestunde turn |
+| `interjection.fraction`, `person_id`, `name`, `text` | not applicable to the actor or kind (applause has no text; a fraction's applause no person); `to_person_id`, `to_name`: addressed to the speaker |
+| `decision.drucksache_number` | the chair named none (an Einzelplan, an immunity matter); `result`: not read out in the protocol; `roll_call_vote_id`: show of hands, or the vote list is not out yet; `sub_item_id`: see the table; `vorgang_id`: not exactly one Vorgang; `dip_position_id`, `dip_result`: no single DIP step names it |
+| `roll_call_vote.drucksache_number`, `vorgang_id`, `link_method`, `agenda_item_id` | not linked |
+| `drucksache_author.person_id`, `question_activity.person_id`, `individual_vote.person_id`, `aw_profile.person_id`, `side_job.person_id`, `election_candidacy.person_id`, `mandate_successor.person_id`, `predecessor_person_id`, `government_role.person_id` | not matched to a person (mostly non-MdBs; Schnurrbusch declined his seat) |
+| `question_activity.ressort` | a Frage or Zusatzfrage row (the Ressort is on the Antwort); `question_numbers`: a protocol row; `page`: a Drucksache row |
+| `drucksache.author_count` | DIP gives none and no activities were fetched |
+| `vorgang.status`, `verkuendung`, `inkrafttreten` | DIP has none (not every Vorgang ends in a law) |
+| `vorgang_position.document_type`, `pages`, `ressort`, `decisions` | DIP has none for that step (`pages` only on protocol steps) |
+| `constituency.seat_party` | the winner had no Zweitstimmendeckung |
+| `election_candidacy.constituency_number`, `first_vote_percent`, `list_state`, `list_position` | did not stand there / not a constituency winner / not on a list |
+| `government_role.to_date` | in office (protocol rows: never NULL, see the table); `wikidata_qid`, `department`: not known |
+| `person_photo.bio_url` | a Commons portrait |
+| `aw_profile.questions_answered` | aw publishes none |
+| `side_job.*` (optional columns) | not published by abgeordnetenwatch for that entry |
+
+### Known gaps
+
+Measured on the live store's data on 2026-10-04 (`bdf health` prints the current counts):
+
+- **Beratungen without an agenda item:** 23, none a parser miss; causes per case under "Preliminary protocols".
+- **Decisions against DIP** (`bdf query decision-check`): 1 result DIP records differently (21/34, a Wahlvorschlag
+  the chair announced as rejected, DIP as adopted) and 3 DIP decisions without a row (a Kommission proposal in 21/14
+  and two Sammelübersichten in 21/18 and 21/65). 3 decisions have no result because the chair did not read one out.
+- **Preliminary protocols:** 17; their end comes from the final PDF until bundestag.de serves the final XML.
+- **Vorgänge:** fetched only through WP 21 Drucksachen, so 7 Vorgänge that DIP places in a protocol (WP 20 reports,
+  procedure) have no row; 188 Drucksachen on agenda items have no single Vorgang.
+- **Persons:** 4 askers of Fragen and 30 DIP persons on Drucksachen are not matched (DIP person matching); 1
+  `pdf-` placeholder (a Land minister).
+- **Lagging sources:** the Stammdaten file dates from 2026-04-29, so Breilmann, Glaser, Naser and Zschau, who vote in
+  WP 21, have no WP 21 `mandate`; the Bundeswahlleiterin's successor list (changed 2026-06-23) gives the Land of the
+  first three, not yet Zschau's.
+- **Fragen:** 40 Mündliche Fragen have no Ressort (37 not answered, 2 withdrawn).
+- **Known wrong value:** decision `21/14/p207` (the Greens' Faire-Mieten-Gesetz, 21/222) has the subject of the
+  coalition's Mietpreisbremse bill, taken from an earlier introduction.
+- **Government roles from protocols** are evidence dates, not appointment dates (see `government_role`).
+
 ## Tables
 
 Types are SQLite affinities. `*` = primary key. `→` = foreign key.

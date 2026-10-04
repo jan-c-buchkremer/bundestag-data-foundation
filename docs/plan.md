@@ -36,6 +36,19 @@ Every change is reviewed against this goal. Ideas that don't serve it go on "Not
    decision's id counts its position in the sitting (`21/31/h7`), so a decision found later renumbers the ones after
    it, and their page addresses with them (seen in #29); an id from the protocol position instead. Release v1.0.0.
 
+## Status (2026-10-04)
+
+- Step 1: foundation #23–#27 merged; open: the release switch-over (tag `v0.1.0`, infra `:release`; the live
+  pipeline still runs `:main`, so every merge to `main` goes live at the next nightly run) and the consumers
+  (cards #43–#46, landscape #13) after the nightly ingest.
+- Step 2: done. Decision results against DIP 10 → 1, DIP decisions without a row 110 → 3 (#26, #29); protocol gaps
+  31 → 23, each with its cause (#31); the vote matcher leaves `pdf-` placeholders out (#30).
+- Step 3: done. `question_activity` (asker and Ressort of every Frage, #32), `mandate_successor` (the Land of a
+  Nachrücker, #33). The cards still have to read them.
+- Step 4: done. `bdf/health.py`, failing the run on a clear regression (#34; decision-check counts in #26).
+- Step 5: stable decision ids (#35, with cards #50); the schema contract, the export's sources for every table and
+  "Known gaps" in `docs/design.md`. Left: release v1.0.0 after two quiet nightly runs.
+
 ## Not now
 
 Ideas that don't serve the current goal. Each names what it would give a reader.
