@@ -102,6 +102,8 @@ def _positions() -> list[dict]:
         pos("p5", "v-other", "Antrag", "Drucksache", "21/8888"),
         pos("p6", "v-other", "2. Beratung", "Plenarprotokoll", "21/96", (11787, 11788)),
         pos("p7", "v-other", "Mitteilung", "Plenarprotokoll", "21/96", (11796, 11796)),  # not a Beratung
+        pos("p8", "v-go", "Wahlvorschlag", "Drucksache", "21/7777"),
+        pos("p9", "v-go", "Geschäftsordnungsantrag zur Beratung", "Plenarprotokoll", "21/96", (11786, 11786)),
     ]
 
 
@@ -130,9 +132,20 @@ def test_gap_query_lists_the_unmatched_beratungen(preliminary_store):
     assert row["preliminary"] and row["final_announced"] == "2026-10-02"
     assert (row["last_page"], row["pdf_speeches"]) == (None, 0)
     causes = {b["vorgang_id"]: b["cause"] for b in row["beratungen"]}
-    # v-matched: TOP 8 names 21/5650; the Mitteilung of v-other is not a Beratung
+    # v-matched: TOP 8 names 21/5650; the Mitteilung of v-other and v-go's motion on the agenda are no Beratung
     assert causes == {"v-late": "preliminary", "v-other": "preliminary"}
     assert row["source_document_id"] == "BT-PlPr. 21/96"
+
+
+def test_drucksache_decided_under_an_item_closes_its_gap(preliminary_store):
+    item = preliminary_store.execute("SELECT * FROM agenda_item WHERE sitting_id = '21/96' LIMIT 1").fetchone()
+    preliminary_store.execute(
+        "INSERT INTO agenda_item_vorlage (id, agenda_item_id, drucksache_number, via, source_url, source_document_id,"
+        " retrieved_at) VALUES (?, ?, '21/8888', 'decision', 'x', 'x', 'x')",
+        (f"{item['id']}/21/8888", item["id"]),
+    )
+    (row,) = [r for r in queries.protocol_gaps(preliminary_store) if r["sitting_id"] == "21/96"]
+    assert {b["vorgang_id"] for b in row["beratungen"]} == {"v-late"}
 
 
 def test_final_protocol_replaces_the_flag_and_the_fallback(preliminary_store, data_dir):

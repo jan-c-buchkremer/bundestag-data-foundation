@@ -254,6 +254,9 @@ def protocol_gaps(conn: sqlite3.Connection) -> list[dict]:
     position names a Beratung, and no item of that sitting with one of the Vorgang's Drucksachen or a Vorlage row
     (agenda_item_vorlage) for the Vorgang. The Vorgang's Drucksachen are those of vorgang_drucksache and those its
     own Vorgangspositionen name, a little wider than the cards' match, so the list can be shorter than theirs.
+    An item's Drucksachen include those only a decision under it names (``via = 'decision'``: an
+    Entschließungsantrag voted after a Regierungserklärung). DIP's "Geschäftsordnungsantrag …" positions are
+    left out: a motion on the agenda, debated under "Zur Geschäftsordnung", not a Beratung of the Vorgang.
     Preliminary sittings are listed even without such a Beratung.
 
     Each Beratung gets a ``cause``: ``preliminary`` (the sitting's XML is preliminary and no PDF part was read),
@@ -265,6 +268,8 @@ def protocol_gaps(conn: sqlite3.Connection) -> list[dict]:
         "SELECT sitting_id, drucksache_numbers FROM agenda_item",
         "SELECT a.sitting_id, s.drucksache_numbers FROM agenda_sub_item s "
         "JOIN agenda_item a ON a.id = s.agenda_item_id",
+        "SELECT a.sitting_id, json_array(v.drucksache_number) AS drucksache_numbers FROM agenda_item_vorlage v "
+        "JOIN agenda_item a ON a.id = v.agenda_item_id",
     ):
         for r in conn.execute(sql):
             numbers[r["sitting_id"]].update(json.loads(r["drucksache_numbers"]))
@@ -289,7 +294,8 @@ def protocol_gaps(conn: sqlite3.Connection) -> list[dict]:
     for p in conn.execute(
         "SELECT vp.*, v.title FROM vorgang_position vp LEFT JOIN vorgang v ON v.id = vp.vorgang_id "
         "WHERE vp.chamber = 'BT' AND vp.document_kind = 'Plenarprotokoll' AND vp.pages IS NOT NULL "
-        "AND vp.position LIKE '%Beratung%' ORDER BY vp.date, vp.pages"
+        "AND vp.position LIKE '%Beratung%' AND vp.position NOT LIKE 'Geschäftsordnungsantrag%' "
+        "ORDER BY vp.date, vp.pages"
     ):
         sid, start = p["document_number"], _first_page(p["pages"])
         st = sittings.get(sid)
