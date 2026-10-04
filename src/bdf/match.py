@@ -57,11 +57,12 @@ class _NameIndex:
 class PersonIndex:
     """Name lookup: MdBs of one Wahlperiode first, every known person as a fallback
     (Nachrücker who joined after the Stammdaten file was generated have no mandate row yet).
-    ``pdf-`` placeholders (speakers only a PDF names, bdf/protocol_pdf.py) are left out: a name that
-    matches one would attach votes, DIP ids or interjections to a person nobody has identified."""
+    ``voters=True`` leaves out ``pdf-`` placeholders (non-MdB speakers only a PDF names, bdf/protocol_pdf.py):
+    only MdBs vote, while DIP and interjections may rightly name such a speaker."""
 
-    def __init__(self, conn: sqlite3.Connection, wahlperiode: int):
+    def __init__(self, conn: sqlite3.Connection, wahlperiode: int, voters: bool = False):
         columns = "p.id, p.last_name, p.first_name, p.birth_date"
+        everyone = f"SELECT {columns} FROM person p" + (" WHERE p.id NOT LIKE 'pdf-%'" if voters else "")
         self.tiers = [
             _NameIndex(
                 conn.execute(
@@ -69,7 +70,7 @@ class PersonIndex:
                     (wahlperiode,),
                 ).fetchall()
             ),
-            _NameIndex(conn.execute(f"SELECT {columns} FROM person p WHERE p.id NOT LIKE 'pdf-%'").fetchall()),
+            _NameIndex(conn.execute(everyone).fetchall()),
         ]
 
     def match(self, last: str, first: str, birth_year: str | None = None) -> str | None:

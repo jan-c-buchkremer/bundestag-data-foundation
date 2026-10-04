@@ -186,12 +186,13 @@ def test_person_index_ambiguity(store):
     assert index.match("Nobody", "At All") is None
 
 
-def test_person_index_skips_pdf_placeholders(store):
+def test_vote_matcher_skips_pdf_placeholders(store):
     store.execute(
         "INSERT INTO person (id, first_name, last_name, is_mdb, source_url, source_document_id, retrieved_at)"
         " VALUES ('pdf-kristina-sinemus', 'Kristina', 'Sinemus', 0, 'x', 'x', 'x')"
     )
-    assert PersonIndex(store, 21).match("Sinemus", "Kristina") is None
+    assert PersonIndex(store, 21, voters=True).match("Sinemus", "Kristina") is None
+    assert PersonIndex(store, 21).match("Sinemus", "Kristina") == "pdf-kristina-sinemus"  # DIP: a Bundesrat member
 
 
 def test_resolve_person_by_name(store):

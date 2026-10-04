@@ -254,7 +254,7 @@ def ingest_votes(conn: sqlite3.Connection) -> None:
         if not xlsx.exists():
             continue
         rc = parse_votes.parse(xlsx)
-        index = indexes.setdefault(rc.wahlperiode, PersonIndex(conn, rc.wahlperiode))
+        index = indexes.setdefault(rc.wahlperiode, PersonIndex(conn, rc.wahlperiode, voters=True))
         sitting_id = f"{rc.wahlperiode}/{rc.sitting}"
         rows = []
         for n, r in enumerate(rc.rows, start=1):
