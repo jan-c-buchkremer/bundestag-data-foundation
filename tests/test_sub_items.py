@@ -203,7 +203,7 @@ def test_store_rows(blocks):
         ("21/50/1", 1), ("21/50/2", 0), ("21/96/1", 1), ("21/96/2", 0),
     ]  # fmt: skip
     assert q("SELECT no_debate FROM agenda_item WHERE sitting_id = '21/94'") == [(0,)] * 2
-    assert q("SELECT sub_item_id, subject, drucksache_number FROM decision WHERE id = '21/96/h9'") == [
+    assert q("SELECT sub_item_id, subject, drucksache_number FROM decision WHERE id = '21/96/p27'") == [
         ("21/96/1/41h", "Sammelübersicht 305", "21/7955")
     ]
     assert q("SELECT count(*) FROM decision WHERE agenda_item_id = '21/96/1' AND sub_item_id IS NULL") == [(0,)]
@@ -264,8 +264,8 @@ def test_vorgang_links(blocks):
     )
     assert links == {"21/7910": "v1", "21/7955": "v1"}
     assert dict(blocks.execute("SELECT id, vorgang_id FROM decision WHERE vorgang_id IS NOT NULL")) == {
-        "21/96/h3": "v1",
-        "21/96/h9": "v1",
+        "21/96/p10": "v1",
+        "21/96/p27": "v1",
     }
     ingest.ingest_vorlagen(blocks)  # again: same rows
     assert blocks.execute("SELECT count(*) FROM agenda_item_vorlage WHERE vorgang_id IS NOT NULL").fetchone()[0] == 2
@@ -309,11 +309,11 @@ def test_sub_items_a_reparse_drops_go_away(blocks):
         "SELECT '21/96/1/41zz', agenda_item_id, '41zz', 99, NULL, '[]', 1, 2, source_url, source_document_id, "
         "retrieved_at FROM agenda_sub_item LIMIT 1"
     )
-    blocks.execute("UPDATE decision SET sub_item_id = '21/96/1/41zz' WHERE id = '21/96/h1'")
+    blocks.execute("UPDATE decision SET sub_item_id = '21/96/1/41zz' WHERE id = '21/96/p5'")
     blocks.commit()
     ingest.ingest_protocols(blocks)
     assert blocks.execute("SELECT count(*) FROM agenda_sub_item WHERE label = '41zz'").fetchone()[0] == 0
-    assert blocks.execute("SELECT sub_item_id FROM decision WHERE id = '21/96/h1'").fetchone()[0] is None
+    assert blocks.execute("SELECT sub_item_id FROM decision WHERE id = '21/96/p5'").fetchone()[0] is None
 
 
 # --- speeches -----------------------------------------------------------------------------------

@@ -41,7 +41,7 @@ def test_result_sentence_with_zustimmung(tmp_path):
         "Koalitionsfraktionen, der Linken und der Fraktion Bündnis 90/Die Grünen abgelehnt bei Zustimmung der Fraktion "
         "der AfD.",
     )
-    assert (d.id, d.kind, d.result, d.drucksache_number) == ("21/90/h1", "handzeichen", "abgelehnt", "21/7017")
+    assert (d.n, d.kind, d.result, d.drucksache_number) == (1, "handzeichen", "abgelehnt", "21/7017")
     assert d.fractions == {"CDU/CSU": "no", "SPD": "no", LINKE: "no", GRUENE: "no", "AfD": "yes"}
     assert d.subject == "Änderungsantrag"
 
@@ -120,7 +120,7 @@ def test_second_and_third_reading(tmp_path):
     assert second.drucksache_number == third.drucksache_number == "21/5873"
     expected = {"CDU/CSU": "yes", "SPD": "yes", LINKE: "no", "AfD": "abstain", GRUENE: "abstain"}
     assert second.fractions == third.fractions == expected
-    assert [d.id for d in decisions] == ["21/90/h1", "21/90/h2"]
+    assert [d.n for d in decisions] == [1, 2] and len({d.id for d in decisions}) == 2
 
 
 def test_summary_after_the_answers_does_not_override_them(tmp_path):
@@ -325,10 +325,10 @@ def test_fixture_excerpt_of_21_90():
     assert geg.subject.startswith("von der Bundesregierung eingebrachten Gesetzentwurf zur Änderung des Gebäude")
     by_id = {d.id: d for d in decisions}
     # ZP 20 is decided while TOP 25 is open; its Drucksache is on TOP 25's agenda
-    assert by_id["21/90/h5"].agenda_item_id == "21/90/2" and by_id["21/90/h5"].drucksache_number == "21/6987"
+    assert by_id["21/90/p55"].agenda_item_id == "21/90/2" and by_id["21/90/p55"].drucksache_number == "21/6987"
     # the chair comes back to ZP 28a under TOP 25: the Entschließung of Drucksache 21/7009 belongs to ZP 28
-    assert by_id["21/90/h6"].agenda_item_id == "21/90/1" and by_id["21/90/h6"].drucksache_number == "21/7009"
-    assert by_id["21/90/h7"].fractions == {"AfD": "yes", "SPD": "no", GRUENE: "no", "CDU/CSU": "no", LINKE: "abstain"}
+    assert by_id["21/90/p60"].agenda_item_id == "21/90/1" and by_id["21/90/p60"].drucksache_number == "21/7009"
+    assert by_id["21/90/p61"].fractions == {"AfD": "yes", "SPD": "no", GRUENE: "no", "CDU/CSU": "no", LINKE: "abstain"}
 
 
 def test_ingest_decisions_and_vote_agenda_link(data_dir):
@@ -578,3 +578,25 @@ def test_a_referral_vote_does_not_make_the_next_vote_procedure(tmp_path):
         "stimmt dagegen? – Das sind alle übrigen Fraktionen. Damit ist der Antrag abgelehnt.",
     )
     assert (d.drucksache_number, d.result) == ("21/3049", "abgelehnt")
+
+
+# 21/90: the Änderungsantrag vote of test_result_sentence_with_zustimmung
+VOTE = (
+    "Hierzu liegt ein Änderungsantrag der Fraktion der AfD auf Drucksache 21/7017 vor, über den wir zuerst abstimmen. "
+    "Wer stimmt dafür? – Wer stimmt dagegen? – Wer enthält sich? – Hiermit ist der Änderungsantrag mit den Stimmen der "
+    "Koalitionsfraktionen, der Linken und der Fraktion Bündnis 90/Die Grünen abgelehnt bei Zustimmung der Fraktion "
+    "der AfD."
+)
+
+
+def test_id_is_the_paragraph_of_the_vote_and_survives_a_decision_found_later(tmp_path):
+    both = parse_decisions.extract(_protocol(tmp_path, VOTE, "Weiter im Text.", VOTE))
+    assert [(d.n, d.id) for d in both] == [(1, "21/90/p2"), (2, "21/90/p4")]  # p1 is the chair's name line
+    # the parser misses the first vote (here: it is no vote): the second keeps its id, only n changes
+    second = parse_decisions.extract(_protocol(tmp_path, "Wir kommen zur Abstimmung.", "Weiter im Text.", VOTE))
+    assert [(d.n, d.id) for d in second] == [(1, "21/90/p4")]
+
+
+def test_two_votes_asked_in_one_paragraph(tmp_path):
+    decisions = parse_decisions.extract(_protocol(tmp_path, f"{VOTE} {VOTE}"))
+    assert [d.id for d in decisions] == ["21/90/p2", "21/90/p2-2"]
