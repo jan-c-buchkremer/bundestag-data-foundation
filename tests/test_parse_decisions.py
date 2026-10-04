@@ -451,3 +451,56 @@ def test_bare_einstimmig_beschlossen_names_no_fraction(tmp_path):
 )
 def test_beschlossen_without_a_vote_is_no_decision(tmp_path, paragraph):
     assert parse_decisions.extract(_protocol(tmp_path, paragraph)) == []
+
+
+@pytest.mark.parametrize(
+    "result_sentence",
+    [
+        "Damit ist der Wahlvorschlag der AfD auf Drucksache 21/1648 nicht angenommen.",  # 21/25
+        "Damit ist der Antrag nicht angenommen, also abgelehnt.",  # 21/34
+        "Damit ist der Entschließungsantrag leider nicht angenommen.",  # 21/86
+    ],
+)
+def test_nicht_angenommen_is_a_rejection(tmp_path, result_sentence):
+    d = _one(
+        tmp_path,
+        "Wahlvorschlag der Fraktion der AfD auf Drucksache 21/1648. Wer stimmt für diesen Wahlvorschlag? – Das ist "
+        "die Fraktion der AfD. Wer stimmt dagegen? – Das sind alle anderen Fraktionen. Wer enthält sich? – Kann ich "
+        f"nicht erkennen. {result_sentence}",
+    )
+    assert d.result == "abgelehnt"
+    assert d.fractions["AfD"] == "yes" and d.fractions["SPD"] == "no"
+
+
+def test_question_wordings(tmp_path):
+    d = _one(
+        tmp_path,
+        # 21/86 and 21/89: "dagegenstimmen", "Wer möchte sich enthalten", "Wer stimmt dieser … zu"
+        "Wir kommen zur Abstimmung über den Entschließungsantrag der Fraktion Bündnis 90/Die Grünen auf Drucksache "
+        "21/6711. Wer stimmt diesem Entschließungsantrag zu? – Ich sehe die Stimmen von Bündnis 90/Die Grünen und "
+        "Linken. Wer möchte dagegenstimmen? – SPD, CDU/CSU und AfD. Wer möchte sich der Stimme enthalten? – Das ist "
+        "niemand. Damit ist der Entschließungsantrag leider nicht angenommen.",
+    )
+    assert d.fractions == {GRUENE: "yes", LINKE: "yes", "SPD": "no", "CDU/CSU": "no", "AfD": "no"}
+
+
+def test_positions_come_from_the_vote_the_result_closes(tmp_path):
+    """An earlier vote without a result sentence of its own stands in the same passage (21/14, TOP 10b before
+    ZP 6): its answers do not count for the decision the result sentence closes."""
+    ds = parse_decisions.extract(
+        _protocol(
+            tmp_path,
+            "Der Ausschuss empfiehlt unter Buchstabe c seiner Beschlussempfehlung auf Drucksache 21/631, den Antrag "
+            "der Fraktion Die Linke auf Drucksache 21/355 abzulehnen. Wer stimmt für diese Beschlussempfehlung? – Das "
+            "sind die Fraktionen der AfD, CDU/CSU und SPD. Wer stimmt gegen die Beschlussempfehlung? – Das ist die "
+            "Fraktion Die Linke. Wer enthält sich? – Das ist die Fraktion Bündnis 90/Die Grünen. Zusatzpunkt 6. "
+            "Abstimmung über den Entwurf eines Faire-Mieten-Gesetzes der Fraktion Bündnis 90/Die Grünen auf Drucksache "
+            "21/222. Ich bitte diejenigen, die dem Gesetzentwurf zustimmen wollen, um das Handzeichen. – Das ist die "
+            "Fraktion Bündnis 90/Die Grünen und die Fraktion der Linken. Wer stimmt gegen den Gesetzentwurf? – Das "
+            "sind SPD, CDU/CSU und AfD. Stimmenthaltungen? – Kann ich keine erkennen. Damit ist der Gesetzentwurf "
+            "ganz knapp durchgefallen und nicht angenommen.",
+        )
+    )
+    d = ds[-1]
+    assert d.result == "abgelehnt"
+    assert d.fractions == {GRUENE: "yes", LINKE: "yes", "SPD": "no", "CDU/CSU": "no", "AfD": "no"}

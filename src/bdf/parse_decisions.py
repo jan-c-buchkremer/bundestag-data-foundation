@@ -37,6 +37,7 @@ _DRUCKSACHE_LINE = re.compile(r"^Drucksachen? \d+/\d+")
 _CHAIR_NAME = re.compile(r"^(?:Alters)?(?:Vize)?[Pp]räsident(?:in)?\b.*:$")
 
 _RESULT = re.compile(r"\b(angenommen|abgelehnt)\b")
+_NEGATED = re.compile(r"\bnicht\s+$")  # "Damit ist der Wahlvorschlag nicht angenommen"
 _RESULT_VERB = re.compile(r"\b(?:ist|sind|wurde|wurden|worden|bleibt)\b")
 _NOT_RESULT = re.compile(r"\b(?:Zwischenfrage|Kurzintervention|[Nn]achdem|[Ww]enn|[Ff]alls|sollte|würde|Annahme)\b")
 # a vote closed without "angenommen": "Dann ist das einstimmig so beschlossen", "Damit ist das Gesetz beschlossen"
@@ -64,19 +65,24 @@ _NUMBER_WORDS = {"eine": 1, "einer": 1, "keine": 0, "beiden": 2, "zwei": 2, "dre
 # a question the presidency puts to the house, by the position an answer to it stands for
 _QUESTIONS = [
     (YES, r"Wer stimmt (?:dafür|für|zu)\b[^?–]*\?"),
-    (YES, r"Wer ist dafür\?"),
+    (YES, r"Wer stimmt (?!dagegen|gegen)[^?–]*\bzu\?"),  # "Wer stimmt dieser Beschlussempfehlung zu?"
+    (YES, r"Wer (?:ist|war)(?: noch| denn)? (?:dafür|für\b[^?–]*)\?"),
     (YES, r"Wer möchte zustimmen\?"),
     (YES, r"\bdie [^.?–]*?zustimmen (?:wollen|möchten)[^.?–]*?(?:Handzeichen|zu erheben)[^.?–]*[.?!]?"),
     (YES, r"Ich bitte um (?:das |Ihr )?Handzeichen[.!]?"),
     (NO, r"Wer stimmt (?:dagegen|gegen)\b[^?–]*\?"),
-    (NO, r"Wer ist dagegen\?"),
-    (NO, r"(?:Gibt es )?Gegenstimmen\?"),
+    (NO, r"Wer (?:ist|war)(?: noch| denn)? (?:dagegen|gegen\b[^?–]*)\?"),
+    (NO, r"(?:Wer möchte|Möchte jemand) dagegen ?stimmen\?"),
+    (NO, r"Gibt es jemanden, der dagegen ?stimmt\?"),
+    (NO, r"Wer lehnt\b[^?–]*\bab\?"),
+    (NO, r"(?:Gibt es )?(?:Gegen|Nein)stimmen\?"),
     (NO, r"Gegenprobe[!.:]?"),
     (NO, r"\bdie [^.?–]*?dagegen ?stimmen (?:wollen|möchten)[^.?–]*[.?!]?"),
-    (ABSTAIN, r"Wer enthält sich(?: der Stimme)?\?"),
-    (ABSTAIN, r"Wer möchte sich enthalten\?"),
+    (ABSTAIN, r"Wer enthält sich\b[^?–]{0,20}\?"),
+    (ABSTAIN, r"Wer (?:möchte|will) sich(?: der Stimme)? enthalten\?"),
+    (ABSTAIN, r"Möchte (?:sich )?jemand (?:sich )?(?:der Stimme )?enthalten\?"),
     (ABSTAIN, r"Enthält sich jemand\?"),
-    (ABSTAIN, r"(?:Gibt es )?(?:Stimm)?[Ee]nthaltungen\?"),
+    (ABSTAIN, r"(?:Gibt es )?(?:Stimm)?[Ee]nthaltungen\?|Gibt es (?:eine |den Wunsch nach einer )?Enthaltung\?"),
 ]
 _QUESTION_RE = re.compile("|".join(f"(?P<q{i}>{p})" for i, (_, p) in enumerate(_QUESTIONS)))
 _VOTE_EVIDENCE = re.compile(
@@ -246,14 +252,27 @@ def _assign(positions: dict[str, str], mentions: list, position: str, wp: int) -
             positions.setdefault(f, position)
 
 
+def _result_word(sentence: str) -> str:
+    """angenommen | abgelehnt from a result sentence; "nicht angenommen" is a rejection (and "nicht abgelehnt" an
+    adoption): "Damit ist der Wahlvorschlag nicht angenommen", "… ganz knapp durchgefallen und nicht angenommen"."""
+    m = _RESULT.search(sentence)
+    if not _NEGATED.search(sentence[: m.start()]):
+        return m.group(1)
+    return "abgelehnt" if m.group(1) == "angenommen" else "angenommen"
+
+
 def fraction_positions(
     text: str, result_sentence: str, result: str | None, wp: int, unanimous: bool = True
 ) -> dict[str, str]:
     """Positions from the answers to the vote questions in ``text``, then from the result sentence.
     ``unanimous`` lets a bare "einstimmig" stand for every fraction."""
     positions: dict[str, str] = {}
-    questions = list(_QUESTION_RE.finditer(text))
     stop = text.find(result_sentence) if result_sentence in text else len(text)
+    questions = [q for q in _QUESTION_RE.finditer(text) if q.start() < stop]
+    # the vote this result closes starts at its last "for" question: an earlier vote without a result sentence of
+    # its own can stand in the same passage (21/14: TOP 10b's Beschlussempfehlung before ZP 6's Gesetzentwurf)
+    starts = [i for i, q in enumerate(questions) if _QUESTIONS[int(q.lastgroup[1:])][0] == YES]
+    questions = questions[starts[-1] :] if starts else questions
     for i, q in enumerate(questions):
         if q.start() >= stop:
             break
@@ -385,7 +404,7 @@ def _count(pattern: str, text: str) -> int | None:
 
 def _roll_call_result(sentence: str) -> str | None:
     if m := _RESULT.search(sentence):
-        return m.group(1) if _RESULT_VERB.search(sentence) else None
+        return _result_word(sentence) if _RESULT_VERB.search(sentence) else None
     if m := _MAJORITY_RESULT.search(sentence):
         return "abgelehnt" if m.group(1) else "angenommen"
     return None
@@ -561,7 +580,7 @@ def extract(
         if _NOT_RESULT.search(s):
             skipped.append(("conditional", s))
             continue
-        result = "angenommen" if implicit else _RESULT.search(s).group(1)
+        result = "angenommen" if implicit else _result_word(s)
         if implicit:  # only after a vote put to the house, with no decision read for it yet
             first_q = next((i for i, x in enumerate(unit[:-1]) if _QUESTION_RE.search(x.text)), None)
         else:
