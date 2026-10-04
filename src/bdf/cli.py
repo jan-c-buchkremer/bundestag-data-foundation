@@ -97,7 +97,10 @@ def build_parser() -> argparse.ArgumentParser:
     qgap = qs.add_parser(
         "protocol-gaps", help="preliminary protocols and DIP Beratungen without an agenda item in the protocol"
     )
-    for sp in (qg, qph, qs_, qgap):
+    qdc = qs.add_parser(
+        "decision-check", help="decisions whose result DIP records differently, DIP decisions not found"
+    )
+    for sp in (qg, qph, qs_, qgap, qdc):
         sp.add_argument("--json", action="store_true", help="JSON lines instead of text")
     qd = qs.add_parser("decisions", help="decisions announced by the chair in one sitting")
     qd.add_argument("--sitting", required=True, help='sitting id, e.g. "21/90"')
@@ -139,9 +142,11 @@ def cmd_fetch(args: argparse.Namespace) -> None:
 
 def cmd_query(args: argparse.Namespace) -> None:
     conn = db.connect(db_path())
-    if args.query in ("government", "photos", "stale-roles", "protocol-gaps"):
+    if args.query in ("government", "photos", "stale-roles", "protocol-gaps", "decision-check"):
         if args.query == "protocol-gaps":
             rows = queries.protocol_gaps(conn)
+        elif args.query == "decision-check":
+            rows = queries.decision_check(conn)
         elif args.query == "government":
             rows = queries.government(conn, args.date.isoformat() if args.date else None)
         elif args.query == "stale-roles":
@@ -226,6 +231,13 @@ def _format(kind: str, r: dict) -> str:
             for b in r["beratungen"]
         ]
         return "\n".join(lines) + f"\n    ↳ {r['source_document_id']} — {r['pdf_url']}"
+    if kind == "decision-check":
+        if r["kind"] == "result":
+            return (f"{r['date']} {r['decision_id']} [result] protocol {r['result']}, DIP \"{r['dip_result']}\" "
+                    f"(Vorgangsposition {r['dip_position_id']}): {r['subject'][:80]} {r['drucksache_number'] or ''}"
+                    f"\n{src}")  # fmt: skip
+        return (f"{r['date']} {r['sitting_id']} [missing] DIP \"{r['dip_result']}\" on {r['drucksache_number']}, "
+                f"S. {r['page']} ({r['position']}): {(r['title'] or r['vorgang_id'])[:80]}\n{src}")  # fmt: skip
     if kind == "photos":
         if "local_path" not in r:  # --missing
             return f"{r['person_id']} {r['first_name']} {r['last_name']} [{r['fraction'] or '?'}]"

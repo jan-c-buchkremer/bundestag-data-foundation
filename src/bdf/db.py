@@ -442,7 +442,21 @@ CREATE TABLE IF NOT EXISTS decision (
     text TEXT NOT NULL,                 -- the chair's words the decision was read from
     {PROVENANCE},
     sub_item_id TEXT REFERENCES agenda_sub_item(id),  -- the block item the chair had called up last, else NULL
-    vorgang_id TEXT REFERENCES vorgang(id)  -- the only Vorgang of drucksache_number in vorgang_drucksache, else NULL
+    vorgang_id TEXT REFERENCES vorgang(id),  -- the decision's only Vorgang in decision_vorgang, else NULL
+    dip_position_id TEXT,               -- the DIP Vorgangsposition (BT, this sitting's Plenarprotokoll) whose
+                                        -- beschlussfassung names the decision's Drucksache, when exactly one does
+    dip_result TEXT                     -- that beschlussfassung's beschlusstenor, "Annahme der Vorlage"
+);
+
+CREATE TABLE IF NOT EXISTS decision_vorgang (
+    decision_id TEXT NOT NULL REFERENCES decision(id),
+    vorgang_id TEXT NOT NULL REFERENCES vorgang(id),
+    via TEXT NOT NULL,                  -- roll_call: the roll call's Vorgang (DIP's Namentliche Abstimmung) |
+                                        -- dip_step: DIP's step in this sitting deciding the Drucksache |
+                                        -- drucksache: a Vorgang of the decision's or roll call's Drucksache |
+                                        -- agenda_item: the single Vorgang of its (sub-)item's Vorlagen, for a
+                                        -- decision whose Drucksache the chair does not name
+    PRIMARY KEY (decision_id, vorgang_id)
 );
 
 CREATE TABLE IF NOT EXISTS decision_fraction (
@@ -472,6 +486,7 @@ CREATE INDEX IF NOT EXISTS question_person ON question_activity(person_id);
 CREATE INDEX IF NOT EXISTS drucksache_date ON drucksache(date);
 CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_vorgang ON vorgang_position(vorgang_id);
+CREATE INDEX IF NOT EXISTS decision_vorgang_vorgang ON decision_vorgang(vorgang_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_date ON vorgang_position(date);
 CREATE INDEX IF NOT EXISTS candidacy_person ON election_candidacy(person_id);
 CREATE INDEX IF NOT EXISTS municipality_constituency ON constituency_municipality(election, constituency_number);
@@ -515,6 +530,8 @@ _ADDED_COLUMNS = [
     ("speech", "rede_id", "TEXT"),
     ("speech", "interruption", "TEXT"),
     ("speech", "interruption_start", "TEXT"),
+    ("decision", "dip_position_id", "TEXT"),  # set by the next ingest (ingest_vorlagen)
+    ("decision", "dip_result", "TEXT"),
 ]
 
 
