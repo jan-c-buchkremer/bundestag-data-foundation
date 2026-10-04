@@ -42,7 +42,11 @@ CREATE TABLE IF NOT EXISTS person (
     dip_person_id TEXT,
     aw_politician_id INTEGER,
     wikidata_qid TEXT,
-    {PROVENANCE}
+    {PROVENANCE},
+    fraction TEXT                       -- derived: the fraction in the newest Wahlperiode the person has a mandate in
+                                        -- (the open membership, else the last one; without one, as for a Nachrücker
+                                        -- not yet in the Stammdaten, the one printed in protocols and vote lists,
+                                        -- else "fraktionslos"); NULL for everyone else
 );
 
 CREATE TABLE IF NOT EXISTS mandate (
@@ -140,8 +144,13 @@ CREATE TABLE IF NOT EXISTS speech (
     {PROVENANCE},
     kind TEXT NOT NULL DEFAULT 'rede',  -- rede | fragestunde: a Fragestunde question, answer or
                                         -- Nachfrage; shown, but left out of speech counts and shares
-    sub_item_id TEXT REFERENCES agenda_sub_item(id)  -- the sub-item of a block item during which the speech was
+    sub_item_id TEXT REFERENCES agenda_sub_item(id),  -- the sub-item of a block item during which the speech was
                                         -- given (its call-up is the last one before the speech), else NULL
+    speaker_group TEXT,                 -- derived: who the speech counts for: a fraction | Bundesregierung (given in a
+                                        -- federal government office, whatever the speaker's fraction) | Bundesrat
+                                        -- (a Land office) | Sonstige
+    member_fraction TEXT                -- derived: the speaker's fraction on the sitting day (membership, else the
+                                        -- printed one), also when speaking as a minister; NULL for non-members
 );
 
 CREATE TABLE IF NOT EXISTS speech_paragraph (
@@ -179,7 +188,9 @@ CREATE TABLE IF NOT EXISTS drucksache (
     publisher TEXT,                     -- herausgeber: BT | BR
     originators TEXT NOT NULL,          -- JSON array of urheber titles
     author_count INTEGER,
-    {PROVENANCE}
+    {PROVENANCE},
+    originator_groups TEXT              -- derived: JSON array of the fractions and "Bundesregierung" among the
+                                        -- originators (a ministry counts as the Bundesregierung); [] for none
 );
 
 CREATE TABLE IF NOT EXISTS drucksache_author (
@@ -327,6 +338,11 @@ CREATE TABLE IF NOT EXISTS constituency_result (
     votes INTEGER NOT NULL,
     percent REAL,
     {PROVENANCE}
+);
+
+CREATE TABLE IF NOT EXISTS party_fraction (
+    party TEXT PRIMARY KEY,             -- as person.party or the Bundeswahlleiterin print it: "CSU", "GRÜNE"
+    fraction TEXT NOT NULL              -- the fraction its members sit in: "CDU/CSU", "BÜNDNIS 90/DIE GRÜNEN"
 );
 
 CREATE TABLE IF NOT EXISTS constituency_municipality (
@@ -483,6 +499,10 @@ _ADDED_COLUMNS = [
     ("sitting", "final_fetched_at", "TEXT"),
     ("sitting", "first_page", "INTEGER"),
     ("sitting", "last_page", "INTEGER"),
+    ("person", "fraction", "TEXT"),  # the four derived columns are set by the next ingest (ingest_groups)
+    ("speech", "speaker_group", "TEXT"),
+    ("speech", "member_fraction", "TEXT"),
+    ("drucksache", "originator_groups", "TEXT"),
 ]
 
 

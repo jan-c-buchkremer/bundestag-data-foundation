@@ -137,6 +137,30 @@ No separate `fraction` table: fraction is a normalised string (`CDU/CSU`, `SPD`,
 `BÜNDNIS 90/DIE GRÜNEN`, `Die Linke`, `fraktionslos`) with one normalisation function
 shared by the XML, XLSX and Stammdaten parsers. A table would add a join and nothing else.
 
+### Fraction and speaker group
+
+Derived columns, recomputed in full by `ingest_groups` at the end of every ingest, so that the consumers (cards,
+landscape, the export's users) don't each work them out again in their own way. The vocabulary is in `bdf/names.py`
+and nowhere else.
+
+- **`speech.speaker_group`**: who a speech counts for. A speech given in a federal government office (the printed
+  role parses with `government.parse_role`, or "Beauftragte der Bundesregierung …") counts for the
+  **Bundesregierung**, whatever the speaker's fraction; a Land office ("Staatsministerin (Hessen)") for the
+  **Bundesrat**; otherwise the printed fraction (`speech.fraction`), else **Sonstige** (the Wehrbeauftragte).
+  The chair's words are not speeches, so the Präsidium never appears.
+- **`speech.member_fraction`**: the speaker's fraction on the sitting day from `membership` (for a Nachrücker not
+  yet in the Stammdaten, the printed one), also when the speech counts for the government. NULL for non-members.
+- **`person.fraction`**: the fraction in the newest Wahlperiode (the open membership, else the last one; without
+  one, as for a Nachrücker not yet in the Stammdaten, the latest one printed in protocols and vote lists, else
+  "fraktionslos"). NULL for everyone else. *The* current fraction for consumers.
+- **`drucksache.originator_groups`**: JSON array of the fractions and "Bundesregierung" among the DIP Urheber
+  ("Fraktion der SPD" → SPD, "Gruppe …" likewise, a ministry → Bundesregierung); committees, the Bundesrat and the
+  President are not groups.
+- **`party_fraction`** `*party, fraction`: every party name in `person.party`, `election_candidacy.party`,
+  `constituency.seat_party` and `constituency_result.party` that belongs to a fraction ("CSU" → CDU/CSU, "GRÜNE"
+  → BÜNDNIS 90/DIE GRÜNEN, "DIE LINKE." → Die Linke), so a consumer joins instead of keeping a map. Parties without
+  a fraction (SSW) have no row.
+
 ### Chair text and decisions
 
 **agenda_item_paragraph** `*id ("<agenda_item_id>/<position>"), agenda_item_id →agenda_item, position, kind (chair | comment | procedural), text, source_url, source_document_id, retrieved_at`
