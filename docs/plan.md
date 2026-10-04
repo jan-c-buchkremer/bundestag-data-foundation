@@ -32,7 +32,9 @@ Every change is reviewed against this goal. Ideas that don't serve it go on "Not
    ntfy, only when something clearly gets worse (a source at zero rows, a count jumping past a threshold).
 5. **Write the schema contract.** In `docs/design.md`: which tables and columns consumers may rely on and what NULL
    means in each; the export's datapackage with sources for the new tables (`party_fraction`, `decision_vorgang`,
-   `person_alias`); a "Known gaps" section with the measured numbers. Release v1.0.0.
+   `person_alias`); a "Known gaps" section with the measured numbers. **Stable decision ids:** a show-of-hands
+   decision's id counts its position in the sitting (`21/31/h7`), so a decision found later renumbers the ones after
+   it, and their page addresses with them (seen in #29); an id from the protocol position instead. Release v1.0.0.
 
 ## Not now
 
