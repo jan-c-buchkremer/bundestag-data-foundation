@@ -1,6 +1,6 @@
 """bdf update: window derivation from data/raw and the fetch → ingest orchestration, without network."""
 
-from datetime import date
+from datetime import date, timedelta
 
 import httpx
 import pytest
@@ -45,6 +45,7 @@ def offline(monkeypatch):
     monkeypatch.setattr(update, "fetch_new_protocols", lambda http, wp: calls.append("protocols") or [])
     monkeypatch.setattr(fetch_bundestag, "refetch_preliminary", lambda http, wp, skip=(): [])
     monkeypatch.setattr(update.fetch_wahl, "fetch_election", lambda http, name: [])
+    monkeypatch.setattr(update.fetch_wahl, "fetch_successors", lambda http, name: None)
     monkeypatch.setattr(fetch_bundestag, "fetch_votes", lambda http, s, e: calls.append(("votes", s, e)) or [])
     monkeypatch.setattr(fetch_aw, "fetch_wahlperiode", lambda http, wp, force: calls.append("aw"))
     monkeypatch.setattr(fetch_bundestag, "fetch_biografien", lambda http: calls.append("photos") or [])
@@ -122,3 +123,12 @@ def test_run_warns_about_stale_protocol_roles_without_failing(data_dir, offline,
     out = capsys.readouterr().out
     assert "update: warning: 1 protocol-only government roles not seen in a protocol for more than 90 days" in out
     assert "W (999990154), Staatsminister beim Bundeskanzler: last seen 2026-05-07, 139 days" in out
+
+
+def test_run_fails_when_the_health_check_does(data_dir, offline, monkeypatch, capsys):
+    monkeypatch.delenv("DIP_API_KEY", raising=False)
+    assert update.run(21, TODAY) == 0  # the first snapshot
+    later = TODAY + timedelta(days=1)
+    monkeypatch.setattr(update.ingest, "ingest_all", lambda conn: conn.execute("DELETE FROM speech_paragraph"))
+    assert update.run(21, later) == 1
+    assert "the health check failed: table speech_paragraph is empty" in capsys.readouterr().out
