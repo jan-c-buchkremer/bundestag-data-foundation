@@ -161,6 +161,21 @@ and nowhere else.
   → BÜNDNIS 90/DIE GRÜNEN, "DIE LINKE." → Die Linke), so a consumer joins instead of keeping a map. Parties without
   a fraction (SSW) have no row.
 
+### Speech parts
+
+Also derived, by `ingest_speech_parts` after `ingest_groups`:
+
+- **`agenda_item.kind`**: `befragung` ("Befragung der Bundesregierung"), `fragestunde` (by title, or an item with
+  Fragestunde speeches), `aktuelle_stunde`; NULL for every other item.
+- **`speech.rede_id`**: the speech a part belongs to, the id without its "-2", "-3" … (a Fragestunde turn is its own).
+- **`speech.interruption`**: for a part by someone other than the rede's first speaker, `kurzintervention` when the
+  chair's words among the last six paragraphs of the part before it announce one ("Kurzintervention",
+  "Zwischenbemerkung"), else `zwischenfrage`. The same person interrupting again counts as a new interruption only
+  after at least 30 words of the main speaker (`NEW_INTERRUPTION_AFTER`), so "Gestatten Sie …? – Bitte." between
+  two parts of one question does not split it; a part right after another interrupter takes that person's earlier
+  kind, else `zwischenfrage`. NULL for the main speaker's parts and for every part in a Befragung or Fragestunde,
+  where each question and answer is a turn of its own.
+
 ### Chair text and decisions
 
 **agenda_item_paragraph** `*id ("<agenda_item_id>/<position>"), agenda_item_id →agenda_item, position, kind (chair | comment | procedural), text, source_url, source_document_id, retrieved_at`

@@ -103,7 +103,10 @@ CREATE TABLE IF NOT EXISTS agenda_item (
     title TEXT,
     drucksache_numbers TEXT NOT NULL,   -- JSON array of "21/7300"
     {PROVENANCE},
-    no_debate INTEGER NOT NULL DEFAULT 0  -- 1: the chair says no Aussprache is provided ("keine Aussprache vorgesehen")
+    no_debate INTEGER NOT NULL DEFAULT 0,  -- 1: the chair says no Aussprache is provided ("keine Aussprache
+                                        -- vorgesehen")
+    kind TEXT                           -- derived: befragung (Befragung der Bundesregierung) | fragestunde
+                                        -- | aktuelle_stunde | NULL for every other item
 );
 
 CREATE TABLE IF NOT EXISTS agenda_sub_item (
@@ -149,8 +152,11 @@ CREATE TABLE IF NOT EXISTS speech (
     speaker_group TEXT,                 -- derived: who the speech counts for: a fraction | Bundesregierung (given in a
                                         -- federal government office, whatever the speaker's fraction) | Bundesrat
                                         -- (a Land office) | Sonstige
-    member_fraction TEXT                -- derived: the speaker's fraction on the sitting day (membership, else the
+    member_fraction TEXT,               -- derived: the speaker's fraction on the sitting day (membership, else the
                                         -- printed one), also when speaking as a minister; NULL for non-members
+    rede_id TEXT,                       -- derived: the speech this part belongs to (id without "-2", "-3" …)
+    interruption TEXT                   -- derived: zwischenfrage | kurzintervention for a part by someone other than
+                                        -- the rede's first speaker (docs/design.md "Speech parts"); NULL otherwise
 );
 
 CREATE TABLE IF NOT EXISTS speech_paragraph (
@@ -503,6 +509,9 @@ _ADDED_COLUMNS = [
     ("speech", "speaker_group", "TEXT"),
     ("speech", "member_fraction", "TEXT"),
     ("drucksache", "originator_groups", "TEXT"),
+    ("agenda_item", "kind", "TEXT"),  # the three are set by the next ingest (ingest_speech_parts)
+    ("speech", "rede_id", "TEXT"),
+    ("speech", "interruption", "TEXT"),
 ]
 
 

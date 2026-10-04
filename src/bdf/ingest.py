@@ -72,6 +72,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_photos(conn)
     retire_pdf_speakers(conn)
     ingest_groups(conn)
+    ingest_speech_parts(conn)
 
 
 # --- bundestag.de -------------------------------------------------------------------------
@@ -1473,3 +1474,66 @@ def ingest_groups(conn: sqlite3.Connection) -> None:
     for g, _, _ in speeches:
         groups[g] += 1
     print("groups: speeches by speaker group " + ", ".join(f"{g} {n}" for g, n in sorted(groups.items())))
+
+
+# --- derived: agenda item kinds and speech parts --------------------------------------------
+
+_AGENDA_KIND = (("befragung", "Befragung der Bundesregierung"), ("fragestunde", "Fragestunde"),
+                ("aktuelle_stunde", "Aktuelle Stunde"))  # fmt: skip
+_KURZINTERVENTION = re.compile(r"Kurzintervention|Zwischenbemerkung")
+NEW_INTERRUPTION_AFTER = 30  # words of the main speaker after which the same person interrupts anew
+
+
+def ingest_speech_parts(conn: sqlite3.Connection) -> None:
+    """agenda_item.kind, speech.rede_id and speech.interruption (docs/design.md "Speech parts"), so the consumers
+    stop telling Befragung, Zwischenfrage and Kurzintervention apart each in their own way. Recomputed in full."""
+    kinds = []
+    for r in conn.execute("SELECT id, title FROM agenda_item"):
+        title = r["title"] or ""
+        kinds.append((next((k for k, prefix in _AGENDA_KIND if title.startswith(prefix)), None), r["id"]))
+    with conn:
+        conn.executemany("UPDATE agenda_item SET kind = ? WHERE id = ?", kinds)
+        # a Fragestunde is recognised by its structure too (parse_protocol._is_fragestunde)
+        conn.execute(
+            "UPDATE agenda_item SET kind = 'fragestunde' WHERE id IN "
+            "(SELECT agenda_item_id FROM speech WHERE kind = 'fragestunde')"
+        )
+    chair: dict[str, list[str]] = defaultdict(list)  # speech id -> its last six paragraphs' kind and text
+    for r in conn.execute("SELECT speech_id, kind, text FROM speech_paragraph ORDER BY speech_id, position"):
+        tail = chair[r["speech_id"]]
+        tail.append(r["text"] if r["kind"] == "chair" else "")
+        if len(tail) > 6:
+            tail.pop(0)
+    redes: dict[str, list[sqlite3.Row]] = defaultdict(list)
+    turns = {r[0] for r in conn.execute("SELECT id FROM agenda_item WHERE kind IN ('befragung', 'fragestunde')")}
+    for r in conn.execute("SELECT id, person_id, kind, text, agenda_item_id FROM speech ORDER BY sitting_id, position"):
+        redes[r["id"] if r["kind"] == "fragestunde" else re.sub(r"-\d+$", "", r["id"])].append(r)
+    updates = []
+    for rede_id, parts in redes.items():
+        main = parts[0]["person_id"]
+        since_main = 0  # words of the main speaker since the last interruption started
+        last: dict[str, str] = {}  # person -> the kind of their latest interruption in this rede
+        prev = None
+        for p in parts:
+            kind = None
+            if p["person_id"] == main or p["agenda_item_id"] in turns:
+                # every question and answer of a Befragung or Fragestunde is a turn of its own, not an interruption
+                since_main += len(p["text"].split())
+            elif prev is not None and prev["person_id"] == main:
+                # "Gestatten Sie …? – Bitte." between two parts of one question is not a second interruption
+                if p["person_id"] not in last or since_main >= NEW_INTERRUPTION_AFTER:
+                    announced = _KURZINTERVENTION.search(" ".join(chair.get(prev["id"], [])))
+                    last[p["person_id"]] = "kurzintervention" if announced else "zwischenfrage"
+                kind = last[p["person_id"]]
+                since_main = 0
+            else:  # a second interrupter right after the first: unannounced turns count as questions
+                kind = last.get(p["person_id"], "zwischenfrage")
+            updates.append((rede_id, kind, p["id"]))
+            prev = p
+    with conn:
+        conn.executemany("UPDATE speech SET rede_id = ?, interruption = ? WHERE id = ?", updates)
+    n = defaultdict(int)
+    for _, kind, _ in updates:
+        n[kind] += 1
+    print(f"speech parts: {len(redes)} redes, {n['zwischenfrage']} Zwischenfragen, "
+          f"{n['kurzintervention']} Kurzinterventionen")  # fmt: skip
