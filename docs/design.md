@@ -40,6 +40,7 @@ data/
     bundeswahlleiterin/
       btw25/btw25_gewaehlte_utf8.zip         # + extracted btw25_gewaehlte_utf8.csv: the elected
       btw25/kerg2.csv                        # results per Wahlkreis, party and vote
+      btw25/btw25_nachfolger.pdf             # Mandatsnachfolger, downloaded again on every run
     bundestag/biografien/page-000.html …     # the MdB card list, 12 cards per page, replaced on every fetch
     bundestag/fotos/<image id>.jpg           # portraits as downloaded (864×1152), never re-downloaded
     wikidata/
@@ -177,7 +178,10 @@ rows: `fraction` SPD and `members` CDU/CSU. A named interjection ("Name [Fraktio
 
 **constituency_municipality** `*id ("btw25/<ags>/<number>"), election, ags (Amtlicher Gemeindeschlüssel, 8 digits), name, district (Kreisname), state, constituency_number, split (1 = the Gemeinde is split across Wahlkreise, one row per Wahlkreis), source_url, source_document_id, retrieved_at`
 
-Only the candidates elected on election day are in the source file; Nachrücker have no row.
+**mandate_successor** `*id ("btw25/<Bek.-Nr.>"), election, predecessor_person_id →person, predecessor_name, predecessor_party, predecessor_state, predecessor_seat ("LL 003" | "WK 044"), reason (Ablehnung, Mandatsverzicht, Tod, …), person_id →person, name (as printed, "Asghari, Dr. Reza"), birth_year, party, state, seat ("LL 018" | "WK 282"), from_date (Beginn der Mitgliedschaft), source_url, source_document_id ("… Mandatsnachfolger (abgerufen <date>)"), retrieved_at`
+— the Bundeswahlleiterin's list "Veränderungen im 21. Deutschen Bundestag" (a one-page PDF, parsed by `parse_wahl.parse_successors`; rows that look like a row but do not parse are reported by ingest). `state` is the Land of the successor's seat, for Nachrücker the Land of the Landesliste; codes as in `mandate.state` (the list's "NRW" is NW). The list lags: on 2026-10-04 it was last changed on 2026-06-23 and has 9 rows, while Katrin Zschau (SPD) votes since 2026-09-24; a successor not yet on it has no row. The Stammdaten lag too (file of 2026-04-29), so for Glaser, Naser, Breilmann and Zschau `mandate` has no WP 21 row; the list is where their Land comes from.
+
+Only the candidates elected on election day are in the Gewählte file; Nachrücker are in `mandate_successor`.
 A list member's own first-vote share is the party's `vote = 1` row in `constituency_result`
 for their `constituency_number`.
 

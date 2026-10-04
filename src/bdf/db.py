@@ -358,6 +358,25 @@ CREATE TABLE IF NOT EXISTS election_candidacy (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS mandate_successor (
+    id TEXT PRIMARY KEY,                -- "<election>/<Bek.-Nr.>", the list's running number
+    election TEXT NOT NULL,
+    predecessor_person_id TEXT REFERENCES person(id),
+    predecessor_name TEXT NOT NULL,     -- as printed, "Heveling, Ansgar Guido Karl Johannes"
+    predecessor_party TEXT NOT NULL,
+    predecessor_state TEXT NOT NULL,    -- Land code as in mandate.state ("NW")
+    predecessor_seat TEXT NOT NULL,     -- "LL 003" (Landesliste, position) | "WK 044" (Wahlkreis)
+    reason TEXT NOT NULL,               -- Ausscheidungsgrund: Ablehnung, Mandatsverzicht, Tod, …
+    person_id TEXT REFERENCES person(id),
+    name TEXT NOT NULL,                 -- the successor as printed, "Breilmann, Michael"
+    birth_year INTEGER NOT NULL,
+    party TEXT NOT NULL,
+    state TEXT NOT NULL,                -- the Land whose Landesliste the seat comes from
+    seat TEXT NOT NULL,                 -- the successor's candidacy, "LL 018" | "WK 282"
+    from_date TEXT NOT NULL,            -- Beginn der Mitgliedschaft
+    {PROVENANCE}
+);
+
 CREATE TABLE IF NOT EXISTS person_photo (
     person_id TEXT PRIMARY KEY REFERENCES person(id),
     image_url TEXT NOT NULL,            -- the image as downloaded (bundestag.de rendition or Commons thumbnail)

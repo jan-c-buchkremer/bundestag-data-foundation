@@ -119,6 +119,7 @@ def run(wp: int = 21, today: date | None = None) -> int:
             name = fetch_wahl.ELECTION_OF_WAHLPERIODE[wp]
             print(f"wahl {name}")
             fetch_wahl.fetch_election(http, name)  # published once; downloaded only if missing
+            fetch_wahl.fetch_successors(http, name)  # grows during the Wahlperiode
 
         def abgeordnetenwatch() -> None:
             print(f"abgeordnetenwatch WP {wp}")

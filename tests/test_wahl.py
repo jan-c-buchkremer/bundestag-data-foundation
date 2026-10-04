@@ -102,3 +102,40 @@ def test_municipalities_one_row_per_wahlkreis(store):
     assert rows[0]["source_url"].endswith("btw25_wkr_gemeinden_20241130_utf8.csv")
     single = store.execute("SELECT * FROM constituency_municipality WHERE name = 'Beckingen'").fetchone()
     assert (single["constituency_number"], single["split"], single["state"]) == (297, 0, "SL")
+
+
+# --- Mandatsnachfolger ---------------------------------------------------------------------
+
+
+def test_parse_successors_reads_every_row():
+    rows, unparsed = parse_wahl.parse_successors(FIXTURES / "btw25_nachfolger.pdf")
+    assert unparsed == [] and [r["number"] for r in rows] == list(range(1, 10))
+    breilmann = rows[8]
+    assert breilmann == {
+        "number": 9, "predecessor_name": "Heveling, Ansgar Guido Karl Johannes", "predecessor_party": "CDU",
+        "predecessor_state": "NW", "predecessor_seat": "WK 109", "reason": "Mandatsverzicht",
+        "name": "Breilmann, Michael", "birth_year": 1983, "party": "CDU", "state": "NW", "seat": "LL 018",
+        "from_date": "2026-06-01",
+    }  # fmt: skip
+    assert rows[3]["party"] == "Die Linke"  # a party name with a space, Land "NRW" read as NW
+    assert rows[0]["reason"] == "Ablehnung" and rows[5]["reason"] == "Tod"
+
+
+def test_successors_in_the_store(store):
+    rows = store.execute("SELECT * FROM mandate_successor ORDER BY from_date").fetchall()
+    assert len(rows) == 9
+    glaser = store.execute("SELECT * FROM mandate_successor WHERE id = 'btw25/7'").fetchone()
+    assert (glaser["name"], glaser["state"], glaser["seat"]) == ("Glaser, Stefan", "BW", "WK 282")
+    assert glaser["source_document_id"] == "Bundeswahlleiterin, BTW 2025 Mandatsnachfolger (abgerufen 2026-10-04)"
+
+
+def test_successor_matched_to_the_person(store):
+    from bdf import ingest
+
+    store.execute(
+        "INSERT INTO person (id, first_name, last_name, birth_date, is_mdb, source_url, source_document_id,"
+        " retrieved_at) VALUES ('11005623', 'Reza', 'Asghari', '1961-01-01', 1, 'x', 'x', 'x')"
+    )
+    ingest.ingest_successors(store, "btw25", 21)
+    row = store.execute("SELECT person_id FROM mandate_successor WHERE id = 'btw25/2'").fetchone()
+    assert row["person_id"] == "11005623"  # "Asghari, Dr. Reza": the title is not part of the first name

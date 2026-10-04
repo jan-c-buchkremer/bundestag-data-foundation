@@ -36,7 +36,15 @@ from bdf.fetch_bundestag import (
     votes_index_path,
 )
 from bdf.fetch_dip import dip_dir
-from bdf.fetch_wahl import ELECTION_OF_WAHLPERIODE, ELECTIONS, gemeinden_csv, gewaehlte_csv, gewaehlte_zip, kerg2_csv
+from bdf.fetch_wahl import (
+    ELECTION_OF_WAHLPERIODE,
+    ELECTIONS,
+    gemeinden_csv,
+    gewaehlte_csv,
+    gewaehlte_zip,
+    kerg2_csv,
+    nachfolger_pdf,
+)
 from bdf.match import PersonIndex
 from bdf.names import DRUCKSACHE_RE, VOTE_VALUES, normalize_fraction, normalize_name
 
@@ -932,6 +940,44 @@ def ingest_wahl(conn: sqlite3.Connection) -> None:
         for u in unmatched:
             print("    unmatched:", u)
         ingest_municipalities(conn, election)
+        ingest_successors(conn, election, wp)
+
+
+def ingest_successors(conn: sqlite3.Connection, election: str, wp: int) -> None:
+    """The Mandatsnachfolger list: who took over a seat during the Wahlperiode, from which Landesliste. A
+    successor joins after the Stammdaten file was made, so the list is the source of their Land."""
+    path = nachfolger_pdf(election)
+    if not path.exists():
+        print(f"wahl {election}: no Nachfolger list fetched")
+        return
+    rows, unparsed = parse_wahl.parse_successors(path)
+    meta = raw.read_meta(path)
+    # the list prints no Stand: the citation names the day it was retrieved
+    year = "20" + re.sub(r"\D", "", election)
+    prov = meta.provenance(f"Bundeswahlleiterin, BTW {year} Mandatsnachfolger (abgerufen {meta.retrieved_at[:10]})")
+    index = PersonIndex(conn, wp)
+
+    def match(printed: str, year: int | None) -> str | None:
+        last, first = printed.split(", ", 1)
+        first = re.sub(r"^((Prof\.|Dr\.)( |$))+", "", first)  # "Asghari, Dr. Reza"
+        return index.match(last, first, str(year) if year else None)
+
+    out = []
+    for r in rows:
+        number = r.pop("number")
+        out.append(
+            {"id": f"{election}/{number}", "election": election,
+             "predecessor_person_id": match(r["predecessor_name"], None),
+             "person_id": match(r["name"], r["birth_year"]), **r, **prov}
+        )  # fmt: skip
+    with conn:
+        conn.execute("DELETE FROM mandate_successor WHERE election = ?", (election,))
+        upsert(conn, "mandate_successor", out)
+    unmatched = [r["name"] for r in out if r["person_id"] is None]
+    print(f"wahl {election}: {len(out)} Mandatsnachfolger, {len(unmatched)} not matched to a person"
+          + (f" ({', '.join(unmatched)})" if unmatched else ""))  # fmt: skip
+    for line in unparsed:
+        print(f"    warning: Nachfolger row not read: {line}")
 
 
 def ingest_municipalities(conn: sqlite3.Connection, election: str) -> None:

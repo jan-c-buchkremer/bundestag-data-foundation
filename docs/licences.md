@@ -14,6 +14,7 @@ terms checked.
 | DIP API | Drucksachen, Vorgänge, authorship, persons | DIP Nutzungsbedingungen (27 Feb 2023, PDF in this folder) | "Deutscher Bundestag/Bundesrat – DIP" + BT-Drs./BT-PlPr. number; commercial use must note that the data is free at dip.bundestag.de | yes, explicitly | permissive with attribution |
 | abgeordnetenwatch.de API v2 | cross-IDs, mandates, side jobs (Nebentätigkeiten), (optionally) polls/votes | **CC0 1.0** | none (courtesy attribution recommended) | yes | public domain |
 | Bundeswahlleiterin — Open Data BTW 2025 | elected candidates, results per Wahlkreis, Gemeinden per Wahlkreis | **Datenlizenz Deutschland – Namensnennung 2.0** | "© Die Bundeswahlleiterin, Wiesbaden 2025" | yes | permissive with attribution |
+| Bundeswahlleiterin — Mandatsnachfolger (PDF) | successors who took over a seat during the Wahlperiode | site terms (Impressum): reuse allowed with source, commercially too | "Die Bundeswahlleiterin, Wiesbaden" | yes | permissive with attribution |
 | bundestag.de — MdB biography portraits | one portrait per MdB | bundestag.de Nutzungsbedingungen; photos are third-party works | the credit printed under each photo (`person_photo.credit`) | not verified per photo | show with credit; rights not checked |
 | Wikidata | government roster (offices, dates, departments, birth dates) | **CC0 1.0** | none | yes | public domain |
 | Wikimedia Commons | portraits of government members without a bundestag.de portrait | per file, mostly CC BY-SA 4.0 | author + licence (`person_photo.credit`) and a link to the file page (`source_url`) | yes, share-alike on the image | permissive with attribution |
@@ -101,6 +102,12 @@ changes must be marked. Our `source_document_id` names the file and its "Stand" 
 The Wahlkreiseinteilung by Gemeinde (https://www.bundeswahlleiterin.de/bundestagswahlen/2025/wahlkreiseinteilung/downloads.html,
 `btw25_wkr_gemeinden_20241130_utf8.csv`) carries the same licence with the attribution
 "(c) Die Bundeswahlleiterin, Statistische Ämter des Bundes und der Länder, Wiesbaden 2024".
+
+The list of Mandatsnachfolger (https://www.bundeswahlleiterin.de/bundestagswahlen/2025/gewaehlte.html,
+`btw25_nachfolger.pdf`) names no licence of its own, so the site's Impressum applies (read 2026-10-04): "Vervielfältigung
+und Verbreitung, auch auszugsweise, mit Quellennachweis gestattet", for non-commercial and commercial purposes, without
+asking; "Die Bundeswahlleiterin, Wiesbaden" is named as publisher, and changes are marked as such. `mandate_successor`
+is the table read out of the PDF; its `source_document_id` names the list and the day it was retrieved.
 
 ## Portraits (bundestag.de, Wikimedia Commons)
 

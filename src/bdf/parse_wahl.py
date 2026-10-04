@@ -6,6 +6,9 @@
 - ``kerg2.csv``: results per area, party and vote (Stimme 1 = Erststimme, 2 = Zweitstimme) in long format. On
   Wahlkreis rows, ``Gewählt`` names the party whose candidate got the seat, or "–" when the winner got none
   (since the 2023 reform a constituency winner needs Zweitstimmendeckung).
+- ``*_nachfolger.pdf``: "Veränderungen im 21. Deutschen Bundestag", one table row per departed member and their
+  successor: name, birth year, occupation, "Partei, Land, LL/WK nnn", the reason, the successor likewise and the
+  start of the membership. Occupations wrap onto the lines around a row; everything else is on the row's line.
 - ``*_wkr_gemeinden_*_utf8.csv``: the Wahlkreiseinteilung, one row per Gemeinde and Wahlkreis. A Gemeinde split
   across Wahlkreise (18 in 2025: Hamburg, Berlin and big cities) has one row per Wahlkreis with a
   running Gemeindeteil number and the range Wahlkreis-von/-bis; the Gebietsstand is in a "# Gebietsstand:" line.
@@ -159,6 +162,54 @@ def parse_gemeinden(path: Path) -> tuple[list[dict], str]:
     if header is None:
         raise ValueError(f"{path}: no header row (Wahlkreis-Nr;…)")
     return out, as_of
+
+
+# the parties of the Bundestag as the Nachfolger list prints them
+_PARTY = r"(?:CDU|CSU|SPD|AfD|GRÜNE|Die Linke|FDP|BSW|SSW)"
+# Land abbreviations of the Nachfolger list that differ from LAND's
+_LIST_LAND = {"NRW": "NW"}
+_SIDE = (
+    r"(?P<{p}name>[^,\d]+?, [^\d]+?) (?P<{p}year>\d{{4}}) (?:.*? )?"
+    r"(?P<{p}party>" + _PARTY + r"), (?P<{p}state>[A-Z]{{2,3}}), (?P<{p}seat>(?:LL|WK) \d{{3}})"
+)
+_SUCCESSION = re.compile(
+    r"^(?P<n>\d+) "
+    + _SIDE.format(p="pre_")
+    + r" (?P<reason>\S+) "
+    + _SIDE.format(p="")
+    + r" (?P<date>\d{2}\.\d{2}\.\d{4})$"
+)
+
+
+_ROW_LIKE = re.compile(r"^\d+ .*\d{2}\.\d{2}\.\d{4}$")
+
+
+def parse_successors(path: Path) -> tuple[list[dict], list[str]]:
+    """The Mandatsnachfolger list: one dict per row, in the list's order; and the lines that look like a row
+    (a number first, a date last) but did not parse, for the caller to report."""
+    import pdfplumber  # only needed here and for protocol PDFs
+
+    out, unparsed = [], []
+    with pdfplumber.open(path) as pdf:
+        lines = [line.strip() for page in pdf.pages for line in (page.extract_text() or "").splitlines()]
+    for line in lines:
+        m = _SUCCESSION.match(line)
+        if m is None:
+            if _ROW_LIKE.match(line):
+                unparsed.append(line)
+            continue
+        d, mo, y = m["date"].split(".")
+        out.append(
+            {
+                "number": int(m["n"]),
+                "predecessor_name": m["pre_name"], "predecessor_party": m["pre_party"],
+                "predecessor_state": _LIST_LAND.get(m["pre_state"], m["pre_state"]),
+                "predecessor_seat": m["pre_seat"], "reason": m["reason"],
+                "name": m["name"], "birth_year": int(m["year"]), "party": m["party"],
+                "state": _LIST_LAND.get(m["state"], m["state"]), "seat": m["seat"], "from_date": f"{y}-{mo}-{d}",
+            }
+        )  # fmt: skip
+    return out, unparsed
 
 
 def document_id(kind: str, election: str, as_of: str) -> str:

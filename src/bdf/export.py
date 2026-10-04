@@ -129,6 +129,7 @@ TABLE_SOURCES = {
     "constituency_result": ["bundeswahlleiterin"],
     "constituency_municipality": ["bundeswahlleiterin"],
     "election_candidacy": ["bundeswahlleiterin"],
+    "mandate_successor": ["bundeswahlleiterin"],
     "person_photo": ["portraits"],
     "government_role": ["wikidata", "bundestag"],
 }
