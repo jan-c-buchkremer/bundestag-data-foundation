@@ -186,6 +186,14 @@ def test_person_index_ambiguity(store):
     assert index.match("Nobody", "At All") is None
 
 
+def test_person_index_skips_pdf_placeholders(store):
+    store.execute(
+        "INSERT INTO person (id, first_name, last_name, is_mdb, source_url, source_document_id, retrieved_at)"
+        " VALUES ('pdf-kristina-sinemus', 'Kristina', 'Sinemus', 0, 'x', 'x', 'x')"
+    )
+    assert PersonIndex(store, 21).match("Sinemus", "Kristina") is None
+
+
 def test_resolve_person_by_name(store):
     assert queries.resolve_person(store, "Bärbel Bas")["id"] == "11004006"
     assert queries.resolve_person(store, "11004819")["last_name"] == "Meiser"
