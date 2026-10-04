@@ -87,19 +87,23 @@ Child rows that are parsed from the *same* raw file as their parent
 (`speech_paragraph` ← `speech`, `individual_vote` ← `roll_call_vote`) inherit provenance
 through the foreign key and do not repeat the three columns. Every other row carries them.
 
-## Schema contract (from v1.0.0)
+## Schema contract (from v0.2.0)
 
 What a consumer (the cards, the landscape, users of the open-data export) may rely on. The tables are described
-in full under "Tables"; this section says what stays.
+in full under "Tables"; this section says what stays. The foundation releases as `v0.MINOR.PATCH` like the other
+repos (`docs/release.md`), so the version number alone does not say what is stable: this contract and the CHANGELOG
+do.
 
 **Promised.** Every table and column in the schema (`bdf/db.py`, the export's `datapackage.json`) keeps its name, its
 type and its meaning, and every id keeps its form and keeps naming the same thing, except where "Ids" below says
 when one changes. Rows carry their provenance (`source_url`, `source_document_id`, `retrieved_at`, or the parent's).
 
-- **Minor release** (`v1.x.0`): new tables, new columns, new values of an enumerated column (`speech.kind`,
-  `decision_vorgang.via`, …), more rows because a parser finds more, rows corrected because a parser reads better.
-  The CHANGELOG names each one. Consumers must not fail on a column or value they do not know.
-- **Major release** (`v2.0.0`): a table or column removed or renamed, a meaning changed, an id form changed.
+- **Additions** (a minor or patch release): new tables, new columns, new values of an enumerated column
+  (`speech.kind`, `decision_vorgang.via`, …), more rows because a parser finds more, rows corrected because a parser
+  reads better. The CHANGELOG names each one. Consumers must not fail on a column or value they do not know.
+- **Breaking changes** (only in a minor release): a table or column removed or renamed, a meaning changed, an id
+  form changed. The release's CHANGELOG entry lists them first, under "Breaking", and says what a consumer has to
+  change; where it can, the old column stays for one more release.
 - **Not covered:** the raw files under `data/raw`, the CLI's printed output, `data/health/*.json`, the order of rows
   (sort by a column), and the facts themselves: values follow the sources, and derived columns
   (`person.fraction`, `speech.speaker_group`, `decision_vorgang`, …) are recomputed on every ingest.
