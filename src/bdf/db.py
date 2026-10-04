@@ -44,9 +44,9 @@ CREATE TABLE IF NOT EXISTS person (
     wikidata_qid TEXT,
     {PROVENANCE},
     fraction TEXT                       -- derived: the fraction in the newest Wahlperiode the person has a mandate in
-                                        -- (the open membership, else the last one; "fraktionslos" without one), for
-                                        -- a Nachrücker not yet in the Stammdaten the one printed in protocols and
-                                        -- vote lists; NULL for everyone else
+                                        -- (the open membership, else the last one; without one, as for a Nachrücker
+                                        -- not yet in the Stammdaten, the one printed in protocols and vote lists,
+                                        -- else "fraktionslos"); NULL for everyone else
 );
 
 CREATE TABLE IF NOT EXISTS mandate (

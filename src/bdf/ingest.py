@@ -1400,13 +1400,11 @@ def ingest_groups(conn: sqlite3.Connection) -> None:
     members = {(r[0], r[1]) for r in conn.execute("SELECT person_id, wahlperiode FROM mandate")}
 
     def fraction(person: str, wp: int, on: str | None = None) -> str | None:
-        """The fraction on a day (else the open membership), the last one when none covers it; fraktionslos for
-        a member without any; None for a non-member."""
-        if (person, wp) not in members:
-            return None
+        """The fraction membership on a day (else the open one), the last one when none covers it; None without
+        any (callers fall back to the printed fraction, then to fraktionslos for a member)."""
         rows = spans.get((person, wp))
         if not rows:
-            return NO_FRACTION
+            return None
         if on:
             hit = [n for f, t, n in rows if f <= on and (t is None or on <= t)]
         else:
@@ -1426,7 +1424,8 @@ def ingest_groups(conn: sqlite3.Connection) -> None:
             is_government[role] = bool(role) and government.parse_role(role) is not None
         speeches.append(
             (speaker_group(role, r["fraction"], is_government[role]),
-             fraction(r["person_id"], r["wahlperiode"], r["date"]) or normalize_fraction(r["fraction"]), r["id"])
+             fraction(r["person_id"], r["wahlperiode"], r["date"]) or normalize_fraction(r["fraction"])
+             or (NO_FRACTION if (r["person_id"], r["wahlperiode"]) in members else None), r["id"])
         )  # fmt: skip
     # a Nachrücker not yet in the Stammdaten has no mandate row: the fraction printed in the protocols and vote lists
     printed = dict(
@@ -1442,7 +1441,10 @@ def ingest_groups(conn: sqlite3.Connection) -> None:
             {"wp": newest},
         )
     )  # the latest wins
-    current = {p: fraction(p, wp) for p, wp in members if wp == newest}
+    # a member the Stammdaten list without a fraction membership yet takes the printed one too
+    current = {
+        p: fraction(p, wp) or normalize_fraction(printed.get(p)) or NO_FRACTION for p, wp in members if wp == newest
+    }
     current |= {p: normalize_fraction(f) for p, f in printed.items() if p not in current}
     drucksachen = [
         (json.dumps(list(dict.fromkeys(g for g in map(originator_group, json.loads(r[1])) if g)), ensure_ascii=False),

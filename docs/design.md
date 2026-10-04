@@ -150,9 +150,9 @@ and nowhere else.
   The chair's words are not speeches, so the Präsidium never appears.
 - **`speech.member_fraction`**: the speaker's fraction on the sitting day from `membership` (for a Nachrücker not
   yet in the Stammdaten, the printed one), also when the speech counts for the government. NULL for non-members.
-- **`person.fraction`**: the fraction in the newest Wahlperiode (the open membership, else the last one;
-  "fraktionslos" for a member without any; for a Nachrücker not yet in the Stammdaten, the latest one printed in
-  protocols and vote lists). NULL for everyone without a mandate in it. *The* current fraction for consumers.
+- **`person.fraction`**: the fraction in the newest Wahlperiode (the open membership, else the last one; without
+  one, as for a Nachrücker not yet in the Stammdaten, the latest one printed in protocols and vote lists, else
+  "fraktionslos"). NULL for everyone else. *The* current fraction for consumers.
 - **`drucksache.originator_groups`**: JSON array of the fractions and "Bundesregierung" among the DIP Urheber
   ("Fraktion der SPD" → SPD, "Gruppe …" likewise, a ministry → Bundesregierung); committees, the Bundesrat and the
   President are not groups.
