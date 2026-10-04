@@ -312,6 +312,7 @@ def ingest_dip(conn: sqlite3.Connection) -> None:
         return
     _ingest_dip_persons(conn)
     _ingest_drucksachen(conn)
+    _ingest_question_activities(conn)
     _ingest_vorgang_positions(conn)
     _link_votes_to_dip(conn)
 
@@ -366,10 +367,11 @@ def _ingest_drucksachen(conn: sqlite3.Connection) -> None:
         )
         authors = _author_rows(d["id"], doc_id)
         # autoren_anzahl is 0 on Schriftliche Fragen that list over a hundred askers; where the
-        # activities were fetched, the number of distinct persons in them wins
-        if authors is not None and len(authors) != (d.get("autoren_anzahl") or 0):
-            count_mismatches.append(f"{d['dokumentnummer']} ({d.get('autoren_anzahl')} → {len(authors)})")
-            rows["drucksache"][-1]["author_count"] = len(authors)
+        # activities were fetched, the number of distinct persons in authoring activities wins
+        n = None if authors is None else sum(1 for a in authors if a["activity_type"] not in NOT_AUTHORSHIP)
+        if n is not None and n != (d.get("autoren_anzahl") or 0):
+            count_mismatches.append(f"{d['dokumentnummer']} ({d.get('autoren_anzahl')} → {n})")
+            rows["drucksache"][-1]["author_count"] = n
         rows["drucksache_author"] += authors or []
         vorgaenge, links = _vorgang_rows(d["id"])
         rows["vorgang"] += vorgaenge
@@ -392,6 +394,10 @@ def _ingest_drucksachen(conn: sqlite3.Connection) -> None:
         )
 
 
+# activities on a Drucksache that are not authorship (docs/design.md, drucksache_author)
+NOT_AUTHORSHIP = ("Berichterstattung", "Antwort")
+
+
 def _author_rows(drucksache_id: str, doc_id: str) -> list[dict] | None:
     """None if the activities of this Drucksache were not fetched (yet)."""
     path = dip_dir() / "aktivitaet" / f"drucksache-{drucksache_id}.json"
@@ -412,6 +418,56 @@ def _author_rows(drucksache_id: str, doc_id: str) -> list[dict] | None:
         if a.get("person_id")
     }
     return list(rows.values())
+
+
+QUESTION_TYPES = ("Schriftliche Frage", "Mündliche Frage")
+
+
+def _ingest_question_activities(conn: sqlite3.Connection) -> None:
+    """question_activity: who asked and who answered each Schriftliche and Mündliche Frage, from the Aktivitäten
+    of the Sammeldrucksachen (Schriftliche Fragen; a few Mündliche) and of the Plenarprotokolle (Mündliche
+    Fragen, Zusatzfragen, their answers). Each Aktivität names its single question in ``vorgangsbezug``; an
+    answer's title ends with the ministry ("Ulrich Lange, Parl. Staatssekr., Bundesministerium für Verkehr")."""
+    files = [
+        (dip_dir() / "aktivitaet" / f"drucksache-{r['id']}.json", f"BT-Drs. {r['number']}")
+        for r in conn.execute("SELECT id, number FROM drucksache WHERE type IN ('Schriftliche Fragen', 'Fragen')")
+    ]
+    files += [(path, None) for path in raw.data_files(dip_dir() / "aktivitaet", "plenarprotokoll-*.json")]
+    rows: dict[str, dict] = {}
+    for path, doc_id in files:
+        if not path.exists():
+            continue
+        meta = raw.read_meta(path)
+        for a in raw.read_json(path):
+            refs = [v for v in a.get("vorgangsbezug") or [] if v.get("vorgangstyp") in QUESTION_TYPES]
+            if len(refs) != 1 or not a.get("person_id"):
+                continue
+            f = a.get("fundstelle") or {}
+            kind = f.get("dokumentart") or "Drucksache"
+            parts = a["titel"].split(", ")
+            rows[a["id"]] = {
+                "id": a["id"], "vorgang_id": refs[0]["id"], "question_type": refs[0]["vorgangstyp"],
+                "activity_type": a["aktivitaetsart"], "dip_person_id": a["person_id"], "person_id": None,
+                "name": a["titel"],
+                "ressort": ", ".join(parts[2:]) or None if a["aktivitaetsart"] == "Antwort" else None,
+                "document_kind": kind, "document_number": f.get("dokumentnummer"),
+                "question_numbers": f.get("frage_nummer"), "page": f.get("seite"),
+                **meta.provenance(
+                    doc_id or f"BT-PlPr. {f.get('dokumentnummer')}", url=f"{DIP_BASE_URL}/aktivitaet/{a['id']}"
+                ),
+            }  # fmt: skip
+    with conn:
+        conn.execute("DELETE FROM question_activity")
+        upsert(conn, "question_activity", list(rows.values()))
+        conn.execute(
+            "UPDATE question_activity SET person_id = "
+            "(SELECT id FROM person WHERE person.dip_person_id = question_activity.dip_person_id)"
+        )
+    n = conn.execute(
+        "SELECT COUNT(DISTINCT vorgang_id), COUNT(DISTINCT CASE WHEN activity_type = 'Frage' THEN vorgang_id END), "
+        "COUNT(DISTINCT CASE WHEN ressort IS NOT NULL THEN vorgang_id END) FROM question_activity"
+    ).fetchone()
+    print(f"dip questions: {len(rows)} activities on {n[0]} Fragen, {n[1]} with an asker, {n[2]} with a Ressort")
 
 
 def _vorgang_rows(drucksache_id: str) -> tuple[list[dict], list[dict]]:

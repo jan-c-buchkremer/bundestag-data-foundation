@@ -192,6 +192,22 @@ CREATE TABLE IF NOT EXISTS drucksache_author (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS question_activity (
+    id TEXT PRIMARY KEY,                -- DIP Aktivität id
+    vorgang_id TEXT NOT NULL,           -- the single question (DIP vorgangsbezug), a Vorgang of question_type
+    question_type TEXT NOT NULL,        -- Schriftliche Frage | Mündliche Frage
+    activity_type TEXT NOT NULL,        -- Frage | Zusatzfrage | Antwort
+    dip_person_id TEXT NOT NULL,
+    person_id TEXT REFERENCES person(id),
+    name TEXT NOT NULL,                 -- DIP's title, "Julia Schneider, MdB, BÜNDNIS 90/DIE GRÜNEN"
+    ressort TEXT,                       -- Antwort: the answering ministry as the title names it, else NULL
+    document_kind TEXT NOT NULL,        -- Drucksache (the Sammeldrucksache) | Plenarprotokoll
+    document_number TEXT NOT NULL,      -- "21/4372", "21/9"
+    question_numbers TEXT,              -- Drucksache: DIP's frage_nummer, "93, 94"
+    page TEXT,                          -- Plenarprotokoll: page and quadrant, "683D"
+    {PROVENANCE}
+);
+
 CREATE TABLE IF NOT EXISTS vorgang (
     id TEXT PRIMARY KEY,                -- DIP id
     wahlperiode INTEGER NOT NULL,
@@ -401,6 +417,8 @@ CREATE INDEX IF NOT EXISTS interjection_person ON interjection(person_id);
 CREATE INDEX IF NOT EXISTS vote_vote ON individual_vote(vote_id);
 CREATE INDEX IF NOT EXISTS author_person ON drucksache_author(person_id);
 CREATE INDEX IF NOT EXISTS author_dip_person ON drucksache_author(dip_person_id);
+CREATE INDEX IF NOT EXISTS question_vorgang ON question_activity(vorgang_id);
+CREATE INDEX IF NOT EXISTS question_person ON question_activity(person_id);
 CREATE INDEX IF NOT EXISTS drucksache_date ON drucksache(date);
 CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_vorgang ON vorgang_position(vorgang_id);

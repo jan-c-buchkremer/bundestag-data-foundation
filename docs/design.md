@@ -24,6 +24,9 @@ data/
     dip/
       drucksache/2026-07-06_2026-07-10.json  # list responses, one file per fetched range
       aktivitaet/drucksache-<id>.json        # authors of one Drucksache
+      plenarprotokoll/wp21.json              # all BT Plenarprotokolle of the Wahlperiode
+      aktivitaet/plenarprotokoll-<id>.json   # Aktivitäten of one protocol (Mündliche Fragen, speeches); fetched
+                                             # again while the protocol is younger than 180 days
       vorgangsposition/2026-07-06_2026-07-10.json  # all BT Vorgangspositionen dated in the range
       vorgangsposition_other/2025-03-25_2026-07-10-BR.json  # BR/BV/EK Vorgangspositionen, one file per
                                                               # zuordnung and range (Bundesrat steps: 1./2.
@@ -104,7 +107,10 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 **drucksache** `*id (DIP), number, wahlperiode, type (drucksachetyp), title, date, pdf_url, publisher (herausgeber), originators (JSON of urheber titles), author_count (DIP `autoren_anzahl`; the number of distinct persons in the fetched activities where the two disagree), source_url, source_document_id, retrieved_at`
 
 **drucksache_author** `*id, drucksache_id →drucksache, dip_person_id, person_id →person (NULL until resolved), name (DIP titel), activity_type (aktivitaetsart: Antrag, Kleine Anfrage, Große Anfrage, Entschließungsantrag, Änderungsantrag, Gesetzentwurf, Frage count as authorship; Berichterstattung and Antwort do not), source_url, source_document_id, retrieved_at`
-— from `/aktivitaet?f.drucksache=<id>`; DIP's `autoren_anzeige` alone is truncated to 4.
+— from `/aktivitaet?f.drucksache=<id>`; DIP's `autoren_anzeige` alone is truncated to 4. One row per person and Drucksache: a member with three questions in one Sammeldrucksache has one row; the single questions are in `question_activity`.
+
+**question_activity** `*id (DIP Aktivität), vorgang_id (the single question), question_type (Schriftliche Frage | Mündliche Frage), activity_type (Frage | Zusatzfrage | Antwort), dip_person_id, person_id →person (NULL until resolved), name (DIP titel), ressort (Antwort only), document_kind (Drucksache | Plenarprotokoll), document_number, question_numbers (Drucksache: frage_nummer, "93, 94"), page (Plenarprotokoll: "683D"), source_url, source_document_id, retrieved_at`
+— who asked and who answered each Frage: the Aktivitäten of the Sammeldrucksachen (types Schriftliche Fragen and Fragen) and of every Plenarprotokoll (`/aktivitaet?f.plenarprotokoll=<id>`), kept where `vorgangsbezug` names exactly one Vorgang of a question type. The asker of a Frage is its `Frage` row, its Ressort the `ressort` of its `Antwort` row: the part of the answerer's title after name and function ("Ulrich Lange, Parl. Staatssekr., Bundesministerium für Verkehr"), as DIP spells it at the time (the ministries before May 2025 have their old names). DIP's Vorgangspositionen of Fragen carry no `ressort`. A Mündliche Frage answered in writing has its Frage and Antwort on the protocol (the Anlage); one asked only on the Fragen-Drucksache has no Antwort. Live store, 2026-10-04: all 9,038 Schriftliche and 1,624 Mündliche Fragen have one asker; 9,037 and 1,584 a Ressort (the rest not answered or withdrawn); 4 askers (191 activities) have no `person_id` because their DIP person is not matched.
 
 **vorgang** `*id (DIP), wahlperiode, type (vorgangstyp), title, status (beratungsstand), subjects (JSON sachgebiet), initiators (JSON initiative), verkuendung (JSON DIP verkuendung objects: BGBl reference, Ausfertigungs-/Verkündungsdatum, or NULL), inkrafttreten (JSON array of {datum, erlaeuterung}, or NULL), source_url, source_document_id, retrieved_at`
 — Verkündung/Ausfertigung is not a vorgangsposition step under any zuordnung (checked against the whole BT-only Wahlperiode so far: no "Verkündung"/"Ausfertigung" position exists); DIP carries it only on the Vorgang record itself.

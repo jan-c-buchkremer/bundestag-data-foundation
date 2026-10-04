@@ -119,6 +119,7 @@ TABLE_SOURCES = {
     "individual_vote": ["bundestag"],
     "drucksache": ["dip"],
     "drucksache_author": ["dip"],
+    "question_activity": ["dip"],
     "vorgang": ["dip"],
     "vorgang_drucksache": ["dip"],
     "vorgang_position": ["dip"],

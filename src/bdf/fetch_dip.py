@@ -3,6 +3,10 @@
 Files written (all JSON, each with a .meta.json sidecar):
   drucksache/<start>_<end>.json                 all BT Drucksachen dated in the range (merged pages)
   aktivitaet/drucksache-<id>.json               all Aktivitäten linked to one Drucksache (= full author list)
+  plenarprotokoll/wp<wp>.json                   all BT Plenarprotokolle of the Wahlperiode
+  aktivitaet/plenarprotokoll-<id>.json          all Aktivitäten linked to one Plenarprotokoll (askers and answerers
+                                                 of Mündliche Fragen, speeches); fetched again while the protocol
+                                                 is younger than PROTOCOL_ACTIVITY_REFRESH, as DIP adds them late
   vorgang/drucksache-<id>.json                  all Vorgänge linked to one Drucksache
   vorgangsposition/<start>_<end>.json           all BT Vorgangspositionen dated in the range (vote linking)
   vorgangsposition_other/<start>_<end>-<z>.json BR/BV/EK Vorgangspositionen dated in the range, one file per
@@ -14,7 +18,7 @@ Files written (all JSON, each with a .meta.json sidecar):
 """
 
 import time
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import httpx
@@ -30,6 +34,9 @@ DIP_REQUEST_INTERVAL = 0.5
 # Anrufung/Beschluss des Vermittlungsausschusses, …) are zuordnung=BR; BV and EK are fetched too because
 # the extra request is cheap and the Zuordnung filter takes one value at a time.
 OTHER_ZUORDNUNG = ("BR", "BV", "EK")
+
+# DIP indexes a protocol's Aktivitäten weeks to months after the sitting (21/9 of 2025-06-04: 2025-09-29)
+PROTOCOL_ACTIVITY_REFRESH = timedelta(days=180)
 
 
 def dip_dir() -> Path:
@@ -108,6 +115,17 @@ def fetch_range(http: httpx.Client, wp: int, start: date, end: date, *, force: b
         _fetch_list(http, "vorgang", by_id, dip_dir() / "vorgang" / f"drucksache-{d['id']}.json", force=force)
         if i % 50 == 0:
             print(f"  authors/vorgänge: {i}/{len(drucksachen)}")
+    protocols = _fetch_list(
+        http, "plenarprotokoll", {"f.zuordnung": "BT", "f.wahlperiode": wp},
+        dip_dir() / "plenarprotokoll" / f"wp{wp}.json", force=True,
+    )  # fmt: skip
+    refetched = 0
+    for p in protocols:
+        dest = dip_dir() / "aktivitaet" / f"plenarprotokoll-{p['id']}.json"
+        young = date.fromisoformat(p["datum"]) >= end - PROTOCOL_ACTIVITY_REFRESH
+        refetched += force or young or not dest.exists()
+        _fetch_list(http, "aktivitaet", {"f.plenarprotokoll": p["id"]}, dest, force=force or young)
+    print(f"  plenarprotokolle: {len(protocols)}, aktivitäten fetched for {refetched}")
     positions = _fetch_list(
         http, "vorgangsposition", date_params, dip_dir() / "vorgangsposition" / f"{span}.json", force=force
     )

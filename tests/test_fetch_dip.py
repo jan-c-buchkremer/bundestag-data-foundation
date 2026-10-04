@@ -62,6 +62,7 @@ def test_fetch_range_backfills_br_bv_ek_once_then_narrows(capsys):
     http = _client(
         [
             _page([]),  # drucksache: none in this narrow window, skips the per-Drucksache loop
+            _page([]),  # plenarprotokoll: none, skips the per-protocol loop
             _page([{"id": "1", "vorgangsposition": "2. Beratung", "zuordnung": "BT", "vorgang_id": "9"}]),
             _page([{"id": "2", "vorgangsposition": "Zustimmung", "zuordnung": "BR", "vorgang_id": "9"}]),
             _page([]),  # BV
@@ -83,7 +84,7 @@ def test_fetch_range_backfills_br_bv_ek_once_then_narrows(capsys):
     assert "vorgangspositionen (BR): 1" in out
 
     # a second, later call: BR/BV/EK now have a file each, so the window narrows to the caller's own
-    http2 = _client([_page([]), _page([]), _page([]), _page([]), _page([]), _page([])])
+    http2 = _client([_page([]) for _ in range(7)])  # drucksache, plenarprotokoll, BT, BR, BV, EK, person
     fetch_dip.fetch_range(http2, 21, date(2026, 9, 22), date(2026, 10, 6))
     assert (other / "2026-09-22_2026-10-06-BR.json").exists()
 
@@ -102,6 +103,7 @@ def test_fetch_range_reuses_cached_other_zuordnung_files(capsys):
     http = _client(
         [
             _page([]),  # drucksache
+            _page([]),  # plenarprotokoll
             _page([]),  # vorgangsposition BT
             _page([]),  # person
         ]
