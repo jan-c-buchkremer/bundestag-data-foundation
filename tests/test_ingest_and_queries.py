@@ -331,3 +331,15 @@ def test_side_jobs(store):
     # re-ingest replaces, it does not duplicate
     ingest.ingest_side_jobs(store)
     assert store.execute("SELECT count(*) FROM side_job").fetchone()[0] == 6
+
+
+def test_side_job_of_a_re_elected_member(store, data_dir):
+    """aw lists a re-elected member's side job under the WP 20 and the WP 21 mandate, the earlier one first."""
+    path = data_dir / "raw" / "abgeordnetenwatch" / "wp21-sidejobs.json"
+    jobs = json.loads(path.read_text())
+    board = next(j for j in jobs if j["id"] == 20565)
+    board["mandates"].insert(0, {"id": 53783, "entity_type": "candidacy_mandate", "label": "(Bundestag 2021 - 2025)"})
+    path.write_text(json.dumps(jobs))
+    ingest.ingest_side_jobs(store)
+    row = store.execute("SELECT person_id, aw_mandate_id FROM side_job WHERE id = 20565").fetchone()
+    assert row["person_id"] is not None and row["aw_mandate_id"] == 68846
