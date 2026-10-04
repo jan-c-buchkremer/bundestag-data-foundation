@@ -1512,10 +1512,10 @@ def ingest_speech_parts(conn: sqlite3.Connection) -> None:
     for rede_id, parts in redes.items():
         main = parts[0]["person_id"]
         since_main = 0  # words of the main speaker since the last interruption started
-        last: dict[str, str] = {}  # person -> the kind of their latest interruption in this rede
+        last: dict[str, tuple[str, str]] = {}  # person -> (kind, first part) of their latest interruption here
         prev = None
         for p in parts:
-            kind = None
+            kind = start = None
             if p["person_id"] == main or p["agenda_item_id"] in turns:
                 # every question and answer of a Befragung or Fragestunde is a turn of its own, not an interruption
                 since_main += len(p["text"].split())
@@ -1523,17 +1523,19 @@ def ingest_speech_parts(conn: sqlite3.Connection) -> None:
                 # "Gestatten Sie …? – Bitte." between two parts of one question is not a second interruption
                 if p["person_id"] not in last or since_main >= NEW_INTERRUPTION_AFTER:
                     announced = _KURZINTERVENTION.search(" ".join(chair.get(prev["id"], [])))
-                    last[p["person_id"]] = "kurzintervention" if announced else "zwischenfrage"
-                kind = last[p["person_id"]]
+                    last[p["person_id"]] = ("kurzintervention" if announced else "zwischenfrage", p["id"])
+                kind, start = last[p["person_id"]]
                 since_main = 0
             else:  # a second interrupter right after the first: unannounced turns count as questions
-                kind = last.get(p["person_id"], "zwischenfrage")
-            updates.append((rede_id, kind, p["id"]))
+                kind, start = last.setdefault(p["person_id"], ("zwischenfrage", p["id"]))
+            updates.append((rede_id, kind, start, p["id"]))
             prev = p
     with conn:
-        conn.executemany("UPDATE speech SET rede_id = ?, interruption = ? WHERE id = ?", updates)
-    n = defaultdict(int)
-    for _, kind, _ in updates:
-        n[kind] += 1
-    print(f"speech parts: {len(redes)} redes, {n['zwischenfrage']} Zwischenfragen, "
-          f"{n['kurzintervention']} Kurzinterventionen")  # fmt: skip
+        conn.executemany(
+            "UPDATE speech SET rede_id = ?, interruption = ?, interruption_start = ? WHERE id = ?", updates
+        )
+    n = defaultdict(set)
+    for _, kind, start, _ in updates:
+        n[kind].add(start)
+    print(f"speech parts: {len(redes)} redes, {len(n['zwischenfrage'])} Zwischenfragen, "
+          f"{len(n['kurzintervention'])} Kurzinterventionen")  # fmt: skip

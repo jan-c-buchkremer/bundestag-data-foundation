@@ -175,6 +175,8 @@ Also derived, by `ingest_speech_parts` after `ingest_groups`:
   two parts of one question does not split it; a part right after another interrupter takes that person's earlier
   kind, else `zwischenfrage`. NULL for the main speaker's parts and for every part in a Befragung or Fragestunde,
   where each question and answer is a turn of its own.
+- **`speech.interruption_start`**: the first part of the interruption a part belongs to, so a question over two
+  parts counts once: count distinct `interruption_start` values, not parts.
 
 ### Chair text and decisions
 

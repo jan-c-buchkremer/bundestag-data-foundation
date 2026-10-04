@@ -155,8 +155,10 @@ CREATE TABLE IF NOT EXISTS speech (
     member_fraction TEXT,               -- derived: the speaker's fraction on the sitting day (membership, else the
                                         -- printed one), also when speaking as a minister; NULL for non-members
     rede_id TEXT,                       -- derived: the speech this part belongs to (id without "-2", "-3" …)
-    interruption TEXT                   -- derived: zwischenfrage | kurzintervention for a part by someone other than
+    interruption TEXT,                  -- derived: zwischenfrage | kurzintervention for a part by someone other than
                                         -- the rede's first speaker (docs/design.md "Speech parts"); NULL otherwise
+    interruption_start TEXT             -- derived: the first part of the interruption this part belongs to (a question
+                                        -- over two parts is one interruption); NULL with interruption
 );
 
 CREATE TABLE IF NOT EXISTS speech_paragraph (
@@ -512,6 +514,7 @@ _ADDED_COLUMNS = [
     ("agenda_item", "kind", "TEXT"),  # the three are set by the next ingest (ingest_speech_parts)
     ("speech", "rede_id", "TEXT"),
     ("speech", "interruption", "TEXT"),
+    ("speech", "interruption_start", "TEXT"),
 ]
 
 

@@ -72,8 +72,10 @@ def _rede_parts(conn, item_title, parts):
     conn.commit()
     ingest.ingest_speech_parts(conn)
     return {
-        r[0]: (r[1], r[2])
-        for r in conn.execute("SELECT id, rede_id, interruption FROM speech WHERE sitting_id = '21/998'")
+        r[0]: (r[1], r[2], r[3])
+        for r in conn.execute(
+            "SELECT id, rede_id, interruption, interruption_start FROM speech WHERE sitting_id = '21/998'"
+        )
     }
 
 
@@ -89,8 +91,9 @@ def test_speech_parts(store):
         ("R-7", other, 10, None),          # right after another interrupter: counts as a question
     ])  # fmt: skip
     assert parts == {
-        "R": ("R", None), "R-2": ("R", "zwischenfrage"), "R-3": ("R", None), "R-4": ("R", "zwischenfrage"),
-        "R-5": ("R", None), "R-6": ("R", "kurzintervention"), "R-7": ("R", "zwischenfrage"),
+        "R": ("R", None, None), "R-2": ("R", "zwischenfrage", "R-2"), "R-3": ("R", None, None),
+        "R-4": ("R", "zwischenfrage", "R-2"),  # the same question: one interruption over two parts
+        "R-5": ("R", None, None), "R-6": ("R", "kurzintervention", "R-6"), "R-7": ("R", "zwischenfrage", "R-7"),
     }  # fmt: skip
 
 
@@ -98,5 +101,5 @@ def test_befragung_turns_are_no_interruptions(store):
     parts = _rede_parts(
         store, "Befragung der Bundesregierung", [("B", "11004006", 50, None), ("B-2", "11003589", 20, None)]
     )
-    assert parts["B-2"] == ("B", None)
+    assert parts["B-2"] == ("B", None, None)
     assert store.execute("SELECT kind FROM agenda_item WHERE id = '21/998/1'").fetchone()[0] == "befragung"
