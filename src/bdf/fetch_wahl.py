@@ -3,7 +3,8 @@
 Two open-data files per election, published once after the final result and not changed since:
 the elected candidates (``btw25_gewaehlte_utf8.zip``) and the results per Wahlkreis (``kerg2.csv``); and the
 Wahlkreiseinteilung, the Gemeinden of each Wahlkreis (``btw25_wkr_gemeinden_20241130_utf8.csv``), published before
-the election.
+the election. The list of Mandatsnachfolger (``btw25_nachfolger.pdf``) grows during the Wahlperiode and is
+downloaded again on every run.
 Licence: Datenlizenz Deutschland – Namensnennung 2.0, see docs/licences.md.
 """
 
@@ -21,6 +22,7 @@ ELECTIONS = {
         "gewaehlte": f"{BWL}/dam/jcr/eeb02132-caeb-430a-ae1f-6cd5907f1809/btw25_gewaehlte_utf8.zip",
         "kerg2": f"{BWL}/bundestagswahlen/2025/ergebnisse/opendata/btw25/csv/kerg2.csv",
         "gemeinden": f"{BWL}/dam/jcr/aa868597-0e60-476c-bd2b-279c1e9a142a/btw25_wkr_gemeinden_20241130_utf8.csv",
+        "nachfolger": f"{BWL}/dam/jcr/0a69949e-27cc-48c5-aff4-cdb1ff30a4ed/btw25_nachfolger.pdf",
     },
 }
 # the election whose result formed each Wahlperiode
@@ -46,6 +48,15 @@ def kerg2_csv(election: str) -> Path:
 
 def gemeinden_csv(election: str) -> Path:
     return wahl_dir(election) / Path(ELECTIONS[election]["gemeinden"]).name
+
+
+def nachfolger_pdf(election: str) -> Path:
+    return wahl_dir(election) / Path(ELECTIONS[election]["nachfolger"]).name
+
+
+def fetch_successors(http: httpx.Client, election: str) -> Path:
+    """The Mandatsnachfolger list, downloaded again on every call: a new successor is added to it."""
+    return raw.download(http, ELECTIONS[election]["nachfolger"], nachfolger_pdf(election), force=True)
 
 
 def fetch_election(http: httpx.Client, election: str, *, force: bool = False) -> list[Path]:
