@@ -1041,9 +1041,15 @@ def retire_pdf_speakers(conn: sqlite3.Connection) -> None:
     """A speaker read from a preliminary protocol's PDF without an id gets "pdf-<name>"; once the final XML (or
     another protocol) names them with their real id, nothing refers to the placeholder any more. Such a row is
     deleted, leaving an alias to the person of the same name when exactly one other person has it."""
-    used = """SELECT person_id FROM speech UNION SELECT person_id FROM interjection WHERE person_id IS NOT NULL
-              UNION SELECT to_person_id FROM interjection WHERE to_person_id IS NOT NULL
-              UNION SELECT person_id FROM government_role WHERE person_id IS NOT NULL"""
+    # every column that refers to a person (the schema's foreign keys), but a portrait and an alias don't keep it
+    refs = [
+        (table, fk["from"])
+        for (table,) in conn.execute("SELECT name FROM sqlite_master WHERE type = 'table'").fetchall()
+        if table not in ("person_photo", "person_alias")
+        for fk in conn.execute(f"PRAGMA foreign_key_list({table})").fetchall()
+        if fk["table"] == "person"
+    ]
+    used = " UNION ".join(f"SELECT {col} FROM {table} WHERE {col} IS NOT NULL" for table, col in refs)
     gone = conn.execute(f"SELECT id, first_name, last_name FROM person WHERE id LIKE 'pdf-%' AND id NOT IN ({used})")
     gone = gone.fetchall()
     if not gone:
