@@ -849,7 +849,9 @@ def ingest_side_jobs(conn: sqlite3.Connection) -> None:
         person = dict(conn.execute("SELECT aw_politician_id, person_id FROM aw_profile WHERE person_id IS NOT NULL"))
         rows = []
         for j in raw.read_json(path):
-            mandate = j["mandates"][0]["id"]
+            # a member re-elected in 2025 has side jobs listed under both mandates, often the earlier one first
+            ids = [m["id"] for m in j["mandates"]]
+            mandate = next((i for i in ids if i in politician), ids[0])
             level = int(j["income_level"]) if j.get("income_level") not in (None, "") else None
             org = j.get("sidejob_organization") or {}
             rows.append(
