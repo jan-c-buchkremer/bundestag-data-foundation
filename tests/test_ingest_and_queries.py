@@ -27,7 +27,7 @@ def test_counts(store):
     }
     assert counts["sitting"] == 1 and counts["agenda_item"] == 2 and counts["speech"] == 5
     assert counts["roll_call_vote"] == 1 and counts["individual_vote"] == 630
-    assert counts["drucksache"] == 4 and counts["drucksache_author"] == 31 and counts["vorgang"] == 8
+    assert counts["drucksache"] == 4 and counts["drucksache_author"] == 33 and counts["vorgang"] == 8
     # the 11 fixture MdBs are Stammdaten records, no unknown speakers here; plus 3 government members (Wikidata)
     assert counts["person"] == 14
 
@@ -139,7 +139,8 @@ def test_rapporteur_is_not_an_author(store):
 
 
 def test_author_count_falls_back_to_activities(store):
-    # DIP reports autoren_anzahl 0 for Schriftliche Fragen; the fixture keeps 3 of its askers
+    # DIP reports autoren_anzahl 0 for Schriftliche Fragen; the fixture keeps 3 of its askers (and 2 answerers,
+    # who are not authors)
     counts = dict(store.execute("SELECT number, author_count FROM drucksache").fetchall())
     assert counts["21/7052"] == 3
     assert counts["21/6977"] == 21  # agrees with DIP, kept

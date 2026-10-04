@@ -1,0 +1,274 @@
+[
+ {
+  "id": "1717486",
+  "aktivitaetsart": "Zusatzfrage",
+  "typ": "Aktivität",
+  "person_id": "2260",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Plenarprotokoll",
+  "wahlperiode": 21,
+  "aktualisiert": "2025-09-29T15:57:22+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Mündliche Frage/Mündliche Antwort",
+    "vorgangstyp": "Mündliche Frage",
+    "titel": "Aufforderung zur Anerkennung Israels durch Syrien",
+    "id": "322143"
+   }
+  ],
+  "fundstelle": {
+   "seite": "683D",
+   "pdf_url": "https://dserver.bundestag.de/btp/21/21009.pdf#P.683",
+   "id": "5713",
+   "dokumentnummer": "21/9",
+   "datum": "2025-06-04",
+   "verteildatum": "2025-06-05",
+   "xml_url": "https://dserver.bundestag.de/btp/21/21009.xml",
+   "dokumentart": "Plenarprotokoll",
+   "herausgeber": "BT",
+   "urheber": [],
+   "anfangsseite": 683,
+   "endseite": 684,
+   "anfangsquadrant": "A",
+   "endquadrant": "A"
+  },
+  "titel": "Dr. Rainer Kraft, MdB, AfD",
+  "datum": "2025-06-04"
+ },
+ {
+  "id": "1717287",
+  "aktivitaetsart": "Antwort",
+  "typ": "Aktivität",
+  "person_id": "8141",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Plenarprotokoll",
+  "wahlperiode": 21,
+  "aktualisiert": "2025-09-29T15:57:22+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Mündliche Frage/Mündliche Antwort",
+    "vorgangstyp": "Mündliche Frage",
+    "titel": "Aufforderung zur Anerkennung Israels durch Syrien",
+    "id": "322143"
+   }
+  ],
+  "fundstelle": {
+   "seite": "683A",
+   "pdf_url": "https://dserver.bundestag.de/btp/21/21009.pdf#P.683",
+   "id": "5713",
+   "dokumentnummer": "21/9",
+   "datum": "2025-06-04",
+   "verteildatum": "2025-06-05",
+   "xml_url": "https://dserver.bundestag.de/btp/21/21009.xml",
+   "dokumentart": "Plenarprotokoll",
+   "herausgeber": "BT",
+   "urheber": [],
+   "anfangsseite": 683,
+   "endseite": 684,
+   "anfangsquadrant": "A",
+   "endquadrant": "A"
+  },
+  "titel": "Florian Hahn, Staatsmin., Auswärtiges Amt",
+  "datum": "2025-06-04"
+ },
+ {
+  "id": "1717286",
+  "aktivitaetsart": "Frage",
+  "typ": "Aktivität",
+  "person_id": "7399",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Plenarprotokoll",
+  "wahlperiode": 21,
+  "aktualisiert": "2025-09-29T15:57:22+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Mündliche Frage/Mündliche Antwort",
+    "vorgangstyp": "Mündliche Frage",
+    "titel": "Aufforderung zur Anerkennung Israels durch Syrien",
+    "id": "322143"
+   }
+  ],
+  "fundstelle": {
+   "seite": "683A",
+   "pdf_url": "https://dserver.bundestag.de/btp/21/21009.pdf#P.683",
+   "id": "5713",
+   "dokumentnummer": "21/9",
+   "datum": "2025-06-04",
+   "verteildatum": "2025-06-05",
+   "xml_url": "https://dserver.bundestag.de/btp/21/21009.xml",
+   "dokumentart": "Plenarprotokoll",
+   "herausgeber": "BT",
+   "urheber": [],
+   "anfangsseite": 683,
+   "endseite": 684,
+   "anfangsquadrant": "A",
+   "endquadrant": "A"
+  },
+  "titel": "Bernd Schattner, MdB, AfD",
+  "datum": "2025-06-04"
+ },
+ {
+  "id": "1717192",
+  "aktivitaetsart": "Frage",
+  "typ": "Aktivität",
+  "person_id": "7445",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Plenarprotokoll",
+  "wahlperiode": 21,
+  "aktualisiert": "2025-09-29T15:57:22+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Einleitende Ausführungen und Befragung der Bundesregierung",
+    "vorgangstyp": "Befragung der Bundesregierung",
+    "titel": "Einleitende Ausführungen und Befragung des Bundesministers des Auswärtigen, Dr. Johann Wadephul, sowie der Bundesministerin für wirtschaftliche Zusammenarbeit und Entwicklung, Reem Alabali-Radovan",
+    "id": "322309"
+   }
+  ],
+  "fundstelle": {
+   "seite": "680A",
+   "pdf_url": "https://dserver.bundestag.de/btp/21/21009.pdf#P.680",
+   "id": "5713",
+   "dokumentnummer": "21/9",
+   "datum": "2025-06-04",
+   "verteildatum": "2025-06-05",
+   "xml_url": "https://dserver.bundestag.de/btp/21/21009.xml",
+   "dokumentart": "Plenarprotokoll",
+   "herausgeber": "BT",
+   "urheber": [],
+   "anfangsseite": 658,
+   "endseite": 680,
+   "anfangsquadrant": "D",
+   "endquadrant": "C"
+  },
+  "deskriptor": [
+   {
+    "name": "Bundesmittel",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "name": "Ukraine",
+    "typ": "Geograph. Begriffe"
+   }
+  ],
+  "titel": "Sara Nanni, MdB, BÜNDNIS 90/DIE GRÜNEN",
+  "datum": "2025-06-04"
+ },
+ {
+  "id": "1717279",
+  "aktivitaetsart": "Rede",
+  "typ": "Aktivität",
+  "person_id": "8172",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Plenarprotokoll",
+  "wahlperiode": 21,
+  "aktualisiert": "2025-09-29T15:57:22+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Ansprache",
+    "vorgangstyp": "Ansprache/Erklärung/Mitteilung",
+    "titel": "Begrüßung der SED-Opferbeauftragten, Evelyn Zupke",
+    "id": "322314"
+   }
+  ],
+  "fundstelle": {
+   "seite": "705C",
+   "pdf_url": "https://dserver.bundestag.de/btp/21/21009.pdf#P.705",
+   "id": "5713",
+   "dokumentnummer": "21/9",
+   "datum": "2025-06-04",
+   "verteildatum": "2025-06-05",
+   "xml_url": "https://dserver.bundestag.de/btp/21/21009.xml",
+   "dokumentart": "Plenarprotokoll",
+   "herausgeber": "BT",
+   "urheber": [],
+   "anfangsseite": 705,
+   "endseite": 705,
+   "anfangsquadrant": "C",
+   "endquadrant": "C"
+  },
+  "deskriptor": [
+   {
+    "name": "Bundestag: Begrüßung von Gästen",
+    "typ": "Sachbegriffe"
+   },
+   {
+    "name": "SED-Opferbeauftragter des Deutschen Bundestages",
+    "typ": "Institutionen"
+   }
+  ],
+  "titel": "Josephine Ortleb, Bundestagsvizepräs.",
+  "datum": "2025-06-04"
+ },
+ {
+  "id": "1717372",
+  "aktivitaetsart": "Antwort",
+  "typ": "Aktivität",
+  "person_id": "8151",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Plenarprotokoll",
+  "wahlperiode": 21,
+  "aktualisiert": "2025-09-29T15:57:22+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Mündliche Frage/Schriftliche Antwort",
+    "vorgangstyp": "Mündliche Frage",
+    "titel": "Maßnahmen gegen geschlechtsspezifische Gewalt",
+    "id": "322190"
+   }
+  ],
+  "fundstelle": {
+   "seite": "734C",
+   "pdf_url": "https://dserver.bundestag.de/btp/21/21009.pdf#P.734",
+   "id": "5713",
+   "dokumentnummer": "21/9",
+   "datum": "2025-06-04",
+   "verteildatum": "2025-06-05",
+   "xml_url": "https://dserver.bundestag.de/btp/21/21009.xml",
+   "dokumentart": "Plenarprotokoll",
+   "herausgeber": "BT",
+   "urheber": [],
+   "anfangsseite": 734,
+   "endseite": 735,
+   "anfangsquadrant": "C",
+   "endquadrant": "A"
+  },
+  "titel": "Mareike Lotte Wulf, Parl. Staatssekr., Bundesministerium für Bildung, Familie, Senioren, Frauen und Jugend",
+  "datum": "2025-06-04"
+ },
+ {
+  "id": "1717371",
+  "aktivitaetsart": "Frage",
+  "typ": "Aktivität",
+  "person_id": "7926",
+  "vorgangsbezug_anzahl": 1,
+  "dokumentart": "Plenarprotokoll",
+  "wahlperiode": 21,
+  "aktualisiert": "2025-09-29T15:57:22+02:00",
+  "vorgangsbezug": [
+   {
+    "vorgangsposition": "Mündliche Frage/Schriftliche Antwort",
+    "vorgangstyp": "Mündliche Frage",
+    "titel": "Maßnahmen gegen geschlechtsspezifische Gewalt",
+    "id": "322190"
+   }
+  ],
+  "fundstelle": {
+   "seite": "734C",
+   "pdf_url": "https://dserver.bundestag.de/btp/21/21009.pdf#P.734",
+   "id": "5713",
+   "dokumentnummer": "21/9",
+   "datum": "2025-06-04",
+   "verteildatum": "2025-06-05",
+   "xml_url": "https://dserver.bundestag.de/btp/21/21009.xml",
+   "dokumentart": "Plenarprotokoll",
+   "herausgeber": "BT",
+   "urheber": [],
+   "anfangsseite": 734,
+   "endseite": 735,
+   "anfangsquadrant": "C",
+   "endquadrant": "A"
+  },
+  "titel": "Dr. Lena Gumnior, MdB, BÜNDNIS 90/DIE GRÜNEN",
+  "datum": "2025-06-04"
+ }
+]
