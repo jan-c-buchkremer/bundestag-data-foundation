@@ -171,6 +171,8 @@ class Decision:
     # where the chair's words were read: agenda item and the agenda_item_paragraph position it stood at
     at_item: str | None = None
     at_paragraph: int | None = None
+    # show of hands: the running number of the chair paragraph with the vote's question, the base of its id
+    anchor: int | None = None
 
 
 @dataclass
@@ -517,11 +519,16 @@ def extract(
         item = resolve(vote, ([drucksache] if drucksache else []) + numbers)
         context = item
         positions = fraction_positions(vote_text, s or "\0", result, wp, unanimous=not implicit)
+        # the vote's own question ("Wer stimmt dafür?"), else its result sentence: where the protocol puts it
+        q = next((x for x in vote if _QUESTION_RE.search(x.text)), None) or next(
+            (x for x in vote if x.text == s), vote[-1]
+        )
         decisions.append(
             Decision(
                 sitting_id=sid, agenda_item_id=item, position=len(decisions) + 1, kind="handzeichen",
                 subject=subject, drucksache_number=drucksache, result=result, text=vote_text,
                 fractions=positions, drucksachen=numbers, at_item=current, at_paragraph=at,
+                anchor=q.paragraph,
             )
         )  # fmt: skip
 
@@ -682,12 +689,25 @@ def extract(
 
     _pair_announcements(decisions, announcements, sid, pending or [])
     _attach_sub_items(decisions, protocol)
-    n = 0
+    n, taken = 0, set()
     for d in decisions:
         if d.kind == "handzeichen":
             n += 1
-            d.n, d.id = n, f"{sid}/h{n}"
+            d.n, d.id = n, _anchor_id(sid, d.anchor, taken)
     return decisions
+
+
+def _anchor_id(sid: str, anchor: int | None, taken: set[str]) -> str:
+    """``<sitting>/p<paragraph>``: the chair paragraph that asks the vote, counted over the sitting's chair text, so a
+    decision found later does not renumber the others; the second and third vote asked in one paragraph get "-2",
+    "-3" in document order."""
+    base = f"{sid}/p{anchor or 0}"
+    out, k = base, 1
+    while out in taken:
+        k += 1
+        out = f"{base}-{k}"
+    taken.add(out)
+    return out
 
 
 _SAMMEL = re.compile(r"Sammelübersicht (\d+)")
