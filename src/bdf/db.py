@@ -263,6 +263,17 @@ CREATE TABLE IF NOT EXISTS vorgang_position (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS vorgang_referral (
+    position_id TEXT NOT NULL REFERENCES vorgang_position(id),
+    vorgang_id TEXT NOT NULL,           -- DIP id of the Vorgang (as vorgang_position.vorgang_id)
+    committee TEXT NOT NULL,            -- ueberweisung.ausschuss as DIP names it, not matched to membership names
+    committee_short TEXT,               -- ueberweisung.ausschuss_kuerzel, e.g. "EU"; NULL if DIP gives none
+    lead INTEGER NOT NULL,              -- 1 = federführend (ueberweisung.federfuehrung), 0 = mitberatend
+    kind TEXT,                          -- ueberweisung.ueberweisungsart, NULL if DIP gives none
+    {PROVENANCE},
+    PRIMARY KEY (position_id, committee)
+);
+
 CREATE TABLE IF NOT EXISTS roll_call_vote (
     id TEXT PRIMARY KEY,                -- "21/90/7"
     sitting_id TEXT REFERENCES sitting(id),
@@ -488,6 +499,7 @@ CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_vorgang ON vorgang_position(vorgang_id);
 CREATE INDEX IF NOT EXISTS decision_vorgang_vorgang ON decision_vorgang(vorgang_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_date ON vorgang_position(date);
+CREATE INDEX IF NOT EXISTS vorgang_referral_vorgang ON vorgang_referral(vorgang_id);
 CREATE INDEX IF NOT EXISTS candidacy_person ON election_candidacy(person_id);
 CREATE INDEX IF NOT EXISTS municipality_constituency ON constituency_municipality(election, constituency_number);
 {GOVERNMENT_ROLE_INDEX};

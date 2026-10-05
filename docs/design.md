@@ -120,6 +120,7 @@ when one changes. Rows carry their provenance (`source_url`, `source_document_id
 | `decision.id` | roll call: the vote's id `21/90/7` (`21/90/n<k>` before the vote list is published); show of hands: `<sitting>/p<paragraph>` (`-2`, `-3` for further votes asked in one paragraph) | the protocol text changes (final version of a preliminary protocol); not when the parser finds or drops other decisions |
 | `roll_call_vote.id` | `<sitting>/<Abstimmnr>`, `21/90/7` | never |
 | `drucksache.id`, `vorgang.id`, `vorgang_position.id`, `question_activity.id` | DIP ids | never (DIP's) |
+| `vorgang_referral` (`position_id, committee`) | DIP position id and DIP's committee name | when DIP renames the committee |
 | `mandate.id`, `membership.id` | `<person>/<wp>`, `<person>/<wp>/<k>` | `membership` `k` counts the Stammdaten entries of a person and Wahlperiode, so a new Stammdaten file can renumber them: join on the columns, not the id |
 | `interjection.id`, `speech_paragraph.id`, `agenda_item_paragraph.id` | `<speech or item id>/<position>/…` | with the speech or item |
 | `constituency.id`, `constituency_result.id`, `election_candidacy.id`, `mandate_successor.id` | `btw25/…` | never (the files are final; `mandate_successor` uses the list's running number) |
@@ -160,6 +161,7 @@ them filled but must not fail on a NULL.
 | `drucksache.author_count` | DIP gives none and no activities were fetched |
 | `vorgang.status`, `verkuendung`, `inkrafttreten` | DIP has none (not every Vorgang ends in a law) |
 | `vorgang_position.document_type`, `pages`, `ressort`, `decisions` | DIP has none for that step (`pages` only on protocol steps) |
+| `vorgang_referral.committee_short`, `kind` | DIP gives no `ausschuss_kuerzel` resp. `ueberweisungsart` for that committee (most referrals have no `ueberweisungsart`) |
 | `constituency.seat_party` | the winner had no Zweitstimmendeckung |
 | `election_candidacy.constituency_number`, `first_vote_percent`, `list_state`, `list_position` | did not stand there / not a constituency winner / not on a list |
 | `government_role.to_date` | in office (protocol rows: never NULL, see the table); `wikidata_qid`, `department`: not known |
@@ -187,6 +189,9 @@ Measured on the live store's data on 2026-10-04 (`bdf health` prints the current
 - **Known wrong value:** decision `21/14/p207` (the Greens' Faire-Mieten-Gesetz, 21/222) has the subject of the
   coalition's Mietpreisbremse bill, taken from an earlier introduction.
 - **Government roles from protocols** are evidence dates, not appointment dates (see `government_role`).
+- **Committee referrals** (`vorgang_referral`) name the committee as DIP spells it, which differs from the
+  Stammdaten's `membership.name`; the foundation does not match the two. A referral exists only where DIP records it
+  on a Vorgangsposition.
 
 ## Tables
 
@@ -226,6 +231,9 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 
 **vorgang_position** `*id (DIP), vorgang_id (DIP; not every Vorgang is in vorgang), date, position (vorgangsposition: "Gesetzentwurf", "1. Beratung", "Antwort", …), chamber (zuordnung), document_kind (Drucksache | Plenarprotokoll), document_number, document_type (drucksachetyp), pdf_url, pages ("1234-1236", protocols), originators (JSON urheber titles), ressort (JSON [{titel, federfuehrend}] or NULL), decisions (JSON beschlussfassung as in DIP, or NULL), source_url, source_document_id ("DIP Vorgangsposition <id>"), retrieved_at`
 — one row per step of a Vorgang, from the same date-range lists as the vote linking (deduplicated by id, latest copy wins). `chamber` (zuordnung) is BT, BR, BV or EK: BT positions come from the main range file, BR/BV/EK positions from the separate `vorgangsposition_other` files (one per zuordnung and range), so a step such as "1. Durchgang", "Zustimmung", "Kein Einspruch eingelegt" or "Anrufung des Vermittlungsausschusses" is a BR row like any BT row. Vote linking (`_link_votes_to_dip`) still reads BT positions only.
+
+**vorgang_referral** `position_id →vorgang_position, vorgang_id (DIP), committee (ueberweisung.ausschuss as DIP names it), committee_short (ausschuss_kuerzel, "EU"), lead (1 = federführend, 0 = mitberatend; from federfuehrung), kind (ueberweisungsart or NULL), source_url, source_document_id ("DIP Vorgangsposition <id>"), retrieved_at` (PK `position_id, committee`)
+— the committees a Vorlage was referred to: one row per entry of a position's `ueberweisung` list, from the same raw files and in the same pass as `vorgang_position` (BT and BR/BV/EK alike), deleted and written anew on every ingest. A position without `ueberweisung` has no row; a committee listed twice on one position is one row, lead if either entry says so. `committee` is DIP's name, not matched to `membership` (DIP and the Stammdaten name committees differently; a consumer keeps the alias map). A Vorgang can have referrals on several positions (a re-referral, Bundesrat committees on BR positions): pick by `vorgang_position.chamber` and `date`.
 
 **roll_call_vote** `*id, sitting_id →sitting, number (Abstimmnr), date, title (from the bundestag.de list), drucksache_number (NULL until linked), vorgang_id →vorgang (NULL until linked), link_method (dip_beschluss | title_regex | manual | NULL), yes, no, abstain, invalid, absent (totals computed from individual_vote), xlsx_url, pdf_url, source_url, source_document_id, retrieved_at, agenda_item_id →agenda_item (see Chair text and decisions)`
 
@@ -429,7 +437,8 @@ problem counts, saved as `data/health/<date>.json` and compared with the newest 
 printed in the run's log; `bdf health` prints it for the current store without saving. The run fails (exit code 1;
 systemd reports it to Gatus, which alerts via ntfy) only when something clearly got worse:
 
-- a table that had rows is empty or gone, or lost more than 5 % of its rows (rows normally only grow);
+- a table that had rows is empty or gone, or lost more than 5 % of its rows (rows normally only grow; this covers
+  every table, so a run that suddenly loses `vorgang_referral` rows fails);
 - a problem count rose by more than its threshold since the last snapshot:
 
 | Problem | Fails at a rise of |

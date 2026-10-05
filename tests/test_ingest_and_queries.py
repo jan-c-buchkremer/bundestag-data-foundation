@@ -44,6 +44,7 @@ def test_every_fact_row_has_provenance(store):
         "drucksache_author",
         "vorgang",
         "vorgang_position",
+        "vorgang_referral",
         "roll_call_vote",
     ):
         bad = store.execute(
@@ -281,6 +282,35 @@ def test_vorgang_verkuendung_and_inkrafttreten(store):
     # a Vorgang without a Verkündung (not yet promulgated, or not a law) keeps NULL, not "[]"
     other = store.execute("SELECT verkuendung, inkrafttreten FROM vorgang WHERE id = '337023'").fetchone()
     assert other["verkuendung"] is None and other["inkrafttreten"] is None
+
+
+def test_vorgang_referrals(store):
+    """One row per committee a position refers the Vorlage to; positions without `ueberweisung` have none."""
+    rows = [dict(r) for r in store.execute("SELECT * FROM vorgang_referral ORDER BY committee")]
+    assert [(r["position_id"], r["vorgang_id"], r["committee_short"], r["lead"], r["kind"]) for r in rows] == [
+        ("696837", "334923", "AuS", 1, None),
+        ("696837", "334923", "EU", 0, "Überweisung gemäß § 80 Abs. 3 GO-BT"),
+    ]
+    assert rows[1]["committee"] == "Ausschuss für Fragen der Europäischen Union"
+    assert rows[0]["source_document_id"] == "DIP Vorgangsposition 696837"
+    assert rows[0]["source_url"] == "https://search.dip.bundestag.de/api/v1/vorgangsposition/696837"
+    # re-ingest replaces, it does not duplicate
+    ingest.ingest_all(store)
+    assert store.execute("SELECT count(*) FROM vorgang_referral").fetchone()[0] == 2
+
+
+def test_vorgang_referral_rows_without_and_with_a_repeated_committee():
+    from bdf import raw
+
+    meta = raw.RawMeta(url="u", retrieved_at="2026-10-05T00:00:00+00:00")
+    record = {"id": "1", "vorgang_id": "2", "datum": "2026-07-09", "vorgangsposition": "Antrag"}
+    assert ingest._vorgang_referral_rows(record, meta) == []
+    record["ueberweisung"] = [
+        {"ausschuss": "Haushaltsausschuss", "ausschuss_kuerzel": "HA"},
+        {"ausschuss": "Haushaltsausschuss", "ausschuss_kuerzel": "HA", "federfuehrung": True},
+    ]
+    [row] = ingest._vorgang_referral_rows(record, meta)
+    assert (row["committee"], row["lead"], row["kind"]) == ("Haushaltsausschuss", 1, None)
 
 
 def test_vorgang_position_ressort_and_page_range():

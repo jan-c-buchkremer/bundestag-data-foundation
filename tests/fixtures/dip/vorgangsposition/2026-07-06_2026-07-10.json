@@ -111,6 +111,19 @@
    }
   ],
   "datum": "2026-07-10",
-  "vorgang_id": "334923"
+  "vorgang_id": "334923",
+  "ueberweisung": [
+   {
+    "ausschuss": "Ausschuss für Arbeit und Soziales",
+    "ausschuss_kuerzel": "AuS",
+    "federfuehrung": true
+   },
+   {
+    "ausschuss": "Ausschuss für Fragen der Europäischen Union",
+    "ausschuss_kuerzel": "EU",
+    "federfuehrung": false,
+    "ueberweisungsart": "Überweisung gemäß § 80 Abs. 3 GO-BT"
+   }
+  ]
  }
 ]

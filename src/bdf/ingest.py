@@ -526,10 +526,14 @@ def _vorgangsposition_records() -> list[tuple[dict, raw.RawMeta]]:
 def _ingest_vorgang_positions(conn: sqlite3.Connection) -> None:
     """Every step of a Vorgang from the date-range lists: Drucksache, Beratung, Durchgang, Zustimmung,
     Vermittlungsausschuss, … across the Bundestag, Bundesrat, Bundesversammlung and Europakammer."""
-    rows = [_vorgang_position_row(p, meta) for p, meta in _vorgangsposition_records()]
+    records = _vorgangsposition_records()
+    rows = [_vorgang_position_row(p, meta) for p, meta in records]
+    referrals = [r for p, meta in records for r in _vorgang_referral_rows(p, meta)]
     with conn:
         upsert(conn, "vorgang_position", rows)
-    print(f"dip: {len(rows)} vorgangspositionen")
+        conn.execute("DELETE FROM vorgang_referral")
+        upsert(conn, "vorgang_referral", referrals)
+    print(f"dip: {len(rows)} vorgangspositionen, {len(referrals)} committee referrals")
 
 
 def _vorgang_position_row(p: dict, meta: raw.RawMeta) -> dict:
@@ -557,6 +561,29 @@ def _vorgang_position_row(p: dict, meta: raw.RawMeta) -> dict:
         "decisions": _json_or_none(p.get("beschlussfassung") or []),
         **meta.provenance(f"DIP Vorgangsposition {p['id']}", url=f"{DIP_BASE_URL}/vorgangsposition/{p['id']}"),
     }
+
+
+def _vorgang_referral_rows(p: dict, meta: raw.RawMeta) -> list[dict]:
+    """One row per committee in the position's `ueberweisung` list, DIP's committee name kept as given (matching
+    it to `membership` names is the consumer's job). A committee listed twice is one row, lead if either says so."""
+    rows: dict[str, dict] = {}
+    for u in p.get("ueberweisung") or []:
+        if not u.get("ausschuss"):
+            continue
+        row = rows.setdefault(
+            u["ausschuss"],
+            {
+                "position_id": p["id"],
+                "vorgang_id": p["vorgang_id"],
+                "committee": u["ausschuss"],
+                "committee_short": u.get("ausschuss_kuerzel"),
+                "lead": 0,
+                "kind": u.get("ueberweisungsart"),
+                **meta.provenance(f"DIP Vorgangsposition {p['id']}", url=f"{DIP_BASE_URL}/vorgangsposition/{p['id']}"),
+            },
+        )
+        row["lead"] = max(row["lead"], int(bool(u.get("federfuehrung"))))
+    return list(rows.values())
 
 
 def _json_or_none(items: list) -> str | None:
