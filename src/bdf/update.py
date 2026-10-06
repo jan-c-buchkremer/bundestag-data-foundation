@@ -140,6 +140,10 @@ def run(wp: int = 21, today: date | None = None) -> int:
             print(f"dip {start}..{end}")
             fetch_dip.fetch_range(http, wp, start, end)
 
+        def answers() -> None:
+            new = fetch_bundestag.fetch_answer_pdfs(http, wp)  # the first run fetches all, about 25 minutes
+            print(f"answers: {len(new)} PDFs of answers to Kleine and Große Anfragen downloaded")
+
         source("stammdaten", stammdaten)
         source("protocols", protocols)
         source("votes", votes)
@@ -149,6 +153,7 @@ def run(wp: int = 21, today: date | None = None) -> int:
         source("government", government)
         if dip_api_key():
             source("dip", dip)
+            source("answers", answers)  # listed by the DIP data just fetched
         else:
             print("dip: skipped, DIP_API_KEY is not set")
 

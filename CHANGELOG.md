@@ -5,9 +5,9 @@ not before? If that sentence is hard to write, the release is not a finished ver
 
 ## Unreleased
 
-A consumer can now read every Mündliche Frage and its answer – spoken in the Fragestunde or given in writing – follow
-each exchange of a Befragung der Bundesregierung and a Fragestunde, and say which committees a Vorgang was referred
-to.
+A consumer can now read every Kleine and Große Anfrage and every Mündliche Frage with its answer – questions,
+preliminary remarks, tables – follow each exchange of a Befragung der Bundesregierung and a Fragestunde, and say which
+committees a Vorgang was referred to.
 
 - New table `question_turn` (additive): the role of every turn of a Befragung der Bundesregierung (`einleitung`,
   `frage`, `antwort`, `nachfrage`, `zusatzfrage`) and the question it belongs to (`thread_id`), from the
@@ -16,6 +16,13 @@ to.
 - New table `question_text` (additive): the text of every Mündliche Frage the Plenarprotokolle print (`frage`) and
   of its written answer (`antwort`), with the DIP Vorgang, the answerer and the Fragen-Drucksache; tables in an answer
   in the new table `question_table`, as cells. In the export with sources bundestag.de and DIP.
+- `question_text` and `question_table` cover the Kleine and Große Anfragen too, read from the PDF of the answer:
+  the askers' and the government's preliminary remarks, every question (sub-questions answered one by one as "3a")
+  and its answer, annexes; tables without ruling are marked as not read, with their page.
+- New table `question_parse` (additive): per Vorgang of an Anfrage or Mündliche Frage whether its texts are
+  complete, partial, unanswered, or answered but not read (failed).
+- New raw source: the PDFs of the answers to Kleine and Große Anfragen (`bdf fetch answers`, and in `update` after
+  DIP), about 1.1 GB; the first run downloads all of them (about 25 minutes) and reads them (about 80 minutes).
 - `question_turn` covers the Fragestunde too: each answer, Nachfrage and Zusatzfrage with the question it belongs to
   and its DIP Vorgang (`vorgang_id`).
 - Health report: new count `questions_without_vorgang`.

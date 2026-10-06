@@ -1,6 +1,8 @@
-"""Download bundestag.de: Stammdaten, Plenarprotokoll XML, roll-call vote XLSX, the MdB biography list and portraits."""
+"""Download bundestag.de: Stammdaten, Plenarprotokoll XML, roll-call vote XLSX, the MdB biography list and portraits,
+and the PDFs of the answers to Kleine and Große Anfragen."""
 
 import re
+import time
 import zipfile
 from collections.abc import Iterable
 from datetime import date
@@ -8,9 +10,9 @@ from pathlib import Path
 
 import httpx
 
-from bdf import parse_biografien, protocol_status, raw
+from bdf import fetch_dip, parse_biografien, protocol_status, raw
 from bdf.config import raw_dir
-from bdf.names import clean_text
+from bdf.names import DRUCKSACHE_RE, clean_text
 
 STAMMDATEN_URL = "https://www.bundestag.de/resource/blob/472878/MdB-Stammdaten.zip"
 PROTOCOL_URL = "https://dserver.bundestag.de/btp/{wp}/{wp}{nr:03d}.{ext}"
@@ -23,6 +25,53 @@ _ROW_RE = re.compile(r"<tr\b.*?</tr>", re.S)
 # file names vary: 20260710_7.pdf, 20260710_7-xls.xlsx, 20260709_1_xls.xlsx
 _HREF_RE = re.compile(r'href="([^"]+/(\d{8})_(\d+)(?:[-_]xlsx?)?\.(pdf|xlsx))"')
 _TITLE_RE = re.compile(r"<a\b[^>]*\.pdf\"[^>]*>\s*<span>(.*?)</span>\s*<span role", re.S)
+
+
+# DIP's title of an answer: "auf die Kleine Anfrage\r\n- Drucksache 21/8198 -\r\n…"
+_ANSWER_TITLE = re.compile(r"^auf die (?:Kleine|Große) Anfrage\b")
+
+
+def answers_dir() -> Path:
+    return raw_dir() / "bundestag" / "drucksachen"
+
+
+def answer_path(number: str) -> Path:
+    """Where the PDF of Drucksache "21/1095" lies, named as dserver names it: drucksachen/21/2101095.pdf."""
+    wp, n = number.split("/")
+    return answers_dir() / wp / f"{wp}{int(n):05d}.pdf"
+
+
+def answers_listed(wp: int) -> list[tuple[str, str]]:
+    """(number, pdf_url) of every answer to a Kleine or Große Anfrage in the fetched DIP Drucksachen of the
+    Wahlperiode (data/raw/dip/drucksache/), in number order."""
+    found: dict[str, str] = {}
+    for path in raw.data_files(fetch_dip.dip_dir() / "drucksache", "*.json"):
+        for d in raw.read_json(path):
+            url = (d.get("fundstelle") or {}).get("pdf_url")
+            if (d.get("wahlperiode") == wp and d.get("drucksachetyp") == "Antwort" and d.get("herausgeber") == "BT"
+                    and _ANSWER_TITLE.match(d.get("titel") or "") and url):  # fmt: skip
+                found[DRUCKSACHE_RE.search(d["dokumentnummer"]).group(1)] = url  # DIP has "21/8057."
+    return sorted(found.items(), key=lambda item: int(item[0].split("/")[1]))
+
+
+def fetch_answer_pdfs(http: httpx.Client, wp: int, *, force: bool = False) -> list[Path]:
+    """Download the PDF of every answer to a Kleine or Große Anfrage that DIP lists and is not on disk yet (all of
+    them with ``force``), at DIP's request rate. Returns the downloaded paths. DIP lists an answer a day or so before
+    dserver serves its PDF: a 404 is skipped and tried again on the next run."""
+    new = []
+    for number, url in answers_listed(wp):
+        path = answer_path(number)
+        if path.exists() and not force:
+            continue
+        try:
+            raw.download(http, url, path, force=True)
+            new.append(path)
+        except httpx.HTTPStatusError as e:
+            if e.response.status_code != 404:
+                raise
+            print(f"answers: {number} not on dserver yet ({url})")
+        time.sleep(fetch_dip.DIP_REQUEST_INTERVAL)
+    return new
 
 
 def stammdaten_dir() -> Path:

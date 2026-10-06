@@ -244,10 +244,13 @@ CREATE TABLE IF NOT EXISTS question_text (
     drucksache_number TEXT NOT NULL,    -- the Drucksache listing the question: Mündliche Fragen: the Fragen-Drucksache
     drucksache_id TEXT REFERENCES drucksache(id),  -- its DIP id (NULL when not fetched)
     position INTEGER NOT NULL,          -- order within the source document
-    part TEXT NOT NULL,                 -- frage | antwort (docs/design.md "Question texts")
-    number TEXT NOT NULL,               -- the question's number in the Drucksache, "6"
+    part TEXT NOT NULL,                 -- vorbemerkung_fragesteller | frage | vorbemerkung_bundesregierung | antwort |
+                                        -- anlage (docs/design.md "Question texts")
+    number TEXT,                        -- the question's number in the Drucksache, "6", "3a"; an annex's; NULL for a
+                                        -- preliminary remark
     text TEXT NOT NULL,                 -- paragraphs joined by blank lines; tables are in question_table
-    name TEXT,                          -- as printed: the asker (frage), the answerer with office (antwort)
+    name TEXT,                          -- as printed: the asker (frage), the answerer with office (antwort); the
+                                        -- ministry (answers to Anfragen)
     answerer_person_id TEXT REFERENCES person(id),  -- antwort: the answerer (from DIP; NULL until matched)
     answer_date TEXT,                   -- antwort: the date of the document printing the answer
     thread_id TEXT REFERENCES speech(id),  -- a question answered in the Fragestunde: its first turn (question_turn)
@@ -259,8 +262,17 @@ CREATE TABLE IF NOT EXISTS question_table (
     question_text_id TEXT NOT NULL REFERENCES question_text(id),
     position INTEGER NOT NULL,          -- k: order among the text's tables
     after_paragraph INTEGER NOT NULL,   -- how many of the text's paragraphs come before the table
-    cells TEXT NOT NULL                 -- JSON {"caption", "head", "body", "foot"}: rows of cells, a cell its text or
-                                        -- {"text", "colspan", "rowspan"}
+    cells TEXT NOT NULL                 -- JSON {{"caption", "head", "body", "foot"}}: rows of cells, a cell its text
+                                        -- or {{"text", "colspan", "rowspan"}}; a table without ruling, whose cells are
+                                        -- not read: {{"extracted": false, "page": <page of the PDF>}}
+);
+
+CREATE TABLE IF NOT EXISTS question_parse (
+    vorgang_id TEXT PRIMARY KEY REFERENCES vorgang(id),
+    status TEXT NOT NULL,               -- complete | partial | unanswered | failed (docs/design.md "Question texts")
+    questions INTEGER NOT NULL,         -- the questions read
+    answered INTEGER NOT NULL,          -- … of them with an answer (written or spoken)
+    source_document_id TEXT             -- the document read: "BT-Drs. 21/1095", "BT-PlPr. 21/30"; NULL: none yet
 );
 
 CREATE TABLE IF NOT EXISTS vorgang (
