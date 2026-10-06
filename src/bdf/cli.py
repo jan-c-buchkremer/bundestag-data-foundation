@@ -59,7 +59,10 @@ def build_parser() -> argparse.ArgumentParser:
     fw.add_argument("--election", default="btw25", choices=sorted(fetch_wahl.ELECTIONS))
     fph = fs.add_parser("photos", help="bundestag.de MdB biography list (all pages) and the portraits")
     fs.add_parser("government", help="Wikidata: federal government roles since 2025-05-06, Commons portraits")
-    fan = fs.add_parser("answers", help="PDFs of the answers to Kleine and Große Anfragen the fetched DIP data lists")
+    fan = fs.add_parser(
+        "answers",
+        help="PDFs of the answers to Kleine and Große Anfragen and the Schriftliche Fragen the DIP data lists",
+    )
     fan.add_argument("--wp", type=int, default=21)
     for sp in (fp, fv, fd, fa, fw, fph, fan):
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")

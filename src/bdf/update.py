@@ -142,7 +142,7 @@ def run(wp: int = 21, today: date | None = None) -> int:
 
         def answers() -> None:
             new = fetch_bundestag.fetch_answer_pdfs(http, wp)  # the first run fetches all, about 25 minutes
-            print(f"answers: {len(new)} PDFs of answers to Kleine and Große Anfragen downloaded")
+            print(f"answers: {len(new)} PDFs of answers to Anfragen and of Schriftliche Fragen downloaded")
 
         source("stammdaten", stammdaten)
         source("protocols", protocols)
