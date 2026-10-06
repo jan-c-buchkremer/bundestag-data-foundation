@@ -227,6 +227,15 @@ CREATE TABLE IF NOT EXISTS question_activity (
     {PROVENANCE}
 );
 
+CREATE TABLE IF NOT EXISTS question_turn (
+    speech_id TEXT PRIMARY KEY REFERENCES speech(id),
+    role TEXT NOT NULL,                 -- einleitung | frage | antwort | nachfrage (the asker's) | zusatzfrage
+                                        -- (another member's), as the presidency calls the turn (docs/design.md
+                                        -- "Question turns")
+    thread_id TEXT REFERENCES speech(id),  -- the frage the turn belongs to (a frage's own id); NULL for an einleitung
+    vorgang_id TEXT REFERENCES vorgang(id)  -- Fragestunde: the DIP Mündliche Frage; NULL in the Befragung
+);
+
 CREATE TABLE IF NOT EXISTS vorgang (
     id TEXT PRIMARY KEY,                -- DIP id
     wahlperiode INTEGER NOT NULL,
@@ -494,6 +503,7 @@ CREATE INDEX IF NOT EXISTS author_person ON drucksache_author(person_id);
 CREATE INDEX IF NOT EXISTS author_dip_person ON drucksache_author(dip_person_id);
 CREATE INDEX IF NOT EXISTS question_vorgang ON question_activity(vorgang_id);
 CREATE INDEX IF NOT EXISTS question_person ON question_activity(person_id);
+CREATE INDEX IF NOT EXISTS question_turn_thread ON question_turn(thread_id);
 CREATE INDEX IF NOT EXISTS drucksache_date ON drucksache(date);
 CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_vorgang ON vorgang_position(vorgang_id);

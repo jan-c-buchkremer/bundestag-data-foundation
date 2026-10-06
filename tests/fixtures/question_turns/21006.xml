@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dbtplenarprotokoll
+  SYSTEM "dbtplenarprotokoll.dtd">
+<dbtplenarprotokoll vertrieb="Bundesanzeiger Verlag GmbH, Postfach 1 0 05 34, 50445 Köln, Telefon (02 21) 97 66 83 40, Fax (02 21) 97 66 83 44, www.bundesanzeiger-verlag.de" herstellung="H. Heenemann GmbH  Co. KG, Buch- und Offsetdruckerei, Bessemerstraße 83–91, 12103 Berlin, www.heenemann-druck.de" sitzung-ort="Berlin" herausgeber="Deutscher Bundestag" issn="0722-7980" wahlperiode="21" sitzung-nr="6" sitzung-datum="21.05.2025" sitzung-start-uhrzeit="13:00" sitzung-ende-uhrzeit="19:13" sitzung-naechste-datum="22.05.2025" start-seitennr="381">
+    <!-- EXCERPT for tests: Plenarprotokoll 21/6 (Deutscher Bundestag), reduced to the Befragung der Bundesregierung (Tagesordnungspunkt 1) up to the answer to Martin Hess's Hauptfrage; every rede keeps its speaker lines, each speaker's first paragraph and all presidency remarks (name line and what follows). Source: https://dserver.bundestag.de/btp/21/21006.xml -->
+<vorspann><kopfdaten>
+            <plenarprotokoll-nummer>Plenarprotokoll <wahlperiode>21</wahlperiode>/<sitzungsnr>6</sitzungsnr></plenarprotokoll-nummer>
+            <herausgeber>Deutscher Bundestag</herausgeber>
+            <berichtart>Stenografischer Bericht</berichtart>
+            <sitzungstitel><sitzungsnr>6</sitzungsnr>. Sitzung</sitzungstitel>
+            <veranstaltungsdaten><ort>Berlin</ort>, <datum date="21.05.2025">Mittwoch, den 21. Mai 2025</datum></veranstaltungsdaten>
+        </kopfdaten></vorspann>
+<sitzungsverlauf>
+<tagesordnungspunkt top-id="Tagesordnungspunkt 1">
+            <p klasse="J">Ich rufe auf den Tagesordnungspunkt 1: </p>
+            <p klasse="T_fett">		Befragung der Bundesregierung </p>
+            <p klasse="J">Die Bundesregierung hat für die heutige zweite Befragung in dieser Wahlperiode den Bundesminister des Innern, Alexander Dobrindt, sowie die Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen, Frau Verena Hubertz, benannt, die nun nacheinander die Gelegenheit haben, ihre einleitenden Berichte abzugeben. Hierfür ist eine Gesamtdauer – von beiden addiert – von acht Minuten vorgesehen. Direkt im Anschluss an die Berichte erläutere ich noch einmal in aller Kürze das Verfahren.</p>
+            <p klasse="J">Das Wort hat nun zuerst der Bundesminister des Innern, Herr Alexander Dobrindt. Bitte sehr.</p>
+            <rede id="ID21600100">
+                <p klasse="redner"><a id="r1" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Sehr geehrte Frau Präsidentin! Verehrte Kolleginnen und Kollegen! Ich habe gestern im Rahmen einer Pressekonferenz mit dem Präsidenten des BKA, Herrn Münch, die Statistik über politisch motivierte Kriminalität in Deutschland vorgestellt. Ich will in diesem Zusammenhang auf einige Punkte eingehen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Die Uhr läuft. Sie haben noch fünf Minuten, Herr Minister. Dann hat Ihre Kollegin aber nichts mehr.</p>
+                <p klasse="redner"><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Von ursprünglich vier Minuten, die ich hatte, habe ich noch fünf übrig. Herzlichen Dank.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Nein, nein, nein. Ich will nur kurz sagen: In der Addition haben Sie beide gemeinsam acht Minuten.</p>
+                <p klasse="O">Wenn man diese gerecht aufteilen wollte, also durch zwei, kommt man auf vier Minuten.</p>
+                <p klasse="redner"><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Ich will der Kollegin Hubertz, die heute zum ersten Mal hier für die Bundesregierung vorträgt, natürlich die Chance geben, ausreichend Stellung zu nehmen. Ich möchte trotzdem noch auf die Situation, die sich im Bereich der Migration darstellt, eingehen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Kurzer Hinweis: Die Zeit läuft gerade bei Frau Hubertz ab.</p>
+                <p klasse="redner"><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Dazu gehört auch – liebe Kollegin, letzter Satz –, dass wir an den Grenzen verstärkt kontrollieren und – so haben wir es im Koalitionsvertrag vereinbart – stärker zurückweisen, auch bei Asylgesuchen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Die Frau Bundesministerin Hubertz hat jetzt noch zwei Minuten und zehn Sekunden. Bitte.</p>
+                </rede>
+            <rede id="ID21600200">
+                <p klasse="redner"><a id="r2" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Verehrte Frau Präsidentin! Lieber Kollege Dobrindt! Liebe Kolleginnen und Kollegen! Als Start-up-Gründerin bin ich es gewohnt, ein bisschen schneller loszulegen, und fokussiere mich hier auf ein paar frische Denkansätze – auf Pragmatismus und Skalierung –, die wir auch im Baubereich brauchen.</p>
+                </rede>
+            <name>Präsidentin Julia Klöckner:</name>
+            <p klasse="J_1">Wir bedanken uns. – Die gesamte Bundesregierung hat etwas mehr als acht Minuten Zeit gemeinsam bekommen. Jetzt beginnt der eigentliche Frageteil. Ich bitte, zunächst Fragen zu den beiden Berichten zu den Geschäftsbereichen der anwesenden Mitglieder der Bundesregierung zu stellen. Alle Fraktionen erhalten hierfür einmal das Wort, beginnend mit der größten Oppositionsfraktion. Für die Hauptfrage und die Antwort auf diese Hauptfrage ist jeweils eine Minute vorgesehen. Darauf werden wir sehr genau achten, damit möglichst viele Fragestellerinnen und Fragesteller drankommen.</p>
+            <p klasse="J">Dann ist eine Nachfrage durch den Fragesteller oder die Fragestellerin möglich – nicht durch andere –, und dafür gibt es 30 Sekunden Zeit. Das ist sportlich, aber es geht. Auch für die Antwort haben Sie 30 Sekunden Zeit. Darauf werden wir sehr genau achten. Weitere Nachfragen von anderen Abgeordneten sind in dieser Runde nicht möglich. Ich bitte alle, auch die Mitglieder der Bundesregierung, die vereinbarte Zeit einzuhalten. Wie gesagt, wir wollen möglichst viele Runden und Fragen zulassen.</p>
+            <p klasse="J">Ich bitte Herrn Gottfried Curio von der Fraktion der AfD, nun die erste Hauptfrage zu stellen.</p>
+            <rede id="ID21600300">
+                <p klasse="redner"><a id="r3" /><redner id="11004698"><name><titel>Dr.</titel><vorname>Gottfried</vorname><nachname>Curio</nachname><fraktion>AfD</fraktion></name></redner>Dr. Gottfried Curio (AfD):</p>
+                <p klasse="J_1">Vielen Dank. – Herr Innenminister, eines der größten innenpolitischen Probleme ist ja die ausufernde Zahl illegaler Migranten, die an der Grenze um Asyl nachsuchen. Nun war die niedrigste Monatszahl an Asylbewerbern letzthin 9 000. Das macht circa 2 000 pro Woche – einerseits. Andererseits wird berichtet, es seien jetzt an der Grenze in einer Woche 32 Asylsuchende zurückgewiesen worden. Man hört aus Berichten, dass die Bundespolizei sich auf Stichproben beschränkt. Es sind also gut 30 von gut 2000 Asylsuchenden – das heißt gut 1 Prozent – zurückgewiesen worden bei knapp 99 Prozent anscheinend erst gar nicht Aufgegriffenen oder nicht Zurückgewiesenen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Sie sind jetzt nicht dran, sondern der Minister – Bitte, Herr Minister.</p>
+                </rede>
+            <rede id="ID21600400">
+                <p klasse="redner"><a id="r4" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Das, was wir gerade beschreiben, ist die Asylwende mit mehreren Maßnahmen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Ich bedanke mich für die zeitliche Präzision. – Und Sie haben die Möglichkeit für eine Nachfrage. Bitte.</p>
+            </rede>
+            <rede id="ID21600500">
+                <p klasse="redner"><a id="r5" /><redner id="11004698"><name><titel>Dr.</titel><vorname>Gottfried</vorname><nachname>Curio</nachname><fraktion>AfD</fraktion></name></redner>Dr. Gottfried Curio (AfD):</p>
+                <p klasse="J_1">Herr Minister, ausgenommen von einer Zurückweisung sollen ja Angehörige vulnerabler Gruppen sein. Laut BAMF gibt es dazu ein Dutzend Unterkategorien. Wie wird die Zugehörigkeit an der Grenze rechtssicher festgestellt? Etwa Kranke: nur per Selbstauskunft oder per Attest? Von welcher vertrauenswürdigen Behörde? Etwa Minderjährige ohne Pass: per Selbstauskunft oder durch medizinische Altersfeststellung? Geschlechtsspezifisch Verfolgte? Wie geht das? Oder reicht generell schon die Behauptung, krank, minderjährig oder schwanger zu sein?</p>
+            </rede>
+            <rede id="ID21600600">
+                <p klasse="redner"><a id="r6" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Vorausschickend noch mal: Die Polizistinnen und Polizisten, die heute an der Grenze ihren Dienst tun, leisten herausragende Arbeit, teilweise in Zwölfstundenschichten. Ich habe höchstes Vertrauen in diese Polizistinnen und Polizisten. Sie gehen mit der infrage stehenden Weisung des Bundesinnenministers sehr sorgfältig, genau und konsequent um. Deswegen: Weil ich Vertrauen in die Polizisten in Deutschland habe, weiß ich, dass sie an dieser Stelle das Richtige an der Grenze tun.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke für die Antwort. – Für die Fraktion der CDU/CSU hat nun der Abgeordnete Herr Josef Oster das Wort.</p>
+                </rede>
+            <rede id="ID21600700">
+                <p klasse="redner"><a id="r7" /><redner id="11004845"><name><vorname>Josef</vorname><nachname>Oster</nachname><fraktion>CDU/CSU</fraktion></name></redner>Josef Oster (CDU/CSU):</p>
+                <p klasse="J_1">Ich habe eine Frage an den Bundesinnenminister. Herr Minister, Sie haben in der letzten Woche, am 13. Mai, das sogenannte „Königreich Deutschland“ verboten. Als ich davon gelesen habe, war mein erster Gedanke: Da haben wohl einige zu viele alte Schlager gehört; wer wollte nicht schon mal König von Deutschland sein? Aber es ist kein Spaß, sondern es ist eine sehr ernste Sache. Und Sie haben sich dieser dann sehr konsequent angenommen. Was waren Ziel und Zweck dieser Maßnahme, Herr Minister?</p>
+            </rede>
+            <rede id="ID21600800">
+                <p klasse="redner"><a id="r8" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Herr Kollege Oster, herzlichen Dank. – Die Reichsbürgervereinigung „Königreich Deutschland“ ist eine Vereinigung, die vom Umsturz geträumt hat, die einen Gegenstaat aufbauen wollte, die sich gegen die freiheitliche demokratische Grundordnung Deutschlands gestellt hat und nach eigenen Angaben 6 000 Anhänger hat. Nach unserer Einschätzung sind es erheblich weniger; aber um die 1 000 werden es wohl gewesen sein. Diese kriminelle Vereinigung war nach ihrer Organisation darauf angelegt, ihre Anhänger auf betrügerische Art und Weise um ihr Geld zu bringen. Es gab beispielsweise eine Reichsbank, in der man sein Geld anlegen konnte, und es gab auch eine Reichsversicherungsanstalt, die angebliche Versicherungen an die sogenannten Anhänger verkauft hat.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke für die Antwort.</p>
+                <p klasse="redner"><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Diese Organisation hat den Umsturz in Deutschland vorbereitet, und deswegen wird sie bei uns verboten.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Herr Oster, Sie haben die Möglichkeit für eine Nachfrage.</p>
+            </rede>
+            <rede id="ID21600900">
+                <p klasse="redner"><a id="r9" /><redner id="11004845"><name><vorname>Josef</vorname><nachname>Oster</nachname><fraktion>CDU/CSU</fraktion></name></redner>Josef Oster (CDU/CSU):</p>
+                <p klasse="J_1">Sie haben in Ihrem Eingangsstatement die gestern von Ihnen vorgestellte Statistik der politisch motivierten Kriminalität erwähnt, die eine deutliche Zunahme dieser Kriminalität ausweist. Das ist besorgniserregend. Sie nehmen das sehr ernst. Was planen Sie, was plant Ihr Ministerium angesichts der Zunahme dieser Kriminalität?</p>
+            </rede>
+            <rede id="ID21601000">
+                <p klasse="redner"><a id="r10" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Wir haben es mit einer sehr vielfältigen Form der Kriminalität zu tun. Es sind leichte bis sehr schwere Straftaten zu verzeichnen. Und deswegen muss man auch mit verschiedenen Maßnahmen darauf reagieren. Uns geht es um eine Doppelstrategie.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke schön. 30 Sekunden einzuhalten, ist anspruchsvoll. – Jetzt hat für die Fraktion Bündnis 90/Die Grünen Frau Abgeordnete Hanna Steinmüller das Wort.</p>
+            </rede>
+            <rede id="ID21601100">
+                <p klasse="redner"><a id="r11" /><redner id="11005230"><name><vorname>Hanna</vorname><nachname>Steinmüller</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Hanna Steinmüller (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Danke, Frau Präsidentin. – Frau Ministerin Hubertz, wir hätten gern mehr von Ihnen gehört. Ich hoffe, das war jetzt kein schlechtes Omen für die Zusammenarbeit in der neuen Bundesregierung.</p>
+                </rede>
+            <rede id="ID21601200">
+                <p klasse="redner"><a id="r12" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Kollegin Steinmüller, vielen Dank für die Frage. – Bauen bedeutet ja nicht immer nur Neubau; es kann auch Umbau bedeuten. Leerstehende Büro- und Gewerbeflächen können zu Wohnraum umgebaut werden. Neubau wollen wir auch kostengünstiger hinbekommen. Penthäuser haben wir genug. Wir brauchen bezahlbaren Wohnraum. Aber natürlich müssen wir uns auch den Markt anschauen. Es braucht neue Antworten. Zum Beispiel haben wir die neue Wohngemeinnützigkeit schon in der letzten Legislatur gemeinsam vorangetrieben. Daran können wir anknüpfen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Sie haben die Chance für eine 30-sekündliche Nachfrage.</p>
+            </rede>
+            <rede id="ID21601300">
+                <p klasse="redner"><a id="r13" /><redner id="11005230"><name><vorname>Hanna</vorname><nachname>Steinmüller</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Hanna Steinmüller (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Wir werden weiter darauf achten, dass im Mietrecht etwas passiert. Dafür sind Sie aber leider nicht zuständig. Von daher hake ich bei der neuen Wohngemeinnützigkeit nach, die Sie gerade erwähnt haben. In Ihrem Koalitionsvertrag steht, dass Investitionszuschüsse kommen sollen. Können Sie eine konkrete Aussage machen, wann sie kommen und in welcher Höhe, um gemeinnützigen Wohnungsunternehmen auch Planungssicherheit zu geben?</p>
+                </rede>
+            <rede id="ID21601400">
+                <p klasse="redner"><a id="r14" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Die Investitionszuschüsse sind ein ganz zentraler Baustein, damit Bauen einfach auch attraktiv ist. Wir sind gerade in zwei sehr sportlichen Verfahren für den Haushalt 2025 und den Haushalt 2026. Die Gespräche dazu darf ich noch nicht vorwegnehmen. Aber ich habe das ganz oben auf meiner Liste. Damit wollen wir so schnell wie möglich loslegen. Wir kommen gern zu weiteren Beratungen in den Ausschuss und können uns dort alle miteinander noch mal konkret darüber unterhalten.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Dann hat für die Fraktion der SPD Frau Abgeordnete Angelika Glöckner das Wort. Bitte.</p>
+            </rede>
+            <rede id="ID21601500">
+                <p klasse="redner"><a id="r15" /><redner id="11004614"><name><vorname>Angelika</vorname><nachname>Glöckner</nachname><fraktion>SPD</fraktion></name></redner>Angelika Glöckner (SPD):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Sehr geehrte Ministerin Hubertz, ich begrüße sehr, dass Sie den beschleunigten Wohnungsbau in den Vordergrund stellen. Da würde mich konkret interessieren: Welche einzelnen Vorhaben sind vorgesehen, um den Wohnungsbau insbesondere dort, wo die Wohnungsmärkte sehr angespannt sind, tatsächlich voranzutreiben?</p>
+            </rede>
+            <rede id="ID21601600">
+                <p klasse="redner"><a id="r16" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Danke, Frau Kollegin Glöckner, für Ihre Frage. – Wir wollen mit dem BauGB mehrere Maßnahmen einführen wie den Bau-Turbo, der nicht nur auf angespannten Wohnungsmärkten besonders gebraucht wird, sondern auch in anderen Bereichen. Um zu verhindern, dass Mietwohnungen in Eigentum übergehen, müssen wir den sogenannten Umwandlungsschutz stärken.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke sehr. – Eine Nachfrage.</p>
+            </rede>
+            <rede id="ID21601700">
+                <p klasse="redner"><a id="r17" /><redner id="11004614"><name><vorname>Angelika</vorname><nachname>Glöckner</nachname><fraktion>SPD</fraktion></name></redner>Angelika Glöckner (SPD):</p>
+                <p klasse="J_1">Der soziale Wohnungsbau wurde als eine sehr wichtige Säule für den Wohnungsbau generell dargestellt, aber auch für barrierefreien, bezahlbaren Wohnraum. Wie können Sie das aus Ihrer Sicht realisieren? Was sind die Vorhaben Ihres Hauses?</p>
+            </rede>
+            <rede id="ID21601800">
+                <p klasse="redner"><a id="r18" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Der soziale Wohnungsbau macht einen großen Teil meines Haushalts aus. Wir haben 3,5 Milliarden Euro dieses Jahr dafür vorgesehen. Das wollen wir schrittweise verstärken; denn wir brauchen noch mehr bezahlbare Sozialwohnungen. Gerade viele gemeinwohlorientierte Unternehmen bewerben sich auf entsprechende Projekte in den Ländern. Das wollen wir fortsetzen und noch mehr sozialen Wohnraum bauen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Ich bedanke mich. – Für die Fraktion Die Linke hat nun Frau Abgeordnete Katalin Gennburg das Wort.</p>
+                </rede>
+            <rede id="ID21601900">
+                <p klasse="redner"><a id="r19" /><redner id="11005466"><name><vorname>Katalin</vorname><nachname>Gennburg</nachname><fraktion>Die Linke</fraktion></name></redner>Katalin Gennburg (Die Linke):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Liebe Ministerin, reden wir doch mal über illegale Ferienwohnungen. Durch die Umwandlung in solche Wohnungen geht Wohnraum massiv verloren und schießen die Mieten in die Höhe. Die spanische Regierung hat jetzt die Vermietung von 65 935 Wohnungen über das Onlineportal Airbnb gestoppt. Insbesondere aus größeren Städten und Tourismusregionen wissen wir, dass durch Airbnb und viele Ferienwohnungen Innenstädte veröden, dass die Mieten massiv steigen, dass Wohnungen verloren gehen und Zwangsräumungen an der Tagesordnung sind.</p>
+                </rede>
+            <rede id="ID21602000">
+                <p klasse="redner"><a id="r20" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Herzlichen Dank für Ihre Frage. – Ich kenne die Diskussion auch sehr gut aus meiner Heimatstadt Trier. Da hat sich der Stadtrat ganz konkret mit der Frage beschäftigt, wo das ermöglicht werden soll. Wir können das nicht alles von Berlin aus entscheiden. Wichtig ist mir als erster Schritt, das Vermieten von sogenannten möblierten Wohnungen zu verbieten, die eigentlich gar nicht möbliert sind, sondern dauerhaft zu Wucherpreisen vermietet werden. Eine Wohnung, in der eine alte Ikea-Couch steht und für die man 30 Euro und mehr pro Quadratmeter zahlt, hat einfach nichts mit gutgemeintem Vermieten von möbliertem Wohnraum zu tun.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Eine Nachfrage?</p>
+            </rede>
+            <rede id="ID21602100">
+                <p klasse="redner"><a id="r21" /><redner id="11005466"><name><vorname>Katalin</vorname><nachname>Gennburg</nachname><fraktion>Die Linke</fraktion></name></redner>Katalin Gennburg (Die Linke):</p>
+                <p klasse="J_1">Ja. – Frau Ministerin, es ist schade, dass Sie in einer Airbnb-Wohnung wohnen.</p>
+                <p klasse="redner"><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Ich war da schon mal im Urlaub.</p>
+                <p klasse="redner"><redner id="11005466"><name><vorname>Katalin</vorname><nachname>Gennburg</nachname><fraktion>Die Linke</fraktion></name></redner>Katalin Gennburg (Die Linke):</p>
+                <p klasse="J_1">Aber was tun Sie konkret, um dieses Problems Herr zu werden? Sie haben darüber gesprochen, dass man den Umwandlungsschutz stärken muss. Wenn Leute Wohnungen kaufen, die vorher Mietwohnungen waren, und diese dann über Airbnb anbieten, dann müssen Sie doch eingestehen, dass wir dieses Problem nicht mit „Bauen, bauen, bauen“ lösen können.</p>
+                </rede>
+            <rede id="ID21602200">
+                <p klasse="redner"><a id="r22" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Erst mal muss ich kurz klarstellen: Ich war schon mal im Urlaub in einer Airbnb-Wohnung. Jeder kann ja Urlaub machen, wo und wie er will. Ich freue mich, wenn jeder – vom Campingplatz bis zum Hotel – etwas für ihn Geeignetes findet.</p>
+                </rede>
+            <name>Präsidentin Julia Klöckner:</name>
+            <p klasse="J_1">Danke schön. – Ich muss etwas rigoroser sein. Sonst verschiebt sich alles nach hinten, und die 30-Sekunden-Regel ist dahin.</p>
+            <p klasse="J">Nach Abschluss dieser ersten Runde kommen wir zu Fragen zu den vorangegangenen Kabinettssitzungen, zu weiteren Geschäftsbereichen sowie zu allgemeinen Fragen. Die Regeln gleichen denen aus der ersten Runde. Es gibt jetzt aber zusätzlich die Möglichkeit, dass weitere Kolleginnen und Kollegen eine Nachfrage à 30 Sekunden zu einer aufgerufenen Hauptfrage stellen, sofern sich diese auf den gleichen Themenkomplex bezieht. Das ist wichtig.</p>
+            <p klasse="J">Das Wort hat nun von der AfD-Fraktion Herr Otto Strauß.</p>
+            <rede id="ID21602300">
+                <p klasse="redner"><a id="r23" /><redner id="11005586"><name><vorname>Otto</vorname><nachname>Strauß</nachname><fraktion>AfD</fraktion></name></redner>Otto Strauß (AfD):</p>
+                <p klasse="J_1">Sehr geehrte Frau Ministerin, Sie haben vorhin gesagt, dass Sie auch einen Mietpreisdeckel einführen wollen. Wie sollen Sie denn Investoren dazu bewegen, zu bauen, wenn sie davon ausgehen müssen, dass sie Verluste machen statt Gewinne? Man baut ja privat, um Gewinne zu erzielen. Wie viele Milliarden wollen Sie denn eventuell an Subventionen ausgeben, damit mehr gebaut wird? Das kann nicht der Sinn der Sache sein.</p>
+                </rede>
+            <rede id="ID21602400">
+                <p klasse="redner"><a id="r24" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Zur Klarstellung: Ich habe nicht über den Mietpreisdeckel, sondern über die Mietpreisbremse gesprochen. Die haben wir schon. Die gilt – das finden Sie im Gesetz – nicht für Neubauten, und deswegen ist die Sorge der Investoren, die natürlich auch ich immer wieder höre – „dann baut doch keiner mehr eine Wohnung“ –, an der Stelle unbegründet.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Haben Sie eine Nachfrage?</p>
+            </rede>
+            <rede id="ID21602500">
+                <p klasse="redner"><a id="r25" /><redner id="11005586"><name><vorname>Otto</vorname><nachname>Strauß</nachname><fraktion>AfD</fraktion></name></redner>Otto Strauß (AfD):</p>
+                <p klasse="J_1">Ja, habe ich. – Der Staat ist für ungefähr 40 Prozent der Baukosten verantwortlich. Also, das ist die Staatsquote, die der Staat gerne hat, wenn gebaut wird. Jetzt meine Frage: Wie wollen Sie die Baukosten nach unten drücken, damit die Vorstellung von 15 Euro pro Quadratmeter wirklich umgesetzt werden kann? Bitte mal eine konkrete Antwort.</p>
+            </rede>
+            <rede id="ID21602600">
+                <p klasse="redner"><a id="r26" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Sie haben ja schon selbst auf den großen Anteil, den wir als Staat haben, hingedeutet. Da müssen wir durch diesen Wald durch und dürfen wirklich nichts aufeinander liegen lassen. In der letzten Legislatur hatten wir das Bündnis bezahlbarer Wohnraum, das über 170 Maßnahmen entwickelt hat, wo eben alle an einem Strang ziehen müssen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Es gibt eine Nachfrage des Abgeordneten Herrn Andreas Audretsch aus der Fraktion Bündnis 90/Die Grünen.</p>
+            </rede>
+            <rede id="ID21602700">
+                <p klasse="redner"><a id="r27" /><redner id="11005011"><name><vorname>Andreas</vorname><nachname>Audretsch</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Andreas Audretsch (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Vielen Dank. – In meinem Wahlkreis Neukölln wird massiv mit Wohnungen spekuliert. Menschen werden ganz häufig aus ihren Wohnungen vertrieben, um die Wohnungen zu sanieren und sie dann teuer zu verkaufen. In einem anderen Fall wird möbliert vermietet, um Mieten durch die Decke schießen zu lassen. Vor Ort tun wir alles, um das zu verhindern, und es wurde auch gerade untersagt, aber der Baustadtrat ist in einer Grauzone. Wann wird das ganz konkret geregelt?</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Frage ist verstanden, –</p>
+                <p klasse="redner"><redner id="11005011"><name><vorname>Andreas</vorname><nachname>Audretsch</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Andreas Audretsch (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">– vor Ort in einer Grauzone, –</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">– und Zeit ist um.</p>
+                <p klasse="redner"><redner id="11005011"><name><vorname>Andreas</vorname><nachname>Audretsch</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Andreas Audretsch (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">– und auch da brauchen wir eine klare Regulierung, –</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Zeit ist um, und deshalb kommt jetzt die Antwort.</p>
+                <p klasse="redner"><redner id="11005011"><name><vorname>Andreas</vorname><nachname>Audretsch</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Andreas Audretsch (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">– dass das Vorkaufsrecht möglich ist. Wann kommt es?</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Herzlichen Dank. – Die Antwort, bitte.</p>
+            </rede>
+            <rede id="ID21602800">
+                <p klasse="redner"><a id="r28" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Einige Vorhaben mietrechtlicher Natur haben wir im Koalitionsvertrag sehr konkret ausbuchstabiert. Aber wir haben auch miteinander vereinbart, dass es eine sogenannte Expertenkommission geben wird, die meine Kollegin Stefanie Hubig einsetzt. Die wird bis Ende nächsten Jahres noch mal konkrete Vorschläge erarbeiten und sich natürlich auch mit der Bandbreite der Problemlage, wie Sie sie gerade für Neukölln beschrieben haben, beschäftigen. Da gucken wir uns aber auch zum Beispiel noch mal das große Problem der Indexmieten an. Da werden all die Dinge adressiert.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke schön.</p>
+                <p klasse="redner"><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">– zu investieren und Wohnraum zur Verfügung zu stellen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">30 Sekunden bitte einhalten. Danke. – Jetzt hat die Abgeordnete Caren Lay von der Fraktion Die Linke das Wort.</p>
+            </rede>
+            <rede id="ID21602900">
+                <p klasse="redner"><a id="r29" /><redner id="11004088"><name><vorname>Caren</vorname><nachname>Lay</nachname><fraktion>Die Linke</fraktion></name></redner>Caren Lay (Die Linke):</p>
+                <p klasse="J_1">Vielen Dank. – Frau Ministerin, Sie haben gerade gesagt: Ja zur Mietpreisbremse, nein zum Mietendeckel. Letzteres finde ich sehr bedauerlich; denn der Berliner Mietendeckel war das einzige Instrument in den letzten Jahren, das den Mietenanstieg wirklich wirkungsvoll gestoppt hat.</p>
+                </rede>
+            <rede id="ID21603000">
+                <p klasse="redner"><a id="r30" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Kollegin Lay, erst mal möchte ich widersprechen: Die Mietpreisbremse wirkt natürlich; denn wenn wir sie nicht hätten, dann hätten wir ganz andere Situationen überall im Land.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke schön. – Wir haben eine Nachfrage aus der Fraktion der AfD, vom Abgeordneten Marc Bernhard.</p>
+            </rede>
+            <rede id="ID21603100">
+                <p klasse="redner"><a id="r31" /><redner id="11004669"><name><vorname>Marc</vorname><nachname>Bernhard</nachname><fraktion>AfD</fraktion></name></redner>Marc Bernhard (AfD):</p>
+                <p klasse="J_1">Frau Ministerin, bei der Mietpreisbremse sind sich die Experten einig, dass sie gar nichts bringt. Seit Einführung der Mietpreisbremse sind die Mieten in Deutschland – egal ob auf dem Land oder in der Stadt – im Schnitt um 45 Prozent gestiegen. In Städten wie Berlin beispielsweise sind die Mieten seit Einführung der Mietpreisbremse um über 100 Prozent gestiegen.</p>
+                </rede>
+            <rede id="ID21603200">
+                <p klasse="redner"><a id="r32" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Ihre Experten finde ich sehr spannend.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Wir kommen zur nächsten Hauptfrage, damit wir auch mehrere Fragen durchbekommen. Ich bitte um Nachsicht, dass ich keine weiteren Nachfragen hierzu zulasse. – Jetzt hat für die Fraktion CDU/CSU Herr Dr. Jan-Marco Luczak das Wort.</p>
+            </rede>
+            <rede id="ID21603300">
+                <p klasse="redner"><a id="r33" /><redner id="11004100"><name><titel>Dr.</titel><vorname>Jan-Marco</vorname><nachname>Luczak</nachname><fraktion>CDU/CSU</fraktion></name></redner>Dr. Jan-Marco Luczak (CDU/CSU):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Frau Ministerin Hubertz, ich möchte ganz gerne wieder zu Ihrem Geschäftsbereich zurückkommen und nicht nur zum Geschäftsbereich der Justizministerin sprechen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke schön.</p>
+                </rede>
+            <rede id="ID21603400">
+                <p klasse="redner"><a id="r34" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Danke, Herr Kollege Luczak. Wir sind jetzt gerade bei den vorbereitenden Maßnahmen, sodass wir schnell in die Ressortabstimmung und in die Frühkoordinierung gehen können. Also, da ist schon einiges geleistet. Der Kollege Bartol betreut das mit mir zusammen im Bauministerium, und auch wir wollen das maximal Mögliche. Wir müssen jetzt nicht irgendwie alles lange zurückhalten, was denn auch ginge. Wir wollen auf jeden Fall einen mutigen, proaktiven Ansatz wählen. Ich möchte aber jetzt hier noch nicht zu sehr aus dem Gesetzestext zitieren, um auch dem Prozess in der Regierung erst mal Raum zu geben.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke sehr.</p>
+                <p klasse="J">Eine Nachfrage? – Bitte.</p>
+            </rede>
+            <rede id="ID21603500">
+                <p klasse="redner"><a id="r35" /><redner id="11004100"><name><titel>Dr.</titel><vorname>Jan-Marco</vorname><nachname>Luczak</nachname><fraktion>CDU/CSU</fraktion></name></redner>Dr. Jan-Marco Luczak (CDU/CSU):</p>
+                <p klasse="J_1">Sehr gerne. Vielen Dank. – Noch mal zurückkommend auf das Thema Tempo: Wir haben ja einen sehr großen Bauüberhang in Deutschland: viele Hunderttausend Wohnungen, wo wir Genehmigungen haben, wo aber nicht gebaut wird. Das hat vor allen Dingen auch etwas damit zu tun, dass in den letzten Jahren die Verlässlichkeit und Planbarkeit bei den Förderbedingungen nicht ausreichend gewährleistet waren.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke schön, ist angekommen.</p>
+                <p klasse="redner"><redner id="11004100"><name><titel>Dr.</titel><vorname>Jan-Marco</vorname><nachname>Luczak</nachname><fraktion>CDU/CSU</fraktion></name></redner>Dr. Jan-Marco Luczak (CDU/CSU):</p>
+                <p klasse="J_1">Ich würde mich freuen, wenn Sie vielleicht kurz sagen könnten, wo wir da aktuell stehen.</p>
+            </rede>
+            <rede id="ID21603600">
+                <p klasse="redner"><a id="r36" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Der Bauüberhang ist eine tolle Reserve; denn wir haben über 800 000 Baugenehmigungen, wo in großen Teilen der Bau einfach noch nicht begonnen wurde. Das heißt: Wenn die schnell angereizt werden können, haben wir richtig was gewonnen, weil alles Formale schon erledigt ist. Und den Prüfauftrag aus dem Koalitionsvertrag mit der Frage „Wie kann man das vielleicht auch finanziell anreizen?“ schauen wir uns jetzt gerade im Rahmen des Haushaltsaufstellungsverfahrens an.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Ich lasse jetzt hierzu noch zwei Nachfragen zu. – Einmal von der AfD-Fraktion, Frau Abgeordnete Carolin Bachmann. Bitte.</p>
+            </rede>
+            <rede id="ID21603700">
+                <p klasse="redner"><a id="r37" /><redner id="11005014"><name><vorname>Carolin</vorname><nachname>Bachmann</nachname><fraktion>AfD</fraktion></name></redner>Carolin Bachmann (AfD):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Sehr geehrte Frau Ministerin, wir sind uns einig, dass die steigenden Mieten zum sozialen Problem in Deutschland geworden sind. Sie reden jetzt hier über den Bau-Turbo. Und ja, wir sind uns einig: Es muss gebaut werden; denn es fehlen Wohnungen. Wir wissen aber auch, dass die Regulierung und die steigenden Baupreise zum Problem auf dieser Seite führen. Also, neues Angebot an Wohnungen schaffen ist ein Problem in Deutschland. Haben Sie sich mal darüber Gedanken gemacht, dass wir auch auf der Nachfrageseite – nach Wohnungen – operieren könnten?</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke. Die 30 Sekunden sind um.</p>
+                <p klasse="redner"><redner id="11005014"><name><vorname>Carolin</vorname><nachname>Bachmann</nachname><fraktion>AfD</fraktion></name></redner>Carolin Bachmann (AfD):</p>
+                <p klasse="J_1">Denn wir haben beispielsweise die höchste Einwohnerzahl Deutschlands aktuell.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Die 30 Sekunden sind um. Ich bitte die Bundesregierung, zu antworten.</p>
+                <p klasse="redner"><redner id="11005014"><name><vorname>Carolin</vorname><nachname>Bachmann</nachname><fraktion>AfD</fraktion></name></redner>Carolin Bachmann (AfD):</p>
+                <p klasse="J_1">Also, was machen Sie für die Nachfrageseite?</p>
+            </rede>
+            <rede id="ID21603800">
+                <p klasse="redner"><a id="r38" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Na ja, jeder, der gerne in unserem Land leben möchte und sich an unsere Spielregeln hält, der ist hier auch herzlich willkommen. Deswegen werde ich jetzt nicht die Nachfrage hier im Land kontrollieren oder in irgendeiner Weise steuern. Wer hier wohnt, hat auch ein Recht auf ein Dach über dem Kopf.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Für die CDU/CSU-Fraktion hat Herr Stephan Stracke das Wort.</p>
+            </rede>
+            <rede id="ID21603900">
+                <p klasse="redner"><a id="r39" /><redner id="11004169"><name><vorname>Stephan</vorname><nachname>Stracke</nachname><fraktion>CDU/CSU</fraktion></name></redner>Stephan Stracke (CDU/CSU):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Frau Ministerin, Sie wollen ja beim Thema Bauen aufs Tempo drücken; das ist auch richtig. Dazu gehören ja auch eine Straffung und Vereinfachung der Planungs- und Genehmigungsverfahren, beispielsweise ein Verfahren für alle. Welche konkreten Maßnahmen planen Sie denn gerade, um die Planungs- und Genehmigungsverfahren deutlich zu beschleunigen?</p>
+            </rede>
+            <rede id="ID21604000">
+                <p klasse="redner"><a id="r40" /><redner id="11005089"><name><vorname>Verena</vorname><nachname>Hubertz</nachname><rolle><rolle_lang>Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen</rolle_lang><rolle_kurz>Bundesministerin BMWSB</rolle_kurz></rolle></name></redner>Verena Hubertz, Bundesministerin für Wohnen, Stadtentwicklung und Bauwesen:</p>
+                <p klasse="J_1">Herzlichen Dank, Herr Kollege Stracke. – Wir müssen standardisierter werden, wir müssen einfacher werden. Und wenn wir uns das Land anschauen: Wir haben 16 Landesbauordnungen. In einigen Ländern wird schon total Gutes gemacht, wie zum Beispiel in Hamburg. Die haben den sogenannten Hamburg-Standard. Warum nehmen wir den nicht und sagen in der Bauministerkonferenz: „Den packen wir jetzt mal auf die anderen Bundesländer, und wir suchen Mitmacher“? Wenn wir über Standardisierung reden, geht es auch über die Digitalisierung, aber beim Umweltschutz auch über Kataster. Also, jedes Ressort muss wirklich gucken: Wo wird jetzt Zeit verbraucht, und wie kriegen wir möglichst schnell einen Entscheidungsprozess und die Probleme gelöst?</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke schön. – Wir kommen jetzt zur nächsten Hauptfrage, und das Wort geht an die Fraktion Bündnis 90/Die Grünen, an Marcel Emmerich.</p>
+            </rede>
+            <rede id="ID21604100">
+                <p klasse="redner"><a id="r41" /><redner id="11004969"><name><vorname>Marcel</vorname><nachname>Emmerich</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Marcel Emmerich (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Ich habe eine Frage an den Bundesinnenminister. Sehr geehrter Herr Minister Dobrindt, am ersten Tag in Ihrem Amt haben Sie der Bundespolizei die Weisung erteilt, Schutzsuchenden die Einreise zu verweigern. Weder aus dem Text der Weisung noch aus öffentlichen Stellungnahmen ist bisher klar, auf welche Grundlage sich die Bundesregierung hierbei rechtlich stützt.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke. Die Frage ist angekommen, die Zeit ist um. – Bitte, Herr Minister.</p>
+            </rede>
+            <rede id="ID21604200">
+                <p klasse="redner"><a id="r42" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Herr Kollege Emmerich, herzlichen Dank für die erwartbare Frage. Aber erster Hinweis: Warum haben Sie eigentlich meine Pressekonferenz damals am ersten Tag nicht angeschaut?</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Ich gebe Ihnen die Chance zu einer Nachfrage.</p>
+            </rede>
+            <rede id="ID21604300">
+                <p klasse="redner"><a id="r43" /><redner id="11004969"><name><vorname>Marcel</vorname><nachname>Emmerich</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Marcel Emmerich (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Schön, also sagen Sie, dass die sogenannte Notlage gezogen wurde. Es liegt der Verdacht nahe, dass das Ihre Einzelmeinung ist und nicht die Meinung der Bundesregierung.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Die Zeit ist abgelaufen. – Herr Bundesminister.</p>
+            </rede>
+            <rede id="ID21604400">
+                <p klasse="redner"><a id="r44" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Erstens. Herr Kollege, da war jetzt in Ihrer Frage eine Unterstellung dabei, die ich natürlich zurückweise. Sie haben von einer Notlage gesprochen. Eine nationale Notlage gibt es hier nicht, sondern letztlich die Anwendung von nationalem Recht, eingebettet in europäisches Recht.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Ich bedanke mich.</p>
+                <p klasse="J">Ich lasse jetzt drei Nachfragen zu. Für Bündnis 90/Die Grünen: Filiz Polat. Bitte.</p>
+            </rede>
+            <rede id="ID21604500">
+                <p klasse="redner"><a id="r45" /><redner id="11004857"><name><vorname>Filiz</vorname><nachname>Polat</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Filiz Polat (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Sehr geehrte Frau Präsidentin! Ich frage den Bundesminister des Innern. Apropos „europäisches Recht“: Der Bundesfachverband Minderjährigkeit verurteilt zu Recht die von Ihnen am 7. Mai angeordnete Zurückweisung schutzsuchender Menschen an den deutschen Grenzen, da Ihre Anordnung zwar Ausnahmen für sogenannte vulnerable Personen vorsieht – wie Minderjährige, Familien oder Schwangere –, aber nicht alle vulnerablen Gruppen erfasst, wie zum Beispiel Menschen mit Behinderung, –</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Die Zeit, bitte.</p>
+                <p klasse="redner"><redner id="11004857"><name><vorname>Filiz</vorname><nachname>Polat</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Filiz Polat (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">– Betroffene von Menschenhandel oder Personen, die Folter, Vergewaltigung oder sonstige schwere Formen von Gewalt erlitten haben.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Sie sind schon elf Sekunden drüber, bitte.</p>
+                <p klasse="redner"><redner id="11004857"><name><vorname>Filiz</vorname><nachname>Polat</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Filiz Polat (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Wieso haben Sie diese Gruppen ausgenommen?</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Herr Minister.</p>
+            </rede>
+            <rede id="ID21604600">
+                <p klasse="redner"><a id="r46" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Frau Kollegin Polat, erst mal bin ich Ihnen dankbar, dass Sie darauf hinweisen, dass es uns ein wichtiges Anliegen war, dass wir bei der Anwendung von § 18 Absatz 2, den Zurückweisungen, vulnerable Gruppen an der Stelle ausgenommen haben. Ich halte das auch ausdrücklich für richtig an dieser Stelle.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke sehr. – Das Wort zu einer Nachfrage hat jetzt Herr Stefan Seidler, fraktionslos.</p>
+            </rede>
+            <rede id="ID21604700">
+                <p klasse="redner"><a id="r47" /><redner id="11005219"><name><vorname>Stefan</vorname><nachname>Seidler</nachname><fraktion>fraktionslos</fraktion></name></redner>Stefan Seidler (fraktionslos):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Herr Bundesinnenminister, auch an unserer nördlichsten Grenze zu Dänemark wird ja seit Ihrer Amtsübernahme verstärkt kontrolliert. Die Gewerkschaft der Polizei hat mitgeteilt, dass man diesen Aufwand nur noch wenige Wochen durchhalten kann. Es fehle den Kolleginnen und Kollegen an moderner Ausrüstung. Eine ähnliche Frage gab es eben schon. Deshalb jetzt noch mal meine Nachfrage: Welche Maßnahmen haben Sie ergriffen und werden Sie ergreifen, um dieser Überlastung Ihrer Beamtinnen und Beamten entgegenzutreten? Und wie rechtfertigen Sie eigentlich die Verhältnismäßigkeit dieser Kontrollen an der dänischen Grenze?</p>
+                </rede>
+            <rede id="ID21604800">
+                <p klasse="redner"><a id="r48" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Herr Kollege, die Kontrollen finden seit letztem Jahr bereits an allen unseren Grenzen statt, den Binnengrenzen zu unseren europäischen Nachbarn. Wir haben sie verstärkt, das heißt, auch gegenüber Dänemark finden diese Kontrollen statt. Wir sind im besten Einvernehmen übrigens mit den dänischen Kolleginnen und Kollegen, die ihrerseits ja die Kontrollen an der dänisch-deutschen Grenze vornehmen. Und deswegen ist es richtig, auch dort mit einer Polizeipräsenz dafür zu sorgen, dass Zurückweisungen theoretisch möglich sind. Ich muss aber dazu sagen, dass es nicht der Hauptfokus der Grenzen in Deutschland ist, –</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke schön.</p>
+                <p klasse="redner"><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">– aber auch da findet das statt.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Zu einer Nachfrage aus der Fraktion der Linken hat der Abgeordnete Herr Ferat Koçak das Wort.</p>
+            </rede>
+            <rede id="ID21604900">
+                <p klasse="redner"><a id="r49" /><redner id="11005501"><name><vorname>Ferat</vorname><nachname>Koçak</nachname><fraktion>Die Linke</fraktion></name></redner>Ferat Koçak (Die Linke):</p>
+                <p klasse="J_1">Vielen Dank, Frau Präsidentin. – Herr Dobrindt, Sie haben ja Erfahrung mit dem Brechen von EU-Recht. Als Verkehrsminister haben Sie 2015 Regelungen zur Pkw-Maut vorgelegt und behauptet, das sei mit EU-Recht vereinbar.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Ihre Nachfrage muss sich auf die Frage beziehen.</p>
+                <p klasse="redner"><redner id="11005501"><name><vorname>Ferat</vorname><nachname>Koçak</nachname><fraktion>Die Linke</fraktion></name></redner>Ferat Koçak (Die Linke):</p>
+                <p klasse="J_1">Neben dem materiellen Schaden durch das Mautdesaster verursachen Sie jetzt auch noch immateriellen Schaden durch den Rechtsbruch im Umgang mit Schutzsuchenden. Werden Sie diesmal zurücktreten, wenn die Gerichte bestätigen, dass Sie in Sachen Migration wieder EU-Recht verletzt haben?</p>
+                </rede>
+            <name>Präsidentin Julia Klöckner:</name>
+            <p klasse="J_1">Ich will das hier mal sagen: Auch wenn es für Unterhaltung sorgt, die einzelnen Fragen, die gestellt werden: Es gibt klare Regelungen, dass sich Nachfragen auf die Hauptfrage beziehen sollen.</p>
+            <kommentar>(Beifall bei Abgeordneten der CDU/CSU)</kommentar>
+            <p klasse="J">Herr Minister kann selbst entscheiden, ob er darauf antwortet.</p>
+            <rede id="ID21605000">
+                <p klasse="redner"><a id="r50" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Herr Kollege, herzlichen Dank. – Ich habe ja auf die Rechtsnorm verwiesen, die wir an dieser Stelle anwenden, möchte aber die Chance nutzen, den zweiten Teil der Frage, die ich nicht beantworten konnte, jetzt mit diesen 20 Minuten noch zu füllen.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Nein, nicht 20 Minuten; ich muss Sie enttäuschen. Es sind Sekunden.</p>
+                <p klasse="redner"><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Schade, Frau Präsidentin. Das wäre schön gewesen. – Dann: mit diesen 20 Sekunden zu füllen; jetzt sind es noch 10.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke sehr.</p>
+                <p klasse="redner"><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">– temporär, aber auch über einen längeren Zeitraum.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Ich bedanke mich. – Ich darf jetzt, damit heute noch weitere Fragen drankommen können, zu einer nächsten Hauptfrage kommen und komme damit zur Fraktion der SPD. Frau Abgeordnete Sonja Eichwede hat das Wort. Bitte.</p>
+                </rede>
+            <rede id="ID21605100">
+                <p klasse="redner"><a id="r51" /><redner id="11005049"><name><vorname>Sonja</vorname><nachname>Eichwede</nachname><fraktion>SPD</fraktion></name></redner>Sonja Eichwede (SPD):</p>
+                <p klasse="J_1">Sehr geehrte Frau Präsidentin! Sehr geehrter Herr Bundesinnenminister Dobrindt, wir haben im Koalitionsvertrag auch vereinbart, den Zivilschutz, also die zivile Verteidigungsfähigkeit unseres Landes, weiter zu stärken. Gerade angesichts der außenpolitischen, aber auch innenpolitischen Lage ist das sehr wichtig. Deshalb meine Frage: Wie sehen die Pläne Ihres Hauses aus, den Zivilschutz in Deutschland schnell und effektiv zu stärken? – Vielen Dank.</p>
+                </rede>
+            <rede id="ID21605200">
+                <p klasse="redner"><a id="r52" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Vielen Dank. – Der Zivil- und Bevölkerungsschutz wird in dieser Wahlperiode eine der Hauptaufgaben im Sicherheitsbereich sein – übrigens eng vernetzt mit dem militärischen Schutz. Das ist etwas, was wir in der Vergangenheit so nicht gesehen haben und wofür auch nicht die Notwendigkeit bestand. Die Zeitenwende hat es mit sich gebracht, dass es hier richtigerweise eine neue Betrachtung gibt.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Sie haben die Möglichkeit zu einer Nachfrage.</p>
+            </rede>
+            <rede id="ID21605300">
+                <p klasse="redner"><a id="r53" /><redner id="11005049"><name><vorname>Sonja</vorname><nachname>Eichwede</nachname><fraktion>SPD</fraktion></name></redner>Sonja Eichwede (SPD):</p>
+                <p klasse="J_1">Sehr gerne, Frau Präsidentin. – Herr Bundesinnenminister, wir haben auch einen großen Katalog an Sicherstellungs- und Versorgungsgesetzen, in denen durchaus Reformbedarf zum Schutz der Bevölkerung besteht. Sie haben hierfür die federführende Koordinierung. Können Sie uns sagen, wann hierzu Gesetzesreformen aus Ihrem Haus angedacht sind? Ich denke, es ist wichtig, hierauf eine Priorität zu setzen. – Vielen Dank.</p>
+                </rede>
+            <rede id="ID21605400">
+                <p klasse="redner"><a id="r54" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Wir gehen hier, Frau Kollegin Eichwede, in die Abstimmung mit den Kolleginnen und Kollegen, um genau das zu ermöglichen: dass wir noch in diesem Jahr eine sehr schnelle parlamentarische Umsetzung erreichen. Das ist etwas, was in dem Gesamtkonzept eines Zivil- und Bevölkerungsschutzes auch dringend notwendig ist. Deswegen: Mein Anliegen wäre, dass wir uns im Herbst im Deutschen Bundestag damit befassen können.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Eine weitere Nachfrage? – Herr Lukas Benner, Fraktion Bündnis 90/Die Grünen, bitte sehr.</p>
+            </rede>
+            <rede id="ID21605500">
+                <p klasse="redner"><a id="r55" /><redner id="11005022"><name><vorname>Lukas</vorname><nachname>Benner</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Lukas Benner (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Vielen Dank. – Herr Minister, Sie haben das Thema Bevölkerungsschutz gerade schon angerissen. Wir als Abgeordnete wissen ja alle, dass das Thema in Deutschland vor allen Dingen vom Ehrenamt lebt. Und all die Millionen Ehrenamtlichen in Deutschland, die sich in diesem Bereich einsetzen, erwarten, dass wir endlich das Thema der Helfergleichstellung angehen. Wir haben hier immer noch eine Ungleichbehandlung der verschiedenen Helferinnen und Helfer in verschiedenen Organisationen, und meine Frage ist, ob Sie gedenken, daran etwas zu ändern.</p>
+                </rede>
+            <rede id="ID21605600">
+                <p klasse="redner"><a id="r56" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Herr Benner, ich kann Ihnen darauf keine abschließende Antwort geben, bin aber bereit, mir das im Detail anzuschauen. Ich kann Ihnen aber heute nicht sagen, inwieweit diese Unterscheidung bei den Helfern eine Grundlage auf einer Rechtsbasis hat oder ob es sich hier schlichtweg um unnötige Unterscheidungen handelt. Ich bin aber bereit, dem Thema entsprechend nachzugehen und dann auch Ihnen darüber zu berichten. – Herzlichen Dank.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Nun hat die Möglichkeit zu einer Hauptfrage aus der Fraktion Die Linke Frau Abgeordnete Katrin Fey.</p>
+            </rede>
+            <rede id="ID21605700">
+                <p klasse="redner"><a id="r57" /><redner id="11005457"><name><vorname>Katrin</vorname><nachname>Fey</nachname><fraktion>Die Linke</fraktion></name></redner>Katrin Fey (Die Linke):</p>
+                <p klasse="J_1">Sehr geehrte Frau Präsidentin! Sehr geehrter Herr Minister Dobrindt, Sie betonen, die CSU unterscheide sich klar von der AfD. Doch wenn man sich Ihre Rede vom 16. Mai anschaut,</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Danke. Die Redezeit ist abgelaufen.</p>
+                <p klasse="redner"><redner id="11005457"><name><vorname>Katrin</vorname><nachname>Fey</nachname><fraktion>Die Linke</fraktion></name></redner>Katrin Fey (Die Linke):</p>
+                <p klasse="J_1">– zwischen Ihrer Migrationspolitik und der AfD erklären? – Danke schön.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Herr Bundesminister.</p>
+            </rede>
+            <rede id="ID21605800">
+                <p klasse="redner"><a id="r58" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Sehr geehrte Frau Kollegin, ich hoffe, Ihnen ist aufgefallen, woher der Applaus für Ihre Wortmeldung kam.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Sie haben jetzt nicht das Wort. – Sie haben eine Nachfrage. Bitte.</p>
+            </rede>
+            <rede id="ID21605900">
+                <p klasse="redner"><a id="r59" /><redner id="11005457"><name><vorname>Katrin</vorname><nachname>Fey</nachname><fraktion>Die Linke</fraktion></name></redner>Katrin Fey (Die Linke):</p>
+                <p klasse="J_1">Sie bezieht sich noch mal auf die Rechtsstaatlichkeit zur Abschiebehaft. Der Rechtsbeistand für Geflüchtete soll abgeschafft werden. Das heißt, diese Menschen werden bei freiheitsentziehenden Maßnahmen nicht mehr anwaltlich vertreten, was ich als zutiefst rassistisch empfinde. Ich frage Sie: Wo ist hier die Rechtsstaatlichkeit? Wie stellen Sie sich das vor Gericht vor?</p>
+                </rede>
+            <rede id="ID21606000">
+                <p klasse="redner"><a id="r60" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Wir werden diesen Rechtsbeistand in der Abschiebehaft abschaffen; das ist auch folgerichtig.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Ich lasse zu dieser Hauptfrage drei Nachfragen zu. – Für die Fraktion der AfD hat Herr Stephan Brandner das Wort. Bitte.</p>
+            </rede>
+            <rede id="ID21606100">
+                <p klasse="redner"><a id="r61" /><redner id="11004678"><name><vorname>Stephan</vorname><nachname>Brandner</nachname><fraktion>AfD</fraktion></name></redner>Stephan Brandner (AfD):</p>
+                <p klasse="J_1">Danke schön. – In der Ausgangsfrage ging es ja um Gemeinsamkeiten mit der oder Abgrenzung zur AfD, Herr Dobrindt. Im März 2018 haben Sie Ihren damaligen Parteichef Horst Seehofer verteidigt und wörtlich geäußert: „Der Islam gehört egal in welcher Form nicht zu Deutschland“ – 20. März 2018. Und Sie haben gesagt, bei der Debatte über den Islam in Deutschland gäbe es einen Maulkorb. Wie steht der heutige Bundesinnenminister zu seiner Aussage aus dem Jahr 2018 – ich zitiere –: „Der Islam gehört egal in welcher Form nicht zu Deutschland“?</p>
+            </rede>
+            <rede id="ID21606200">
+                <p klasse="redner"><a id="r62" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Herr Brandner,</p>
+                <p klasse="redner"><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Darf ich ausreden?</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Herr Brandner, es gibt jetzt keinen Dialog. – Für die Fraktion CDU/CSU hat jetzt Herr Abgeordneter Alexander Throm das Wort.</p>
+            </rede>
+            <rede id="ID21606300">
+                <p klasse="redner"><a id="r63" /><redner id="11004917"><name><vorname>Alexander</vorname><nachname>Throm</nachname><fraktion>CDU/CSU</fraktion></name></redner>Alexander Throm (CDU/CSU):</p>
+                <p klasse="J_1">Herr Minister, die Kollegin der Linken hat ja auf angebliche Gemeinsamkeiten zwischen der CDU/CSU und der AfD verwiesen. Sie hat dabei insbesondere angeblich dauerhafte Grenzkontrollen benannt. Vielleicht können Sie einmal das Ziel und vor allem die Dauer von Grenzkontrollen darstellen; denn wir wollen die Freizügigkeit für die Freizügigkeitsberechtigten erhalten, gleichzeitig aber darauf drängen, dass dies nur im Rahmen des Notwendigen erfolgt.</p>
+            </rede>
+            <rede id="ID21606400">
+                <p klasse="redner"><a id="r64" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Vielen Dank, dass ich noch einmal die Gelegenheit bekomme, darauf einzugehen. – Auch in dieser Frage war eine Unterstellung enthalten. Wir reden nicht davon, dass wir dauerhafte Grenzkontrollen an den Binnengrenzen Europas wollen. Das Gegenteil ist der Fall: Wir wollen, dass Grenzkontrollen an den Binnengrenzen entfallen, indem wir das Migrationsgeschehen an den Außengrenzen der Europäischen Union bearbeiten.</p>
+                <name>Präsidentin Julia Klöckner:</name>
+                <p klasse="J_1">Es gibt jetzt noch eine Nachfrage: Für die Fraktion Bündnis 90/Die Grünen Frau Abgeordnete Chantal Kopf, bitte.</p>
+            </rede>
+            <rede id="ID21606500">
+                <p klasse="redner"><a id="r65" /><redner id="11005111"><name><vorname>Chantal</vorname><nachname>Kopf</nachname><fraktion>BÜNDNIS 90/DIE GRÜNEN</fraktion></name></redner>Chantal Kopf (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="J_1">Herzlichen Dank, Frau Präsidentin. – Herr Bundesinnenminister Dobrindt, Sie haben eben klargestellt, dass Sie sich auf Artikel 72 AEUV berufen. Da dieses Land ja nicht immer die besten Erfahrungen mit Ihrer freihändigen Interpretation von europäischem Recht gemacht hat, wollte ich noch mal nachhaken, auf welcher genauen Fakten- und Datenbasis Sie die Aktivierung von Artikel 72 AEUV hier in Betracht ziehen.</p>
+                </rede>
+            <rede id="ID21606600">
+                <p klasse="redner"><a id="r66" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Schauen Sie, ich habe Ihnen die Normenkette noch mal verdeutlicht, weil ja Zweifel daran gehegt worden sind, ob ich sie genannt hätte; deswegen auch noch mal der Hinweis an dieser Stelle, um was es geht.</p>
+                <name>Vizepräsident Omid Nouripour:</name>
+                <p klasse="J_1">Herzlichen Dank, Herr Minister. – Für die nächste Hauptfrage erteile ich das Wort dem Abgeordneten Martin Hess von der AfD.</p>
+            </rede>
+            <rede id="ID21606700">
+                <p klasse="redner"><a id="r67" /><redner id="11004749"><name><vorname>Martin</vorname><nachname>Hess</nachname><fraktion>AfD</fraktion></name></redner>Martin Hess (AfD):</p>
+                <p klasse="J_1">Vielen Dank, Herr Präsident. – Herr Minister, die Messerkriminalität in Deutschland nimmt stark zu. Im Jahr 2024 hatten wir 29 014 Delikte zu verzeichnen, das bedeutet 79 pro Tag. Es gab also alle 18 Minuten ein Messerdelikt. In der Folge sehen sich auch Polizeibeamte in ihrem Einsatzgeschehen immer häufiger mit Messertätern konfrontiert und sind aufgrund des Versagens des Pfeffersprays leider meist gezwungen, die Schusswaffe einzusetzen.</p>
+                </rede>
+            <rede id="ID21606800">
+                <p klasse="redner"><a id="r68" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Erstens. Ich bin in einem engen Austausch mit unserem Koalitionspartner, und wir verständigen uns auf gemeinsame Projekte, die wir umsetzen wollen. So ist es auch in diesem Fall.</p>
+                <name>Vizepräsident Omid Nouripour:</name>
+                <p klasse="J_1">Herr Hess, haben Sie eine Nachfrage? – Bitte schön.</p>
+            </rede>
+            <rede id="ID21606900">
+                <p klasse="redner"><a id="r69" /><redner id="11004749"><name><vorname>Martin</vorname><nachname>Hess</nachname><fraktion>AfD</fraktion></name></redner>Martin Hess (AfD):</p>
+                <p klasse="J_1">Herr Minister, ich nehme zunächst erfreut zur Kenntnis, dass auch Sie die Auffassung der AfD-Fraktion teilen, dass Taser Bestandteil der Ausstattung der Bundespolizei sein müssen. Allerdings ist die Antwort, die Sie mir im Hinblick auf den zeitlichen Aspekt gegeben haben, natürlich nicht zufriedenstellend. Ich bitte Sie deshalb noch mal, darzustellen, mit welchem Zeithorizont bezüglich dieser Ausstattung grob zu rechnen ist: 6 Monate, 12 Monate, 24 Monate? Sehen Sie darüber hinaus, dass weitere Ausstattungsinstrumente erforderlich sind, insbesondere zum Beispiel stich- und schnitthemmende Schutzkomponenten?</p>
+            </rede>
+            <rede id="ID21607000">
+                <p klasse="redner"><a id="r70" /><redner id="11003516"><name><vorname>Alexander</vorname><nachname>Dobrindt</nachname><rolle><rolle_lang>Bundesminister des Innern</rolle_lang><rolle_kurz>Bundesminister BMI</rolle_kurz></rolle></name></redner>Alexander Dobrindt, Bundesminister des Innern:</p>
+                <p klasse="J_1">Die Grundlage zur Einführung des Tasers wird in meinem Haus gerade vorbereitet. Ich kann Ihnen heute keinen zeitlichen Rahmen geben, wann das möglich sein wird. Der Hinweis, dass wir das umsetzen wollen, sollte für heute mal reichen.</p>
+                <name>Vizepräsident Omid Nouripour:</name>
+                <p klasse="J_1">Vielen Dank, Herr Minister. – Nachfragen liegen uns nicht vor.</p>
+                <p klasse="J">Damit kommen wir zu nächsten Hauptfrage. Für diese erteile ich dem Abgeordneten Stefan Seidler das Wort.</p>
+            </rede>
+            </tagesordnungspunkt>
+        
+</sitzungsverlauf>
+</dbtplenarprotokoll>
