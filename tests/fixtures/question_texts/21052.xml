@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dbtplenarprotokoll
+  SYSTEM "dbtplenarprotokoll.dtd">
+<dbtplenarprotokoll vertrieb="Bundesanzeiger Verlag GmbH, Postfach 1 0 05 34, 50445 Köln, Telefon (02 21) 97 66 83 40, Fax (02 21) 97 66 83 44, www.bundesanzeiger-verlag.de" herstellung="H. Heenemann GmbH  Co. KG, Buch- und Offsetdruckerei, Bessemerstraße 83–91, 12103 Berlin, www.heenemann-druck.de" sitzung-ort="Berlin" herausgeber="Deutscher Bundestag" issn="0722-7980" wahlperiode="21" sitzung-nr="52" sitzung-datum="14.01.2026" sitzung-start-uhrzeit="14:00" sitzung-ende-uhrzeit="19:34" sitzung-naechste-datum="15.01.2026" start-seitennr="6177">
+    <!-- EXCERPT for tests: Plenarprotokoll 21/52 (Deutscher Bundestag), reduced to the Fragestunde (Tagesordnungspunkt 2) up to the call of Frage 3, and the annex with the written answers to Fragen 30 (not answered under Nr. 9 Satz 2), 31, 32 and 33 (a joint answer not there by the editorial deadline) and 45 (an answer with a table). Source: https://dserver.bundestag.de/btp/21/21052.xml -->
+<vorspann><kopfdaten>
+            <plenarprotokoll-nummer>Plenarprotokoll <wahlperiode>21</wahlperiode>/<sitzungsnr>52</sitzungsnr></plenarprotokoll-nummer>
+            <herausgeber>Deutscher Bundestag</herausgeber>
+            <berichtart>Stenografischer Bericht</berichtart>
+            <sitzungstitel><sitzungsnr>52</sitzungsnr>. Sitzung</sitzungstitel>
+            <veranstaltungsdaten><ort>Berlin</ort>, <datum date="14.01.2026">Mittwoch, den 14. Januar 2026</datum></veranstaltungsdaten>
+        </kopfdaten></vorspann>
+<sitzungsverlauf>
+        <tagesordnungspunkt top-id="Tagesordnungspunkt 2">
+            <p klasse="J">Damit darf ich, liebe Kolleginnen und Kollegen, den Tagesordnungspunkt 2 aufrufen: </p>
+            <p klasse="T_fett">		Fragestunde </p>
+            <p klasse="T_Drs">		Drucksache <a href="https://dserver.bundestag.de/btd/21/035/2103521.pdf">21/3521</a></p>
+            <p klasse="J">Die mündlichen Fragen auf Drucksache 21/3521 werden in der üblichen Reihenfolge aufgerufen.</p>
+            <p klasse="J">Ich darf zuerst aufrufen die Frage 1 des Abgeordneten Stefan Schröder, AfD: </p>
+            <p klasse="p">Welche Erkenntnisse hat die Bundesregierung über die Inanspruchnahme der geförderten beruflichen Weiterbildungsangebote nach dem Bürgergeld-Gesetz im Jahr 2024, und welche Maßnahmen plant sie zur weiteren Verbesserung der Teilnahmequote von Arbeitnehmerinnen und Arbeitnehmern sowie Leistungsberechtigten?</p>
+            <p klasse="J">Zur Beantwortung darf ich der Parlamentarischen Staatssekretärin Katja Mast das Wort erteilen.</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Herr Abgeordneter Schröder, Sie haben nach den Eintritten in Weiterbildung in der Bundesrepublik Deutschland gefragt. Nach Angaben der Statistik der Bundesagentur für Arbeit hatten wir 2024 rund 323 000 Eintritte in eine berufliche Weiterbildung. Damit ist die Zahl der geförderten Eintritte gegenüber dem Vorjahr, also gegenüber 2023, um 8 Prozent gestiegen. Die Zahlen für das gesamte Jahr 2025 liegen noch nicht vor; deshalb beziehe ich mich auf 2024.</p>
+            <p klasse="J">Rund 72 Prozent der durch die Bundesagentur für Arbeit geförderten Eintritte entfielen auf Personen im Rechtskreis des SGB III, die anderen 28 Prozent auf Personen im Rechtskreis des SGB II. Für relevant halte ich noch, dass es sich bei 80 Prozent der Eintritte in eine geförderte Weiterbildung um die Förderung arbeitsloser Menschen gehandelt hat, bei 20 Prozent um die Förderung beschäftigter Menschen. Auch das, glaube ich, ist ein wichtiger Punkt.</p>
+            <p klasse="J">Ansonsten analysiert die Bundesregierung fortlaufend die Entwicklung in Bezug auf Weiterbildung und Teilnahme an Weiterbildung und steuert natürlich bei Bedarf entsprechend nach, wie zuletzt beim Bürgergeld-Gesetz und beim Aus- und Weiterbildungsgesetz.</p>
+            <p klasse="redner"><redner id="11005576"><name><vorname>Stefan</vorname><nachname>Schröder</nachname><fraktion>AfD</fraktion></name></redner>Stefan Schröder (AfD):</p>
+            <p klasse="J_1">Sehr geehrter Herr Präsident! Sehr geehrte Frau Staatssekretärin, Sie betonen regelmäßig den dramatischen Fachkräftemangel. Können Sie uns konkret darlegen, wie viele der geförderten Weiterbildungen im Jahr 2024 tatsächlich in Mangelberufen stattgefunden haben und wie viele Maßnahmen eher allgemeiner – um nicht zu sagen: kosmetischer – Natur waren, ohne erkennbare Arbeitsmarktbedarfe zu decken?</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Grundsätzlich gibt es keine Förderung kosmetischer Maßnahmen im Bereich Weiterbildung,</p>
+            <kommentar>(Beifall der Abg. Frauke Heiligenstadt [SPD])</kommentar>
+            <p klasse="O">sondern es wird immer arbeitsmarktbezogen gefördert. Denn unser Ziel als Bundesregierung ist es ja, Menschen dauerhaft in Arbeit zu vermitteln bzw. – ich habe gerade auf die Beschäftigten rekurriert – dafür zu sorgen, dass Menschen erst gar nicht arbeitslos werden. Deshalb ist die Annahme in Ihrer Frage aus Sicht der Bundesregierung falsch. Ansonsten kann ich Ihnen zu den Mangelberufen im Moment keine konkrete Zahl sagen; die liefern wir Ihnen aber gerne nach.</p>
+            <p klasse="redner"><redner id="11005576"><name><vorname>Stefan</vorname><nachname>Schröder</nachname><fraktion>AfD</fraktion></name></redner>Stefan Schröder (AfD):</p>
+            <p klasse="J_1">Gerne. – Frau Staatssekretärin, viele Unternehmen gerade im Mittelstand berichten von komplizierten Verfahren und mangelnder Beratung bei der Weiterbildungsförderung. Wie passt das zu Ihrem Anspruch, Weiterbildung niedrigschwellig zu machen? Ist das aktuelle System aus Jobcentern, Bundesagentur und Programmen nicht schlicht zu bürokratisch und zu wenig unternehmerisch?</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Ich kann stellvertretend für die Bundesregierung nur dazu ermuntern, die Beratungsdienstleistungen sowohl der Jobcenter, die ja einen eigenen Arbeitgeberservice haben, als auch der Bundesagentur für Arbeit wahrzunehmen, und kann sagen, dass wir alle Anstrengungen unternehmen, um in den Regionen große Netzwerke zu knüpfen, sodass gerade auch kleine und mittlere Unternehmen erreicht werden. Das ist ja letztendlich auch das Ziel: Wir wollen alle Beschäftigten erreichen; denn die größte Ressource in der Bundesrepublik Deutschland sind die Menschen, die hier leben, die Menschen, die dieses Land mitgestalten, indem sie täglich aufstehen und arbeiten gehen. Deshalb unternehmen wir alle Anstrengungen, um die Menschen, egal in welcher Firma sie arbeiten, zu erreichen.</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J">Ich darf die Frage 2 des Abgeordneten Tobias Matthias Peterka, AfD, aufrufen: </p>
+            <p klasse="p">Welche sind die fünf wichtigsten Maßnahmen im Bereich der Arbeitsmarktpolitik, deren Umsetzung die Bundesregierung für das Jahr 2026 anvisiert wird (bitte begründen)?</p>
+            <p klasse="J">Ich darf Ihnen das Wort erteilen, Frau Staatssekretärin.</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Herr Abgeordneter Peterka, Sie haben nach den fünf wichtigsten Maßnahmen im Bereich der Arbeitsmarktpolitik der Bundesregierung gefragt. Ich will mich nicht auf fünf beschränken, sondern einfach diejenigen darlegen, die aus unserer Sicht zentral sind.</p>
+            <p klasse="J">Grundsätzlich sind wir im Bereich der Arbeitsmarktpolitik sehr gut aufgestellt, was die Instrumente und auch die Möglichkeiten vor Ort angeht, Menschen in Arbeit zu vermitteln. Wir sorgen insbesondere für Unterstützung und Förderung durch die Agentur für Arbeit und die Jobcenter.</p>
+            <p klasse="J">Sie wissen, dass wir über das 13. SGB-II-Änderungsgesetz diskutieren. Da geht es auch darum, Menschen dauerhaft in Arbeit zu vermitteln; das ist das wichtigste Ziel für die Bundesregierung. Deshalb planen wir auch die Umgestaltung der Grundsicherung. Wir verbessern die Unterstützung von Leistungsbeziehenden, stärken die Vermittlung und die Mitwirkung sowie die Bekämpfung von Sozialleistungsmissbrauch mit diesem Gesetz. Damit wollen wir das Gleichgewicht zwischen Solidarität und Eigenverantwortung stärken.</p>
+            <p klasse="J">Ein zentrales Ziel dieser Bundesregierung ist darüber hinaus die Errichtung einer Work-and-Stay-Agentur. Das ist eine Agentur, die die Verwaltungsprozesse in der Erwerbs- und Bildungsmigration zur Gewinnung von Fachkräften besser steuern soll, sodass es attraktiver wird, durch Arbeit in der Bundesrepublik Deutschland die persönliche Zukunft zu gestalten.</p>
+            <p klasse="J">Darüber hinaus haben wir sehr gute Erfahrungen mit dem sogenannten Jobturbo gemacht, das heißt einer bewussten Intensivierung der Kontaktdichte und der Angebote für Menschen, die direkt nach Sprachkursen einen Arbeitsplatz suchen, und haben da bemerkenswert gute Zahlen erreicht. Deshalb haben wir das in das Regelgeschäft der Jobcenter überführt. Und wir haben einen wichtigen Ansatzpunkt, nämlich die sogenannten Arbeitsmarktdrehscheiben.</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J_1">Zu einer weiteren Nachfrage darf ich dem Abgeordneten Peterka das Wort erteilen.</p>
+            <p klasse="redner"><redner id="11004850"><name><vorname>Tobias Matthias</vorname><nachname>Peterka</nachname><fraktion>AfD</fraktion></name></redner>Tobias Matthias Peterka (AfD):</p>
+            <p klasse="J_1">Vielen Dank, Frau Staatssekretärin. – Das, was ich gehört habe, waren nicht wirklich Maßnahmen, sondern entweder bestehende Mittel oder Zielsetzungen. Schlussendlich zeigt sich der deutsche Arbeitsmarkt seit Jahren sehr fragil. Gerade in Franken, also im nördlichen Bundesland Bayern, gehen reihenweise Automobilzulieferer in die Knie.</p>
+            <p klasse="J">Durch den jahrelang verfolgten Akademisierungswahn zeigen sich jetzt sogar bei solchen Abschlüssen steigende Arbeitslosenzahlen. Des Weiteren sind gerade massenhaft einfache Jobs auf dem Markt, aber es finden sich keine Menschen, die diese wahrnehmen. Haben Sie vielleicht mit einer konkreten Maßnahme unterlegt, warum Arbeitgeber für durchaus passabel bezahlte, aber eben mit Blick auf das Abstandsgebot nicht sonderlich ausgeprägte, einfache Jobs in Deutschland einfach niemanden finden, der dafür aufstehen möchte?</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Die erste Frage Ihres Kollegen Schröder hat sich darauf bezogen, wie sich die Weiterbildungsförderung in der Bundesrepublik Deutschland entwickelt hat. Das ist eine sehr konkrete Maßnahme; denn wir gestalten proaktiv die Zukunft einzelner Arbeitskräfte in Deutschland. Wir warten eben nicht, bis jemand arbeitslos wird, sondern gestalten aktiv den Kompetenzerwerb, lange Zeit insbesondere für Menschen, die weniger qualifiziert sind. Mittlerweile gilt das für alle Arbeitskräfte.</p>
+            <p klasse="J">Das Engagement der Mitarbeiterinnen und Mitarbeiter der Jobcenter und der Bundesagentur für Arbeit hat zum Ziel, Menschen schnell wieder in Arbeit zu vermitteln. Aber klar ist auch: Dazu braucht es einen Arbeitsmarkt, der aufnahmefähig ist, und eine gute konjunkturelle Lage. Die gesamte Bundesregierung unternimmt alle Kraftanstrengung, entsprechende Konjunkturimpulse für wirtschaftlichen Erfolg und Arbeitsplätze zu setzen.</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J_1">Zur weiteren Nachfrage der Abgeordnete Peterka.</p>
+            <p klasse="redner"><redner id="11004850"><name><vorname>Tobias Matthias</vorname><nachname>Peterka</nachname><fraktion>AfD</fraktion></name></redner>Tobias Matthias Peterka (AfD):</p>
+            <p klasse="J_1">Vielen Dank für die Zusage der weiteren Anstrengung. Meiner Meinung nach verläuft diese ziemlich im Sande.</p>
+            <p klasse="J">Eine allgemeine Antwort, die gerade die Partei der Ministerin immer gibt, ist die weitere Einwanderung von Fachkräften. Des Weiteren sieht man in Deutschland ebenfalls seit Jahren eine Auswanderung von Fachkräften. Angestammte oder einmal eingewanderte Fachkräfte verlassen dieses Land wieder. Wir sind anscheinend nicht attraktiv für Menschen, die dem Leistungsprinzip eher zugeneigt sind als dem Windfall-Prinzip. Wie wird das denn gesehen? Vielleicht hat die Ministerin irgendein Projekt ins Leben gerufen, um da von der allgemeinen SPD-Linie ein wenig abzurücken?</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Herr Abgeordneter Peterka, die gesamte Bundesregierung – und für die spreche ich hier – hat zum Ziel, dass Menschen, die arbeiten gehen, mehr davon haben. Wir sind unter anderem dabei, ein Tariftreuegesetz zu machen, damit Menschen, die arbeiten gehen, am Ende des Tages mehr in ihrer Lohntüte haben und auch von mehr Sicherheit durch den kollektiven Schutz von Tarifverträgen profitieren. Wir haben gemeinsam den Mindestlohn erhöht. Das ist gerade für Menschen, die im Niedriglohnsektor tätig sind, wichtig; extrem viele Menschen profitieren davon.</p>
+            <p klasse="J">Und wir geben viele weitere Wachstumsimpulse. Ich kann sie gerne aufzählen: Wir sind dabei, einen Industriestrompreis festzuschreiben. Wir haben den Investitionsbooster auf den Weg gebracht. Wir haben gemeinsam ein Investitionspaket in Höhe von 500 Milliarden Euro für die Bundesrepublik Deutschland geschnürt und viele weitere Maßnahmen auf den Weg gebracht, um wirtschaftliche Impulse zu setzen.</p>
+            <kommentar>(Beifall bei Abgeordneten der SPD)</kommentar>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J_1">Damit stellt die nächste Frage der Abgeordnete Ingo Hahn.</p>
+            <p klasse="redner"><redner id="11005476"><name><titel>Dr.</titel><vorname>Ingo</vorname><nachname>Hahn</nachname><fraktion>AfD</fraktion></name></redner>Dr. Ingo Hahn (AfD):</p>
+            <p klasse="J_1">Geschätzte Frau Staatssekretärin Mast, meine Frage zielt darauf ab, dass wir tatsächlich eine Deindustrialisierung erleben. Gerade der Arbeitsmarkt zeigt es: Im Dezember gab es 2,9 Millionen Arbeitslose; die Quote lag bei 6,2 Prozent. Der Kollege Peterka hat es gerade gesagt: Wir haben das Problem, dass die Betriebe häufig keine Neueinstellungen vornehmen – gerade die Automobilzulieferer nicht –, sondern sogar Stellen abbauen. Das heißt, Sie müssten jetzt wirksame Schritte einleiten. Ein wirksamer Schritt ist aber nicht, darauf zu spekulieren, dass noch mehr qualifizierte Arbeitskräfte ins Ausland abwandern, um dadurch die Arbeitslosenquote zu senken. Meine Frage lautet: Wo sehen Sie Ende 2026 die Quote bzw. die absolute Zahl an Arbeitslosen, und was sind abseits von den Sprachkursen, die Sie erwähnt haben, die entsprechenden Maßnahmen?</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Sehr geehrter Herr Hahn, ich habe überhaupt nicht über Sprachkurse gesprochen. Aber danke, dass Sie mir das für meine Antwort noch mal mit auf den Weg gegeben haben. Ich habe skizziert, dass die gesamte Bundesregierung den Hauptfokus auf wirtschaftliche Impulse legt. Das halte auch ich persönlich – ich selbst komme aus Baden-Württemberg und habe viel Zuliefererindustrie in meinem Wahlkreis – für einen ganz zentralen Punkt. Ich habe auch den Schub für die öffentlichen Investitionen durch das riesige Investitionspaket deutlich gemacht. Wir alle wissen, dass die Sanierung von Gebäuden, Straßen und Schienen dringend auf den Weg gebracht werden muss und dass das alles mit wirtschaftlichem Erfolg zu tun hat. Insofern kann ich Ihren Unterton nach dem Motto „Die Bundesregierung handelt gar nicht“</p>
+            <kommentar>(Dr. Ingo Hahn [AfD]: Das habe ich nicht gesagt!)</kommentar>
+            <p klasse="O">– ich habe von „Unterton“ gesprochen; Sie können ja dann noch mal etwas dazu sagen – nicht unterstützen. Die Annahme, dass wir Fachkräfte im Ausland suchen – –</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J_1">Und hier meldet sich der Leitungston.</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><fraktion>SPD</fraktion></name></redner>Katja Mast (SPD):</p>
+            <p klasse="J_1">Entschuldigung. Dann muss ich das in der nächsten Antwort unterbringen. – Vielen Dank, Herr Präsident.</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J_1">Die nächste Frage stellt die Abgeordnete Huy.</p>
+            <p klasse="redner"><redner id="11005091"><name><vorname>Gerrit</vorname><nachname>Huy</nachname><fraktion>AfD</fraktion></name></redner>Gerrit Huy (AfD):</p>
+            <p klasse="J_1">Vielen Dank, Herr Präsident. – Meine Frage betrifft auch Ausländer hier im Land, nämlich ausländische Arbeitslose in Gesundheits-, Kranken- und Altenpflegeberufen. Das sind inzwischen immerhin 25 000 Arbeitslose; diese Zahl hat sich stark erhöht. Wir wissen auch, dass viele Ausländer bei uns in Arbeit gekommen sind. Wir würden aber gerne wissen: Verfolgt die Bundesregierung, wie viele ihrer als Fachkräfte angeworbenen Ausländer relativ schnell wieder in der Arbeitslosigkeit verschwinden, gerade im Gesundheitsbereich? Wie viele von ihnen verfügen über einen Aufenthaltstitel nach dem Chancen-Aufenthaltsrecht, wie viele sind anerkannte Asylbewerber, und wie viele kommen über die direkte Fachkräfteeinwanderung?</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Für die Bundesregierung ist wichtig, dass Menschen, die zu uns kommen und hier ihre Zukunft als Fachkräfte suchen, unterstützt werden und möglichst schnell nach Deutschland kommen können. Sie sprechen einen wichtigen Bereich an, nämlich die Gesundheits- und Pflegebranche. Dort wäre ein Funktionieren ohne ausländische Fachkräfte überhaupt nicht mehr denkbar. Wir haben dort einen riesigen Bedarf an ausländischen Fachkräften. Ich habe ja schon gesagt, dass wir gemeinsam an der sogenannten Work-and-Stay-Agentur arbeiten, um die Fachkräfteeinwanderung zu vereinfachen. Denn es ist völlig klar: Je mehr Fachkräfte wir in Deutschland haben, desto größer das Wirtschaftswachstum und desto positivere Effekte auf den Arbeitsmarkt. Deshalb sind wir da – auch aufgrund des demografischen Wandels – so außerordentlich engagiert. Wir stehen im Wettbewerb mit vielen anderen Ländern, die ebenfalls händeringend Fachkräfte suchen. Deshalb ist es wichtig, dass wir entsprechende Akzente setzen. Wir haben schon das modernste Einwanderungsrecht in Europa, und wir werden mit der Work-and-Stay-Agentur –</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J_1">Frau Kollegin.</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">– den modernsten Akzent in diesem Bereich setzen.</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J_1">Als letztem Fragesteller darf ich Pascal Meiser das Wort erteilen.</p>
+            <p klasse="redner"><redner id="11004819"><name><vorname>Pascal</vorname><nachname>Meiser</nachname><fraktion>Die Linke</fraktion></name></redner>Pascal Meiser (Die Linke):</p>
+            <p klasse="J_1">Frau Staatssekretärin, Sie haben vorhin zu Recht die Bedeutung von Tarifverträgen für gute Arbeit und auch die Bedeutung einer hohen Tarifbindung erwähnt. Die Realität in unserem Land sieht, wie wir beide wissen, anders aus: Die Tarifbindung sinkt und sinkt. Nur noch weniger als 50 Prozent der Beschäftigten fallen unter den Schutz eines Tarifvertrags. Das ist extrem besorgniserregend, gerade angesichts der Tatsache, dass das vor 25 Jahren in unserem Land noch ganz anders aussah.</p>
+            <p klasse="J">Zugleich ist auf europäischer Ebene in der EU-Mindestlohnrichtlinie verabredet worden, dass sich die Mitgliedstaaten eine Tarifbindung von 80 Prozent als Ziel setzen. Wir sind weit davon entfernt, und das als ehemaliges Musterland der Sozialpartnerschaft. Bis Ende des Jahres hätte die Bundesregierung einen Aktionsplan zur Stärkung der Tarifbindung vorlegen müssen; so ist es in dieser Richtlinie und den darauffolgenden Verabredungen vorgesehen. Das ist nicht passiert. Können Sie sagen, warum? Droht jetzt ein Vertragsverletzungsverfahren? Nimmt die Bundesregierung dieses 80-Prozent-Ziel wirklich ernst, und wird sie sich auch daran messen lassen, es zu erreichen, ja oder nein?</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Die Bundesregierung arbeitet mit Hochdruck am Tariftreuegesetz, über das ich eben schon sprechen durfte. Der Nationale Aktionsplan zur Stärkung der Tarifbindung wird in Kürze im Kabinett beraten und dann auch verabschiedet. Natürlich ist die Bedeutung der Tarifbindung – wir unterscheiden uns da nicht in der Konnotation, die Sie gewählt haben, Herr Kollege Meiser – für die soziale Marktwirtschaft in der Bundesrepublik und die gute Zusammenarbeit zwischen Arbeitgebern und Arbeitnehmern immens; denn am Ende sind sie es beide, die zur Wirtschaftskraft der Bundesrepublik Deutschland beitragen.</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            <p klasse="J_1">Dann darf ich das Wort René Springer von der AfD erteilen.</p>
+            <p klasse="redner"><redner id="11004900"><name><vorname>René</vorname><nachname>Springer</nachname><fraktion>AfD</fraktion></name></redner>René Springer (AfD):</p>
+            <p klasse="J_1">Vielen Dank. – Ich würde zwei Dinge verknüpfen wollen. Das Thema sind ja die arbeitsmarktpolitischen Maßnahmen, und hier ist die Bundesregierung – ich habe vorhin mitgeschrieben – ja sehr gut aufgestellt.</p>
+            <p klasse="J">Zugleich hat Gerrit Huy auf mögliche Probleme im Gesundheitsbereich hingewiesen. Was sie aufgrund der Kürze der Zeit nicht ausführen konnte, ist, dass wir zwar ausländische Beschäftigte im Bereich der Pflege haben, aber wir haben auch einen starken Anstieg von arbeitslosen Ausländern im Bereich der Pflege, und zwar in den letzten zehn Jahren bei Gesundheits- und Krankenpflegekräften eine Vervierfachung und bei Altenpflegern immerhin eine Verdreifachung der Zahl der Arbeitslosen.</p>
+            <p klasse="J">Die Frage war weniger auf die Integration bezogen, sondern eher darauf: Hält die Bundesregierung eigentlich nach, was passiert, wenn jemand über die Fachkräfteeinwanderungsschiene nach Deutschland kommt und irgendwann in der Arbeitslosigkeit landet? Die Antworten, die wir dazu bestellt haben, scheinen das nicht zu zeigen. Es scheint, als ob Sie keinen Plan hätten. Uns würde interessieren: Machen Sie das wenigstens intern, um den Erfolg Ihrer Politik auch messen zu können? – Danke schön.</p>
+            <p klasse="redner"><redner id="11003804"><name><vorname>Katja</vorname><nachname>Mast</nachname><rolle><rolle_lang>Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales</rolle_lang><rolle_kurz>Parl. Staatssekretärin BMAS</rolle_kurz></rolle></name></redner>Katja Mast, Parl. Staatssekretärin bei der Bundesministerin für Arbeit und Soziales:</p>
+            <p klasse="J_1">Die Instrumente der Arbeitsmarktpolitik stehen allen Menschen, die arbeitslos werden, zur Verfügung, und damit auch für die Aktivierung. Gerade im Bereich Pflege und Gesundheit werden händeringend Fachkräfte gesucht. Welche individuellen Gründe zur Arbeitslosigkeit bei einzelnen Menschen führen, kann ich nicht beurteilen und soll ich auch nicht beurteilen; denn dafür haben wir tatsächlich sehr gute Mitarbeiterinnen und Mitarbeiter sowohl in der Bundesagentur für Arbeit als auch in den Jobcentern. Dort werden alle Kraftanstrengungen unternommen, die Menschen wieder fitzumachen und in den Arbeitsmarkt zu vermitteln.</p>
+            <name>Vizepräsident Bodo Ramelow:</name>
+            </tagesordnungspunkt>
+        </sitzungsverlauf>
+    <anlagen>
+        <anlage>
+            <anlagen-titel><a id="ANL2" />Anlage 2</anlagen-titel>
+            <anlagen-text anlagen-typ="Schriftliche Antworten auf Fragen der Fragestunde (Drucksache 21/3521)">
+                <p klasse="Anlage_2">Schriftliche Antworten auf Fragen der Fragestunde (Drucksache <a href="https://dserver.bundestag.de/btd/21/035/2103521.pdf">21/3521</a>)</p>
+                <p klasse="Anlage_2">Frage 30</p>
+                <p klasse="J">Die Frage wird gemäß Nr. 9 Satz 2 der Richtlinien für die Fragestunde (Anlage 2 der Geschäftsordnung des Deutschen Bundestages) nicht beantwortet.</p>
+                <p klasse="Anlage_2">Frage 31</p>
+                <p klasse="O">Frage des Abgeordneten Mirze Edis (Die Linke):</p>
+                <p klasse="p">Erwägt die Bundesregierung zur dauerhaften Sicherung der Energieinfrastruktur und für die Generierung langfristiger Einnahmen des Staates statt einer bis dato geplanten Reprivatisierung des seit 2022 zu über 99 Prozent in staatlichem Besitz stehenden Gaskonzerns Uniper den Verbleib des Unternehmens zumindest in Teilen in öffentlicher Hand, und, falls ja, zu welchen Konditionen, und, falls nein, wieso nicht (siehe <a href="http://www.nd-aktuell.de/artikel/1196517.energiewende-der-markt-schafft-es-nicht.html?action=print">www.nd-aktuell.de/artikel/1196517.energiewende-der-markt-schafft-es-nicht.html?action=print</a>)?</p>
+                <p klasse="O">Antwort des Parl. Staatssekretärs Dennis Rohde:</p>
+                <p klasse="J">Der Bund muss auf der Basis der Genehmigungsentscheidung der EU-Kommission zu der Stabilisierungsmaßnahme für die Uniper SE seine Beteiligung an dem Unternehmen bis spätestens Ende 2028 auf maximal 25 Prozent plus eine Aktie reduzieren.</p>
+                <p klasse="J">Die Bundesregierung wird im Reprivatisierungsprozess der Versorgungssicherheit Deutschlands und Europas Rechnung tragen. Dieser Prozess schließt die Analyse verschiedener Optionen ein, die unvoreingenommen geprüft werden. Da der Prozess noch andauert und die Uniper SE ein börsennotiertes Unternehmen ist, können zum aktuellen Zeitpunkt keine Aussagen zu Einzelheiten getroffen werden.</p>
+                <p klasse="J">Im Koalitionsvertrag ist vorgesehen, dass die in der Gaskrise erworbenen Staatsbeteiligungen auf strategische Anteile des Bundes zurückgeführt werden.</p>
+                <p klasse="Anlage_2">Fragen 32 und 33</p>
+                <p klasse="O">Fragen des Abgeordneten Stefan Schmidt (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="p">Wie verteilen sich die bereits abgerufenen rund 4,8 Milliarden Euro für die Infrastruktur in den vom Hochwasser betroffenen Ländern aus dem Sondervermögen „Aufbauhilfefonds 2021“ auf die betroffenen Länder, betroffene Bürgerinnen und Bürger, Unternehmen und sonstige Einrichtungen (siehe Antwort der Bundesregierung auf meine Schriftliche Frage 17 auf Bundestagsdrucksache 21/3438), und wie hoch ist der Anteil der Härtefälle an den abgerufenen Mitteln (bitte absolut und relativ angeben)?</p>
+                <p klasse="p">Wie viele Anträge auf Entschädigungen aus dem Sondervermögen „Aufbauhilfefonds 2021“ sind aktuell noch in Bearbeitung, und mit welchem Mittelabfluss rechnet die Bundesregierung bis zum Auslaufen des Sondervermögens (bitte begründen)?</p>
+                <p klasse="J">Die gemeinsame Antwort lag bei Redaktionsschluss noch nicht vor.</p>
+                <p klasse="Anlage_2">Frage 45</p>
+                <p klasse="O">Frage der Abgeordneten Filiz Polat (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="p">Welche Maßnahmen trifft die Bundesregierung, um Syrerinnen und Syrer mit humanitären Aufenthaltstiteln eine langfristige und planbare Perspektive in Deutschland zu bieten, und wie vielen Syrerinnen und Syrern mit humanitären Aufenthaltstiteln wurde zusätzlich zu diesem Aufenthaltstitel eine weitere Aufenthaltserlaubnis erteilt (bitte nach jeweiligem Aufenthaltstitel auflisten)?</p>
+                <p klasse="O">Antwort des Parl. Staatssekretärs Christoph de Vries:</p>
+                <p klasse="J">Die Erteilung von Aufenthaltstiteln im Rahmen des Flüchtlingsschutzes verfolgt das Ziel, einen Aufenthalt für die Dauer eines Schutzbedarfes zu ermöglichen. Entfällt der Schutzbedarf, zum Beispiel aufgrund von Veränderungen der Situation im Herkunftsstaat, entfällt auch die Voraussetzung für den Aufenthaltstitel.</p>
+                <p klasse="J">Nach der aktuellen Rechtslage können syrische Staatsangehörige mit einer aufgrund eines Schutzstatus erteilten Aufenthaltserlaubnis nach § 25 Aufenthaltsgesetz bei Erfüllen der entsprechenden Voraussetzungen aber in einen anderen Aufenthaltstitel wechseln (zum Beispiel Erwerbs- und Ausbildungstitel). Diese Aufenthaltstitel ermöglichen einen Aufenthalt unabhängig von einem Schutzbedarf. Weitere Maßnahmen sind zum gegenwärtigen Zeitpunkt nicht geplant.</p>
+                <p klasse="J">Der zweite Teil der Frage wird dahingehend verstanden, dass nach der Zahl der in Deutschland aktuell aufhältigen syrischen Staatsangehörigen, die nach ihrer Einreise einen humanitären Aufenthaltstitel erhalten haben und später zu einem Aufenthaltstitel aus anderen Gründen gewechselt sind, gefragt wird.</p>
+                <p klasse="J">Zum Stichtag 31. Dezember 2025 hielten sich 666 982 syrische Staatsangehörige in Deutschland auf, denen nach ihrer letzten Einreise ein Aufenthaltstitel aus völkerrechtlichen, humanitären oder politischen Gründen erteilt wurde. Von diesen erhielten 43 626 Personen zu einem späteren Zeitpunkt einen Aufenthaltstitel aus anderen Gründen. Die erfragte Verteilung nach Grund des ersten Titels nach dem Wechsel wird in tabellarischer Form zu Protokoll gegeben. Die große Mehrheit (41 931 Personen) erhielten eine Niederlassungserlaubnis.</p>
+                <table>
+                    <colgroup>
+                        <col width="65%" />
+                        <col width="35%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Grund des Aufenthalts</th>
+                            <th>Anzahl Personen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Aufenthaltserlaubnis – Altfall</td>
+                            <td align="right">2</td>
+                        </tr>
+                        <tr>
+                            <td>Aufenthaltserlaubnis – Ausbildung</td>
+                            <td align="right">13</td>
+                        </tr>
+                        <tr>
+                            <td>Aufenthaltserlaubnis – besondere Aufenthaltsrechte</td>
+                            <td align="right">32</td>
+                        </tr>
+                        <tr>
+                            <td>Aufenthaltserlaubnis – Erwerbstätigkeit</td>
+                            <td align="right">198</td>
+                        </tr>
+                        <tr>
+                            <td>Aufenthaltserlaubnis – familiäre Gründe</td>
+                            <td align="right">1 428</td>
+                        </tr>
+                        <tr>
+                            <td>EU-Aufenthaltsrechte</td>
+                            <td align="right">22</td>
+                        </tr>
+                        <tr>
+                            <td>Niederlassungserlaubnis</td>
+                            <td align="right">41 931</td>
+                        </tr>
+                        <tr>
+                            <td>Gesamt</td>
+                            <td align="right">43 626</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </anlagen-text>
+        </anlage>
+    </anlagen>
+    
+</dbtplenarprotokoll>

@@ -90,7 +90,10 @@ nothing itself; what it misses comes back here as a requirement.
 
 1. `question_turn` for the Regierungsbefragung. Done: 3,047 turns of 26 Befragungen, rules and accuracy in
    `docs/design.md` "Question turns".
-2. `question_turn` for the Fragestunde, linked to the DIP Frage; `question_text` from the "Fragen" Drucksachen.
+2. `question_turn` for the Fragestunde, linked to the DIP Frage; `question_text` for the Mündliche Fragen. Done,
+   from the protocols rather than the "Fragen" Drucksachen: they print every question, called in the Fragestunde or
+   answered in writing in the annex, and the written answers too; `question_table` came with them (74 tables in
+   answers). 1,613 questions, 1,580 linked to their DIP Vorgang; `docs/design.md` "Question texts".
 3. `question_text`, `question_table`, `question_parse` for Kleine and Große Anfragen. First measure on 20 random
    Anfragen how DIP's `drucksache-text` compares to the PDF, tables above all.
 4. `question_text` split out of the Schriftliche Fragen Sammeldrucksachen.
