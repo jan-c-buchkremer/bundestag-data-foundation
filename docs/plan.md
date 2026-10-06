@@ -49,6 +49,44 @@ Every change is reviewed against this goal. Ideas that don't serve it go on "Not
   "Known gaps" in `docs/design.md`. Left: release v0.2.0 after a clean nightly run. The
   version stays 0.x like the other repos (decided 2026-10-04); the contract says what is stable.
 
+## Next: Fragen as text (after v0.2.0)
+
+The page that needs it: the Fragen subpages of the research platform (its `docs/plan.md`, goal 4 "Fragen as
+text"). A reader reads every question to the government and its answer on the site, not in a PDF. The store has the
+Vorgänge, askers, Ressorts and Drucksachen, but no texts and no structure of the spoken turns. Measured on a store copy
+(sittings to 2026-09-25):
+
+| Kind | In the store | Missing |
+|---|---|---|
+| Regierungsbefragung | 26 agenda items, 3,047 turns as `speech.kind = rede` | which turn is the minister's statement, a question, an answer, a follow-up, and which belong together |
+| Mündliche Fragen | 1,624 Vorgänge; 1,536 turns as `kind = fragestunde`; asker and answerer in `question_activity` | the question text (only in the 26 "Fragen" Drucksachen); the link from a turn to its Frage |
+| Schriftliche Fragen | 9,038 Vorgänge; asker, Ressort, numbers in `question_activity` | question and answer text, split out of 78 Sammeldrucksachen; who answered and when |
+| Kleine / Große Anfragen | 2,749 / 14 Vorgänge, the Fraktion in `drucksache.originator_groups`, the answer Drucksache | every text: preliminary remarks, numbered questions, answers, tables |
+
+**The contract.** Four new tables, additions under the schema contract (a minor release). The platform parses
+nothing itself; what it misses comes back here as a requirement.
+
+- **`question_turn`**, the spoken questions from the protocol: `speech_id` (PK), `role` (`einleitung` | `frage` |
+  `antwort` | `nachfrage` | `zusatzfrage`), `thread_id` (the first turn of a question; the turns that follow on it
+  share it), `vorgang_id` (Fragestunde: the DIP Mündliche Frage; NULL in the Regierungsbefragung). Who was questioned
+  in a Regierungsbefragung is read from the turns with role `einleitung` or `antwort`, not stored apart.
+- **`question_text`**, the written texts, from DIP's `drucksache-text` or the PDF: `id`, `vorgang_id`,
+  `drucksache_id`, `position`, `part` (`vorbemerkung_fragesteller` | `frage` | `vorbemerkung_bundesregierung` |
+  `antwort`), `number` ("1", "3a", or the number in a Sammeldrucksache), `text`, `answerer_person_id` and
+  `answer_date` for answers.
+- **`question_table`**, a table inside an answer, as cells (JSON), referring to its `question_text` row, so the text
+  holds no broken tables; a table that cannot be extracted gets a row saying so, with its page.
+- **`question_parse`**, one row per Vorgang: `status` (`complete` | `partial` | `unanswered` | `failed`), so a page
+  can tell "not answered yet" from "answered, but not read".
+
+**Order**, one kind at a time, each a release the platform builds on before the next:
+
+1. `question_turn` for the Regierungsbefragung.
+2. `question_turn` for the Fragestunde, linked to the DIP Frage; `question_text` from the "Fragen" Drucksachen.
+3. `question_text`, `question_table`, `question_parse` for Kleine and Große Anfragen. First measure on 20 random
+   Anfragen how DIP's `drucksache-text` compares to the PDF, tables above all.
+4. `question_text` split out of the Schriftliche Fragen Sammeldrucksachen.
+
 ## Not now
 
 Ideas that don't serve the current goal. Each names what it would give a reader.
