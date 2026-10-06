@@ -7,6 +7,9 @@ rely on the foundation: the facts it holds are checked against DIP, the gaps it 
 numbers, the schema stays as it is, and the nightly run reports by itself when something breaks. After that the
 foundation is frozen: it changes only when a concrete page or question needs data that is missing.
 
+v0.2.0 also carries Fragen as text (below; decided 2026-10-06): the research platform's Fragen subpages are the page
+that needs it, and the release waits for it.
+
 Every change is reviewed against this goal. Ideas that don't serve it go on "Not now", not into code.
 
 ## Steps to v0.2.0
@@ -51,9 +54,9 @@ Every change is reviewed against this goal. Ideas that don't serve it go on "Not
   2026-10-04, #38); the contract says what is stable.
 - Also in v0.2.0: `vorgang_referral` (#40), the committees a Vorgang was referred to, for the research platform's
   EU-Vorlagen page (its #56: the committee each EU-Vorlage went to). Additive, under "Unreleased" in the CHANGELOG.
-- Left: release v0.2.0 after a clean nightly run.
+- Left: Fragen as text (below), then release v0.2.0 after a clean nightly run with all of it.
 
-## Next: Fragen as text (after v0.2.0)
+## Fragen as text (in v0.2.0)
 
 The page that needs it: the Fragen subpages of the research platform (its `docs/plan.md`, goal 4 "Fragen as
 text"). A reader reads every question to the government and its answer on the site, not in a PDF. The store has the
@@ -83,9 +86,10 @@ nothing itself; what it misses comes back here as a requirement.
 - **`question_parse`**, one row per Vorgang: `status` (`complete` | `partial` | `unanswered` | `failed`), so a page
   can tell "not answered yet" from "answered, but not read".
 
-**Order**, one kind at a time, each a release the platform builds on before the next:
+**Order**, one kind at a time, each merged and checked on the preview before the next; all four in v0.2.0:
 
-1. `question_turn` for the Regierungsbefragung.
+1. `question_turn` for the Regierungsbefragung. Done: 3,047 turns of 26 Befragungen, rules and accuracy in
+   `docs/design.md` "Question turns".
 2. `question_turn` for the Fragestunde, linked to the DIP Frage; `question_text` from the "Fragen" Drucksachen.
 3. `question_text`, `question_table`, `question_parse` for Kleine and Große Anfragen. First measure on 20 random
    Anfragen how DIP's `drucksache-text` compares to the PDF, tables above all.

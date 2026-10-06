@@ -5,9 +5,13 @@ not before? If that sentence is hard to write, the release is not a finished ver
 
 ## Unreleased
 
-A consumer can now say which committees a Vorgang was referred to and which one leads it – EU-Vorlagen and bills
-alike – from DIP's Überweisung on each Vorgangsposition.
+A consumer can now follow each exchange of a Befragung der Bundesregierung – which turn asks, which answers, which
+follow-ups belong to which question – and say which committees a Vorgang was referred to.
 
+- New table `question_turn` (additive): the role of every turn of a Befragung der Bundesregierung (`einleitung`,
+  `frage`, `antwort`, `nachfrage`, `zusatzfrage`) and the question it belongs to (`thread_id`), from the
+  presidency's words in the protocol; `vorgang_id` is reserved for the Fragestunde. In the export with source
+  bundestag.de.
 - New table `vorgang_referral` (additive): one row per committee per Vorgangsposition, with DIP's committee name and
   short name, `lead` (federführend) and `kind` (ueberweisungsart); in the export with source DIP.
 

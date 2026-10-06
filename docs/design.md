@@ -123,6 +123,7 @@ when one changes. Rows carry their provenance (`source_url`, `source_document_id
 | `vorgang_referral` (`position_id, committee`) | DIP position id and DIP's committee name | when DIP renames the committee |
 | `mandate.id`, `membership.id` | `<person>/<wp>`, `<person>/<wp>/<k>` | `membership` `k` counts the Stammdaten entries of a person and Wahlperiode, so a new Stammdaten file can renumber them: join on the columns, not the id |
 | `interjection.id`, `speech_paragraph.id`, `agenda_item_paragraph.id` | `<speech or item id>/<position>/…` | with the speech or item |
+| `question_turn.speech_id`, `thread_id` | speech ids | with the speech |
 | `constituency.id`, `constituency_result.id`, `election_candidacy.id`, `mandate_successor.id` | `btw25/…` | never (the files are final; `mandate_successor` uses the list's running number) |
 | `government_role.id` | Wikidata statement id, else `<source_kind>:<person>:<kind>:<department key>` | when a better source takes the row over (`source_kind`) |
 | `side_job.id`, `aw_profile.aw_politician_id` | abgeordnetenwatch ids | never (aw's) |
@@ -153,6 +154,7 @@ them filled but must not fail on a NULL.
 | `speech.speaker_role` | the speaker spoke as a member; `fraction`: no fraction printed (government, Bundesrat, guests); `member_fraction`: not a member that day |
 | `speech.sub_item_id` | the item has no sub-items |
 | `speech.interruption`, `interruption_start` | the main speaker's part, or a Befragung/Fragestunde turn |
+| `question_turn.thread_id` | an opening statement (`einleitung`), which belongs to no question; `vorgang_id`: a Befragung turn (the Fragestunde is not read yet) |
 | `interjection.fraction`, `person_id`, `name`, `text` | not applicable to the actor or kind (applause has no text; a fraction's applause no person); `to_person_id`, `to_name`: addressed to the speaker |
 | `decision.drucksache_number` | the chair named none (an Einzelplan, an immunity matter); `result`: not read out in the protocol; `roll_call_vote_id`: show of hands, or the vote list is not out yet; `sub_item_id`: see the table; `vorgang_id`: not exactly one Vorgang; `dip_position_id`, `dip_result`: no single DIP step names it |
 | `roll_call_vote.drucksache_number`, `vorgang_id`, `link_method`, `agenda_item_id` | not linked |
@@ -189,6 +191,11 @@ Measured on the live store's data on 2026-10-04 (`bdf health` prints the current
 - **Known wrong value:** decision `21/14/p207` (the Greens' Faire-Mieten-Gesetz, 21/222) has the subject of the
   coalition's Mietpreisbremse bill, taken from an earlier introduction.
 - **Government roles from protocols** are evidence dates, not appointment dates (see `government_role`).
+- **Question turns** (`question_turn`) follow the presidency's words, which it chooses freely; where they say nothing
+  clear, the turn's structure decides (see "Question turns"). Checked by hand on four random samples of member turns
+  (230 in all); the errors in the first three shaped the rules, the last sample (50 turns, final rules) had none,
+  which still allows an error rate of a few percent. The doubtful cases are members called by fraction or name alone:
+  a question of their own, or a follow-up.
 - **Committee referrals** (`vorgang_referral`) name the committee as DIP spells it, which differs from the
   Stammdaten's `membership.name`; the foundation does not match the two. A referral exists only where DIP records it
   on a Vorgangsposition.
@@ -286,6 +293,29 @@ Also derived, by `ingest_speech_parts` after `ingest_groups`:
   where each question and answer is a turn of its own.
 - **`speech.interruption_start`**: the first part of the interruption a part belongs to, so a question over two
   parts counts once: count distinct `interruption_start` values, not parts.
+
+### Question turns
+
+**question_turn** `*speech_id →speech, role (einleitung | frage | antwort | nachfrage | zusatzfrage), thread_id →speech (the frage the turn belongs to; a frage's own id; NULL for an einleitung), vorgang_id →vorgang (Fragestunde: the DIP Mündliche Frage; NULL in the Befragung)`
+
+One row per turn of a Befragung der Bundesregierung, read from the parsed protocol while the presidency's words between
+two turns are still in order (`bdf/parse_question_turns.py`; the store keeps no position for agenda paragraphs between
+speeches). Replaced with the sitting's speeches on every ingest.
+
+- A government speaker gives an `einleitung` before the first question, an `antwort` after it; the answer belongs to
+  the open question. Government means `speech.speaker_group` Bundesregierung, or a person who spoke in a government
+  office earlier in the same Befragung (21/82 prints the minister answering as "Alois Rainer (CDU/CSU)").
+- A member's turn is a new question (`frage`) when the presidency calls one ("nächste Hauptfrage", "Fragerecht", "die
+  zweite Runde", "Themenkomplex"); a follow-up when it calls a Nachfrage ("Eine weitere Nachfrage hat …", "zu diesem
+  Komplex", "hat sich gemeldet") or the member opens with "Meine Nachfrage …". A follow-up by the asker is a
+  `nachfrage`, by another member a `zusatzfrage`.
+- Where the presidency only names the member or their fraction, the structure decides: a member who asks again after
+  the answer opened a question; one who asks once followed up. "Für die Fraktion … hat … das Wort" opens a question in
+  a Fraktionsrunde (21/49) and calls the fractions' follow-ups in turn in others (21/58), so it decides nothing.
+
+Who was questioned is read from the `einleitung` and `antwort` turns. Measured on 2026-10-06 (26 Befragungen, WP 21):
+46 opening statements, 450 questions (29 without the asker's Nachfrage), 429 Nachfragen, 629 Zusatzfragen, 1,493
+answers.
 
 ### Chair text and decisions
 

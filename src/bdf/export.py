@@ -123,6 +123,7 @@ TABLE_SOURCES = {
     "speech": ["bundestag"],
     "speech_paragraph": ["bundestag"],
     "interjection": ["bundestag"],
+    "question_turn": ["bundestag"],
     "decision": ["bundestag"],
     "decision_fraction": ["bundestag"],
     "roll_call_vote": ["bundestag", "dip"],

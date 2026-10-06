@@ -17,6 +17,7 @@ from bdf import (
     parse_comments,
     parse_decisions,
     parse_protocol,
+    parse_question_turns,
     parse_stammdaten,
     parse_votes,
     parse_wahl,
@@ -170,7 +171,7 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
             _replace_sub_items(conn, sid, [{**sub, **prov} for sub in protocol.agenda_sub_items])
             upsert(conn, "person", list(new_persons.values()))
             # a re-ingested protocol replaces its speeches wholesale
-            for child in ("interjection", "speech_paragraph"):
+            for child in ("interjection", "speech_paragraph", "question_turn"):
                 conn.execute(
                     f"DELETE FROM {child} WHERE speech_id IN (SELECT id FROM speech WHERE sitting_id = ?)", (sid,)
                 )
@@ -206,6 +207,7 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
                 ],
             )
             upsert(conn, "interjection", interjection_rows(protocol.speeches, resolver))
+            upsert(conn, "question_turn", parse_question_turns.turns(protocol))
             _drop_stale_agenda_items(conn, sid, {item["id"] for item in protocol.agenda_items})
         known.update(new_persons)
         from_pdf = [s for s in protocol.speeches if s.from_pdf]
