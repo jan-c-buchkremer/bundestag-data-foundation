@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dbtplenarprotokoll
+  SYSTEM "dbtplenarprotokoll.dtd">
+<dbtplenarprotokoll vertrieb="Bundesanzeiger Verlag GmbH, Postfach 1 0 05 34, 50445 Köln, Telefon (02 21) 97 66 83 40, Fax (02 21) 97 66 83 44, www.bundesanzeiger-verlag.de" herstellung="H. Heenemann GmbH  Co. KG, Buch- und Offsetdruckerei, Bessemerstraße 83–91, 12103 Berlin, www.heenemann-druck.de" sitzung-ort="Berlin" herausgeber="Deutscher Bundestag" issn="0722-7980" wahlperiode="21" sitzung-nr="53" sitzung-datum="15.01.2026" sitzung-start-uhrzeit="09:00" sitzung-ende-uhrzeit="22:12" sitzung-naechste-datum="16.01.2026" start-seitennr="6267">
+    <!-- EXCERPT for tests: Plenarprotokoll 21/53 (Deutscher Bundestag), reduced to the annex with the joint written answer to Fragen 32 and 33 of Drucksache 21/3521, which missed 21/52. Source: https://dserver.bundestag.de/btp/21/21053.xml -->
+<vorspann><kopfdaten>
+            <plenarprotokoll-nummer>Plenarprotokoll <wahlperiode>21</wahlperiode>/<sitzungsnr>53</sitzungsnr></plenarprotokoll-nummer>
+            <herausgeber>Deutscher Bundestag</herausgeber>
+            <berichtart>Stenografischer Bericht</berichtart>
+            <sitzungstitel><sitzungsnr>53</sitzungsnr>. Sitzung</sitzungstitel>
+            <veranstaltungsdaten><ort>Berlin</ort>, <datum date="15.01.2026">Donnerstag, den 15. Januar 2026</datum></veranstaltungsdaten>
+        </kopfdaten></vorspann>
+<sitzungsverlauf>
+        </sitzungsverlauf>
+    <anlagen>
+        <anlage>
+            <anlagen-titel><a id="ANL2" />Anlage 2 </anlagen-titel>
+            <anlagen-text anlagen-typ="Schriftliche Antworten auf die Fragen 20, 21, 22, 23, 24, 32 und 33 der Fragestunde (Drucksache 21/3521)">
+                <p klasse="Anlage_2">Schriftliche Antworten auf die Fragen 20, 21, 22, 23, 24, 32 und 33 der Fragestunde (Drucksache <a href="https://dserver.bundestag.de/btd/21/035/2103521.pdf">21/3521</a>)</p>
+                <p klasse="Anlage_2">Fragen 32 und 33</p>
+                <p klasse="O">Fragen des Abgeordneten Stefan Schmidt (BÜNDNIS 90/DIE GRÜNEN):</p>
+                <p klasse="p">Wie verteilen sich die bereits abgerufenen rund 4,8 Milliarden Euro für die Infrastruktur in den vom Hochwasser betroffenen Ländern aus dem Sondervermögen „Aufbauhilfefonds 2021“ auf die betroffenen Länder, betroffene Bürgerinnen und Bürger, Unternehmen und sonstige Einrichtungen (siehe Antwort der Bundesregierung auf meine Schriftliche Frage 17 auf Bundestagsdrucksache 21/3438), und wie hoch ist der Anteil der Härtefälle an den abgerufenen Mitteln (bitte absolut und relativ angeben)?</p>
+                <p klasse="p">Wie viele Anträge auf Entschädigungen aus dem Sondervermögen „Aufbauhilfefonds 2021“ sind aktuell noch in Bearbeitung, und mit welchem Mittelabfluss rechnet die Bundesregierung bis zum Auslaufen des Sondervermögens (bitte begründen)?</p>
+                <p klasse="O">Antwort des Parl. Staatssekretärs Dennis Rohde:</p>
+                <p klasse="J">Die erbetenen Angaben zum Mittelabfluss zu den einzelnen Programmen und Bundesländern sowie zur Anzahl der Anträge, der Anträge in Bearbeitung sowie der Härtefälle können der beigefügten Tabelle entnommen werden.</p>
+                <p klasse="J">Es liegen keine Kenntnisse zur Höhe des Anteils der Härtefälle an den abgerufenen Mitteln vor.</p>
+                <p klasse="J">Am 30. Juni 2026 endet die Frist zur Beantragung der Hilfen aus dem Sondervermögen „Aufbauhilfe 2021“; die Bewilligungsfrist endet am 31. Dezember 2030. Die Auszahlungen erfolgen stets nach der Bewilligung, d. h. unter Umständen auch nach dem Ende der Bewilligungsfrist.</p>
+                <p klasse="J">Eine aktuelle Abschätzung des voraussichtlich realen Schadensvolumens beim Sondervermögen „Aufbauhilfe 2021“ liegt derzeit nicht vor. Es ist zu beachten, dass bis zum Ende der Antragsfrist noch Anträge eingereicht werden können. Weiterhin können Baukostensteigerungen sowie erst im Zuge der Wiederherstellung einer Infrastrukturmaßnahme festgestellte weitere Schäden oder Ähnliches zu ausgabeerhöhenden Nachbewilligungen führen.</p>
+                <table orient="1">
+                    <caption>Hochwasserhilfe 2021; hier: Abfluss in Mio. Euro, Stand: 31. Dezember 2025
+Anlage mündliche Frage von MdB Stefan Schmidt (Bündnis 90/Die Grünen)</caption>
+                    <colgroup>
+                        <col width="8%" />
+                        <col width="28%" />
+                        <col width="9%" />
+                        <col width="11%" />
+                        <col width="8%" />
+                        <col width="12%" />
+                        <col width="8%" />
+                        <col width="8%" />
+                        <col width="8%" />
+                        <col width="8%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Kap./Tit.</th>
+                            <th>Länder-Programme</th>
+                            <th>insgesamt in Mio. Euro</th>
+                            <th>davon an</th>
+                            <th>in Mio. Euro</th>
+                            <th>Anzahl der 
+Anträge 
+(Stand: 30.06.2025)</th>
+                            <th>Offene 
+Anträge 
+(Stand: 30.06.2025)</th>
+                            <th>Anzahl der Härtefälle (Stand: 30.06.2025)</th>
+                            <th>Härtefälle in % (Stand: 30.06.2025)</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td colspan="9">Hinweis: Die Meldezeitpunkte der Bewirtschafter weichen teilweise leicht voneinander ab, was zum Teil auch an den Zulieferungen mit der Abwicklung befasster anderer Behörden liegt. Die Meldezeitpunkte sind jeweils ausgewiesen.</td>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        <tr>
+                            <td>6098 697 21</td>
+                            <td>Unterstützung von Hochwasser und Überschwemmungen betroffener Selbständiger, Unternehmen der gewerblichen Wirtschaft und Angehöriger freier Berufe sowie wirtschaftsnaher Infrastruktur</td>
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td>945</td>
+                            <td>Rheinland-Pfalz</td>
+                            <td>589,3</td>
+                            <td>1 061</td>
+                            <td>102</td>
+                            <td>134</td>
+                            <td>12,63</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Nordrhein-Westfalen</td>
+                            <td>353,6</td>
+                            <td>1 646</td>
+                            <td>45</td>
+                            <td>124</td>
+                            <td>7,53</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Bayern</td>
+                            <td>0,9</td>
+                            <td>25</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Sachsen</td>
+                            <td>0,8</td>
+                            <td>9</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td>6098 697 22</td>
+                            <td>Programm zur Unterstützung der betroffenen Land- und Forstwirtschaft, der Aquakultur und Binnenfischerei sowie zum Schadensausgleich in der ländlichen Infrastruktur im Außenbereich von Gemeinden</td>
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td>116,8</td>
+                            <td>Rheinland-Pfalz</td>
+                            <td>59,6</td>
+                            <td>872</td>
+                            <td>90</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Nordrhein-Westfalen</td>
+                            <td>49,5</td>
+                            <td>571</td>
+                            <td>48</td>
+                            <td>1</td>
+                            <td>0,18</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Bayern</td>
+                            <td>7,7</td>
+                            <td>138</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Sachsen</td>
+                            <td>0,02</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td>6098 698 22</td>
+                            <td>Programm zur Schadensbeseitigung bei kulturellen Einrichtungen und Kulturdenkmälern, zur Rettung von Archiven sowie für die Heimatgeschichte bedeutsamer privater Unterlagen</td>
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td>1,4</td>
+                            <td>Rheinland-Pfalz</td>
+                            <td>1,04</td>
+                            <td>14</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Nordrhein-Westfalen</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Bayern</td>
+                            <td>0,33</td>
+                            <td>4</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Sachsen</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td />
+                        </tr>
+                        <tr>
+                            <td>6098 698 23</td>
+                            <td>Programm zur Schadensbeseitigung bei Forschungseinrichtungen unabhängig von der Trägerschaft</td>
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td>2,3</td>
+                            <td>Nordrhein-Westfalen</td>
+                            <td>2,3</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>6098 882 22</td>
+                            <td>Programm zur Wiederherstellung der Infrastruktur der Länder</td>
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td>238</td>
+                            <td>Rheinland-Pfalz</td>
+                            <td>36,7</td>
+                            <td>87 Maßnahmen</td>
+                            <td align="center" colspan="3">k.A. Die Umsetzung und Bearbeitung der Maßnahmen erfolgen durch das jeweilige Land. Anträge werden nicht gestellt.</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Nordrhein-Westfalen</td>
+                            <td>193</td>
+                            <td>545 Maßnahmen</td>
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Bayern</td>
+                            <td>2,6</td>
+                            <td>23 Maßnahmen</td>
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Sachsen</td>
+                            <td>5,8</td>
+                            <td>14 Maßnahmen</td>
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td>6098 882 21</td>
+                            <td>Programm zur Wiederherstellung der Infrastruktur der Gemeinden</td>
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td>2 279</td>
+                            <td>Rheinland-Pfalz</td>
+                            <td>1 090,1</td>
+                            <td>1 908</td>
+                            <td>228</td>
+                            <td>5</td>
+                            <td>0,26</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Nordrhein-Westfalen</td>
+                            <td>1 116,0</td>
+                            <td>788</td>
+                            <td>132</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Bayern</td>
+                            <td>25,7</td>
+                            <td>193</td>
+                            <td>16</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Sachsen</td>
+                            <td>47,2</td>
+                            <td>505</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td>6098 698 21</td>
+                            <td>Programm zur Unterstützung von Hochwasser und Starkregen betroffener Privathaushalte und Wohnungsunternehmen</td>
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td>1 328</td>
+                            <td>Rheinland-Pfalz</td>
+                            <td>564,8</td>
+                            <td>17 275</td>
+                            <td>336</td>
+                            <td>143</td>
+                            <td>0,83</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Nordrhein-Westfalen</td>
+                            <td>759,9</td>
+                            <td>27 274</td>
+                            <td>1 724</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Bayern</td>
+                            <td>1,6</td>
+                            <td>149</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td />
+                            <td />
+                            <td>Sachsen</td>
+                            <td>1,4</td>
+                            <td>14</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0,00</td>
+                        </tr>
+                        <tr>
+                            <td />
+                            <td>Länderprogramme insgesamt circa</td>
+                            <td>4 909,9</td>
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                            <td />
+                        </tr>
+                    </tbody>
+                </table>
+                <p klasse="J">(52. Sitzung, 14.01.2026, Tagesordnungspunkt 2)</p>
+                <p klasse="Ende">Der gesamte und damit endgültige Stenografische Bericht der 53. Sitzung wird am 20. Januar 2026 veröffentlicht.</p>
+            </anlagen-text>
+        </anlage>
+    </anlagen>
+    
+</dbtplenarprotokoll>

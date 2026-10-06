@@ -1,6 +1,12 @@
-"""The spoken questions of a Befragung der Bundesregierung: which turn is a member of the government's opening
-statement, a question, an answer, the asker's Nachfrage or another member's Zusatzfrage, and which belong together
-(the question_turn table, docs/design.md "Question turns").
+"""The spoken questions of a Befragung der Bundesregierung and of a Fragestunde: which turn is a member of the
+government's opening statement, a question, an answer, the asker's Nachfrage or another member's Zusatzfrage, and
+which belong together (the question_turn table, docs/design.md "Question turns").
+
+In a Fragestunde the presidency calls each question and reads it out (bdf/parse_question_texts.py, which keeps the
+text), so the turns are the answer and the follow-ups: a turn belongs to the last question called before it, the
+government's turns are its ``antwort``, the asker's (the member the call names) a ``nachfrage``, anyone else's a
+``zusatzfrage``. ``thread_id`` is the first turn after the call, ``vorgang_id`` the DIP Mündliche Frage, filled in
+after the DIP ingest. The rest of this docstring is about the Befragung.
 
 Every turn of a Befragung is a ``Speech`` of its own (one ``<rede>`` each). Who speaks tells government from
 member; what the turn is comes from the presidency, who calls each turn ("Wir kommen zur nächsten Hauptfrage. Für
@@ -34,8 +40,9 @@ Measured on the 26 Befragungen of WP 21 to 2026-09-25: 46 opening statements, 45
 import re
 
 from bdf import government
-from bdf.names import GOVERNMENT, speaker_group
+from bdf.names import GOVERNMENT, normalize_name, speaker_group
 from bdf.parse_protocol import Protocol, Speech
+from bdf.parse_question_texts import spoken_calls
 
 BEFRAGUNG = "Befragung der Bundesregierung"  # agenda_item.kind befragung, by title (bdf/ingest.py)
 
@@ -153,14 +160,34 @@ def befragung_turns(speeches: list[Speech], agenda_paragraphs: list[dict]) -> li
     return rows
 
 
+def fragestunde_turns(speeches: list[Speech], calls: list[dict]) -> list[dict]:
+    """question_turn rows for the speeches of one Fragestunde, in order (module docstring). A turn before the first
+    call belongs to no question (thread_id None)."""
+    government_ids = {s.speaker.id for s in speeches if _is_government(s)}
+    rows = []
+    for s in speeches:
+        call = next((c for c in reversed(calls) if c["after_speeches"] < s.position), None)
+        if s.speaker.id in government_ids:
+            role = "antwort"
+        elif call and normalize_name(s.speaker.last_name).split()[-1] in normalize_name(call["name"]).split():
+            role = "nachfrage"
+        else:
+            role = "zusatzfrage"
+        rows.append({"speech_id": s.id, "role": role, "thread_id": call["thread_id"] if call else None})
+    return rows
+
+
 def turns(protocol: Protocol) -> list[dict]:
-    """question_turn rows (speech_id, role, thread_id, vorgang_id) for every Befragung der Bundesregierung of a
-    protocol."""
+    """question_turn rows (speech_id, role, thread_id, vorgang_id) for every Befragung der Bundesregierung and
+    Fragestunde of a protocol; vorgang_id is filled in after the DIP ingest."""
     rows: list[dict] = []
+    calls = spoken_calls(protocol)
     for item in protocol.agenda_items:
-        if not (item["title"] or "").startswith(BEFRAGUNG):
-            continue
         speeches = [s for s in protocol.speeches if s.agenda_item_id == item["id"]]
-        paragraphs = [p for p in protocol.agenda_paragraphs if p["agenda_item_id"] == item["id"]]
-        rows += [r | {"vorgang_id": None} for r in befragung_turns(speeches, paragraphs)]
+        if (item["title"] or "").startswith(BEFRAGUNG):
+            paragraphs = [p for p in protocol.agenda_paragraphs if p["agenda_item_id"] == item["id"]]
+            rows += [r | {"vorgang_id": None} for r in befragung_turns(speeches, paragraphs)]
+        elif any(s.kind == "fragestunde" for s in speeches):
+            item_calls = [c for c in calls if c["agenda_item_id"] == item["id"]]
+            rows += [r | {"vorgang_id": None} for r in fragestunde_turns(speeches, item_calls)]
     return rows

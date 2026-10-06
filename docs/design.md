@@ -124,6 +124,7 @@ when one changes. Rows carry their provenance (`source_url`, `source_document_id
 | `mandate.id`, `membership.id` | `<person>/<wp>`, `<person>/<wp>/<k>` | `membership` `k` counts the Stammdaten entries of a person and Wahlperiode, so a new Stammdaten file can renumber them: join on the columns, not the id |
 | `interjection.id`, `speech_paragraph.id`, `agenda_item_paragraph.id` | `<speech or item id>/<position>/…` | with the speech or item |
 | `question_turn.speech_id`, `thread_id` | speech ids | with the speech |
+| `question_text.id`, `question_table.id` | `<Fragen-Drucksache>/<number>/<part>`, `21/1949/6/antwort`; tables `…/<k>` | never (the Drucksache's numbering) |
 | `constituency.id`, `constituency_result.id`, `election_candidacy.id`, `mandate_successor.id` | `btw25/…` | never (the files are final; `mandate_successor` uses the list's running number) |
 | `government_role.id` | Wikidata statement id, else `<source_kind>:<person>:<kind>:<department key>` | when a better source takes the row over (`source_kind`) |
 | `side_job.id`, `aw_profile.aw_politician_id` | abgeordnetenwatch ids | never (aw's) |
@@ -154,7 +155,8 @@ them filled but must not fail on a NULL.
 | `speech.speaker_role` | the speaker spoke as a member; `fraction`: no fraction printed (government, Bundesrat, guests); `member_fraction`: not a member that day |
 | `speech.sub_item_id` | the item has no sub-items |
 | `speech.interruption`, `interruption_start` | the main speaker's part, or a Befragung/Fragestunde turn |
-| `question_turn.thread_id` | an opening statement (`einleitung`), which belongs to no question; `vorgang_id`: a Befragung turn (the Fragestunde is not read yet) |
+| `question_turn.thread_id` | an opening statement (`einleitung`), which belongs to no question; `vorgang_id`: a Befragung turn, or a Fragestunde question DIP has no Vorgang for |
+| `question_text.vorgang_id` | DIP has no Vorgang for the question (33 Mündliche Fragen); `drucksache_id`: the Fragen-Drucksache is not fetched; `answerer_person_id`: a frage row, or DIP names no person; `answer_date`: a frage row; `thread_id`: not answered in the Fragestunde; `name`: not printed |
 | `interjection.fraction`, `person_id`, `name`, `text` | not applicable to the actor or kind (applause has no text; a fraction's applause no person); `to_person_id`, `to_name`: addressed to the speaker |
 | `decision.drucksache_number` | the chair named none (an Einzelplan, an immunity matter); `result`: not read out in the protocol; `roll_call_vote_id`: show of hands, or the vote list is not out yet; `sub_item_id`: see the table; `vorgang_id`: not exactly one Vorgang; `dip_position_id`, `dip_result`: no single DIP step names it |
 | `roll_call_vote.drucksache_number`, `vorgang_id`, `link_method`, `agenda_item_id` | not linked |
@@ -196,6 +198,10 @@ Measured on the live store's data on 2026-10-04 (`bdf health` prints the current
   (230 in all); the errors in the first three shaped the rules, the last sample (50 turns, final rules) had none,
   which still allows an error rate of a few percent. The doubtful cases are members called by fraction or name alone:
   a question of their own, or a follow-up.
+- **Question texts** (`question_text`): 33 of the 1,613 Mündliche Fragen the protocols print have no DIP Vorgang;
+  128 written answers have no `answerer_person_id` (DIP names no person). Questions answered under Nr. 9 Satz 2 of
+  the Richtlinien für die Fragestunde have no text in the protocol and no row; the Fragen-Drucksachen, not read yet,
+  have it.
 - **Committee referrals** (`vorgang_referral`) name the committee as DIP spells it, which differs from the
   Stammdaten's `membership.name`; the foundation does not match the two. A referral exists only where DIP records it
   on a Vorgangsposition.
@@ -296,11 +302,19 @@ Also derived, by `ingest_speech_parts` after `ingest_groups`:
 
 ### Question turns
 
-**question_turn** `*speech_id →speech, role (einleitung | frage | antwort | nachfrage | zusatzfrage), thread_id →speech (the frage the turn belongs to; a frage's own id; NULL for an einleitung), vorgang_id →vorgang (Fragestunde: the DIP Mündliche Frage; NULL in the Befragung)`
+**question_turn** `*speech_id →speech, role (einleitung | frage | antwort | nachfrage | zusatzfrage), thread_id →speech (the question the turn belongs to: Befragung: its frage, a frage's own id, NULL for an einleitung; Fragestunde: the first turn after the call), vorgang_id →vorgang (Fragestunde: the DIP Mündliche Frage; NULL in the Befragung)`
 
-One row per turn of a Befragung der Bundesregierung, read from the parsed protocol while the presidency's words between
-two turns are still in order (`bdf/parse_question_turns.py`; the store keeps no position for agenda paragraphs between
-speeches). Replaced with the sitting's speeches on every ingest.
+One row per turn of a Befragung der Bundesregierung or a Fragestunde, read from the parsed protocol while the
+presidency's words between two turns are still in order (`bdf/parse_question_turns.py`; the store keeps no position for
+agenda paragraphs between speeches). Replaced with the sitting's speeches on every ingest.
+
+**Fragestunde.** The presidency calls each question and reads it out, so the question is a `question_text` row, not a
+turn. A turn belongs to the last question called before it: the government's turns are its `antwort`, the asker's (the
+member the call names) a `nachfrage`, anyone else's a `zusatzfrage`; `thread_id` is the first turn after the call, and
+`question_text.thread_id` points to it. `vorgang_id` is set with the question's (see "Question texts"). Measured on
+2026-10-06 (25 Fragestunden): 1,536 turns on 170 questions, 868 answers, 355 Nachfragen, 313 Zusatzfragen.
+
+**Befragung.**
 
 - A government speaker gives an `einleitung` before the first question, an `antwort` after it; the answer belongs to
   the open question. Government means `speech.speaker_group` Bundesregierung, or a person who spoke in a government
@@ -316,6 +330,35 @@ speeches). Replaced with the sitting's speeches on every ingest.
 Who was questioned is read from the `einleitung` and `antwort` turns. Measured on 2026-10-06 (26 Befragungen, WP 21):
 46 opening statements, 450 questions (29 without the asker's Nachfrage), 429 Nachfragen, 629 Zusatzfragen, 1,493
 answers.
+
+### Question texts
+
+**question_text** `*id ("<drucksache_number>/<number>/<part>"), vorgang_id →vorgang, drucksache_number (the Drucksache listing the question), drucksache_id →drucksache, position (order within the source document), part (frage | antwort), number, text (paragraphs joined by blank lines, tables left out), name (as printed: the asker; the answerer with office, "Parl. Staatssekretärs Stefan Rouenhoff"), answerer_person_id →person, answer_date, thread_id →speech (answered in the Fragestunde: the first turn), source_url, source_document_id, retrieved_at`
+
+**question_table** `*id ("<question_text_id>/<k>"), question_text_id →question_text, position (k), after_paragraph (how many of the text's paragraphs come before the table), cells (JSON {"caption", "head", "body", "foot"}: rows of cells, a cell its text or {"text", "colspan", "rowspan"})`
+
+The texts of the questions to the government (`bdf/parse_question_texts.py`). For now the Mündliche Fragen, all from
+the Plenarprotokoll, which prints every one of them:
+
+- **Called in the Fragestunde**: the chair's call ("Wir kommen zur Frage 3 des Abgeordneten Bernd Schattner, AfD:")
+  and the question it reads out; a call is a chair paragraph naming "Frage <n>" followed by the question before any
+  speech. The answer and the follow-ups are the turns (`question_turn`), so there is no `antwort` row.
+- **Answered in writing**: the annex "Schriftliche Antworten auf Fragen der Fragestunde (Drucksache …)", one entry per
+  question (or "Fragen 32 und 33"): the asker, the question, "Antwort des …", the answer, with tables kept as cells in
+  `question_table`. A joint answer is stored with each question it answers. An answer not there by the editorial
+  deadline is printed in a later protocol, which then holds the question too (protocols are ingested in order). A
+  misprinted annex title (21/20: "Drucksache 21/483" for 21/1483) takes the sitting's own Fragestunde Drucksache.
+
+Rows are replaced with their protocol on every ingest. After the DIP ingest, `ingest_question_links` sets
+`vorgang_id` (and the Fragestunde turns' `vorgang_id`), `answerer_person_id` and `drucksache_id`: DIP records each
+question's Frage activity in a protocol with the asker and the page but not the number, so within a protocol one
+asker's questions are paired with the Vorgänge DIP lists on the same Fragen-Drucksache, by the words the question
+shares with the Vorgang's title, else in order (DIP's page order can differ from the numbers: 21/49). A question left
+over takes an unpaired Vorgang of the same asker on its Fragen-Drucksache (DIP may record the Frage in a later
+protocol). Checked: no pair of one asker's questions shares more words with the other's title than with its own.
+
+Measured on 2026-10-06 (25 Fragen-Drucksachen in 27 protocols): 1,613 questions (169 called in the Fragestunde),
+1,580 with their Vorgang; 1,442 written answers, 74 tables in 54 of them.
 
 ### Chair text and decisions
 
