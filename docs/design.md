@@ -21,7 +21,9 @@ data/
       stammdaten/MdB-Stammdaten.zip          # + extracted MDB_STAMMDATEN.XML
       protocols/21/21094.xml                 # dserver.bundestag.de/btp/21/21094.xml
       drucksachen/21/2101095.pdf             # dserver.bundestag.de/btd/21/010/2101095.pdf: the answers to Kleine
-                                             # and Große Anfragen the DIP data lists (+ .answer.json, the parse)
+                                             # and Große Anfragen (+ .answer.json, the parse) and the
+                                             # Sammeldrucksachen of Schriftliche Fragen (+ .schriftliche.json) the
+                                             # DIP data lists
       votes/20260710_7-xls.xlsx (+ .pdf)     # + votes/index.json (list rows: date, title, urls)
     dip/
       drucksache/2026-07-06_2026-07-10.json  # list responses, one file per fetched range
@@ -159,7 +161,7 @@ them filled but must not fail on a NULL.
 | `speech.sub_item_id` | the item has no sub-items |
 | `speech.interruption`, `interruption_start` | the main speaker's part, or a Befragung/Fragestunde turn |
 | `question_turn.thread_id` | an opening statement (`einleitung`), which belongs to no question; `vorgang_id`: a Befragung turn, or a Fragestunde question DIP has no Vorgang for |
-| `question_text.vorgang_id` | DIP has no Vorgang for the question (33 Mündliche Fragen); `drucksache_id`: the Drucksache is not fetched; `number`: a preliminary remark; `answerer_person_id`: a frage row, an answer to an Anfrage (a ministry answers), or DIP names no person; `answer_date`: a frage row or the askers' preliminary remark; `thread_id`: not answered in the Fragestunde; `name`: not printed, a frage row of an Anfrage |
+| `question_text.vorgang_id` | DIP has no Vorgang for the question (33 Mündliche Fragen); `drucksache_id`: the Drucksache is not fetched; `number`: a preliminary remark; `answerer_person_id`: a frage row, an answer to an Anfrage (a ministry answers), or DIP names no person (Mündliche and Schriftliche Fragen take it from DIP's Antwort activity); `answer_date`: a frage row or the askers' preliminary remark; `thread_id`: not answered in the Fragestunde; `name`: not printed, a frage row of an Anfrage |
 | `question_parse.source_document_id` | the Anfrage is not answered |
 | `interjection.fraction`, `person_id`, `name`, `text` | not applicable to the actor or kind (applause has no text; a fraction's applause no person); `to_person_id`, `to_name`: addressed to the speaker |
 | `decision.drucksache_number` | the chair named none (an Einzelplan, an immunity matter); `result`: not read out in the protocol; `roll_call_vote_id`: show of hands, or the vote list is not out yet; `sub_item_id`: see the table; `vorgang_id`: not exactly one Vorgang; `dip_position_id`, `dip_result`: no single DIP step names it |
@@ -202,6 +204,9 @@ Measured on the live store's data on 2026-10-04 (`bdf health` prints the current
   (230 in all); the errors in the first three shaped the rules, the last sample (50 turns, final rules) had none,
   which still allows an error rate of a few percent. The doubtful cases are members called by fraction or name alone:
   a question of their own, or a follow-up.
+- **Schriftliche Fragen** (`question_text`): 104 of 9,862 have no DIP Vorgang (DIP lacks them: 24 in 21/7670, 76 in
+  21/7980, one each in 21/4006, 21/4573, 21/4657 and 21/7311); 10 DIP Vorgänge keep a question a second time and
+  have no texts (`question_parse` `failed`).
 - **Answers to Anfragen** (`question_text`): tables without ruling, or ruled only in their head, are not read
   (`{"extracted": false, "page": n}`; 108 of 1,542 tables in a sample of 149 answers, 81 of them in one statistics
   annex). Footnotes and notes under tables are left out. The answers are read from their PDFs, fetched the night
@@ -345,11 +350,11 @@ answers.
 
 **question_table** `*id ("<question_text_id>/<k>"), question_text_id →question_text, position (k), after_paragraph (how many of the text's paragraphs come before the table), cells (JSON {"caption", "head", "body", "foot"}: rows of cells, a cell its text or {"text", "colspan", "rowspan"}; a table whose cells are not read: {"extracted": false, "page": n})`
 
-**question_parse** `*vorgang_id →vorgang, status (complete | partial | unanswered | failed), questions (read), answered (… of them with an answer), source_document_id (the document read)` — per Vorgang, so a page can tell "not answered yet" from "answered, but not read". Kleine and Große Anfragen: `unanswered` when DIP lists no answer, `failed` when its PDF is not read (not fetched yet, or no question found), `complete` when every question read has an answer, else `partial`. Mündliche Fragen in the protocols: `complete` (answered in writing or in the Fragestunde) or `unanswered`. Recomputed after every DIP ingest.
+**question_parse** `*vorgang_id →vorgang, status (complete | partial | unanswered | failed), questions (read), answered (… of them with an answer), source_document_id (the document read)` — per Vorgang, so a page can tell "not answered yet" from "answered, but not read". Kleine and Große Anfragen: `unanswered` when DIP lists no answer, `failed` when its PDF is not read (not fetched yet, or no question found), `complete` when every question read has an answer, else `partial`. Mündliche Fragen in the protocols: `complete` (answered in writing or in the Fragestunde) or `unanswered`. Schriftliche Fragen: `complete`, `unanswered` (the Sammeldrucksache prints no answer) or `failed` (not read: the Sammeldrucksache is not fetched yet, or the question was not found in it). Recomputed after every DIP ingest.
 
 The texts of the questions to the government. Mündliche Fragen come from the Plenarprotokoll, which prints every one
-of them (`bdf/parse_question_texts.py`); Kleine and Große Anfragen from the PDF of the answer (`bdf/parse_answers.py`,
-see below).
+of them (`bdf/parse_question_texts.py`); Kleine and Große Anfragen from the PDF of the answer (`bdf/parse_answers.py`);
+Schriftliche Fragen from the PDF of their weekly Sammeldrucksache (`bdf/parse_schriftliche.py`); see below.
 
 **Mündliche Fragen:**
 
@@ -386,6 +391,24 @@ gives every row the answer's Vorgang and the Anfrage's DIP id.
 Measured on 2026-10-06 on 149 random answers and the 7 answers to Große Anfragen online: every answer gave its
 Anfrage, ministry and date; the questions of every answer form 1 … N without gaps (sub-questions besides), each with
 an answer; 1,542 tables, 108 not read (above).
+
+**Schriftliche Fragen.** Each week's questions and answers are printed together in a Sammeldrucksache ("Schriftliche
+Fragen mit den in der Woche vom … eingegangenen Antworten der Bundesregierung"), fetched with the answers to Anfragen
+(DIP type "Schriftliche Fragen") and read by `bdf/parse_schriftliche.py`, with the helpers of `bdf/parse_answers.py`
+(rules in its docstring): per question the number, the asker and Fraktion (left column), the question (right column),
+the ministry, the answerer's heading with the date ("Antwort des Parlamentarischen Staatssekretärs … vom 8. Juli
+2026") and the answer; joint answers are stored with each question; reading stops at "Berlin, den …", before the
+annexes some Sammeldrucksachen carry. Rows are keyed by the Sammeldrucksache and the number, `21/7052/36/frage`;
+`name` holds the asker on the question, the answerer's heading on the answer. `ingest_question_links` takes the
+Vorgang DIP gives the number ("36", or "36, 37" for one Vorgang over two questions), if DIP names the same asker; a
+question left over takes the Vorgang of the same asker in the Sammeldrucksache that no question took, the one with the
+closest number (DIP shifts some numbers: 21/7052 gives 2 to the asker of 3); where DIP keeps one question as two
+Vorgänge (21/297, 77), the later one. The answerer comes from DIP's Antwort activity.
+
+Measured on 2026-10-06 on all 75 Sammeldrucksachen the DIP data lists: 9,862 questions, each with an answer, the
+numbers as DIP has them except where DIP lacks questions (21/7670, 21/7980) or misnumbers one (21/4006); 9,758 linked
+to their Vorgang, 7,474 answers with the answerer's person; 1,507 tables, 4 not read; 2 answers without a date (the
+year misprinted, "202S", "20626").
 
 ### Chair text and decisions
 
@@ -615,7 +638,7 @@ bdf fetch dip --from 2026-07-06 --to 2026-07-10     # drucksachen, authors, vorg
 bdf fetch aw --wp 21
 bdf fetch photos                                    # bundestag.de biography list + portraits
 bdf fetch government                                # Wikidata roster + Commons portraits
-bdf fetch answers --wp 21                           # PDFs of the answers to Kleine/Große Anfragen DIP lists
+bdf fetch answers --wp 21                           # PDFs of the answers to Anfragen and of Schriftliche Fragen
 bdf ingest                                          # everything under data/raw → sqlite
 bdf health                                          # rows per table and problem counts against the last update's snapshot
 bdf query speeches   --person 11004006 --from … --to …

@@ -1,5 +1,5 @@
 """Download bundestag.de: Stammdaten, Plenarprotokoll XML, roll-call vote XLSX, the MdB biography list and portraits,
-and the PDFs of the answers to Kleine and Große Anfragen."""
+and the PDFs of the answers to Kleine and Große Anfragen and of the Sammeldrucksachen of Schriftliche Fragen."""
 
 import re
 import time
@@ -42,21 +42,24 @@ def answer_path(number: str) -> Path:
 
 
 def answers_listed(wp: int) -> list[tuple[str, str]]:
-    """(number, pdf_url) of every answer to a Kleine or Große Anfrage in the fetched DIP Drucksachen of the
-    Wahlperiode (data/raw/dip/drucksache/), in number order."""
+    """(number, pdf_url) of every answer to a Kleine or Große Anfrage and every Sammeldrucksache of Schriftliche
+    Fragen (questions and answers) in the fetched DIP Drucksachen of the Wahlperiode (data/raw/dip/drucksache/), in
+    number order."""
     found: dict[str, str] = {}
     for path in raw.data_files(fetch_dip.dip_dir() / "drucksache", "*.json"):
         for d in raw.read_json(path):
             url = (d.get("fundstelle") or {}).get("pdf_url")
-            if (d.get("wahlperiode") == wp and d.get("drucksachetyp") == "Antwort" and d.get("herausgeber") == "BT"
-                    and _ANSWER_TITLE.match(d.get("titel") or "") and url):  # fmt: skip
+            kind = d.get("drucksachetyp")
+            answer = kind == "Antwort" and _ANSWER_TITLE.match(d.get("titel") or "")
+            if d.get("wahlperiode") == wp and d.get("herausgeber") == "BT" and url and (
+                    answer or kind == "Schriftliche Fragen"):  # fmt: skip
                 found[DRUCKSACHE_RE.search(d["dokumentnummer"]).group(1)] = url  # DIP has "21/8057."
     return sorted(found.items(), key=lambda item: int(item[0].split("/")[1]))
 
 
 def fetch_answer_pdfs(http: httpx.Client, wp: int, *, force: bool = False) -> list[Path]:
-    """Download the PDF of every answer to a Kleine or Große Anfrage that DIP lists and is not on disk yet (all of
-    them with ``force``), at DIP's request rate. Returns the downloaded paths. DIP lists an answer a day or so before
+    """Download the PDF of every answer and Sammeldrucksache (``answers_listed``) not on disk yet (all of them with
+    ``force``), at DIP's request rate. Returns the downloaded paths. DIP lists an answer a day or so before
     dserver serves its PDF: a 404 is skipped and tried again on the next run."""
     new = []
     for number, url in answers_listed(wp):

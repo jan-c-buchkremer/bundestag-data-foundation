@@ -21,6 +21,7 @@ from bdf import (
     parse_protocol,
     parse_question_texts,
     parse_question_turns,
+    parse_schriftliche,
     parse_stammdaten,
     parse_votes,
     parse_wahl,
@@ -440,6 +441,7 @@ def ingest_question_links(conn: sqlite3.Connection) -> None:
         if hit := next((r for r in pool if surname(r["name"]) in words), None):
             pool.remove(hit)
             links.append((hit["vorgang_id"], q["drucksache_number"], q["number"], q["thread_id"], sitting))
+    known = {r[0] for r in conn.execute("SELECT id FROM vorgang")}  # DIP's activities can name a Vorgang not fetched
     drucksache_ids = dict(conn.execute("SELECT number, id FROM drucksache"))
     with conn:
         conn.execute("UPDATE question_text SET vorgang_id = NULL, answerer_person_id = NULL, drucksache_id = NULL")
@@ -451,10 +453,11 @@ def ingest_question_links(conn: sqlite3.Connection) -> None:
         conn.executemany(
             "UPDATE question_text SET vorgang_id = ?, answerer_person_id = CASE WHEN part = 'antwort' THEN ? END "
             "WHERE drucksache_number = ? AND number = ? AND source_document_id = 'BT-PlPr. ' || ?",
-            [(v, answerer.get(v), d, n, s) for v, d, n, _, s in links],
+            [(v, answerer.get(v), d, n, s) for v, d, n, _, s in links if v in known],
         )
         conn.executemany(
-            "UPDATE question_turn SET vorgang_id = ? WHERE thread_id = ?", [(v, t) for v, _, _, t, _ in links if t]
+            "UPDATE question_turn SET vorgang_id = ? WHERE thread_id = ?",
+            [(v, t) for v, _, _, t, _ in links if t and v in known],
         )
     total = sum(len(r) for r in questions.values())
     print(
@@ -466,7 +469,55 @@ def ingest_question_links(conn: sqlite3.Connection) -> None:
 
 
 def _link_answers(conn: sqlite3.Connection) -> None:
-    """The texts read from the answer to a Kleine or Große Anfrage belong to the Vorgang of that answer."""
+    """The texts read from the answer to a Kleine or Große Anfrage belong to the Vorgang of that answer; those of a
+    Schriftliche Frage to the Vorgang DIP gives its number in the Sammeldrucksache ("36", or "36, 37" for a joint
+    answer), and their answer to the person DIP names. Where DIP gives a number twice (21/4006: 34 for Limburg and for
+    Kaufmann, whose question the PDF numbers 35), the asker's name decides, and it must agree with DIP's in any case;
+    where DIP keeps one question as two Vorgänge (21/297, 77), the later one is taken. A question left over (DIP shifts
+    some numbers: 21/7052 gives 2 to Maack, whose question the PDF numbers 3) takes the Vorgang of the same asker in
+    the same Sammeldrucksache that no question took, the one whose number is closest."""
+    schriftlich: dict[tuple[str, str], list[tuple[str, str]]] = defaultdict(list)  # (doc, number) -> (vorgang, asker)
+    for r in conn.execute(
+        "SELECT document_number, question_numbers, vorgang_id, name FROM question_activity "
+        "WHERE question_type = 'Schriftliche Frage' AND activity_type = 'Frage' AND document_kind = 'Drucksache'"
+    ):
+        for number in re.findall(r"\d+", r["question_numbers"] or ""):
+            schriftlich[(f"BT-Drs. {r['document_number']}", number)].append((r["vorgang_id"], r["name"]))
+    answerer = dict(
+        conn.execute(
+            "SELECT vorgang_id, person_id FROM question_activity WHERE question_type = 'Schriftliche Frage' "
+            "AND activity_type = 'Antwort' AND person_id IS NOT NULL"
+        )
+    )
+
+    def asker(dip_name: str) -> str:
+        return normalize_name(dip_name.split(",")[0]).split()[-1]
+
+    links = []
+    left = []
+    for r in conn.execute(
+        "SELECT number, name, source_document_id FROM question_text WHERE part = 'frage' AND source_document_id IN "
+        "(SELECT 'BT-Drs. ' || number FROM drucksache WHERE type = 'Schriftliche Fragen')"
+    ):
+        words = normalize_name(r["name"] or "").split()  # the asker must agree with DIP's
+        candidates = [c for c in schriftlich.get((r["source_document_id"], r["number"]), []) if asker(c[1]) in words]
+        if candidates:  # DIP keeps some questions twice, as two Vorgänge (21/297, 77): the later one
+            links.append((max(candidates, key=lambda c: (len(c[0]), c[0]))[0], r["source_document_id"], r["number"]))
+        else:
+            left.append((r["source_document_id"], r["number"], words))
+    taken = {v for v, _, _ in links}
+    pool = defaultdict(dict)  # doc -> vorgang -> (asker, numbers) of the Vorgänge no question took
+    for (doc, number), candidates in schriftlich.items():
+        for v, name in candidates:
+            if v not in taken:
+                pool[doc].setdefault(v, (asker(name), []))[1].append(int(number))
+    for doc, number, words in left:
+        mine = [(min(abs(n - int(number)) for n in ns), v) for v, (a, ns) in pool[doc].items() if a in words]
+        if mine:
+            v = min(mine)[1]
+            del pool[doc][v]
+            links.append((v, doc, number))
+    known = {r[0] for r in conn.execute("SELECT id FROM vorgang")}
     vorgang_of = dict(
         conn.execute(
             """SELECT 'BT-Drs. ' || d.number, vd.vorgang_id FROM drucksache d
@@ -479,13 +530,20 @@ def _link_answers(conn: sqlite3.Connection) -> None:
             "UPDATE question_text SET vorgang_id = ? WHERE source_document_id = ?",
             [(v, doc) for doc, v in vorgang_of.items()],
         )
+        conn.executemany(
+            "UPDATE question_text SET vorgang_id = ?, answerer_person_id = CASE WHEN part = 'antwort' THEN ? END "
+            "WHERE source_document_id = ? AND number = ?",
+            [(v, answerer.get(v), doc, number) for v, doc, number in links if v in known],
+        )
 
 
 def _question_parse(conn: sqlite3.Connection) -> None:
     """question_parse: per Vorgang whether its question texts are all there. Kleine and Große Anfragen: unanswered
     (DIP lists no answer), failed (the answer's PDF is not read: not fetched yet, or no question found in it),
     complete (every question read has an answer), partial (some have none). Mündliche Fragen in the protocols:
-    complete (answered in writing or in the Fragestunde), unanswered."""
+    complete (answered in writing or in the Fragestunde), unanswered. Schriftliche Fragen: complete, unanswered (the
+    Sammeldrucksache prints no answer), failed (not read: the Sammeldrucksache is not fetched, or the question not
+    found in it)."""
     rows = []
     answers = defaultdict(list)
     for r in conn.execute(
@@ -518,6 +576,15 @@ def _question_parse(conn: sqlite3.Connection) -> None:
            AND f.source_document_id LIKE 'BT-PlPr. %' GROUP BY vorgang_id"""
     ):
         rows.append((r[0], "complete" if r[3] else "unanswered", r[2], r[3], r[1]))
+    for r in conn.execute(
+        """SELECT v.id, (SELECT 'BT-Drs. ' || max(document_number) FROM question_activity qa
+                         WHERE qa.vorgang_id = v.id AND qa.document_kind = 'Drucksache'),
+                  EXISTS (SELECT 1 FROM question_text f WHERE f.vorgang_id = v.id AND f.part = 'frage'),
+                  EXISTS (SELECT 1 FROM question_text a WHERE a.vorgang_id = v.id AND a.part = 'antwort')
+           FROM vorgang v WHERE v.type = 'Schriftliche Frage'"""
+    ):
+        status = "complete" if r[3] else "unanswered" if r[2] else "failed"
+        rows.append((r[0], status, int(r[2]), int(r[3]), r[1]))
     with conn:
         conn.execute("DELETE FROM question_parse")
         conn.executemany("INSERT OR REPLACE INTO question_parse VALUES (?, ?, ?, ?, ?)", rows)
@@ -528,14 +595,18 @@ def _question_parse(conn: sqlite3.Connection) -> None:
 
 
 def ingest_answers(conn: sqlite3.Connection) -> None:
-    """The answers to Kleine and Große Anfragen (bdf/parse_answers.py): question_text and question_table rows from
-    each PDF, which replace the rows read from it before."""
-    n = 0
+    """The answers to Kleine and Große Anfragen (bdf/parse_answers.py) and the Sammeldrucksachen of Schriftliche
+    Fragen (bdf/parse_schriftliche.py, by the Drucksache's DIP type): question_text and question_table rows from each
+    PDF, which replace the rows read from it before."""
+    sammel = {r[0] for r in conn.execute("SELECT number FROM drucksache WHERE type = 'Schriftliche Fragen'")}
+    n = k = 0
     for path in raw.data_files(answers_dir(), "*/*.pdf"):
         wp, number = path.stem[:2], str(int(path.stem[2:]))
         prov = raw.read_meta(path).provenance(f"BT-Drs. {wp}/{number}")
+        parser = parse_schriftliche if f"{wp}/{number}" in sammel else parse_answers
+        k += parser is parse_schriftliche
         try:
-            texts, tables = parse_answers.rows(parse_answers.parse(path), f"{wp}/{number}")
+            texts, tables = parser.rows(parser.parse(path), f"{wp}/{number}")
         except Exception as e:  # a PDF pdfplumber cannot read: question_parse says "failed"
             print(f"answers: {path.name} not read: {e!r}")
             texts, tables = [], []
@@ -549,7 +620,7 @@ def ingest_answers(conn: sqlite3.Connection) -> None:
             upsert(conn, "question_text", [t | prov for t in texts])
             upsert(conn, "question_table", tables)
         n += 1
-    print(f"answers: {n} answers to Kleine and Große Anfragen read")
+    print(f"answers: {n} PDFs read, {k} of them Sammeldrucksachen of Schriftliche Fragen")
 
 
 def ingest_dip(conn: sqlite3.Connection) -> None:

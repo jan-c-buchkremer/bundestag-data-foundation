@@ -110,7 +110,9 @@ nothing itself; what it misses comes back here as a requirement.
    Große Anfragen online, every answer gives its Anfrage, ministry and date and its questions 1 … N, each with an
    answer; 108 of 1,542 tables (without ruling) are marked as not read, with their page. `question_parse` came
    with it, for the Mündliche Fragen too.
-4. `question_text` split out of the Schriftliche Fragen Sammeldrucksachen.
+4. `question_text` split out of the Schriftliche Fragen Sammeldrucksachen. Done (`bdf/parse_schriftliche.py`,
+   `docs/design.md` "Question texts"): all 75 Sammeldrucksachen, 9,862 questions each with its answer, 9,758 linked
+   to their DIP Vorgang (the rest DIP lacks).
 
 ## Not now
 

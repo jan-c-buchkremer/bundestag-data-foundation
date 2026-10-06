@@ -119,7 +119,8 @@ def test_store(data_dir):
     ingest.ingest_question_links(conn)
     linked = "SELECT count(*) = count(vorgang_id), count(DISTINCT drucksache_id) FROM question_text"
     assert q(linked) == [(1, 1)]
-    assert q("SELECT vorgang_id, status, questions, answered, source_document_id FROM question_parse ORDER BY 1") == [
+    parse = "SELECT * FROM question_parse WHERE vorgang_id IN ('k1', 'k2') ORDER BY 1"
+    assert q(parse) == [
         ("k1", "complete", 35, 35, "BT-Drs. 21/1343"), ("k2", "unanswered", 0, 0, None),
     ]  # fmt: skip
 
