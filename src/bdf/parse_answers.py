@@ -166,13 +166,21 @@ def _cells(rows: list[list]) -> list[list]:
     return [[clean(c) for c in row] for row in rows]
 
 
+def pages(pdf: pdfplumber.PDF):
+    """(number, page) one by one, each page closed once the caller is done with it: pdfplumber keeps a page's
+    objects until the file is closed, which took the 37 MB answer 21/2974 past 6 GB."""
+    for n, page in enumerate(pdf.pages, start=1):
+        yield n, page
+        page.close()
+
+
 def read(path: Path) -> tuple[list, str]:
     """The PDF as one stream of body lines and tables (("line", Line) | ("table", rows)), in reading order, and the
     text of page 1's title block and foot (for the Anfrage's number, the ministry and the date)."""
     stream: list = []
     head = []
     with pdfplumber.open(path) as pdf:
-        for n, page in enumerate(pdf.pages, start=1):
+        for n, page in pages(pdf):
             tables = []
             for t in page.find_tables():
                 rows = t.extract()
