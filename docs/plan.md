@@ -95,7 +95,21 @@ nothing itself; what it misses comes back here as a requirement.
    answered in writing in the annex, and the written answers too; `question_table` came with them (74 tables in
    answers). 1,613 questions, 1,580 linked to their DIP Vorgang; `docs/design.md` "Question texts".
 3. `question_text`, `question_table`, `question_parse` for Kleine and Große Anfragen. First measure on 20 random
-   Anfragen how DIP's `drucksache-text` compares to the PDF, tables above all.
+   Anfragen how DIP's `drucksache-text` compares to the PDF, tables above all. Measured 2026-10-06 on the answers
+   to 20 random Kleine Anfragen (the Antwort-Drucksache reprints every question and preliminary remark):
+   - DIP's text is the PDF's text layer, line by line. It loses what tells a question from its answer (the
+     question is set smaller: 9.6 pt against 10.7 pt, in all 20), flattens tables into lines of numbers ("deutsch
+     5 711 5 375 1 493 …", ambiguous with spaces as thousands separators) and puts page footers mid-text.
+   - The PDF read with pdfplumber gives both: font sizes, and tables with correct cells (7 of 20 answers have tables,
+     160 in all, every one ruled; no numeric lines left outside them). 40 tables continue on the next page and need
+     joining; blank padding pages carry nothing; no answer was a scan.
+   - So the texts come from the PDF, not from `drucksache-text`. That means fetching the PDF of every answer:
+     2,660 now, about 1.1 GB at about 420 KB each, from dserver.bundestag.de at the DIP rate (2 per second, about 25
+     minutes once), then only the new ones each night. Reading them takes about 80 minutes once (cached after).
+   Done (`bdf/parse_answers.py`, `docs/design.md` "Question texts"): on 149 random answers and the 7 answers to
+   Große Anfragen online, every answer gives its Anfrage, ministry and date and its questions 1 … N, each with an
+   answer; 108 of 1,542 tables (without ruling) are marked as not read, with their page. `question_parse` came
+   with it, for the Mündliche Fragen too.
 4. `question_text` split out of the Schriftliche Fragen Sammeldrucksachen.
 
 ## Not now

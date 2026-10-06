@@ -126,6 +126,7 @@ TABLE_SOURCES = {
     "question_turn": ["bundestag", "dip"],
     "question_text": ["bundestag", "dip"],
     "question_table": ["bundestag"],
+    "question_parse": ["bundestag", "dip"],
     "decision": ["bundestag"],
     "decision_fraction": ["bundestag"],
     "roll_call_vote": ["bundestag", "dip"],

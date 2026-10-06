@@ -59,7 +59,9 @@ def build_parser() -> argparse.ArgumentParser:
     fw.add_argument("--election", default="btw25", choices=sorted(fetch_wahl.ELECTIONS))
     fph = fs.add_parser("photos", help="bundestag.de MdB biography list (all pages) and the portraits")
     fs.add_parser("government", help="Wikidata: federal government roles since 2025-05-06, Commons portraits")
-    for sp in (fp, fv, fd, fa, fw, fph):
+    fan = fs.add_parser("answers", help="PDFs of the answers to Kleine and Große Anfragen the fetched DIP data lists")
+    fan.add_argument("--wp", type=int, default=21)
+    for sp in (fp, fv, fd, fa, fw, fph, fan):
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")
 
     sub.add_parser("ingest", help="parse everything under data/raw into the SQLite store")
@@ -135,6 +137,9 @@ def cmd_fetch(args: argparse.Namespace) -> None:
         elif args.source == "photos":
             cards = fetch_bundestag.fetch_biografien(http, force=args.force)
             print(f"{len(cards)} biography cards, portraits in {fetch_bundestag.fotos_dir()}")
+        elif args.source == "answers":
+            new = fetch_bundestag.fetch_answer_pdfs(http, args.wp, force=args.force)
+            print(f"{len(new)} answer PDFs downloaded to {fetch_bundestag.answers_dir()}")
         elif args.source == "government":
             roles = fetch_wikidata.fetch_government(http)
             print(f"{len(roles)} result rows in {fetch_wikidata.government_path()}")

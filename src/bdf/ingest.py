@@ -14,6 +14,7 @@ from pathlib import Path
 from bdf import (
     fetch_wikidata,
     government,
+    parse_answers,
     parse_biografien,
     parse_comments,
     parse_decisions,
@@ -31,6 +32,7 @@ from bdf.db import upsert
 from bdf.fetch_aw import aw_dir, mandates_path
 from bdf.fetch_bundestag import (
     PROTOCOL_URL,
+    answers_dir,
     biografien_dir,
     photo_path,
     protocols_dir,
@@ -66,6 +68,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_protocols(conn)
     ingest_votes(conn)
     ingest_dip(conn)
+    ingest_answers(conn)
     ingest_question_links(conn)
     ingest_decisions(conn)
     ingest_vorlagen(conn)
@@ -458,6 +461,95 @@ def ingest_question_links(conn: sqlite3.Connection) -> None:
         f"questions: {len(links)} of {total} Mündliche Fragen in the protocols matched to their DIP Vorgang "
         f"({len(links) - len(taken)} by Fragen-Drucksache and asker)"
     )
+    _link_answers(conn)
+    _question_parse(conn)
+
+
+def _link_answers(conn: sqlite3.Connection) -> None:
+    """The texts read from the answer to a Kleine or Große Anfrage belong to the Vorgang of that answer."""
+    vorgang_of = dict(
+        conn.execute(
+            """SELECT 'BT-Drs. ' || d.number, vd.vorgang_id FROM drucksache d
+               JOIN vorgang_drucksache vd ON vd.drucksache_id = d.id JOIN vorgang v ON v.id = vd.vorgang_id
+               WHERE d.type = 'Antwort' AND v.type IN ('Kleine Anfrage', 'Große Anfrage')"""
+        )
+    )
+    with conn:
+        conn.executemany(
+            "UPDATE question_text SET vorgang_id = ? WHERE source_document_id = ?",
+            [(v, doc) for doc, v in vorgang_of.items()],
+        )
+
+
+def _question_parse(conn: sqlite3.Connection) -> None:
+    """question_parse: per Vorgang whether its question texts are all there. Kleine and Große Anfragen: unanswered
+    (DIP lists no answer), failed (the answer's PDF is not read: not fetched yet, or no question found in it),
+    complete (every question read has an answer), partial (some have none). Mündliche Fragen in the protocols:
+    complete (answered in writing or in the Fragestunde), unanswered."""
+    rows = []
+    answers = defaultdict(list)
+    for r in conn.execute(
+        """SELECT v.id, d.number FROM vorgang v LEFT JOIN vorgang_drucksache vd ON vd.vorgang_id = v.id
+           LEFT JOIN drucksache d ON d.id = vd.drucksache_id AND d.type = 'Antwort'
+           WHERE v.type IN ('Kleine Anfrage', 'Große Anfrage')"""
+    ):
+        answers[r[0]] += [r[1]] if r[1] else []
+    counts = {
+        r[0]: (r[1], r[2])
+        for r in conn.execute(
+            """SELECT f.source_document_id, count(*), sum(EXISTS (SELECT 1 FROM question_text a
+                   WHERE a.part = 'antwort' AND a.source_document_id = f.source_document_id AND a.number = f.number))
+               FROM question_text f WHERE f.part = 'frage' AND f.source_document_id LIKE 'BT-Drs. %'
+               GROUP BY f.source_document_id"""
+        )
+    }
+    for vorgang, numbers in answers.items():
+        if not numbers:
+            rows.append((vorgang, "unanswered", 0, 0, None))
+            continue
+        doc = f"BT-Drs. {max(numbers, key=lambda n: int(n.split('/')[1]))}"
+        asked, answered = counts.get(doc, (0, 0))
+        status = "failed" if not asked else "complete" if answered == asked else "partial"
+        rows.append((vorgang, status, asked, answered, doc))
+    for r in conn.execute(
+        """SELECT vorgang_id, max(source_document_id), count(*), sum(thread_id IS NOT NULL OR EXISTS (
+               SELECT 1 FROM question_text a WHERE a.part = 'antwort' AND a.vorgang_id = f.vorgang_id))
+           FROM question_text f WHERE f.part = 'frage' AND f.vorgang_id IS NOT NULL
+           AND f.source_document_id LIKE 'BT-PlPr. %' GROUP BY vorgang_id"""
+    ):
+        rows.append((r[0], "complete" if r[3] else "unanswered", r[2], r[3], r[1]))
+    with conn:
+        conn.execute("DELETE FROM question_parse")
+        conn.executemany("INSERT OR REPLACE INTO question_parse VALUES (?, ?, ?, ?, ?)", rows)
+    status = defaultdict(int)
+    for r in rows:
+        status[r[1]] += 1
+    print("question_parse: " + ", ".join(f"{k} {n}" for k, n in sorted(status.items())))
+
+
+def ingest_answers(conn: sqlite3.Connection) -> None:
+    """The answers to Kleine and Große Anfragen (bdf/parse_answers.py): question_text and question_table rows from
+    each PDF, which replace the rows read from it before."""
+    n = 0
+    for path in raw.data_files(answers_dir(), "*/*.pdf"):
+        wp, number = path.stem[:2], str(int(path.stem[2:]))
+        prov = raw.read_meta(path).provenance(f"BT-Drs. {wp}/{number}")
+        try:
+            texts, tables = parse_answers.rows(parse_answers.parse(path), f"{wp}/{number}")
+        except Exception as e:  # a PDF pdfplumber cannot read: question_parse says "failed"
+            print(f"answers: {path.name} not read: {e!r}")
+            texts, tables = [], []
+        with conn:
+            conn.execute(
+                "DELETE FROM question_table WHERE question_text_id IN "
+                "(SELECT id FROM question_text WHERE source_document_id = ?)",
+                (prov["source_document_id"],),
+            )
+            conn.execute("DELETE FROM question_text WHERE source_document_id = ?", (prov["source_document_id"],))
+            upsert(conn, "question_text", [t | prov for t in texts])
+            upsert(conn, "question_table", tables)
+        n += 1
+    print(f"answers: {n} answers to Kleine and Große Anfragen read")
 
 
 def ingest_dip(conn: sqlite3.Connection) -> None:
