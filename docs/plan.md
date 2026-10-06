@@ -54,7 +54,8 @@ Every change is reviewed against this goal. Ideas that don't serve it go on "Not
   2026-10-04, #38); the contract says what is stable.
 - Also in v0.2.0: `vorgang_referral` (#40), the committees a Vorgang was referred to, for the research platform's
   EU-Vorlagen page (its #56: the committee each EU-Vorlage went to). Additive, under "Unreleased" in the CHANGELOG.
-- Left: Fragen as text (below), then release v0.2.0 after a clean nightly run with all of it.
+- Fragen as text: done (below), all four steps. Released as v0.2.0 on 2026-10-06 after an ingest of `main` into
+  the live store by hand with a clean health report; the nightly run of 2026-10-07 is the first on v0.2.0.
 
 ## Fragen as text (in v0.2.0)
 

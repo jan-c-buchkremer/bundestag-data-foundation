@@ -5,6 +5,8 @@ not before? If that sentence is hard to write, the release is not a finished ver
 
 ## Unreleased
 
+## v0.2.0 (2026-10-06)
+
 A consumer can now read every Kleine and Große Anfrage, every Mündliche and Schriftliche Frage with its answer –
 questions, preliminary remarks, tables – follow each exchange of a Befragung der Bundesregierung and a Fragestunde, and
 say which committees a Vorgang was referred to.
@@ -28,6 +30,8 @@ say which committees a Vorgang was referred to.
 - `question_turn` covers the Fragestunde too: each answer, Nachfrage and Zusatzfrage with the question it belongs to and
   its DIP Vorgang (`vorgang_id`).
 - Health report: new count `questions_without_vorgang`.
+- The answer PDFs are read page by page, each page closed after use: the largest answer (21/2974) needs
+  385 MB instead of more than 6 GB (#48).
 - New table `vorgang_referral` (additive): one row per committee per Vorgangsposition, with DIP's committee name and
   short name, `lead` (federführend) and `kind` (ueberweisungsart); in the export with source DIP.
 
