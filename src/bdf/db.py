@@ -232,8 +232,35 @@ CREATE TABLE IF NOT EXISTS question_turn (
     role TEXT NOT NULL,                 -- einleitung | frage | antwort | nachfrage (the asker's) | zusatzfrage
                                         -- (another member's), as the presidency calls the turn (docs/design.md
                                         -- "Question turns")
-    thread_id TEXT REFERENCES speech(id),  -- the frage the turn belongs to (a frage's own id); NULL for an einleitung
-    vorgang_id TEXT REFERENCES vorgang(id)  -- Fragestunde: the DIP Mündliche Frage; NULL in the Befragung
+    thread_id TEXT REFERENCES speech(id),  -- the question the turn belongs to: Befragung: its frage (a frage's own
+                                        -- id), NULL for an einleitung; Fragestunde: the first turn after the call
+    vorgang_id TEXT REFERENCES vorgang(id)  -- Fragestunde: the DIP Mündliche Frage (NULL until matched); NULL in the
+                                        -- Befragung
+);
+
+CREATE TABLE IF NOT EXISTS question_text (
+    id TEXT PRIMARY KEY,                -- "<drucksache_number>/<number>/<part>", "21/1949/6/frage"
+    vorgang_id TEXT REFERENCES vorgang(id),  -- the DIP Vorgang of the question (NULL until matched)
+    drucksache_number TEXT NOT NULL,    -- the Drucksache listing the question: Mündliche Fragen: the Fragen-Drucksache
+    drucksache_id TEXT REFERENCES drucksache(id),  -- its DIP id (NULL when not fetched)
+    position INTEGER NOT NULL,          -- order within the source document
+    part TEXT NOT NULL,                 -- frage | antwort (docs/design.md "Question texts")
+    number TEXT NOT NULL,               -- the question's number in the Drucksache, "6"
+    text TEXT NOT NULL,                 -- paragraphs joined by blank lines; tables are in question_table
+    name TEXT,                          -- as printed: the asker (frage), the answerer with office (antwort)
+    answerer_person_id TEXT REFERENCES person(id),  -- antwort: the answerer (from DIP; NULL until matched)
+    answer_date TEXT,                   -- antwort: the date of the document printing the answer
+    thread_id TEXT REFERENCES speech(id),  -- a question answered in the Fragestunde: its first turn (question_turn)
+    {PROVENANCE}
+);
+
+CREATE TABLE IF NOT EXISTS question_table (
+    id TEXT PRIMARY KEY,                -- "<question_text_id>/<k>"
+    question_text_id TEXT NOT NULL REFERENCES question_text(id),
+    position INTEGER NOT NULL,          -- k: order among the text's tables
+    after_paragraph INTEGER NOT NULL,   -- how many of the text's paragraphs come before the table
+    cells TEXT NOT NULL                 -- JSON {"caption", "head", "body", "foot"}: rows of cells, a cell its text or
+                                        -- {"text", "colspan", "rowspan"}
 );
 
 CREATE TABLE IF NOT EXISTS vorgang (
@@ -504,6 +531,9 @@ CREATE INDEX IF NOT EXISTS author_dip_person ON drucksache_author(dip_person_id)
 CREATE INDEX IF NOT EXISTS question_vorgang ON question_activity(vorgang_id);
 CREATE INDEX IF NOT EXISTS question_person ON question_activity(person_id);
 CREATE INDEX IF NOT EXISTS question_turn_thread ON question_turn(thread_id);
+CREATE INDEX IF NOT EXISTS question_text_vorgang ON question_text(vorgang_id);
+CREATE INDEX IF NOT EXISTS question_text_document ON question_text(source_document_id);
+CREATE INDEX IF NOT EXISTS question_table_text ON question_table(question_text_id);
 CREATE INDEX IF NOT EXISTS drucksache_date ON drucksache(date);
 CREATE INDEX IF NOT EXISTS person_dip ON person(dip_person_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_vorgang ON vorgang_position(vorgang_id);

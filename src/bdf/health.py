@@ -62,6 +62,9 @@ PROBLEMS: dict[str, tuple[Callable[[sqlite3.Connection], int], int | None, str]]
     "askers_without_person": (_count("SELECT COUNT(DISTINCT dip_person_id) FROM question_activity "
                                      "WHERE activity_type IN ('Frage', 'Zusatzfrage') AND person_id IS NULL"), 10,
                               "askers of Fragen without a person"),
+    "questions_without_vorgang": (_count("SELECT COUNT(*) FROM question_text WHERE part = 'frage' "
+                                         "AND vorgang_id IS NULL"), 10,
+                                  "Mündliche Fragen in the protocols without their DIP Vorgang"),
     "unmatched_elected": (_count("SELECT COUNT(*) FROM election_candidacy WHERE person_id IS NULL"), 3,
                           "elected candidates without a person"),
     "unmatched_successors": (_count("SELECT COUNT(*) FROM mandate_successor WHERE person_id IS NULL"), 3,

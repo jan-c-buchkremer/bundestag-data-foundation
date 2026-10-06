@@ -3,6 +3,7 @@
 Transactions: one per raw file for protocols and votes, one per ingest_* function otherwise.
 """
 
+import itertools
 import json
 import re
 import sqlite3
@@ -17,6 +18,7 @@ from bdf import (
     parse_comments,
     parse_decisions,
     parse_protocol,
+    parse_question_texts,
     parse_question_turns,
     parse_stammdaten,
     parse_votes,
@@ -64,6 +66,7 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_protocols(conn)
     ingest_votes(conn)
     ingest_dip(conn)
+    ingest_question_links(conn)
     ingest_decisions(conn)
     ingest_vorlagen(conn)
     ingest_abgeordnetenwatch(conn)
@@ -170,7 +173,13 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
             )
             _replace_sub_items(conn, sid, [{**sub, **prov} for sub in protocol.agenda_sub_items])
             upsert(conn, "person", list(new_persons.values()))
-            # a re-ingested protocol replaces its speeches wholesale
+            # a re-ingested protocol replaces its speeches wholesale, and the question texts it prints
+            conn.execute(
+                "DELETE FROM question_table WHERE question_text_id IN "
+                "(SELECT id FROM question_text WHERE source_document_id = ?)",
+                (prov["source_document_id"],),
+            )
+            conn.execute("DELETE FROM question_text WHERE source_document_id = ?", (prov["source_document_id"],))
             for child in ("interjection", "speech_paragraph", "question_turn"):
                 conn.execute(
                     f"DELETE FROM {child} WHERE speech_id IN (SELECT id FROM speech WHERE sitting_id = ?)", (sid,)
@@ -208,6 +217,9 @@ def ingest_protocols(conn: sqlite3.Connection) -> None:
             )
             upsert(conn, "interjection", interjection_rows(protocol.speeches, resolver))
             upsert(conn, "question_turn", parse_question_turns.turns(protocol))
+            texts, tables = parse_question_texts.texts(protocol, path)
+            upsert(conn, "question_text", [t | prov for t in texts])
+            upsert(conn, "question_table", tables)
             _drop_stale_agenda_items(conn, sid, {item["id"] for item in protocol.agenda_items})
         known.update(new_persons)
         from_pdf = [s for s in protocol.speeches if s.from_pdf]
@@ -326,6 +338,126 @@ def ingest_votes(conn: sqlite3.Connection) -> None:
 
 
 # --- DIP ----------------------------------------------------------------------------------
+
+
+def _pair_questions(questions: list, activities: list) -> list[tuple]:
+    """One asker's questions in a protocol paired with their DIP Frage activities, both in document order: the
+    pairing whose questions share the most words with the Vorgang titles, the order where that does not decide."""
+
+    def words(text: str) -> set[str]:
+        return {w for w in normalize_name(text).split() if len(w) > 4}
+
+    def overlap(q, a) -> float:
+        qw, aw = words(q["text"]), words(a["title"])
+        return len(qw & aw) / max(1, min(len(qw), len(aw)))
+
+    n = min(len(questions), len(activities))
+    best = [(i, i) for i in range(n)]  # (question, activity)
+    best_score = sum(overlap(questions[i], activities[j]) for i, j in best)
+    if max(len(questions), len(activities)) <= 4:  # a member asks at most two questions a week
+        for qs in itertools.permutations(range(len(questions)), n):
+            for acts in itertools.permutations(range(len(activities)), n):
+                pairs = sorted(zip(qs, acts, strict=True))
+                score = sum(overlap(questions[i], activities[j]) for i, j in pairs)
+                if score > best_score + 0.2:
+                    best, best_score = pairs, score
+    return [(questions[i], activities[j]) for i, j in best]
+
+
+def ingest_question_links(conn: sqlite3.Connection) -> None:
+    """The DIP Vorgang of each Mündliche Frage the protocols print (question_text, and the Fragestunde turns of
+    question_turn), its answerer and the Fragen-Drucksache's DIP id. DIP records the Frage activity of every question in
+    a protocol, with the asker and the page, but not its number: within a protocol, the questions of one asker are
+    paired among the Vorgänge DIP lists on the same Fragen-Drucksache: by the words a question shares with the
+    Vorgang's title, else in order (number order, DIP page order, which can differ: 21/49 has Frage 3 before 1). A
+    question left over takes a Vorgang of the same asker on its Fragen-Drucksache that no protocol question took
+    (DIP may record the Frage in a later protocol). Recomputed in full."""
+    fragen_drucksache = dict(
+        conn.execute(
+            "SELECT vorgang_id, document_number FROM vorgang_position "
+            "WHERE document_kind = 'Drucksache' AND document_type = 'Fragen'"
+        )
+    )
+    answerer = dict(
+        conn.execute(
+            "SELECT vorgang_id, person_id FROM question_activity "
+            "WHERE question_type = 'Mündliche Frage' AND activity_type = 'Antwort' AND person_id IS NOT NULL"
+        )
+    )
+
+    def surname(dip_name: str) -> str:  # "Dr. Sandra Detzer, MdB, BÜNDNIS 90/DIE GRÜNEN" -> "detzer"
+        return normalize_name(dip_name.split(",")[0]).split()[-1]
+
+    asked: dict[str, list[sqlite3.Row]] = defaultdict(list)  # protocol number -> its Frage activities, page order
+    for r in conn.execute(
+        """SELECT qa.vorgang_id, qa.name, qa.document_number, v.title FROM question_activity qa
+           JOIN vorgang v ON v.id = qa.vorgang_id
+           WHERE question_type = 'Mündliche Frage' AND activity_type = 'Frage' AND document_kind = 'Plenarprotokoll'
+           ORDER BY document_number, CAST(rtrim(page, 'ABCD') AS INTEGER), page, qa.id"""
+    ):
+        asked[r["document_number"]].append(r)
+    questions: dict[str, list[sqlite3.Row]] = defaultdict(list)
+    for r in conn.execute(
+        "SELECT drucksache_number, number, name, text, thread_id, source_document_id FROM question_text "
+        "WHERE part = 'frage' AND source_document_id LIKE 'BT-PlPr. %' ORDER BY source_document_id, position"
+    ):
+        questions[r["source_document_id"].removeprefix("BT-PlPr. ")].append(r)
+    links = []  # (vorgang_id, drucksache_number, number, thread_id, sitting)
+    left = []
+    for sitting, rows in questions.items():
+        by_asker: dict[tuple[str, str | None], list] = defaultdict(list)
+        for a in asked.get(sitting, []):
+            by_asker[(surname(a["name"]), fragen_drucksache.get(a["vorgang_id"]))].append(a)
+        mine: dict[tuple, list] = defaultdict(list)
+        for q in rows:
+            words = normalize_name(q["name"]).split()
+            key = next((k for k in by_asker if k[0] in words and k[1] == q["drucksache_number"]), None)
+            if key is None:
+                left.append((q, sitting))
+            else:
+                mine[key].append(q)
+        for key, qs in mine.items():
+            pairs = _pair_questions(qs, by_asker[key])
+            paired = {id(q) for q, _ in pairs}
+            left += [(q, sitting) for q in qs if id(q) not in paired]
+            links += [(a["vorgang_id"], q["drucksache_number"], q["number"], q["thread_id"], sitting) for q, a in pairs]
+    taken = {v for v, *_ in links}
+    on_drucksache: dict[str, list[sqlite3.Row]] = defaultdict(list)
+    for r in conn.execute(
+        """SELECT vp.document_number, qa.vorgang_id, qa.name FROM vorgang_position vp
+           JOIN question_activity qa ON qa.vorgang_id = vp.vorgang_id AND qa.activity_type = 'Frage'
+           WHERE vp.document_type = 'Fragen' AND qa.question_type = 'Mündliche Frage'
+           GROUP BY vp.document_number, qa.vorgang_id ORDER BY CAST(qa.vorgang_id AS INTEGER)"""
+    ):
+        if r["vorgang_id"] not in taken:
+            on_drucksache[r["document_number"]].append(r)
+    for q, sitting in left:
+        words = normalize_name(q["name"]).split()
+        pool = on_drucksache.get(q["drucksache_number"], [])
+        if hit := next((r for r in pool if surname(r["name"]) in words), None):
+            pool.remove(hit)
+            links.append((hit["vorgang_id"], q["drucksache_number"], q["number"], q["thread_id"], sitting))
+    drucksache_ids = dict(conn.execute("SELECT number, id FROM drucksache"))
+    with conn:
+        conn.execute("UPDATE question_text SET vorgang_id = NULL, answerer_person_id = NULL, drucksache_id = NULL")
+        conn.execute("UPDATE question_turn SET vorgang_id = NULL")
+        conn.executemany(
+            "UPDATE question_text SET drucksache_id = ? WHERE drucksache_number = ?",
+            [(i, n) for n, i in drucksache_ids.items()],
+        )
+        conn.executemany(
+            "UPDATE question_text SET vorgang_id = ?, answerer_person_id = CASE WHEN part = 'antwort' THEN ? END "
+            "WHERE drucksache_number = ? AND number = ? AND source_document_id = 'BT-PlPr. ' || ?",
+            [(v, answerer.get(v), d, n, s) for v, d, n, _, s in links],
+        )
+        conn.executemany(
+            "UPDATE question_turn SET vorgang_id = ? WHERE thread_id = ?", [(v, t) for v, _, _, t, _ in links if t]
+        )
+    total = sum(len(r) for r in questions.values())
+    print(
+        f"questions: {len(links)} of {total} Mündliche Fragen in the protocols matched to their DIP Vorgang "
+        f"({len(links) - len(taken)} by Fragen-Drucksache and asker)"
+    )
 
 
 def ingest_dip(conn: sqlite3.Connection) -> None:
