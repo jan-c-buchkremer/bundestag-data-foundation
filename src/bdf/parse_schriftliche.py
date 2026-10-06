@@ -51,6 +51,7 @@ from bdf.parse_answers import (
     _merge_tables,
     _table,
     _unruled_regions,
+    pages,
 )
 
 LEFT = 141.7  # the text's left edge: ministry and answer headings, the asker's column
@@ -111,7 +112,7 @@ def read(path: Path) -> list:
     den …"."""
     stream: list = []
     with pdfplumber.open(path) as pdf:
-        for n, page in enumerate(pdf.pages, start=1):
+        for n, page in pages(pdf):
             tables = []
             for t in page.find_tables():
                 rows = t.extract()
