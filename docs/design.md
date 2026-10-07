@@ -125,6 +125,7 @@ when one changes. Rows carry their provenance (`source_url`, `source_document_id
 | `roll_call_vote.id` | `<sitting>/<Abstimmnr>`, `21/90/7` | never |
 | `drucksache.id`, `vorgang.id`, `vorgang_position.id`, `question_activity.id` | DIP ids | never (DIP's) |
 | `vorgang_referral` (`position_id, committee`) | DIP position id and DIP's committee name | when DIP renames the committee |
+| `hib_item.id` | bundestag.de article id, `1223018` | never (bundestag.de's) |
 | `mandate.id`, `membership.id` | `<person>/<wp>`, `<person>/<wp>/<k>` | `membership` `k` counts the Stammdaten entries of a person and Wahlperiode, so a new Stammdaten file can renumber them: join on the columns, not the id |
 | `interjection.id`, `speech_paragraph.id`, `agenda_item_paragraph.id` | `<speech or item id>/<position>/…` | with the speech or item |
 | `question_turn.speech_id`, `thread_id` | speech ids | with the speech |
@@ -172,6 +173,7 @@ them filled but must not fail on a NULL.
 | `vorgang.status`, `verkuendung`, `inkrafttreten` | DIP has none (not every Vorgang ends in a law) |
 | `vorgang_position.document_type`, `pages`, `ressort`, `decisions` | DIP has none for that step (`pages` only on protocol steps) |
 | `vorgang_referral.committee_short`, `kind` | DIP gives no `ausschuss_kuerzel` resp. `ueberweisungsart` for that committee (most referrals have no `ueberweisungsart`) |
+| `hib_item.author_code` | the item has no "(hib/…)" mark; `committee`: the item is not an Ausschuss or Anhörung report, or its text names no committee |
 | `constituency.seat_party` | the winner had no Zweitstimmendeckung |
 | `election_candidacy.constituency_number`, `first_vote_percent`, `list_state`, `list_position` | did not stand there / not a constituency winner / not on a list |
 | `government_role.to_date` | in office (protocol rows: never NULL, see the table); `wikidata_qid`, `department`: not known |
@@ -218,6 +220,13 @@ Measured on the live store's data on 2026-10-04 (`bdf health` prints the current
 - **Committee referrals** (`vorgang_referral`) name the committee as DIP spells it, which differs from the
   Stammdaten's `membership.name`; the foundation does not match the two. A referral exists only where DIP records it
   on a Vorgangsposition.
+- **hib** (`hib_item`) names the committee of an Ausschuss or Anhörung report as its text does ("Der
+  Forschungsausschuss", "des Innenausschusses" → "Innenausschuss"; a full form as far as a Stammdaten committee name
+  reaches), not matched to `membership`. A body that reports under its own name as Ressort (Parlamentarischer
+  Beirat, Enquete-Kommission) is that body; a text that names its committee in no readable form (a typo, the words
+  reordered) gets the committee named like its Ressort. Live data, 2026-10-07: 796 of 806 reports have one. Most of
+  these reports link no Drucksache. The texts are protected (`docs/licences.md`): consumers show title, date, number, Ressort, kind and the
+  link, not `text`, until the Bundestag consents; the export leaves `text` out.
 
 ## Tables
 
@@ -260,6 +269,12 @@ Types are SQLite affinities. `*` = primary key. `→` = foreign key.
 
 **vorgang_referral** `position_id →vorgang_position, vorgang_id (DIP), committee (ueberweisung.ausschuss as DIP names it), committee_short (ausschuss_kuerzel, "EU"), lead (1 = federführend, 0 = mitberatend; from federfuehrung), kind (ueberweisungsart or NULL), source_url, source_document_id ("DIP Vorgangsposition <id>"), retrieved_at` (PK `position_id, committee`)
 — the committees a Vorlage was referred to: one row per entry of a position's `ueberweisung` list, from the same raw files and in the same pass as `vorgang_position` (BT and BR/BV/EK alike), deleted and written anew on every ingest. A position without `ueberweisung` has no row; a committee listed twice on one position is one row, lead if either entry says so. `committee` is DIP's name, not matched to `membership` (DIP and the Stammdaten name committees differently; a consumer keeps the alias map). A Vorgang can have referrals on several positions (a re-referral, Bundesrat committees on BR positions): pick by `vorgang_position.chamber` and `date`.
+
+**hib_item** `*id (bundestag.de article id), number (hib issue "784/2026"), date, wahlperiode, title, ressort (hib's Ressort tag), kind (hib's kind tag: Antwort, Kleine Anfrage, Antrag, Gesetzentwurf, Unterrichtung, Bericht, Ausschuss, Anhörung, …), author_code ("STO"), committee (Ausschuss/Anhörung: as the text names it), text, source_url (the article), source_document_id ("hib 784/2026"), retrieved_at`
+— one row per item of "heute im bundestag", the Bundestag's news service, from the article pages at `bundestag.de/presse/hib/kurzmeldungen-<id>`. An issue number carries several items. `text` is the body without the "Berlin: (hib/…)" mark; not exported and not for display (Known gaps).
+
+**hib_drucksache** `hib_id →hib_item, drucksache_number ("21/8309"), position` (PK `hib_id, drucksache_number`)
+— the Drucksachen an item links (`dserver.bundestag.de/btd/…` PDFs), in order of first mention; join `drucksache.number`.
 
 **roll_call_vote** `*id, sitting_id →sitting, number (Abstimmnr), date, title (from the bundestag.de list), drucksache_number (NULL until linked), vorgang_id →vorgang (NULL until linked), link_method (dip_beschluss | title_regex | manual | NULL), yes, no, abstain, invalid, absent (totals computed from individual_vote), xlsx_url, pdf_url, source_url, source_document_id, retrieved_at, agenda_item_id →agenda_item (see Chair text and decisions)`
 

@@ -322,6 +322,27 @@ CREATE TABLE IF NOT EXISTS vorgang_referral (
     PRIMARY KEY (position_id, committee)
 );
 
+CREATE TABLE IF NOT EXISTS hib_item (
+    id TEXT PRIMARY KEY,                -- bundestag.de article id, "1223018" (presse/hib/kurzmeldungen-1223018)
+    number TEXT NOT NULL,               -- hib issue, "784/2026"; one issue carries several items
+    date TEXT NOT NULL,                 -- ISO
+    wahlperiode INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    ressort TEXT NOT NULL,              -- hib's Ressort tag, "Inneres", "Petitionen", "Bundestagsnachrichten"
+    kind TEXT NOT NULL,                 -- hib's kind tag: Antwort, Kleine Anfrage, Antrag, Gesetzentwurf, Ausschuss, …
+    author_code TEXT,                   -- "STO" from "(hib/STO)"; NULL if the item has none
+    committee TEXT,                     -- Ausschuss/Anhörung: the committee as the text names it; NULL otherwise
+    text TEXT NOT NULL,                 -- the article body; protected, not for display without consent (design.md)
+    {PROVENANCE}
+);
+
+CREATE TABLE IF NOT EXISTS hib_drucksache (
+    hib_id TEXT NOT NULL REFERENCES hib_item(id),
+    drucksache_number TEXT NOT NULL,    -- "21/8309", from the article's dserver.bundestag.de/btd links
+    position INTEGER NOT NULL,          -- order of first mention in the text, from 1
+    PRIMARY KEY (hib_id, drucksache_number)
+);
+
 CREATE TABLE IF NOT EXISTS roll_call_vote (
     id TEXT PRIMARY KEY,                -- "21/90/7"
     sitting_id TEXT REFERENCES sitting(id),
@@ -552,6 +573,8 @@ CREATE INDEX IF NOT EXISTS vorgang_position_vorgang ON vorgang_position(vorgang_
 CREATE INDEX IF NOT EXISTS decision_vorgang_vorgang ON decision_vorgang(vorgang_id);
 CREATE INDEX IF NOT EXISTS vorgang_position_date ON vorgang_position(date);
 CREATE INDEX IF NOT EXISTS vorgang_referral_vorgang ON vorgang_referral(vorgang_id);
+CREATE INDEX IF NOT EXISTS hib_item_date ON hib_item(date);
+CREATE INDEX IF NOT EXISTS hib_drucksache_number ON hib_drucksache(drucksache_number);
 CREATE INDEX IF NOT EXISTS candidacy_person ON election_candidacy(person_id);
 CREATE INDEX IF NOT EXISTS municipality_constituency ON constituency_municipality(election, constituency_number);
 {GOVERNMENT_ROLE_INDEX};

@@ -11,6 +11,7 @@ from bdf import (
     fetch_aw,
     fetch_bundestag,
     fetch_dip,
+    fetch_hib,
     fetch_wahl,
     fetch_wikidata,
     health,
@@ -64,7 +65,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="PDFs of the answers to Kleine and Große Anfragen and the Schriftliche Fragen the DIP data lists",
     )
     fan.add_argument("--wp", type=int, default=21)
-    for sp in (fp, fv, fd, fa, fw, fph, fan):
+    fh = fs.add_parser("hib", help="heute im bundestag: the article pages of the Wahlperiode not on disk yet")
+    fh.add_argument("--wp", type=int, default=21, choices=sorted(update.WP_START))
+    for sp in (fp, fv, fd, fa, fw, fph, fan, fh):
         sp.add_argument("--force", action="store_true", help="re-download files that already exist")
 
     sub.add_parser("ingest", help="parse everything under data/raw into the SQLite store")
@@ -143,6 +146,9 @@ def cmd_fetch(args: argparse.Namespace) -> None:
         elif args.source == "answers":
             new = fetch_bundestag.fetch_answer_pdfs(http, args.wp, force=args.force)
             print(f"{len(new)} answer PDFs downloaded to {fetch_bundestag.answers_dir()}")
+        elif args.source == "hib":
+            new = fetch_hib.fetch(http, update.WP_START[args.wp], stop_at_known=False, force=args.force)
+            print(f"{len(new)} hib articles downloaded to {fetch_hib.hib_dir()}")
         elif args.source == "government":
             roles = fetch_wikidata.fetch_government(http)
             print(f"{len(roles)} result rows in {fetch_wikidata.government_path()}")

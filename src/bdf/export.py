@@ -20,7 +20,7 @@ from bdf import db
 REPO_URL = "https://github.com/jan-c-buchkremer/bundestag-data-foundation"
 
 # Columns that only make sense on the machine that built the store
-EXCLUDED_COLUMNS = {("person_photo", "local_path")}
+EXCLUDED_COLUMNS = {("person_photo", "local_path"), ("hib_item", "text")}  # hib texts: protected, see licences.md
 
 PROVENANCE_DESCRIPTIONS = {
     "source_url": "where the row was read from (document, file or API record)",
@@ -40,6 +40,17 @@ SOURCES = {
         },
         "attribution": 'Quelle: "Deutscher Bundestag", bei Plenarprotokollen mit Nummer (BT-PlPr. 21/94). '
         "Keine Nutzung für Werbezwecke.",
+    },
+    "hib": {
+        "title": 'Deutscher Bundestag, Parlamentsnachrichten: "heute im bundestag" (hib)',
+        "path": "https://www.bundestag.de/presse/hib",
+        "license": {
+            "name": "bundestag-impressum",
+            "title": "Urheberrechtlich geschützt; ohne schriftliche Zustimmung nur privater Gebrauch (Impressum)",
+            "path": "https://www.bundestag.de/impressum",
+        },
+        "attribution": 'Quelle: "Deutscher Bundestag, hib" mit Nummer (hib 784/2026) und Link auf die Meldung. '
+        "Der Export enthält keine Texte der Meldungen.",
     },
     "dip": {
         "title": "Deutscher Bundestag/Bundesrat: DIP (Dokumentations- und Informationssystem für "
@@ -139,6 +150,8 @@ TABLE_SOURCES = {
     "vorgang_drucksache": ["dip"],
     "vorgang_position": ["dip"],
     "vorgang_referral": ["dip"],
+    "hib_item": ["hib"],
+    "hib_drucksache": ["hib"],
     "aw_profile": ["abgeordnetenwatch"],
     "side_job": ["abgeordnetenwatch"],
     "constituency": ["bundeswahlleiterin"],

@@ -69,6 +69,9 @@ PROBLEMS: dict[str, tuple[Callable[[sqlite3.Connection], int], int | None, str]]
                           "elected candidates without a person"),
     "unmatched_successors": (_count("SELECT COUNT(*) FROM mandate_successor WHERE person_id IS NULL"), 3,
                              "Mandatsnachfolger without a person"),
+    "hib_reports_without_committee": (_count("SELECT COUNT(*) FROM hib_item WHERE kind IN ('Ausschuss', 'Anhörung') "
+                                             "AND committee IS NULL"), 10,
+                                      "hib Ausschuss and Anhörung reports whose text names no committee"),
 }  # fmt: skip
 
 
