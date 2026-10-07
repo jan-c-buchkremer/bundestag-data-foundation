@@ -221,8 +221,11 @@ Measured on the live store's data on 2026-10-04 (`bdf health` prints the current
   Stammdaten's `membership.name`; the foundation does not match the two. A referral exists only where DIP records it
   on a Vorgangsposition.
 - **hib** (`hib_item`) names the committee of an Ausschuss or Anhörung report as its text does ("Der
-  Forschungsausschuss", "des Innenausschusses"), not matched to `membership`; most of these reports link no
-  Drucksache. The texts are protected (`docs/licences.md`): consumers show title, date, number, Ressort, kind and the
+  Forschungsausschuss", "des Innenausschusses" → "Innenausschuss"; a full form as far as a Stammdaten committee name
+  reaches), not matched to `membership`. A body that reports under its own name as Ressort (Parlamentarischer
+  Beirat, Enquete-Kommission) is that body; a text that names its committee in no readable form (a typo, the words
+  reordered) gets the committee named like its Ressort. Live data, 2026-10-07: 796 of 806 reports have one. Most of
+  these reports link no Drucksache. The texts are protected (`docs/licences.md`): consumers show title, date, number, Ressort, kind and the
   link, not `text`, until the Bundestag consents; the export leaves `text` out.
 
 ## Tables

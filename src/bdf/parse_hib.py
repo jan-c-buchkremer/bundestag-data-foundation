@@ -26,10 +26,16 @@ _MONTHS = {m: i + 1 for i, m in enumerate(_MONTH_NAMES)}
 _LIST_DAY_RE = re.compile(r">\s*(\d{1,2})\.\s+(" + "|".join(_MONTHS) + r")\s+(\d{4})\s*<")
 
 # Committee reports name their committee in a compound ("Der Forschungsausschuss", "des Innenausschusses") or in
-# the full form ("des Ausschusses für Digitales und Staatsmodernisierung"); the full form is cut where the name
-# ends, so `full_names` (the committees' official names) decides how far it reaches.
+# the full form ("des Ausschusses für Digitales und Staatsmodernisierung", also without "für" or as
+# "Bundestagsausschuss für …"); the full form is cut where the name ends, so `full_names` (the committees' official
+# names) decides how far it reaches. Compounds that name no committee of the Bundestag are skipped.
 _COMPOUND_RE = re.compile(r"\b((?:[A-ZÄÖÜ][a-zäöüß]+-)?[A-ZÄÖÜ][a-zäöüß]*ausschuss)(?:es)?\b")
-_FULL_RE = re.compile(r"\bAusschuss(?:es)? (für|des|zur) ")
+_FULL_RE = re.compile(r"\b(?:Bundestags)?[Aa]usschuss(?:es)? (?:(?:für|des|zur) )?")
+_NOT_A_COMMITTEE = {"Ausschuss", "Unterausschuss", "Bundestagsausschuss", "Bundesausschuss", "Staatssekretärsausschuss",
+                    "Lenkungsausschuss", "Koalitionsausschuss", "Vermittlungsausschuss"}  # fmt: skip
+# bodies that are not committees report under their own name as the Ressort tag
+_BODY_RESSORTS = ("Parlamentarischer Beirat", "Enquete-Kommission", "Untersuchungsausschuss")
+_AUSWAERTIG_RE = re.compile(r"\bAuswärtige[nr]? Ausschuss")
 COMMITTEE_KINDS = ("Ausschuss", "Anhörung")
 
 
@@ -97,20 +103,33 @@ def parse_article(page: str, item_id: str) -> Item | None:
     )
 
 
-def committee(text: str, full_names: list[str]) -> str | None:
+def committee(text: str, full_names: list[str], ressort: str = "") -> str | None:
     """The committee a report names first, nominative ("Innenausschuss", "Ausschuss für Digitales und
-    Staatsmodernisierung"); None if it names none. A full form is kept only as far as one of `full_names` reaches."""
+    Staatsmodernisierung"); a body that reports under its own name as Ressort ("Parlamentarischer Beirat für
+    nachhaltige Entwicklung") is that body; None if it names none. A full form is kept only as far as one of
+    `full_names` reaches."""
+    if ressort.startswith(_BODY_RESSORTS):
+        return ressort
     found: list[tuple[int, str]] = []
-    m = _COMPOUND_RE.search(text)
-    if m and m.group(1) not in ("Ausschuss", "Unterausschuss"):
-        found.append((m.start(), m.group(1)))
+    for m in _COMPOUND_RE.finditer(text):
+        if m.group(1) not in _NOT_A_COMMITTEE:
+            found.append((m.start(), m.group(1)))
+            break
+    tails = {n: n.split(" ", 2)[2] for n in full_names if n.startswith("Ausschuss für ")}
     for m in _FULL_RE.finditer(text):
-        rest = text[m.start(1) :]
-        best = max((n for n in full_names if rest.startswith(n.split(" ", 1)[1])), key=len, default=None)
+        rest = text[m.end() :]
+        best = max((n for n, tail in tails.items() if rest.startswith(tail)), key=len, default=None)
         if best:
             found.append((m.start(), best))
             break
-    return min(found)[1] if found else None
+    if m := _AUSWAERTIG_RE.search(text):
+        found.append((m.start(), "Auswärtiger Ausschuss"))
+    if found:
+        return min(found)[1]
+    # the text names it in a form none of the above reads (a typo, the words in another order): hib's Ressort tag is
+    # the committee's subject, so take the committee of that name
+    by_ressort = {**{tail: n for n, tail in tails.items()}, "Auswärtiges": "Auswärtiger Ausschuss"}
+    return by_ressort.get(ressort)
 
 
 def list_page(fragment: str) -> list[tuple[str, str | None]]:

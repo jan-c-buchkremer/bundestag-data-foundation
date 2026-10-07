@@ -115,7 +115,8 @@ def ingest_hib(conn: sqlite3.Connection) -> None:
         items.append({
             "id": item.id, "number": item.number, "date": item.date, "wahlperiode": wp, "title": item.title,
             "ressort": item.ressort, "kind": item.kind, "author_code": item.author_code,
-            "committee": parse_hib.committee(item.text, full_names) if item.kind in parse_hib.COMMITTEE_KINDS else None,
+            "committee": parse_hib.committee(item.text, full_names, item.ressort)
+            if item.kind in parse_hib.COMMITTEE_KINDS else None,
             "text": item.text, **meta.provenance(f"hib {item.number}"),
         })  # fmt: skip
         links += [{"hib_id": item.id, "drucksache_number": n, "position": k} for k, n in enumerate(item.drucksachen, 1)]

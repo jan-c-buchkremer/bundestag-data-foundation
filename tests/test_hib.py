@@ -41,6 +41,21 @@ def test_committee_compound_full_and_genitive():
         "Ausschuss für Arbeit und Soziales"
     )
     assert parse_hib.committee("Im Ausschuss wurde beraten.", full) is None
+    # without "für", or as "Bundestagsausschuss für"
+    assert parse_hib.committee("Der Ausschuss Arbeit und Soziales hat", full) == "Ausschuss für Arbeit und Soziales"
+    assert parse_hib.committee("Vorsitz des Bundestagsausschusses für Arbeit und Soziales", full) == (
+        "Ausschuss für Arbeit und Soziales"
+    )
+    assert parse_hib.committee("Laschet leitet den Auswärtigen Ausschuss.", full) == "Auswärtiger Ausschuss"
+    # compounds that name no committee of the Bundestag
+    assert parse_hib.committee("Der Gemeinsame Bundesausschuss warnt.", full) is None
+    # a body reporting under its own name; a text naming its committee in no readable form: the Ressort's committee
+    beirat = "Parlamentarischer Beirat für nachhaltige Entwicklung"
+    assert parse_hib.committee("Der Beirat tagte.", full, beirat) == beirat
+    assert parse_hib.committee("Der Bundestagsauschuss tagte.", full, "Arbeit und Soziales") == (
+        "Ausschuss für Arbeit und Soziales"
+    )
+    assert parse_hib.committee("Eine Anhörung fand statt.", full, "Inneres") is None
 
 
 def test_list_page_days_and_ids():
