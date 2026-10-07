@@ -13,7 +13,19 @@ from pathlib import Path
 
 import httpx
 
-from bdf import db, fetch_aw, fetch_bundestag, fetch_dip, fetch_wahl, fetch_wikidata, health, ingest, queries, raw
+from bdf import (
+    db,
+    fetch_aw,
+    fetch_bundestag,
+    fetch_dip,
+    fetch_hib,
+    fetch_wahl,
+    fetch_wikidata,
+    health,
+    ingest,
+    queries,
+    raw,
+)
 from bdf.config import db_path, dip_api_key
 
 # constituent sitting of each Wahlperiode: the earliest date any source is asked for
@@ -135,6 +147,10 @@ def run(wp: int = 21, today: date | None = None) -> int:
             print("government (Wikidata)")
             print(f"  {len(fetch_wikidata.fetch_government(http))} result rows")
 
+        def hib() -> None:
+            new = fetch_hib.fetch(http, WP_START[wp])  # newest first, until a page holds only known items
+            print(f"hib: {len(new)} new articles")
+
         def dip() -> None:
             start, end = dip_window(wp, today)
             print(f"dip {start}..{end}")
@@ -151,6 +167,7 @@ def run(wp: int = 21, today: date | None = None) -> int:
         source("abgeordnetenwatch", abgeordnetenwatch)
         source("photos", photos)
         source("government", government)
+        source("hib", hib)
         if dip_api_key():
             source("dip", dip)
             source("answers", answers)  # listed by the DIP data just fetched

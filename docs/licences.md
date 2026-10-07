@@ -16,6 +16,7 @@ terms checked.
 | Bundeswahlleiterin — Open Data BTW 2025 | elected candidates, results per Wahlkreis, Gemeinden per Wahlkreis | **Datenlizenz Deutschland – Namensnennung 2.0** | "© Die Bundeswahlleiterin, Wiesbaden 2025" | yes | permissive with attribution |
 | Bundeswahlleiterin — Mandatsnachfolger (PDF) | successors who took over a seat during the Wahlperiode | site terms (Impressum): reuse allowed with source, commercially too | "Die Bundeswahlleiterin, Wiesbaden" | yes | permissive with attribution |
 | bundestag.de — MdB biography portraits | one portrait per MdB | bundestag.de Nutzungsbedingungen; photos are third-party works | the credit printed under each photo (`person_photo.credit`) | not verified per photo | show with credit; rights not checked |
+| bundestag.de — heute im bundestag (hib) | title, date, number, Ressort, kind, committee, linked Drucksachen; text for parsing only | Impressum: protected, private use only without written consent | "Deutscher Bundestag, hib" with number and link | no | facts and links only; text needs consent |
 | Wikidata | government roster (offices, dates, departments, birth dates) | **CC0 1.0** | none | yes | public domain |
 | Wikimedia Commons | portraits of government members without a bundestag.de portrait | per file, mostly CC BY-SA 4.0 | author + licence (`person_photo.credit`) and a link to the file page (`source_url`) | yes, share-alike on the image | permissive with attribution |
 
@@ -26,15 +27,22 @@ only ideas were borrowed (see `landscape.md`).
 ## bundestag.de (Plenarprotokolle, Stammdaten, Namentliche Abstimmungen)
 
 The Open Data page states that the files "können zur maschinellen Weiterverarbeitung
-genutzt werden" but names no licence. The site-wide Nutzungsbedingungen
-(https://www.bundestag.de/nutzungsbedingungen) say, in substance:
+genutzt werden" but names no licence. The site-wide terms are in the Impressum
+(https://www.bundestag.de/impressum, "Nutzungsbedingungen", read 2026-10-07):
 
-- material may be used free of charge for parliamentary reporting and for educational
-  and cultural purposes;
-- it may not be used for commercial or advertising purposes ("gewerbliche oder
-  kommerzielle Werbezwecke");
-- the source must be given as "Deutscher Bundestag";
-- the Bundestag accepts no liability for third-party rights (e.g. photos).
+- the content of bundestag.de is protected by copyright; unless a rule below says
+  otherwise, it may only be downloaded or printed for private use, any other use needs
+  the Bundestag's written consent (commercial use in particular);
+- separate rules exist for the photo database, the Mediathek and DIP; Drucksachen and
+  Plenarprotokolle are official works (below);
+- the Bundestag accepts no liability for third-party rights.
+
+An earlier version of this section said the material "may be used free of charge for
+parliamentary reporting" with the source "Deutscher Bundestag". That wording is not in
+the current Impressum; the URL https://www.bundestag.de/nutzungsbedingungen now leads to
+the terms of the Mediathek (audio and video). For the Stammdaten and the roll-call
+files the basis is the Open Data page's statement above; whether that suffices for
+republishing is an open point.
 
 Plenarprotokolle and Drucksachen are official works under § 5 Abs. 2 UrhG (the DIP terms
 say so explicitly for the PDFs): free to use, with source attribution and without
@@ -127,6 +135,22 @@ and share-alike for adaptations (a downscaled thumbnail is fine to publish under
 Wikidata's structured data is **CC0 1.0** (https://www.wikidata.org/wiki/Wikidata:Licensing). No attribution is
 required; `source_url` points at the item anyway. The SPARQL service asks for a descriptive User-Agent, which
 `bdf` sends (`config.USER_AGENT`).
+
+## heute im bundestag (hib)
+
+The news service of the Bundestag's Parlamentsnachrichten (bundestag.de/presse/hib):
+short articles on Vorlagen and committee sessions. They are journalistic texts, not
+official works, so the Impressum's rule applies: private use only without written
+consent, and hib is not among its exceptions. Checked 2026-10-07; no third-party site
+republishing hib texts was found.
+
+What the store does: it keeps the article pages (raw) and the text (`hib_item.text`)
+for parsing, and exposes title, date, issue number, Ressort, kind, author code, the
+committee named and the linked Drucksachen. Titles and these facts are not protected
+as such. The export leaves `text` out; consumers show the facts and link the article,
+not the text, until the Bundestag consents (asked via vorzimmer.ik5@bundestag.de,
+the contact of the hib editors, on 2026-10-07). The test fixtures keep bundestag.de's
+markup with made-up body text.
 
 ## What this repository publishes
 

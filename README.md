@@ -82,6 +82,7 @@ Portraits and the government roster (current state, no date range):
 ```sh
 uv run bdf fetch photos          # bundestag.de biography list (all pages) + portraits → data/raw/bundestag/{biografien,fotos}
 uv run bdf fetch government      # Wikidata roster + Commons portraits → data/raw/wikidata
+uv run bdf fetch hib --wp 21     # heute im bundestag: every article page of the Wahlperiode → data/raw/bundestag/hib (~2 h at first)
 uv run bdf ingest
 uv run bdf query government --date 2026-09-28   # roles held that day, with person id and source (wikidata | stammdaten | protocol)
 uv run bdf query stale-roles                    # protocol-only roles not printed in a protocol for >90 days (kept current)

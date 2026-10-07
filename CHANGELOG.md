@@ -5,6 +5,18 @@ not before? If that sentence is hard to write, the release is not a finished ver
 
 ## Unreleased
 
+A consumer can now list what "heute im bundestag" (hib) reported on each day of the Wahlperiode, find the hib
+items on a Drucksache, and see which committee an Ausschuss or Anhörung report is about.
+
+- New tables `hib_item` and `hib_drucksache` (additive): every hib article of the Wahlperiode with its number,
+  date, Ressort, kind, author code and, for committee reports, the committee as the text names it; the
+  Drucksachen each article links. Fetched by `bdf fetch hib` and in the nightly update (newest first, until a
+  list page holds only known items). In the export with source hib, without the article text (protected,
+  `docs/licences.md`).
+- Health: `hib_reports_without_committee`.
+- `docs/licences.md`: the bundestag.de terms corrected (the Impressum allows private use only unless a rule says
+  otherwise); a section on hib.
+
 ## v0.2.0 (2026-10-06)
 
 A consumer can now read every Kleine and Große Anfrage, every Mündliche and Schriftliche Frage with its answer –

@@ -208,6 +208,7 @@ def test_update_refetches_preliminary_protocols_and_their_pdfs(data_dir, monkeyp
     monkeypatch.setattr(fetch_bundestag, "fetch_biografien", lambda http: [])
     monkeypatch.setattr(update.fetch_wikidata, "fetch_government", lambda http: [])
     monkeypatch.setattr(fetch_dip, "fetch_range", lambda *a, **k: None)
+    monkeypatch.setattr(update.fetch_hib, "fetch", lambda http, since: [])
     monkeypatch.setattr(fetch_bundestag, "refetch_preliminary", lambda http, wp, skip=(): calls.append("refetch") or [])
     monkeypatch.setattr(fetch_bundestag, "fetch_preliminary_pdfs", lambda http, wp: calls.append("pdfs") or [])
     assert update.run(21, date(2026, 9, 28)) == 0

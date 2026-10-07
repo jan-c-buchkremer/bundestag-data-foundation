@@ -18,6 +18,7 @@ from bdf import (
     parse_biografien,
     parse_comments,
     parse_decisions,
+    parse_hib,
     parse_protocol,
     parse_question_texts,
     parse_question_turns,
@@ -42,6 +43,7 @@ from bdf.fetch_bundestag import (
     votes_index_path,
 )
 from bdf.fetch_dip import dip_dir
+from bdf.fetch_hib import hib_dir
 from bdf.fetch_wahl import (
     ELECTION_OF_WAHLPERIODE,
     ELECTIONS,
@@ -78,12 +80,52 @@ def ingest_all(conn: sqlite3.Connection) -> None:
     ingest_wahl(conn)
     ingest_government(conn)
     ingest_photos(conn)
+    ingest_hib(conn)
     retire_pdf_speakers(conn)
     ingest_groups(conn)
     ingest_speech_parts(conn)
 
 
 # --- bundestag.de -------------------------------------------------------------------------
+
+
+_WP_START = {20: "2021-10-26", 21: "2025-03-25"}  # first sitting of each Wahlperiode
+
+
+def ingest_hib(conn: sqlite3.Connection) -> None:
+    """hib articles and the Drucksachen they link, replaced wholesale. The committee of an Ausschuss or Anhörung
+    report is read off its text; full committee names ("Ausschuss für …") are cut by the Stammdaten's names."""
+    paths = raw.data_files(hib_dir(), "*.html")
+    if not paths:
+        print("hib: nothing fetched")
+        return
+    full_names = [r[0] for r in conn.execute(
+        "SELECT DISTINCT name FROM membership WHERE kind = 'committee' AND name LIKE 'Ausschuss %'")]  # fmt: skip
+    items, links, skipped = [], [], 0
+    for path in paths:
+        item = parse_hib.parse_article(path.read_text(encoding="utf-8"), path.stem)
+        if item is None:
+            skipped += 1
+            continue
+        meta = raw.read_meta(path)
+        wps = [w for w, start in _WP_START.items() if start <= item.date]
+        if not wps:
+            continue
+        wp = max(wps)
+        items.append({
+            "id": item.id, "number": item.number, "date": item.date, "wahlperiode": wp, "title": item.title,
+            "ressort": item.ressort, "kind": item.kind, "author_code": item.author_code,
+            "committee": parse_hib.committee(item.text, full_names) if item.kind in parse_hib.COMMITTEE_KINDS else None,
+            "text": item.text, **meta.provenance(f"hib {item.number}"),
+        })  # fmt: skip
+        links += [{"hib_id": item.id, "drucksache_number": n, "position": k} for k, n in enumerate(item.drucksachen, 1)]
+    with conn:
+        conn.execute("DELETE FROM hib_drucksache")
+        conn.execute("DELETE FROM hib_item")
+        upsert(conn, "hib_item", items)
+        upsert(conn, "hib_drucksache", links)
+    note = f", {skipped} pages not read" if skipped else ""
+    print(f"hib: {len(items)} items, {len(links)} Drucksache links{note}")
 
 
 def ingest_stammdaten(conn: sqlite3.Connection) -> None:
