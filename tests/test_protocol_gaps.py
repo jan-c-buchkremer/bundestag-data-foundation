@@ -278,6 +278,44 @@ def test_pdf_reading_stops_at_the_end_of_the_sitting_and_before_the_anlagen():
     assert _paragraphs(("Ende.", 10), ("Anlage", 0, 10.0, True), ("Text", 10)) == [("text", "Ende.")]
 
 
+def test_pdf_title_line_with_a_hanging_item_number_is_a_title():
+    """The called item's number hangs left of the first title line; that line belongs to the title (21/96)."""
+    paras = _paragraphs(
+        ("Ich rufe jetzt auf die Tagesordnungspunkte 29a und", 13.4),
+        ("29b sowie Zusatzpunkt 7:", -0.2),
+        ("29 a) Erste Beratung des von der Bundesregierung", 13.9),
+        ("eingebrachten Entwurfs eines Gesetzes zur", 45.1),
+        ("Beschleunigung der Umsetzung der Ener-", 45.1, 10.0, True),
+        ("gieeffizienzrichtlinie", 45.1, 10.0, True),
+        ("b) Beratung des Antrags der Abgeordneten", 30.9),
+        ("Dr. Alaa Alhamwi", 45.1),
+        ("ZP 7 Beratung des Antrags der Abgeordneten Sonja", 4.4),
+        ("Lemke, Clara Bünger, Doris Achelwilm, weiterer", 30.9),
+        ("ZP 9 – Zweite und dritte Beratung des von der Bun-", 4.4),
+        ("desregierung eingebrachten Entwurfs eines", 45.1),
+        ("ZP 16 Beratung der Beschlussempfehlung und des Be-", -0.3),  # at the column's edge (21/89)
+        ("richts des Ausschusses für Wirtschaft", 30.9),
+        ("28. Erste Beratung des von der Bundesregierung ein-", 11.4),  # with a dot (21/37)
+        ("gebrachten Entwurfs eines Gesetzes", 31.0),
+        ("2026 haben wir das Gesetz beschlossen.", 9.7),  # body text starting with a number stays body text
+        ("Danach geht es weiter, um", -0.2),
+        ("15 Prozent möglich.", -0.2),  # … also before an indented comment (21/86)
+        ("(Dr. Andreas Lenz [CDU/CSU]: Ja!)", 24.4),
+    )
+    assert paras == [
+        ("text", "Ich rufe jetzt auf die Tagesordnungspunkte 29a und 29b sowie Zusatzpunkt 7:"),
+        ("title", "a) Erste Beratung des von der Bundesregierung eingebrachten Entwurfs eines Gesetzes zur"),
+        ("title", "Beschleunigung der Umsetzung der Energieeffizienzrichtlinie"),
+        ("title", "b) Beratung des Antrags der Abgeordneten Dr. Alaa Alhamwi"),
+        ("title", "Beratung des Antrags der Abgeordneten Sonja Lemke, Clara Bünger, Doris Achelwilm, weiterer"),
+        ("title", "– Zweite und dritte Beratung des von der Bundesregierung eingebrachten Entwurfs eines"),
+        ("title", "Beratung der Beschlussempfehlung und des Berichts des Ausschusses für Wirtschaft"),
+        ("title", "Erste Beratung des von der Bundesregierung eingebrachten Entwurfs eines Gesetzes"),
+        ("text", "2026 haben wir das Gesetz beschlossen. Danach geht es weiter, um 15 Prozent möglich."),
+        ("comment", "(Dr. Andreas Lenz [CDU/CSU]: Ja!)"),
+    ]
+
+
 def test_pdf_block_quote_is_one_paragraph():
     paras = _paragraphs(
         ("Ich zitiere den Koalitionsvertrag:", 10),
