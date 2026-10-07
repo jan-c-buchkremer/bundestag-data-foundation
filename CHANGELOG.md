@@ -5,6 +5,8 @@ not before? If that sentence is hard to write, the release is not a finished ver
 
 ## Unreleased
 
+## v0.3.0 (2026-10-07)
+
 A consumer can now list what "heute im bundestag" (hib) reported on each day of the Wahlperiode, find the hib
 items on a Drucksache, and see which committee an Ausschuss or Anhörung report is about.
 
