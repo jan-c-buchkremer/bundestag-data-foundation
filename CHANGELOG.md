@@ -5,6 +5,11 @@ not before? If that sentence is hard to write, the release is not a finished ver
 
 ## Unreleased
 
+- Agenda items read from a preliminary protocol's PDF keep the first line of their title. The item's number hangs
+  left of that line ("29 a) Erste Beratung …", "28. Erste …", "ZP 7 Beratung …"), so it was read as body text and the
+  title started mid-sentence ("eingebrachten Entwurfs eines Gesetzes zur …"). On a copy of the live store 13 titles
+  change and 10 of the 12 that started mid-sentence are whole; speeches and interjections are unchanged.
+
 ## v0.2.0 (2026-10-06)
 
 A consumer can now read every Kleine and Große Anfrage, every Mündliche and Schriftliche Frage with its answer –

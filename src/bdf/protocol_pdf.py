@@ -31,7 +31,7 @@ import re
 import unicodedata
 import xml.etree.ElementTree as ET
 from collections import Counter
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from functools import cache
 from pathlib import Path
 
@@ -51,6 +51,9 @@ _CALL_RE = re.compile(
 _END_RE = re.compile(r"^\(Schluss:\s*\d")
 _DRUCKSACHE_START = re.compile(r"^Drucksachen?\s+\d+/\d+")
 _RESULT_LIST = re.compile(r"^(?:Endgültiges\s+)?Ergebnis\b")
+# the number of a called item hangs left of its first title line ("29 a) Erste Beratung …", "28. Erste Beratung …",
+# "ZP 7 Beratung …", "ZP 9 – Zweite und dritte …"); the XML's title starts after it
+_TOP_LABEL = re.compile(r"^(?:ZP\s*\d+[a-z]?|\d{1,3}\.?)\s+(?=[a-z]\)\s|–\s|[A-ZÄÖÜ])")
 # the bold heading the Anlagen start with ("Anlage 1", "Anlage", "Anlagen zum Stenografischen Bericht"); the sitting
 # ends before it, and its pages (excused members, statements on votes, speeches "zu Protokoll") are left out
 _ANLAGE_RE = re.compile(r"^Anlagen?(?:\s+\d+)?(?:\s+zum\s+Stenografischen\s+Bericht)?$")
@@ -209,7 +212,20 @@ def paragraphs(lines: list[Line]) -> list[Paragraph]:
     cur: Paragraph | None = None
     prev: Line | None = None
     in_result = False  # the printed name list of a roll-call vote; the XML parser leaves it out too (AL_* classes)
-    for ln in lines:
+    for i, ln in enumerate(lines):
+        nxt = lines[i + 1] if i + 1 < len(lines) else None
+        # a bare number only when indented: a body line that goes on sits at the edge ("15 Prozent möglich." before an
+        # indented comment); "ZP 14" may sit there too (21/83)
+        label = _TOP_LABEL.match(ln.text) if ln.indent < 22 and ln.size == _BODY else None
+        if label and ln.indent <= 1 and not ln.text.startswith("ZP"):
+            label = None
+        labelled = bool(
+            label and nxt is not None and nxt.indent >= 22 and nxt.size == _BODY and not nxt.text.startswith("(")
+        )
+        if labelled:
+            # the first title line with its hanging number (21/96, TOP 29): a title line without the number, which
+            # starts an item's title
+            ln = replace(ln, text=ln.text[label.end() :], indent=nxt.indent)
         if ln.bold and _ANLAGE_RE.match(ln.text):
             break
         if _END_RE.match(ln.text):  # its own paragraph even when printed without indent (21/14)
@@ -251,6 +267,7 @@ def paragraphs(lines: list[Line]) -> list[Paragraph]:
                 and (prev.bold == ln.bold or (prev.text.endswith("-") and ln.text[:1].islower()))
                 and not _DRUCKSACHE_START.match(ln.text)
                 and not re.match(r"^[a-z]\)\s", ln.text)
+                and not labelled
             )
             if same_run:
                 cur.lines.append(ln)
