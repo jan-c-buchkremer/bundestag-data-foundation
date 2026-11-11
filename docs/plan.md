@@ -2,10 +2,10 @@
 
 ## Current goal
 
-By the v0.2.0 release (target: the weekend of 2026-10-10), anyone using plenar-radar.de or the open-data export can
-rely on the foundation: the facts it holds are checked against DIP, the gaps it cannot close are written down with
-numbers, the schema stays as it is, and the nightly run reports by itself when something breaks. After that the
-foundation is frozen: it changes only when a concrete page or question needs data that is missing.
+Reached with v0.2.0 (2026-10-06): anyone using plenar-radar.de or the open-data export can rely on the foundation:
+the facts it holds are checked against DIP, the gaps it cannot close are written down with numbers, the schema stays
+as it is, and the nightly run reports by itself when something breaks. The foundation is now frozen: it changes only
+when a concrete page or question needs data that is missing.
 
 v0.2.0 also carries Fragen as text (below; decided 2026-10-06): the research platform's Fragen subpages are the page
 that needs it, and the release waits for it.
@@ -39,15 +39,16 @@ Every change is reviewed against this goal. Ideas that don't serve it go on "Not
    decision's id counts its position in the sitting (`21/31/h7`), so a decision found later renumbers the ones after
    it, and their page addresses with them (seen in #29); an id from the protocol position instead. Release v0.2.0.
 
-## Status (2026-10-06)
+## Status (2026-10-07)
 
 - Step 1: foundation #23–#27 merged; release switch-over done (release workflow #37, tag `v0.1.0`, infra #12: the
-  live pipeline runs `:release`, first built by the nightly run of 2026-10-05). Open: the consumers (research
-  platform #43–#46, radar #13).
+  live pipeline runs `:release`, first built by the nightly run of 2026-10-05). The consumers are merged and
+  released: research platform #43–#47 and radar #13, both in their v0.2.0.
 - Step 2: done. Decision results against DIP 10 → 1, DIP decisions without a row 110 → 3 (#26, #29); protocol gaps
   31 → 23, each with its cause (#31); the vote matcher leaves `pdf-` placeholders out (#30).
 - Step 3: done. `question_activity` (asker and Ressort of every Frage, #32), `mandate_successor` (the Land of a
-  Nachrücker, #33). The research platform still has to read them.
+  Nachrücker, #33). The research platform reads `question_activity` (its Einzelfragen); no page reads
+  `mandate_successor` yet.
 - Step 4: done. `bdf/health.py`, failing the run on a clear regression (#34; decision-check counts in #26).
 - Step 5: done. Stable decision ids (#35, with research platform #50); the schema contract, the export's sources for
   every table and "Known gaps" in `docs/design.md` (#36). The version stays 0.x like the other repos (decided
@@ -55,7 +56,8 @@ Every change is reviewed against this goal. Ideas that don't serve it go on "Not
 - Also in v0.2.0: `vorgang_referral` (#40), the committees a Vorgang was referred to, for the research platform's
   EU-Vorlagen page (its #56: the committee each EU-Vorlage went to). Additive, under "Unreleased" in the CHANGELOG.
 - Fragen as text: done (below), all four steps. Released as v0.2.0 on 2026-10-06 after an ingest of `main` into
-  the live store by hand with a clean health report; the nightly run of 2026-10-07 is the first on v0.2.0.
+  the live store by hand with a clean health report. The nightly run of 2026-10-07, the first on v0.2.0, was clean:
+  no regression in the health report.
 
 ## Fragen as text (in v0.2.0)
 
@@ -126,5 +128,13 @@ Ideas that don't serve the current goal. Each names what it would give a reader.
   which speeches talk about my Wahlkreis.
 - **Postcode search** (OpenPLZ): find my Wahlkreis by postcode.
 - **Earlier Wahlperioden**, and search across periods: what did a member say about a topic over the years.
+- **hib teasers** (decided 2026-11-11: not now): each hib item's teaser next to its title on Research and Radar
+  pages, as the Parlamentsnachrichten suggested in their written reply (research platform `docs/plan.md`, goal 5,
+  "Terms"). The teaser is the `<description>` of https://www.bundestag.de/static/appdata/includes/rss/hib.rss, a
+  sentence written for social media that is not on the item's page; it starts with "Ressort/Kind " (strip it). The
+  feed holds only the newest 15 items, and hib publishes 12 to 46 a day (26 October to 10 November 2026), so the
+  daily update would catch about a third: it needs its own hourly read of the feed (a small command writing
+  `hib_item.teaser` under the update's lock, a timer in the infra repo, about 24 requests of 11 KB a day). Items from
+  before the first read get none, and the archive has no teasers to fetch.
 - **Initiator groups of Vorgänge** (`vorgang.initiator_groups`): the radar could drop its own name mapping.
 - Stable topic ids are the radar's task, not the foundation's.
