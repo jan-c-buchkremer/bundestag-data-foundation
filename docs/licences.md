@@ -16,7 +16,7 @@ terms checked.
 | Bundeswahlleiterin — Open Data BTW 2025 | elected candidates, results per Wahlkreis, Gemeinden per Wahlkreis | **Datenlizenz Deutschland – Namensnennung 2.0** | "© Die Bundeswahlleiterin, Wiesbaden 2025" | yes | permissive with attribution |
 | Bundeswahlleiterin — Mandatsnachfolger (PDF) | successors who took over a seat during the Wahlperiode | site terms (Impressum): reuse allowed with source, commercially too | "Die Bundeswahlleiterin, Wiesbaden" | yes | permissive with attribution |
 | bundestag.de — MdB biography portraits | one portrait per MdB | bundestag.de Nutzungsbedingungen; photos are third-party works | the credit printed under each photo (`person_photo.credit`) | not verified per photo | show with credit; rights not checked |
-| bundestag.de — heute im bundestag (hib) | title, date, number, Ressort, kind, committee, linked Drucksachen; text for parsing only | Impressum: protected, private use only without written consent | "Deutscher Bundestag, hib" with number and link | no | facts and links only; text needs consent |
+| bundestag.de — heute im bundestag (hib) | title, date, number, Ressort, kind, committee, linked Drucksachen; text for parsing only | Impressum: protected, private use only without written consent | "Deutscher Bundestag, hib" with number and link | no | headline, facts and short link; teaser allowed; no full text (written reply, 2026-11-11) |
 | Wikidata | government roster (offices, dates, departments, birth dates) | **CC0 1.0** | none | yes | public domain |
 | Wikimedia Commons | portraits of government members without a bundestag.de portrait | per file, mostly CC BY-SA 4.0 | author + licence (`person_photo.credit`) and a link to the file page (`source_url`) | yes, share-alike on the image | permissive with attribution |
 
@@ -148,8 +148,12 @@ What the store does: it keeps the article pages (raw) and the text (`hib_item.te
 for parsing, and exposes title, date, issue number, Ressort, kind, author code, the
 committee named and the linked Drucksachen. Titles and these facts are not protected
 as such. The export leaves `text` out; consumers show the facts and link the article,
-not the text, until the Bundestag consents (asked via vorzimmer.ik5@bundestag.de,
-the contact of the hib editors, on 2026-10-07). The test fixtures keep bundestag.de's
+not the text. The Parlamentsnachrichten answered the request (sent via vorzimmer.ik5@bundestag.de
+on 2026-10-07) in writing, shown 2026-11-11: use each item's headline and teaser with a link,
+not the full text, because items are corrected after publication. The teaser is the RSS
+feed's `<description>` (not stored yet: `docs/plan.md`, "Not now"); the link is the short
+form `https://www.bundestag.de/<id>`. Fetching the archive at a tight rate may get the IP
+blocked for a while, so backfills stay slow. The test fixtures keep bundestag.de's
 markup with made-up body text.
 
 ## What this repository publishes
